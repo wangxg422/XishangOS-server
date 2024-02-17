@@ -6,8 +6,9 @@ import (
 )
 
 func AddSystemRouter(group *gin.RouterGroup) {
-	router := group.Group("system")
+	router := group.Group("system/v1")
 	{
-		router.GET("/user/list", controller.SysUserController.List)
+		router.POST("/login", controller.AppSysLoginController.Login)
+		router.GET("/user/list", controller.AppSysUserController.List)
 	}
 }

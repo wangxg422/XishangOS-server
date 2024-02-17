@@ -1,3 +1,6 @@
 package service
 
-var SysUserService *SysUser = new(SysUser)
+var (
+	AppSysUserService *SysUserService = new(SysUserService)
+	AppSysMenuService *SysMenuService = new(SysMenuService)
+)

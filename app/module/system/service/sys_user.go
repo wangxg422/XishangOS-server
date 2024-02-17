@@ -5,9 +5,13 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 )
 
-type SysUser struct {
+type SysUserService struct {
 }
 
-func (m *SysUser) List() ([]*codegen.SysUser, error) {
+func (m *SysUserService) List() ([]*codegen.SysUser, error) {
 	return dao.SysUserDao.List()
+}
+
+func (m *SysUserService) GetUserByUsername(username string) (*codegen.SysUser, error) {
+	return dao.SysUserDao.GetUserByUsername(username)
 }

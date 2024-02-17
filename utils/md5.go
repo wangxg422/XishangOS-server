@@ -1,12 +1,10 @@
 package utils
 
 import (
-	"crypto/md5"
-	"encoding/hex"
+	"github.com/gogf/gf/v2/crypto/gmd5"
 )
 
-func MD5V(str []byte, b ...byte) string {
-	h := md5.New()
-	h.Write(str)
-	return hex.EncodeToString(h.Sum(b))
+// EncryptPassword 密码加密
+func EncryptPassword(password, salt string) string {
+	return gmd5.MustEncryptString(gmd5.MustEncryptString(password) + gmd5.MustEncryptString(salt))
 }

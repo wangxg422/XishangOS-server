@@ -6,11 +6,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysUser struct {
+type SysUserController struct {
 }
 
-func (m *SysUser) List(c *gin.Context) {
-	list, err := service.SysUserService.List()
+func (m *SysUserController) List(c *gin.Context) {
+	list, err := service.AppSysUserService.List()
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

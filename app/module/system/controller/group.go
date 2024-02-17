@@ -1,3 +1,4 @@
 package controller
 
-var SysUserController *SysUser = new(SysUser)
+var AppSysUserController *SysUserController = new(SysUserController)
+var AppSysLoginController *SysLoginController = new(SysLoginController)
