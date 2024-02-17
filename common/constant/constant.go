@@ -1,0 +1,32 @@
+package constant
+
+const (
+	EnvConfigFile     = "CONFIG_FILE"
+	DefaultConfigFile = "config.yml"
+
+	DEBUG   = "debug"
+	RELEASE = "release"
+
+	HTTP  = "http://"
+	HTTPS = "https://"
+
+	// LAYOUT Layout组件标识
+	LAYOUT = "Layout"
+	// INNER_LINK InnerLink组件标识
+	INNER_LINK = "InnerLink"
+	// PARENT_VIEW ParentView组件标识
+	PARENT_VIEW = "ParentView"
+
+	NoRedirect = "noRedirect"
+
+	Comma = ","
+
+	PageNum  = "pageNum"
+	PageSize = "pageSize"
+
+	DelFlag = "del_flag"
+
+	TokenName = "X-ACCESS-TOKEN"
+)
+
+var UpdateOmit = []string{"create_time", "create_by"}
