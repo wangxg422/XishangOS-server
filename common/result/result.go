@@ -14,6 +14,7 @@ type Response struct {
 
 type EmptyMap struct{}
 type EmptyList []string
+type Map map[string]any
 
 func buildResult(code int, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{

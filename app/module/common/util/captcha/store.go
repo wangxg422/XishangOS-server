@@ -1,34 +1,27 @@
 package captcha
 
 import (
-	"context"
-	"fmt"
+	"github.com/mojocn/base64Captcha"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/middleware/logger"
-	"sync"
+	"go.uber.org/zap"
 	"time"
 
-	"github.com/mojocn/base64Captcha"
-	"go.uber.org/zap"
+	"context"
 )
 
-/**
-单例模式
-*/
-
-var redisStoreInstance *RedisStore
-
-var once sync.Once
+var redisStore *RedisStore
 
 func GetRedisStore() *RedisStore {
-	once.Do(func() {
-		redisStoreInstance = &RedisStore{
+	if redisStore == nil {
+		rs := &RedisStore{
 			Expiration: time.Duration(global.AppConfig.Captcha.Expiration * int64(time.Second)),
 			PreKey:     global.AppConfig.Captcha.PreKey,
+			Context:    context.Background(),
 		}
-	})
-
-	return redisStoreInstance
+		redisStore = rs
+	}
+	return redisStore
 }
 
 type RedisStore struct {
@@ -69,7 +62,6 @@ func (rs *RedisStore) Get(key string, clear bool) string {
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
 	key := rs.PreKey + id
-	fmt.Println(key)
 	v := rs.Get(key, clear)
 	return v == answer
 }

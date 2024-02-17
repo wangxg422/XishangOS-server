@@ -1,2 +1,0 @@
-2024/02/16 23:30:43.823	info	/Users/wangxg/data/code/ent/initial/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
-2024/02/16 23:50:33.686	info	/Users/wangxg/data/code/ent/initial/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}

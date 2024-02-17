@@ -11,7 +11,7 @@ import (
 func Redis() {
 	redisCfg := global.AppConfig.Redis
 	client := redis.NewClient(&redis.Options{
-		Addr:     redisCfg.Addresses + ":" + redisCfg.Port,
+		Addr:     redisCfg.Address + ":" + redisCfg.Port,
 		Password: redisCfg.Password,
 		DB:       redisCfg.Db,
 	})

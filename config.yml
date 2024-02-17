@@ -21,7 +21,7 @@ zap:
   level: debug
   prefix: ''
   format: console
-  path: tmp # 日志目录
+  path: ~/tmp # 日志目录
   file-shunt: false # 日志文件是否按级别分流
   max-age: 10 # 日志文件保留最大天数
   max-backups: 10 # 日志文件最大个数
@@ -32,11 +32,12 @@ zap:
 
 captcha:
   enabled: true
-  key-long: 4
+  key-long: 8
   img-width: 240
   img-height: 80
   expiration: 180 # 过期时间，单位秒
-  pre-key: "SYS:CAPTCHA:" # 存储到redis的前缀
+  pre-key: "XishangOS:PUBLIC:CAPTCHA:" # 存储到redis的前缀
+  source: "abcdefghjkmnpqrstuvwxyz23456789" #可用字符集
 
 redis:
   address: 82.156.146.136

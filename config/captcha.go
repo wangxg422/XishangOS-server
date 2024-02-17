@@ -7,4 +7,5 @@ type Captcha struct {
 	ImgHeight  int    `mapstructure:"img-height" json:"img-height" yaml:"img-height"`
 	Expiration int64  `mapstructure:"expiration" json:"expiration" yaml:"expiration"`
 	PreKey     string `mapstructure:"pre-key" json:"pre-key" yaml:"pre-key"`
+	Source     string `mapstructure:"source" json:"source" yaml:"source"`
 }
