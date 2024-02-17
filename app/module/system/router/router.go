@@ -10,5 +10,6 @@ func AddSystemRouter(group *gin.RouterGroup) {
 	{
 		router.POST("/login", controller.AppSysLoginController.Login)
 		router.GET("/user/list", controller.AppSysUserController.List)
+		router.POST("/user/add", controller.AppSysLoginController.Add)
 	}
 }

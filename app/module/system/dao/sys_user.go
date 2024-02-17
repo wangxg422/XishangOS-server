@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
@@ -16,4 +17,8 @@ func (m *SysUser) List() ([]*codegen.SysUser, error) {
 
 func (m *SysUser) GetUserByUsername(username string) (*codegen.SysUser, error) {
 	return initial.SysDbClient.SysUser.Query().Where(sysuser.UserNameEQ(username)).Only(context.Background())
+}
+
+func (m *SysUser) Add(req *request.SysUserCreateUpdateReq) {
+	
 }
