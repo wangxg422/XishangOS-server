@@ -7,6 +7,7 @@ import (
 
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -41,6 +42,39 @@ func init() {
 	sysmenuDescID := sysmenuMixinFields0[0].Descriptor()
 	// sysmenu.DefaultID holds the default value on creation for the id field.
 	sysmenu.DefaultID = sysmenuDescID.Default.(func() int64)
+	sysroleMixin := schema.SysRole{}.Mixin()
+	sysroleMixinFields0 := sysroleMixin[0].Fields()
+	_ = sysroleMixinFields0
+	sysroleMixinFields1 := sysroleMixin[1].Fields()
+	_ = sysroleMixinFields1
+	sysroleMixinFields2 := sysroleMixin[2].Fields()
+	_ = sysroleMixinFields2
+	sysroleFields := schema.SysRole{}.Fields()
+	_ = sysroleFields
+	// sysroleDescCreatedAt is the schema descriptor for created_at field.
+	sysroleDescCreatedAt := sysroleMixinFields1[0].Descriptor()
+	// sysrole.DefaultCreatedAt holds the default value on creation for the created_at field.
+	sysrole.DefaultCreatedAt = sysroleDescCreatedAt.Default.(func() time.Time)
+	// sysroleDescUpdatedAt is the schema descriptor for updated_at field.
+	sysroleDescUpdatedAt := sysroleMixinFields1[1].Descriptor()
+	// sysrole.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	sysrole.DefaultUpdatedAt = sysroleDescUpdatedAt.Default.(func() time.Time)
+	// sysrole.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	sysrole.UpdateDefaultUpdatedAt = sysroleDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// sysroleDescDeleteAt is the schema descriptor for delete_at field.
+	sysroleDescDeleteAt := sysroleMixinFields1[2].Descriptor()
+	// sysrole.DefaultDeleteAt holds the default value on creation for the delete_at field.
+	sysrole.DefaultDeleteAt = sysroleDescDeleteAt.Default.(func() time.Time)
+	// sysrole.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
+	sysrole.UpdateDefaultDeleteAt = sysroleDescDeleteAt.UpdateDefault.(func() time.Time)
+	// sysroleDescStatus is the schema descriptor for status field.
+	sysroleDescStatus := sysroleMixinFields2[0].Descriptor()
+	// sysrole.DefaultStatus holds the default value on creation for the status field.
+	sysrole.DefaultStatus = sysroleDescStatus.Default.(int8)
+	// sysroleDescID is the schema descriptor for id field.
+	sysroleDescID := sysroleMixinFields0[0].Descriptor()
+	// sysrole.DefaultID holds the default value on creation for the id field.
+	sysrole.DefaultID = sysroleDescID.Default.(func() int64)
 	sysuserMixin := schema.SysUser{}.Mixin()
 	sysuserMixinFields0 := sysuserMixin[0].Fields()
 	_ = sysuserMixinFields0

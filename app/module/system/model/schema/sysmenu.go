@@ -27,6 +27,7 @@ func (SysMenu) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.IdMixin{},
 		mixin.TimeMixin{},
+		mixin.RemarkMixin{},
 	}
 }
 
@@ -51,7 +52,6 @@ func (SysMenu) Fields() []ent.Field {
 		field.String("redirect").Optional().Comment("路由重定向地址"),
 		field.Int8("is_affix").Optional().Comment("是否固定(1是,0否)"),
 		field.String("link_url").Optional().Comment("链接地址"),
-		field.String("remark").Optional(),
 	}
 }
 

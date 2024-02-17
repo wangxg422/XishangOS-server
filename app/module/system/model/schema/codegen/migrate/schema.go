@@ -9,12 +9,31 @@ import (
 )
 
 var (
+	// SysCasbinRuleColumns holds the columns for the "sys_casbin_rule" table.
+	SysCasbinRuleColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "ptype", Type: field.TypeString, Nullable: true},
+		{Name: "v0", Type: field.TypeString, Nullable: true},
+		{Name: "v1", Type: field.TypeString, Nullable: true},
+		{Name: "v2", Type: field.TypeString, Nullable: true},
+		{Name: "v3", Type: field.TypeString, Nullable: true},
+		{Name: "v4", Type: field.TypeString, Nullable: true},
+		{Name: "v5", Type: field.TypeString, Nullable: true},
+	}
+	// SysCasbinRuleTable holds the schema information for the "sys_casbin_rule" table.
+	SysCasbinRuleTable = &schema.Table{
+		Name:       "sys_casbin_rule",
+		Comment:    "casbin权限表",
+		Columns:    SysCasbinRuleColumns,
+		PrimaryKey: []*schema.Column{SysCasbinRuleColumns[0]},
+	}
 	// SysMenuColumns holds the columns for the "sys_menu" table.
 	SysMenuColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
+		{Name: "remark", Type: field.TypeInt8, Nullable: true},
 		{Name: "pid", Type: field.TypeInt64, Comment: "父ID"},
 		{Name: "name", Type: field.TypeString, Nullable: true, Comment: "菜单名称"},
 		{Name: "title", Type: field.TypeString, Nullable: true, Comment: "菜单标题"},
@@ -33,7 +52,6 @@ var (
 		{Name: "redirect", Type: field.TypeString, Nullable: true, Comment: "路由重定向地址"},
 		{Name: "is_affix", Type: field.TypeInt8, Nullable: true, Comment: "是否固定(1是,0否)"},
 		{Name: "link_url", Type: field.TypeString, Nullable: true, Comment: "链接地址"},
-		{Name: "remark", Type: field.TypeString, Nullable: true},
 	}
 	// SysMenuTable holds the schema information for the "sys_menu" table.
 	SysMenuTable = &schema.Table{
@@ -42,12 +60,32 @@ var (
 		Columns:    SysMenuColumns,
 		PrimaryKey: []*schema.Column{SysMenuColumns[0]},
 	}
+	// SysRoleColumns holds the columns for the "sys_role" table.
+	SysRoleColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime, Nullable: true},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
+		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
+		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
+		{Name: "remark", Type: field.TypeInt8, Nullable: true},
+		{Name: "list_order", Type: field.TypeInt64, Nullable: true, Comment: "排序"},
+		{Name: "name", Type: field.TypeString, Nullable: true, Comment: "角色名称"},
+		{Name: "data_scope", Type: field.TypeInt8, Nullable: true, Comment: "数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)"},
+	}
+	// SysRoleTable holds the schema information for the "sys_role" table.
+	SysRoleTable = &schema.Table{
+		Name:       "sys_role",
+		Comment:    "系统角色表",
+		Columns:    SysRoleColumns,
+		PrimaryKey: []*schema.Column{SysRoleColumns[0]},
+	}
 	// SysUserColumns holds the columns for the "sys_user" table.
 	SysUserColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
+		{Name: "remark", Type: field.TypeInt8, Nullable: true},
 		{Name: "user_name", Type: field.TypeString},
 		{Name: "user_nickname", Type: field.TypeString, Nullable: true, Comment: "用户昵称"},
 		{Name: "mobile", Type: field.TypeString, Nullable: true},
@@ -64,7 +102,6 @@ var (
 		{Name: "describe", Type: field.TypeString, Nullable: true},
 		{Name: "last_login_ip", Type: field.TypeString, Nullable: true},
 		{Name: "last_login_time", Type: field.TypeString, Nullable: true},
-		{Name: "remark", Type: field.TypeString, Nullable: true},
 	}
 	// SysUserTable holds the schema information for the "sys_user" table.
 	SysUserTable = &schema.Table{
@@ -75,14 +112,22 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		SysCasbinRuleTable,
 		SysMenuTable,
+		SysRoleTable,
 		SysUserTable,
 	}
 )
 
 func init() {
+	SysCasbinRuleTable.Annotation = &entsql.Annotation{
+		Table: "sys_casbin_rule",
+	}
 	SysMenuTable.Annotation = &entsql.Annotation{
 		Table: "sys_menu",
+	}
+	SysRoleTable.Annotation = &entsql.Annotation{
+		Table: "sys_role",
 	}
 	SysUserTable.Annotation = &entsql.Annotation{
 		Table: "sys_user",

@@ -52,6 +52,33 @@ func (suu *SysUserUpdate) ClearDeleteAt() *SysUserUpdate {
 	return suu
 }
 
+// SetRemark sets the "remark" field.
+func (suu *SysUserUpdate) SetRemark(i int8) *SysUserUpdate {
+	suu.mutation.ResetRemark()
+	suu.mutation.SetRemark(i)
+	return suu
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableRemark(i *int8) *SysUserUpdate {
+	if i != nil {
+		suu.SetRemark(*i)
+	}
+	return suu
+}
+
+// AddRemark adds i to the "remark" field.
+func (suu *SysUserUpdate) AddRemark(i int8) *SysUserUpdate {
+	suu.mutation.AddRemark(i)
+	return suu
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (suu *SysUserUpdate) ClearRemark() *SysUserUpdate {
+	suu.mutation.ClearRemark()
+	return suu
+}
+
 // SetUserName sets the "user_name" field.
 func (suu *SysUserUpdate) SetUserName(s string) *SysUserUpdate {
 	suu.mutation.SetUserName(s)
@@ -394,26 +421,6 @@ func (suu *SysUserUpdate) ClearLastLoginTime() *SysUserUpdate {
 	return suu
 }
 
-// SetRemark sets the "remark" field.
-func (suu *SysUserUpdate) SetRemark(s string) *SysUserUpdate {
-	suu.mutation.SetRemark(s)
-	return suu
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableRemark(s *string) *SysUserUpdate {
-	if s != nil {
-		suu.SetRemark(*s)
-	}
-	return suu
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (suu *SysUserUpdate) ClearRemark() *SysUserUpdate {
-	suu.mutation.ClearRemark()
-	return suu
-}
-
 // Mutation returns the SysUserMutation object of the builder.
 func (suu *SysUserUpdate) Mutation() *SysUserMutation {
 	return suu.mutation
@@ -482,6 +489,15 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if suu.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysuser.FieldDeleteAt, field.TypeTime)
+	}
+	if value, ok := suu.mutation.Remark(); ok {
+		_spec.SetField(sysuser.FieldRemark, field.TypeInt8, value)
+	}
+	if value, ok := suu.mutation.AddedRemark(); ok {
+		_spec.AddField(sysuser.FieldRemark, field.TypeInt8, value)
+	}
+	if suu.mutation.RemarkCleared() {
+		_spec.ClearField(sysuser.FieldRemark, field.TypeInt8)
 	}
 	if value, ok := suu.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
@@ -588,12 +604,6 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if suu.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
 	}
-	if value, ok := suu.mutation.Remark(); ok {
-		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
-	}
-	if suu.mutation.RemarkCleared() {
-		_spec.ClearField(sysuser.FieldRemark, field.TypeString)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, suu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{sysuser.Label}
@@ -635,6 +645,33 @@ func (suuo *SysUserUpdateOne) SetDeleteAt(t time.Time) *SysUserUpdateOne {
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (suuo *SysUserUpdateOne) ClearDeleteAt() *SysUserUpdateOne {
 	suuo.mutation.ClearDeleteAt()
+	return suuo
+}
+
+// SetRemark sets the "remark" field.
+func (suuo *SysUserUpdateOne) SetRemark(i int8) *SysUserUpdateOne {
+	suuo.mutation.ResetRemark()
+	suuo.mutation.SetRemark(i)
+	return suuo
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableRemark(i *int8) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetRemark(*i)
+	}
+	return suuo
+}
+
+// AddRemark adds i to the "remark" field.
+func (suuo *SysUserUpdateOne) AddRemark(i int8) *SysUserUpdateOne {
+	suuo.mutation.AddRemark(i)
+	return suuo
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (suuo *SysUserUpdateOne) ClearRemark() *SysUserUpdateOne {
+	suuo.mutation.ClearRemark()
 	return suuo
 }
 
@@ -980,26 +1017,6 @@ func (suuo *SysUserUpdateOne) ClearLastLoginTime() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetRemark sets the "remark" field.
-func (suuo *SysUserUpdateOne) SetRemark(s string) *SysUserUpdateOne {
-	suuo.mutation.SetRemark(s)
-	return suuo
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableRemark(s *string) *SysUserUpdateOne {
-	if s != nil {
-		suuo.SetRemark(*s)
-	}
-	return suuo
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (suuo *SysUserUpdateOne) ClearRemark() *SysUserUpdateOne {
-	suuo.mutation.ClearRemark()
-	return suuo
-}
-
 // Mutation returns the SysUserMutation object of the builder.
 func (suuo *SysUserUpdateOne) Mutation() *SysUserMutation {
 	return suuo.mutation
@@ -1098,6 +1115,15 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if suuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysuser.FieldDeleteAt, field.TypeTime)
+	}
+	if value, ok := suuo.mutation.Remark(); ok {
+		_spec.SetField(sysuser.FieldRemark, field.TypeInt8, value)
+	}
+	if value, ok := suuo.mutation.AddedRemark(); ok {
+		_spec.AddField(sysuser.FieldRemark, field.TypeInt8, value)
+	}
+	if suuo.mutation.RemarkCleared() {
+		_spec.ClearField(sysuser.FieldRemark, field.TypeInt8)
 	}
 	if value, ok := suuo.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
@@ -1203,12 +1229,6 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if suuo.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
-	}
-	if value, ok := suuo.mutation.Remark(); ok {
-		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
-	}
-	if suuo.mutation.RemarkCleared() {
-		_spec.ClearField(sysuser.FieldRemark, field.TypeString)
 	}
 	_node = &SysUser{config: suuo.config}
 	_spec.Assign = _node.assignValues

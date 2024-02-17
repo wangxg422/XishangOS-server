@@ -27,6 +27,7 @@ func (SysUser) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.IdMixin{},
 		mixin.TimeMixin{},
+		mixin.RemarkMixin{},
 	}
 }
 
@@ -49,7 +50,6 @@ func (SysUser) Fields() []ent.Field {
 		field.String("describe").Optional(),
 		field.String("last_login_ip").Optional(),
 		field.String("last_login_time").Optional(),
-		field.String("remark").Optional(),
 	}
 }
 

@@ -19,6 +19,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeleteAt holds the string denoting the delete_at field in the database.
 	FieldDeleteAt = "delete_at"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
 	// FieldUserName holds the string denoting the user_name field in the database.
 	FieldUserName = "user_name"
 	// FieldUserNickname holds the string denoting the user_nickname field in the database.
@@ -51,8 +53,6 @@ const (
 	FieldLastLoginIP = "last_login_ip"
 	// FieldLastLoginTime holds the string denoting the last_login_time field in the database.
 	FieldLastLoginTime = "last_login_time"
-	// FieldRemark holds the string denoting the remark field in the database.
-	FieldRemark = "remark"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_user"
 )
@@ -63,6 +63,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeleteAt,
+	FieldRemark,
 	FieldUserName,
 	FieldUserNickname,
 	FieldMobile,
@@ -79,7 +80,6 @@ var Columns = []string{
 	FieldDescribe,
 	FieldLastLoginIP,
 	FieldLastLoginTime,
-	FieldRemark,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -128,6 +128,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByDeleteAt orders the results by the delete_at field.
 func ByDeleteAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeleteAt, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByUserName orders the results by the user_name field.
@@ -208,9 +213,4 @@ func ByLastLoginIP(opts ...sql.OrderTermOption) OrderOption {
 // ByLastLoginTime orders the results by the last_login_time field.
 func ByLastLoginTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastLoginTime, opts...).ToFunc()
-}
-
-// ByRemark orders the results by the remark field.
-func ByRemark(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }

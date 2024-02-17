@@ -40,6 +40,8 @@ type AppInstanceMutation struct {
 	delete_at           *time.Time
 	status              *int8
 	addstatus           *int8
+	remark              *int8
+	addremark           *int8
 	instance_name       *string
 	instance_code       *string
 	instance_package    *int64
@@ -51,7 +53,6 @@ type AppInstanceMutation struct {
 	installer           *int64
 	addinstaller        *int64
 	desc                *string
-	remark              *string
 	clearedFields       map[string]struct{}
 	installFrom         *int64
 	clearedinstallFrom  bool
@@ -379,6 +380,76 @@ func (m *AppInstanceMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
 	delete(m.clearedFields, appinstance.FieldStatus)
+}
+
+// SetRemark sets the "remark" field.
+func (m *AppInstanceMutation) SetRemark(i int8) {
+	m.remark = &i
+	m.addremark = nil
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *AppInstanceMutation) Remark() (r int8, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the AppInstance entity.
+// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppInstanceMutation) OldRemark(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// AddRemark adds i to the "remark" field.
+func (m *AppInstanceMutation) AddRemark(i int8) {
+	if m.addremark != nil {
+		*m.addremark += i
+	} else {
+		m.addremark = &i
+	}
+}
+
+// AddedRemark returns the value that was added to the "remark" field in this mutation.
+func (m *AppInstanceMutation) AddedRemark() (r int8, exists bool) {
+	v := m.addremark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *AppInstanceMutation) ClearRemark() {
+	m.remark = nil
+	m.addremark = nil
+	m.clearedFields[appinstance.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *AppInstanceMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[appinstance.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *AppInstanceMutation) ResetRemark() {
+	m.remark = nil
+	m.addremark = nil
+	delete(m.clearedFields, appinstance.FieldRemark)
 }
 
 // SetInstanceName sets the "instance_name" field.
@@ -796,55 +867,6 @@ func (m *AppInstanceMutation) ResetDesc() {
 	delete(m.clearedFields, appinstance.FieldDesc)
 }
 
-// SetRemark sets the "remark" field.
-func (m *AppInstanceMutation) SetRemark(s string) {
-	m.remark = &s
-}
-
-// Remark returns the value of the "remark" field in the mutation.
-func (m *AppInstanceMutation) Remark() (r string, exists bool) {
-	v := m.remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRemark returns the old "remark" field's value of the AppInstance entity.
-// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AppInstanceMutation) OldRemark(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
-	}
-	return oldValue.Remark, nil
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (m *AppInstanceMutation) ClearRemark() {
-	m.remark = nil
-	m.clearedFields[appinstance.FieldRemark] = struct{}{}
-}
-
-// RemarkCleared returns if the "remark" field was cleared in this mutation.
-func (m *AppInstanceMutation) RemarkCleared() bool {
-	_, ok := m.clearedFields[appinstance.FieldRemark]
-	return ok
-}
-
-// ResetRemark resets all changes to the "remark" field.
-func (m *AppInstanceMutation) ResetRemark() {
-	m.remark = nil
-	delete(m.clearedFields, appinstance.FieldRemark)
-}
-
 // SetInstallFromID sets the "installFrom" edge to the AppPackage entity by id.
 func (m *AppInstanceMutation) SetInstallFromID(id int64) {
 	m.installFrom = &id
@@ -931,6 +953,9 @@ func (m *AppInstanceMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, appinstance.FieldStatus)
 	}
+	if m.remark != nil {
+		fields = append(fields, appinstance.FieldRemark)
+	}
 	if m.instance_name != nil {
 		fields = append(fields, appinstance.FieldInstanceName)
 	}
@@ -955,9 +980,6 @@ func (m *AppInstanceMutation) Fields() []string {
 	if m.desc != nil {
 		fields = append(fields, appinstance.FieldDesc)
 	}
-	if m.remark != nil {
-		fields = append(fields, appinstance.FieldRemark)
-	}
 	return fields
 }
 
@@ -974,6 +996,8 @@ func (m *AppInstanceMutation) Field(name string) (ent.Value, bool) {
 		return m.DeleteAt()
 	case appinstance.FieldStatus:
 		return m.Status()
+	case appinstance.FieldRemark:
+		return m.Remark()
 	case appinstance.FieldInstanceName:
 		return m.InstanceName()
 	case appinstance.FieldInstanceCode:
@@ -990,8 +1014,6 @@ func (m *AppInstanceMutation) Field(name string) (ent.Value, bool) {
 		return m.Installer()
 	case appinstance.FieldDesc:
 		return m.Desc()
-	case appinstance.FieldRemark:
-		return m.Remark()
 	}
 	return nil, false
 }
@@ -1009,6 +1031,8 @@ func (m *AppInstanceMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldDeleteAt(ctx)
 	case appinstance.FieldStatus:
 		return m.OldStatus(ctx)
+	case appinstance.FieldRemark:
+		return m.OldRemark(ctx)
 	case appinstance.FieldInstanceName:
 		return m.OldInstanceName(ctx)
 	case appinstance.FieldInstanceCode:
@@ -1025,8 +1049,6 @@ func (m *AppInstanceMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldInstaller(ctx)
 	case appinstance.FieldDesc:
 		return m.OldDesc(ctx)
-	case appinstance.FieldRemark:
-		return m.OldRemark(ctx)
 	}
 	return nil, fmt.Errorf("unknown AppInstance field %s", name)
 }
@@ -1063,6 +1085,13 @@ func (m *AppInstanceMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
+		return nil
+	case appinstance.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
 		return nil
 	case appinstance.FieldInstanceName:
 		v, ok := value.(string)
@@ -1120,13 +1149,6 @@ func (m *AppInstanceMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDesc(v)
 		return nil
-	case appinstance.FieldRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRemark(v)
-		return nil
 	}
 	return fmt.Errorf("unknown AppInstance field %s", name)
 }
@@ -1137,6 +1159,9 @@ func (m *AppInstanceMutation) AddedFields() []string {
 	var fields []string
 	if m.addstatus != nil {
 		fields = append(fields, appinstance.FieldStatus)
+	}
+	if m.addremark != nil {
+		fields = append(fields, appinstance.FieldRemark)
 	}
 	if m.addinstance_package != nil {
 		fields = append(fields, appinstance.FieldInstancePackage)
@@ -1157,6 +1182,8 @@ func (m *AppInstanceMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case appinstance.FieldStatus:
 		return m.AddedStatus()
+	case appinstance.FieldRemark:
+		return m.AddedRemark()
 	case appinstance.FieldInstancePackage:
 		return m.AddedInstancePackage()
 	case appinstance.FieldInstanceType:
@@ -1178,6 +1205,13 @@ func (m *AppInstanceMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case appinstance.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRemark(v)
 		return nil
 	case appinstance.FieldInstancePackage:
 		v, ok := value.(int64)
@@ -1220,6 +1254,9 @@ func (m *AppInstanceMutation) ClearedFields() []string {
 	if m.FieldCleared(appinstance.FieldStatus) {
 		fields = append(fields, appinstance.FieldStatus)
 	}
+	if m.FieldCleared(appinstance.FieldRemark) {
+		fields = append(fields, appinstance.FieldRemark)
+	}
 	if m.FieldCleared(appinstance.FieldInstanceIcon) {
 		fields = append(fields, appinstance.FieldInstanceIcon)
 	}
@@ -1234,9 +1271,6 @@ func (m *AppInstanceMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(appinstance.FieldDesc) {
 		fields = append(fields, appinstance.FieldDesc)
-	}
-	if m.FieldCleared(appinstance.FieldRemark) {
-		fields = append(fields, appinstance.FieldRemark)
 	}
 	return fields
 }
@@ -1264,6 +1298,9 @@ func (m *AppInstanceMutation) ClearField(name string) error {
 	case appinstance.FieldStatus:
 		m.ClearStatus()
 		return nil
+	case appinstance.FieldRemark:
+		m.ClearRemark()
+		return nil
 	case appinstance.FieldInstanceIcon:
 		m.ClearInstanceIcon()
 		return nil
@@ -1278,9 +1315,6 @@ func (m *AppInstanceMutation) ClearField(name string) error {
 		return nil
 	case appinstance.FieldDesc:
 		m.ClearDesc()
-		return nil
-	case appinstance.FieldRemark:
-		m.ClearRemark()
 		return nil
 	}
 	return fmt.Errorf("unknown AppInstance nullable field %s", name)
@@ -1301,6 +1335,9 @@ func (m *AppInstanceMutation) ResetField(name string) error {
 		return nil
 	case appinstance.FieldStatus:
 		m.ResetStatus()
+		return nil
+	case appinstance.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case appinstance.FieldInstanceName:
 		m.ResetInstanceName()
@@ -1325,9 +1362,6 @@ func (m *AppInstanceMutation) ResetField(name string) error {
 		return nil
 	case appinstance.FieldDesc:
 		m.ResetDesc()
-		return nil
-	case appinstance.FieldRemark:
-		m.ResetRemark()
 		return nil
 	}
 	return fmt.Errorf("unknown AppInstance field %s", name)

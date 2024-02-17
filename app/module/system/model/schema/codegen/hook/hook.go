@@ -9,6 +9,18 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 )
 
+// The SysCasbinRuleFunc type is an adapter to allow the use of ordinary
+// function as SysCasbinRule mutator.
+type SysCasbinRuleFunc func(context.Context, *codegen.SysCasbinRuleMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysCasbinRuleFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysCasbinRuleMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysCasbinRuleMutation", m)
+}
+
 // The SysMenuFunc type is an adapter to allow the use of ordinary
 // function as SysMenu mutator.
 type SysMenuFunc func(context.Context, *codegen.SysMenuMutation) (codegen.Value, error)
@@ -19,6 +31,18 @@ func (f SysMenuFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Va
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysMenuMutation", m)
+}
+
+// The SysRoleFunc type is an adapter to allow the use of ordinary
+// function as SysRole mutator.
+type SysRoleFunc func(context.Context, *codegen.SysRoleMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysRoleFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysRoleMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysRoleMutation", m)
 }
 
 // The SysUserFunc type is an adapter to allow the use of ordinary

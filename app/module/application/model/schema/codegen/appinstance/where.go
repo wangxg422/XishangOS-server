@@ -75,6 +75,11 @@ func Status(v int8) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldStatus, v))
 }
 
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
+}
+
 // InstanceName applies equality check predicate on the "instance_name" field. It's identical to InstanceNameEQ.
 func InstanceName(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldInstanceName, v))
@@ -113,11 +118,6 @@ func Installer(v int64) predicate.AppInstance {
 // Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
 func Desc(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldDesc, v))
-}
-
-// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
-func Remark(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -318,6 +318,56 @@ func StatusIsNil() predicate.AppInstance {
 // StatusNotNil applies the NotNil predicate on the "status" field.
 func StatusNotNil() predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldNotNull(FieldStatus))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v int8) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotNull(FieldRemark))
 }
 
 // InstanceNameEQ applies the EQ predicate on the "instance_name" field.
@@ -813,81 +863,6 @@ func DescEqualFold(v string) predicate.AppInstance {
 // DescContainsFold applies the ContainsFold predicate on the "desc" field.
 func DescContainsFold(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldContainsFold(FieldDesc, v))
-}
-
-// RemarkEQ applies the EQ predicate on the "remark" field.
-func RemarkEQ(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
-}
-
-// RemarkNEQ applies the NEQ predicate on the "remark" field.
-func RemarkNEQ(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldNEQ(FieldRemark, v))
-}
-
-// RemarkIn applies the In predicate on the "remark" field.
-func RemarkIn(vs ...string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldIn(FieldRemark, vs...))
-}
-
-// RemarkNotIn applies the NotIn predicate on the "remark" field.
-func RemarkNotIn(vs ...string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldNotIn(FieldRemark, vs...))
-}
-
-// RemarkGT applies the GT predicate on the "remark" field.
-func RemarkGT(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldGT(FieldRemark, v))
-}
-
-// RemarkGTE applies the GTE predicate on the "remark" field.
-func RemarkGTE(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldGTE(FieldRemark, v))
-}
-
-// RemarkLT applies the LT predicate on the "remark" field.
-func RemarkLT(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldLT(FieldRemark, v))
-}
-
-// RemarkLTE applies the LTE predicate on the "remark" field.
-func RemarkLTE(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldLTE(FieldRemark, v))
-}
-
-// RemarkContains applies the Contains predicate on the "remark" field.
-func RemarkContains(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldContains(FieldRemark, v))
-}
-
-// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
-func RemarkHasPrefix(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldHasPrefix(FieldRemark, v))
-}
-
-// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
-func RemarkHasSuffix(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldHasSuffix(FieldRemark, v))
-}
-
-// RemarkIsNil applies the IsNil predicate on the "remark" field.
-func RemarkIsNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldIsNull(FieldRemark))
-}
-
-// RemarkNotNil applies the NotNil predicate on the "remark" field.
-func RemarkNotNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldNotNull(FieldRemark))
-}
-
-// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
-func RemarkEqualFold(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldEqualFold(FieldRemark, v))
-}
-
-// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
-func RemarkContainsFold(v string) predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // HasInstallFrom applies the HasEdge predicate on the "installFrom" edge.

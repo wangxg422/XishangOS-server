@@ -62,6 +62,20 @@ func (suc *SysUserCreate) SetNillableDeleteAt(t *time.Time) *SysUserCreate {
 	return suc
 }
 
+// SetRemark sets the "remark" field.
+func (suc *SysUserCreate) SetRemark(i int8) *SysUserCreate {
+	suc.mutation.SetRemark(i)
+	return suc
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableRemark(i *int8) *SysUserCreate {
+	if i != nil {
+		suc.SetRemark(*i)
+	}
+	return suc
+}
+
 // SetUserName sets the "user_name" field.
 func (suc *SysUserCreate) SetUserName(s string) *SysUserCreate {
 	suc.mutation.SetUserName(s)
@@ -278,20 +292,6 @@ func (suc *SysUserCreate) SetNillableLastLoginTime(s *string) *SysUserCreate {
 	return suc
 }
 
-// SetRemark sets the "remark" field.
-func (suc *SysUserCreate) SetRemark(s string) *SysUserCreate {
-	suc.mutation.SetRemark(s)
-	return suc
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableRemark(s *string) *SysUserCreate {
-	if s != nil {
-		suc.SetRemark(*s)
-	}
-	return suc
-}
-
 // SetID sets the "id" field.
 func (suc *SysUserCreate) SetID(i int64) *SysUserCreate {
 	suc.mutation.SetID(i)
@@ -408,6 +408,10 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldDeleteAt, field.TypeTime, value)
 		_node.DeleteAt = value
 	}
+	if value, ok := suc.mutation.Remark(); ok {
+		_spec.SetField(sysuser.FieldRemark, field.TypeInt8, value)
+		_node.Remark = value
+	}
 	if value, ok := suc.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
 		_node.UserName = value
@@ -471,10 +475,6 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	if value, ok := suc.mutation.LastLoginTime(); ok {
 		_spec.SetField(sysuser.FieldLastLoginTime, field.TypeString, value)
 		_node.LastLoginTime = value
-	}
-	if value, ok := suc.mutation.Remark(); ok {
-		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
-		_node.Remark = value
 	}
 	return _node, _spec
 }

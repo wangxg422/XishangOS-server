@@ -14,7 +14,9 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syscasbinrule"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -23,8 +25,12 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// SysCasbinRule is the client for interacting with the SysCasbinRule builders.
+	SysCasbinRule *SysCasbinRuleClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
+	// SysRole is the client for interacting with the SysRole builders.
+	SysRole *SysRoleClient
 	// SysUser is the client for interacting with the SysUser builders.
 	SysUser *SysUserClient
 }
@@ -38,7 +44,9 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.SysCasbinRule = NewSysCasbinRuleClient(c.config)
 	c.SysMenu = NewSysMenuClient(c.config)
+	c.SysRole = NewSysRoleClient(c.config)
 	c.SysUser = NewSysUserClient(c.config)
 }
 
@@ -130,10 +138,12 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		SysMenu: NewSysMenuClient(cfg),
-		SysUser: NewSysUserClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		SysCasbinRule: NewSysCasbinRuleClient(cfg),
+		SysMenu:       NewSysMenuClient(cfg),
+		SysRole:       NewSysRoleClient(cfg),
+		SysUser:       NewSysUserClient(cfg),
 	}, nil
 }
 
@@ -151,17 +161,19 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		SysMenu: NewSysMenuClient(cfg),
-		SysUser: NewSysUserClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		SysCasbinRule: NewSysCasbinRuleClient(cfg),
+		SysMenu:       NewSysMenuClient(cfg),
+		SysRole:       NewSysRoleClient(cfg),
+		SysUser:       NewSysUserClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		SysMenu.
+//		SysCasbinRule.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -183,26 +195,167 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.SysCasbinRule.Use(hooks...)
 	c.SysMenu.Use(hooks...)
+	c.SysRole.Use(hooks...)
 	c.SysUser.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
+	c.SysCasbinRule.Intercept(interceptors...)
 	c.SysMenu.Intercept(interceptors...)
+	c.SysRole.Intercept(interceptors...)
 	c.SysUser.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *SysCasbinRuleMutation:
+		return c.SysCasbinRule.mutate(ctx, m)
 	case *SysMenuMutation:
 		return c.SysMenu.mutate(ctx, m)
+	case *SysRoleMutation:
+		return c.SysRole.mutate(ctx, m)
 	case *SysUserMutation:
 		return c.SysUser.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("codegen: unknown mutation type %T", m)
+	}
+}
+
+// SysCasbinRuleClient is a client for the SysCasbinRule schema.
+type SysCasbinRuleClient struct {
+	config
+}
+
+// NewSysCasbinRuleClient returns a client for the SysCasbinRule from the given config.
+func NewSysCasbinRuleClient(c config) *SysCasbinRuleClient {
+	return &SysCasbinRuleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `syscasbinrule.Hooks(f(g(h())))`.
+func (c *SysCasbinRuleClient) Use(hooks ...Hook) {
+	c.hooks.SysCasbinRule = append(c.hooks.SysCasbinRule, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `syscasbinrule.Intercept(f(g(h())))`.
+func (c *SysCasbinRuleClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysCasbinRule = append(c.inters.SysCasbinRule, interceptors...)
+}
+
+// Create returns a builder for creating a SysCasbinRule entity.
+func (c *SysCasbinRuleClient) Create() *SysCasbinRuleCreate {
+	mutation := newSysCasbinRuleMutation(c.config, OpCreate)
+	return &SysCasbinRuleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysCasbinRule entities.
+func (c *SysCasbinRuleClient) CreateBulk(builders ...*SysCasbinRuleCreate) *SysCasbinRuleCreateBulk {
+	return &SysCasbinRuleCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysCasbinRuleClient) MapCreateBulk(slice any, setFunc func(*SysCasbinRuleCreate, int)) *SysCasbinRuleCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysCasbinRuleCreateBulk{err: fmt.Errorf("calling to SysCasbinRuleClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysCasbinRuleCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysCasbinRuleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Update() *SysCasbinRuleUpdate {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdate)
+	return &SysCasbinRuleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysCasbinRuleClient) UpdateOne(scr *SysCasbinRule) *SysCasbinRuleUpdateOne {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRule(scr))
+	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysCasbinRuleClient) UpdateOneID(id int) *SysCasbinRuleUpdateOne {
+	mutation := newSysCasbinRuleMutation(c.config, OpUpdateOne, withSysCasbinRuleID(id))
+	return &SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Delete() *SysCasbinRuleDelete {
+	mutation := newSysCasbinRuleMutation(c.config, OpDelete)
+	return &SysCasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysCasbinRuleClient) DeleteOne(scr *SysCasbinRule) *SysCasbinRuleDeleteOne {
+	return c.DeleteOneID(scr.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysCasbinRuleClient) DeleteOneID(id int) *SysCasbinRuleDeleteOne {
+	builder := c.Delete().Where(syscasbinrule.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysCasbinRuleDeleteOne{builder}
+}
+
+// Query returns a query builder for SysCasbinRule.
+func (c *SysCasbinRuleClient) Query() *SysCasbinRuleQuery {
+	return &SysCasbinRuleQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysCasbinRule},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysCasbinRule entity by its id.
+func (c *SysCasbinRuleClient) Get(ctx context.Context, id int) (*SysCasbinRule, error) {
+	return c.Query().Where(syscasbinrule.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysCasbinRuleClient) GetX(ctx context.Context, id int) *SysCasbinRule {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysCasbinRuleClient) Hooks() []Hook {
+	return c.hooks.SysCasbinRule
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysCasbinRuleClient) Interceptors() []Interceptor {
+	return c.inters.SysCasbinRule
+}
+
+func (c *SysCasbinRuleClient) mutate(ctx context.Context, m *SysCasbinRuleMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysCasbinRuleCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysCasbinRuleUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysCasbinRuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysCasbinRuleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysCasbinRule mutation op: %q", m.Op())
 	}
 }
 
@@ -336,6 +489,139 @@ func (c *SysMenuClient) mutate(ctx context.Context, m *SysMenuMutation) (Value, 
 		return (&SysMenuDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("codegen: unknown SysMenu mutation op: %q", m.Op())
+	}
+}
+
+// SysRoleClient is a client for the SysRole schema.
+type SysRoleClient struct {
+	config
+}
+
+// NewSysRoleClient returns a client for the SysRole from the given config.
+func NewSysRoleClient(c config) *SysRoleClient {
+	return &SysRoleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysrole.Hooks(f(g(h())))`.
+func (c *SysRoleClient) Use(hooks ...Hook) {
+	c.hooks.SysRole = append(c.hooks.SysRole, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysrole.Intercept(f(g(h())))`.
+func (c *SysRoleClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysRole = append(c.inters.SysRole, interceptors...)
+}
+
+// Create returns a builder for creating a SysRole entity.
+func (c *SysRoleClient) Create() *SysRoleCreate {
+	mutation := newSysRoleMutation(c.config, OpCreate)
+	return &SysRoleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysRole entities.
+func (c *SysRoleClient) CreateBulk(builders ...*SysRoleCreate) *SysRoleCreateBulk {
+	return &SysRoleCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysRoleClient) MapCreateBulk(slice any, setFunc func(*SysRoleCreate, int)) *SysRoleCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysRoleCreateBulk{err: fmt.Errorf("calling to SysRoleClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysRoleCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysRoleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysRole.
+func (c *SysRoleClient) Update() *SysRoleUpdate {
+	mutation := newSysRoleMutation(c.config, OpUpdate)
+	return &SysRoleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysRoleClient) UpdateOne(sr *SysRole) *SysRoleUpdateOne {
+	mutation := newSysRoleMutation(c.config, OpUpdateOne, withSysRole(sr))
+	return &SysRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysRoleClient) UpdateOneID(id int64) *SysRoleUpdateOne {
+	mutation := newSysRoleMutation(c.config, OpUpdateOne, withSysRoleID(id))
+	return &SysRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysRole.
+func (c *SysRoleClient) Delete() *SysRoleDelete {
+	mutation := newSysRoleMutation(c.config, OpDelete)
+	return &SysRoleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysRoleClient) DeleteOne(sr *SysRole) *SysRoleDeleteOne {
+	return c.DeleteOneID(sr.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysRoleClient) DeleteOneID(id int64) *SysRoleDeleteOne {
+	builder := c.Delete().Where(sysrole.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysRoleDeleteOne{builder}
+}
+
+// Query returns a query builder for SysRole.
+func (c *SysRoleClient) Query() *SysRoleQuery {
+	return &SysRoleQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysRole},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysRole entity by its id.
+func (c *SysRoleClient) Get(ctx context.Context, id int64) (*SysRole, error) {
+	return c.Query().Where(sysrole.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysRoleClient) GetX(ctx context.Context, id int64) *SysRole {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysRoleClient) Hooks() []Hook {
+	return c.hooks.SysRole
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysRoleClient) Interceptors() []Interceptor {
+	return c.inters.SysRole
+}
+
+func (c *SysRoleClient) mutate(ctx context.Context, m *SysRoleMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysRoleCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysRoleUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysRoleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysRoleDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysRole mutation op: %q", m.Op())
 	}
 }
 
@@ -475,9 +761,9 @@ func (c *SysUserClient) mutate(ctx context.Context, m *SysUserMutation) (Value, 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		SysMenu, SysUser []ent.Hook
+		SysCasbinRule, SysMenu, SysRole, SysUser []ent.Hook
 	}
 	inters struct {
-		SysMenu, SysUser []ent.Interceptor
+		SysCasbinRule, SysMenu, SysRole, SysUser []ent.Interceptor
 	}
 )

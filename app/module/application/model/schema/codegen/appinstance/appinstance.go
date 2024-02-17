@@ -22,6 +22,8 @@ const (
 	FieldDeleteAt = "delete_at"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
 	// FieldInstanceName holds the string denoting the instance_name field in the database.
 	FieldInstanceName = "instance_name"
 	// FieldInstanceCode holds the string denoting the instance_code field in the database.
@@ -38,8 +40,6 @@ const (
 	FieldInstaller = "installer"
 	// FieldDesc holds the string denoting the desc field in the database.
 	FieldDesc = "desc"
-	// FieldRemark holds the string denoting the remark field in the database.
-	FieldRemark = "remark"
 	// EdgeInstallFrom holds the string denoting the installfrom edge name in mutations.
 	EdgeInstallFrom = "installFrom"
 	// Table holds the table name of the appinstance in the database.
@@ -60,6 +60,7 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldDeleteAt,
 	FieldStatus,
+	FieldRemark,
 	FieldInstanceName,
 	FieldInstanceCode,
 	FieldInstancePackage,
@@ -68,7 +69,6 @@ var Columns = []string{
 	FieldInstanceType,
 	FieldInstaller,
 	FieldDesc,
-	FieldRemark,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "app_instance"
@@ -137,6 +137,11 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
 // ByInstanceName orders the results by the instance_name field.
 func ByInstanceName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldInstanceName, opts...).ToFunc()
@@ -175,11 +180,6 @@ func ByInstaller(opts ...sql.OrderTermOption) OrderOption {
 // ByDesc orders the results by the desc field.
 func ByDesc(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDesc, opts...).ToFunc()
-}
-
-// ByRemark orders the results by the remark field.
-func ByRemark(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByInstallFromField orders the results by installFrom field.

@@ -12,7 +12,9 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syscasbinrule"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -25,9 +27,797 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeSysMenu = "SysMenu"
-	TypeSysUser = "SysUser"
+	TypeSysCasbinRule = "SysCasbinRule"
+	TypeSysMenu       = "SysMenu"
+	TypeSysRole       = "SysRole"
+	TypeSysUser       = "SysUser"
 )
+
+// SysCasbinRuleMutation represents an operation that mutates the SysCasbinRule nodes in the graph.
+type SysCasbinRuleMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	ptype         *string
+	v0            *string
+	v1            *string
+	v2            *string
+	v3            *string
+	v4            *string
+	v5            *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysCasbinRule, error)
+	predicates    []predicate.SysCasbinRule
+}
+
+var _ ent.Mutation = (*SysCasbinRuleMutation)(nil)
+
+// syscasbinruleOption allows management of the mutation configuration using functional options.
+type syscasbinruleOption func(*SysCasbinRuleMutation)
+
+// newSysCasbinRuleMutation creates new mutation for the SysCasbinRule entity.
+func newSysCasbinRuleMutation(c config, op Op, opts ...syscasbinruleOption) *SysCasbinRuleMutation {
+	m := &SysCasbinRuleMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysCasbinRule,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysCasbinRuleID sets the ID field of the mutation.
+func withSysCasbinRuleID(id int) syscasbinruleOption {
+	return func(m *SysCasbinRuleMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysCasbinRule
+		)
+		m.oldValue = func(ctx context.Context) (*SysCasbinRule, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysCasbinRule.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysCasbinRule sets the old SysCasbinRule of the mutation.
+func withSysCasbinRule(node *SysCasbinRule) syscasbinruleOption {
+	return func(m *SysCasbinRuleMutation) {
+		m.oldValue = func(context.Context) (*SysCasbinRule, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysCasbinRuleMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysCasbinRuleMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysCasbinRuleMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysCasbinRuleMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysCasbinRule.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetPtype sets the "ptype" field.
+func (m *SysCasbinRuleMutation) SetPtype(s string) {
+	m.ptype = &s
+}
+
+// Ptype returns the value of the "ptype" field in the mutation.
+func (m *SysCasbinRuleMutation) Ptype() (r string, exists bool) {
+	v := m.ptype
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPtype returns the old "ptype" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldPtype(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPtype is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPtype requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPtype: %w", err)
+	}
+	return oldValue.Ptype, nil
+}
+
+// ClearPtype clears the value of the "ptype" field.
+func (m *SysCasbinRuleMutation) ClearPtype() {
+	m.ptype = nil
+	m.clearedFields[syscasbinrule.FieldPtype] = struct{}{}
+}
+
+// PtypeCleared returns if the "ptype" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) PtypeCleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldPtype]
+	return ok
+}
+
+// ResetPtype resets all changes to the "ptype" field.
+func (m *SysCasbinRuleMutation) ResetPtype() {
+	m.ptype = nil
+	delete(m.clearedFields, syscasbinrule.FieldPtype)
+}
+
+// SetV0 sets the "v0" field.
+func (m *SysCasbinRuleMutation) SetV0(s string) {
+	m.v0 = &s
+}
+
+// V0 returns the value of the "v0" field in the mutation.
+func (m *SysCasbinRuleMutation) V0() (r string, exists bool) {
+	v := m.v0
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV0 returns the old "v0" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV0(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV0 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV0 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV0: %w", err)
+	}
+	return oldValue.V0, nil
+}
+
+// ClearV0 clears the value of the "v0" field.
+func (m *SysCasbinRuleMutation) ClearV0() {
+	m.v0 = nil
+	m.clearedFields[syscasbinrule.FieldV0] = struct{}{}
+}
+
+// V0Cleared returns if the "v0" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V0Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV0]
+	return ok
+}
+
+// ResetV0 resets all changes to the "v0" field.
+func (m *SysCasbinRuleMutation) ResetV0() {
+	m.v0 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV0)
+}
+
+// SetV1 sets the "v1" field.
+func (m *SysCasbinRuleMutation) SetV1(s string) {
+	m.v1 = &s
+}
+
+// V1 returns the value of the "v1" field in the mutation.
+func (m *SysCasbinRuleMutation) V1() (r string, exists bool) {
+	v := m.v1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV1 returns the old "v1" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV1: %w", err)
+	}
+	return oldValue.V1, nil
+}
+
+// ClearV1 clears the value of the "v1" field.
+func (m *SysCasbinRuleMutation) ClearV1() {
+	m.v1 = nil
+	m.clearedFields[syscasbinrule.FieldV1] = struct{}{}
+}
+
+// V1Cleared returns if the "v1" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V1Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV1]
+	return ok
+}
+
+// ResetV1 resets all changes to the "v1" field.
+func (m *SysCasbinRuleMutation) ResetV1() {
+	m.v1 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV1)
+}
+
+// SetV2 sets the "v2" field.
+func (m *SysCasbinRuleMutation) SetV2(s string) {
+	m.v2 = &s
+}
+
+// V2 returns the value of the "v2" field in the mutation.
+func (m *SysCasbinRuleMutation) V2() (r string, exists bool) {
+	v := m.v2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV2 returns the old "v2" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV2: %w", err)
+	}
+	return oldValue.V2, nil
+}
+
+// ClearV2 clears the value of the "v2" field.
+func (m *SysCasbinRuleMutation) ClearV2() {
+	m.v2 = nil
+	m.clearedFields[syscasbinrule.FieldV2] = struct{}{}
+}
+
+// V2Cleared returns if the "v2" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V2Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV2]
+	return ok
+}
+
+// ResetV2 resets all changes to the "v2" field.
+func (m *SysCasbinRuleMutation) ResetV2() {
+	m.v2 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV2)
+}
+
+// SetV3 sets the "v3" field.
+func (m *SysCasbinRuleMutation) SetV3(s string) {
+	m.v3 = &s
+}
+
+// V3 returns the value of the "v3" field in the mutation.
+func (m *SysCasbinRuleMutation) V3() (r string, exists bool) {
+	v := m.v3
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV3 returns the old "v3" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV3(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV3 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV3 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV3: %w", err)
+	}
+	return oldValue.V3, nil
+}
+
+// ClearV3 clears the value of the "v3" field.
+func (m *SysCasbinRuleMutation) ClearV3() {
+	m.v3 = nil
+	m.clearedFields[syscasbinrule.FieldV3] = struct{}{}
+}
+
+// V3Cleared returns if the "v3" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V3Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV3]
+	return ok
+}
+
+// ResetV3 resets all changes to the "v3" field.
+func (m *SysCasbinRuleMutation) ResetV3() {
+	m.v3 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV3)
+}
+
+// SetV4 sets the "v4" field.
+func (m *SysCasbinRuleMutation) SetV4(s string) {
+	m.v4 = &s
+}
+
+// V4 returns the value of the "v4" field in the mutation.
+func (m *SysCasbinRuleMutation) V4() (r string, exists bool) {
+	v := m.v4
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV4 returns the old "v4" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV4(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV4 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV4 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV4: %w", err)
+	}
+	return oldValue.V4, nil
+}
+
+// ClearV4 clears the value of the "v4" field.
+func (m *SysCasbinRuleMutation) ClearV4() {
+	m.v4 = nil
+	m.clearedFields[syscasbinrule.FieldV4] = struct{}{}
+}
+
+// V4Cleared returns if the "v4" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V4Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV4]
+	return ok
+}
+
+// ResetV4 resets all changes to the "v4" field.
+func (m *SysCasbinRuleMutation) ResetV4() {
+	m.v4 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV4)
+}
+
+// SetV5 sets the "v5" field.
+func (m *SysCasbinRuleMutation) SetV5(s string) {
+	m.v5 = &s
+}
+
+// V5 returns the value of the "v5" field in the mutation.
+func (m *SysCasbinRuleMutation) V5() (r string, exists bool) {
+	v := m.v5
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldV5 returns the old "v5" field's value of the SysCasbinRule entity.
+// If the SysCasbinRule object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysCasbinRuleMutation) OldV5(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldV5 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldV5 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldV5: %w", err)
+	}
+	return oldValue.V5, nil
+}
+
+// ClearV5 clears the value of the "v5" field.
+func (m *SysCasbinRuleMutation) ClearV5() {
+	m.v5 = nil
+	m.clearedFields[syscasbinrule.FieldV5] = struct{}{}
+}
+
+// V5Cleared returns if the "v5" field was cleared in this mutation.
+func (m *SysCasbinRuleMutation) V5Cleared() bool {
+	_, ok := m.clearedFields[syscasbinrule.FieldV5]
+	return ok
+}
+
+// ResetV5 resets all changes to the "v5" field.
+func (m *SysCasbinRuleMutation) ResetV5() {
+	m.v5 = nil
+	delete(m.clearedFields, syscasbinrule.FieldV5)
+}
+
+// Where appends a list predicates to the SysCasbinRuleMutation builder.
+func (m *SysCasbinRuleMutation) Where(ps ...predicate.SysCasbinRule) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysCasbinRuleMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysCasbinRuleMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysCasbinRule, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysCasbinRuleMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysCasbinRuleMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysCasbinRule).
+func (m *SysCasbinRuleMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysCasbinRuleMutation) Fields() []string {
+	fields := make([]string, 0, 7)
+	if m.ptype != nil {
+		fields = append(fields, syscasbinrule.FieldPtype)
+	}
+	if m.v0 != nil {
+		fields = append(fields, syscasbinrule.FieldV0)
+	}
+	if m.v1 != nil {
+		fields = append(fields, syscasbinrule.FieldV1)
+	}
+	if m.v2 != nil {
+		fields = append(fields, syscasbinrule.FieldV2)
+	}
+	if m.v3 != nil {
+		fields = append(fields, syscasbinrule.FieldV3)
+	}
+	if m.v4 != nil {
+		fields = append(fields, syscasbinrule.FieldV4)
+	}
+	if m.v5 != nil {
+		fields = append(fields, syscasbinrule.FieldV5)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysCasbinRuleMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case syscasbinrule.FieldPtype:
+		return m.Ptype()
+	case syscasbinrule.FieldV0:
+		return m.V0()
+	case syscasbinrule.FieldV1:
+		return m.V1()
+	case syscasbinrule.FieldV2:
+		return m.V2()
+	case syscasbinrule.FieldV3:
+		return m.V3()
+	case syscasbinrule.FieldV4:
+		return m.V4()
+	case syscasbinrule.FieldV5:
+		return m.V5()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysCasbinRuleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case syscasbinrule.FieldPtype:
+		return m.OldPtype(ctx)
+	case syscasbinrule.FieldV0:
+		return m.OldV0(ctx)
+	case syscasbinrule.FieldV1:
+		return m.OldV1(ctx)
+	case syscasbinrule.FieldV2:
+		return m.OldV2(ctx)
+	case syscasbinrule.FieldV3:
+		return m.OldV3(ctx)
+	case syscasbinrule.FieldV4:
+		return m.OldV4(ctx)
+	case syscasbinrule.FieldV5:
+		return m.OldV5(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysCasbinRule field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysCasbinRuleMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case syscasbinrule.FieldPtype:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPtype(v)
+		return nil
+	case syscasbinrule.FieldV0:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV0(v)
+		return nil
+	case syscasbinrule.FieldV1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV1(v)
+		return nil
+	case syscasbinrule.FieldV2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV2(v)
+		return nil
+	case syscasbinrule.FieldV3:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV3(v)
+		return nil
+	case syscasbinrule.FieldV4:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV4(v)
+		return nil
+	case syscasbinrule.FieldV5:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetV5(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysCasbinRule field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysCasbinRuleMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysCasbinRuleMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysCasbinRuleMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysCasbinRule numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysCasbinRuleMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(syscasbinrule.FieldPtype) {
+		fields = append(fields, syscasbinrule.FieldPtype)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV0) {
+		fields = append(fields, syscasbinrule.FieldV0)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV1) {
+		fields = append(fields, syscasbinrule.FieldV1)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV2) {
+		fields = append(fields, syscasbinrule.FieldV2)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV3) {
+		fields = append(fields, syscasbinrule.FieldV3)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV4) {
+		fields = append(fields, syscasbinrule.FieldV4)
+	}
+	if m.FieldCleared(syscasbinrule.FieldV5) {
+		fields = append(fields, syscasbinrule.FieldV5)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysCasbinRuleMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysCasbinRuleMutation) ClearField(name string) error {
+	switch name {
+	case syscasbinrule.FieldPtype:
+		m.ClearPtype()
+		return nil
+	case syscasbinrule.FieldV0:
+		m.ClearV0()
+		return nil
+	case syscasbinrule.FieldV1:
+		m.ClearV1()
+		return nil
+	case syscasbinrule.FieldV2:
+		m.ClearV2()
+		return nil
+	case syscasbinrule.FieldV3:
+		m.ClearV3()
+		return nil
+	case syscasbinrule.FieldV4:
+		m.ClearV4()
+		return nil
+	case syscasbinrule.FieldV5:
+		m.ClearV5()
+		return nil
+	}
+	return fmt.Errorf("unknown SysCasbinRule nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysCasbinRuleMutation) ResetField(name string) error {
+	switch name {
+	case syscasbinrule.FieldPtype:
+		m.ResetPtype()
+		return nil
+	case syscasbinrule.FieldV0:
+		m.ResetV0()
+		return nil
+	case syscasbinrule.FieldV1:
+		m.ResetV1()
+		return nil
+	case syscasbinrule.FieldV2:
+		m.ResetV2()
+		return nil
+	case syscasbinrule.FieldV3:
+		m.ResetV3()
+		return nil
+	case syscasbinrule.FieldV4:
+		m.ResetV4()
+		return nil
+	case syscasbinrule.FieldV5:
+		m.ResetV5()
+		return nil
+	}
+	return fmt.Errorf("unknown SysCasbinRule field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysCasbinRuleMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysCasbinRuleMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysCasbinRuleMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysCasbinRuleMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysCasbinRuleMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysCasbinRuleMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysCasbinRuleMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysCasbinRule unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysCasbinRuleMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysCasbinRule edge %s", name)
+}
 
 // SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.
 type SysMenuMutation struct {
@@ -38,6 +828,8 @@ type SysMenuMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	delete_at     *time.Time
+	remark        *int8
+	addremark     *int8
 	pid           *int64
 	addpid        *int64
 	name          *string
@@ -65,7 +857,6 @@ type SysMenuMutation struct {
 	is_affix      *int8
 	addis_affix   *int8
 	link_url      *string
-	remark        *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*SysMenu, error)
@@ -321,6 +1112,76 @@ func (m *SysMenuMutation) DeleteAtCleared() bool {
 func (m *SysMenuMutation) ResetDeleteAt() {
 	m.delete_at = nil
 	delete(m.clearedFields, sysmenu.FieldDeleteAt)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysMenuMutation) SetRemark(i int8) {
+	m.remark = &i
+	m.addremark = nil
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysMenuMutation) Remark() (r int8, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldRemark(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// AddRemark adds i to the "remark" field.
+func (m *SysMenuMutation) AddRemark(i int8) {
+	if m.addremark != nil {
+		*m.addremark += i
+	} else {
+		m.addremark = &i
+	}
+}
+
+// AddedRemark returns the value that was added to the "remark" field in this mutation.
+func (m *SysMenuMutation) AddedRemark() (r int8, exists bool) {
+	v := m.addremark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysMenuMutation) ClearRemark() {
+	m.remark = nil
+	m.addremark = nil
+	m.clearedFields[sysmenu.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysMenuMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysMenuMutation) ResetRemark() {
+	m.remark = nil
+	m.addremark = nil
+	delete(m.clearedFields, sysmenu.FieldRemark)
 }
 
 // SetPid sets the "pid" field.
@@ -1380,55 +2241,6 @@ func (m *SysMenuMutation) ResetLinkURL() {
 	delete(m.clearedFields, sysmenu.FieldLinkURL)
 }
 
-// SetRemark sets the "remark" field.
-func (m *SysMenuMutation) SetRemark(s string) {
-	m.remark = &s
-}
-
-// Remark returns the value of the "remark" field in the mutation.
-func (m *SysMenuMutation) Remark() (r string, exists bool) {
-	v := m.remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRemark returns the old "remark" field's value of the SysMenu entity.
-// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldRemark(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
-	}
-	return oldValue.Remark, nil
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (m *SysMenuMutation) ClearRemark() {
-	m.remark = nil
-	m.clearedFields[sysmenu.FieldRemark] = struct{}{}
-}
-
-// RemarkCleared returns if the "remark" field was cleared in this mutation.
-func (m *SysMenuMutation) RemarkCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldRemark]
-	return ok
-}
-
-// ResetRemark resets all changes to the "remark" field.
-func (m *SysMenuMutation) ResetRemark() {
-	m.remark = nil
-	delete(m.clearedFields, sysmenu.FieldRemark)
-}
-
 // Where appends a list predicates to the SysMenuMutation builder.
 func (m *SysMenuMutation) Where(ps ...predicate.SysMenu) {
 	m.predicates = append(m.predicates, ps...)
@@ -1472,6 +2284,9 @@ func (m *SysMenuMutation) Fields() []string {
 	}
 	if m.delete_at != nil {
 		fields = append(fields, sysmenu.FieldDeleteAt)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysmenu.FieldRemark)
 	}
 	if m.pid != nil {
 		fields = append(fields, sysmenu.FieldPid)
@@ -1527,9 +2342,6 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.link_url != nil {
 		fields = append(fields, sysmenu.FieldLinkURL)
 	}
-	if m.remark != nil {
-		fields = append(fields, sysmenu.FieldRemark)
-	}
 	return fields
 }
 
@@ -1544,6 +2356,8 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case sysmenu.FieldDeleteAt:
 		return m.DeleteAt()
+	case sysmenu.FieldRemark:
+		return m.Remark()
 	case sysmenu.FieldPid:
 		return m.Pid()
 	case sysmenu.FieldName:
@@ -1580,8 +2394,6 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 		return m.IsAffix()
 	case sysmenu.FieldLinkURL:
 		return m.LinkURL()
-	case sysmenu.FieldRemark:
-		return m.Remark()
 	}
 	return nil, false
 }
@@ -1597,6 +2409,8 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case sysmenu.FieldDeleteAt:
 		return m.OldDeleteAt(ctx)
+	case sysmenu.FieldRemark:
+		return m.OldRemark(ctx)
 	case sysmenu.FieldPid:
 		return m.OldPid(ctx)
 	case sysmenu.FieldName:
@@ -1633,8 +2447,6 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldIsAffix(ctx)
 	case sysmenu.FieldLinkURL:
 		return m.OldLinkURL(ctx)
-	case sysmenu.FieldRemark:
-		return m.OldRemark(ctx)
 	}
 	return nil, fmt.Errorf("unknown SysMenu field %s", name)
 }
@@ -1664,6 +2476,13 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeleteAt(v)
+		return nil
+	case sysmenu.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
 		return nil
 	case sysmenu.FieldPid:
 		v, ok := value.(int64)
@@ -1791,13 +2610,6 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetLinkURL(v)
 		return nil
-	case sysmenu.FieldRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRemark(v)
-		return nil
 	}
 	return fmt.Errorf("unknown SysMenu field %s", name)
 }
@@ -1806,6 +2618,9 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysMenuMutation) AddedFields() []string {
 	var fields []string
+	if m.addremark != nil {
+		fields = append(fields, sysmenu.FieldRemark)
+	}
 	if m.addpid != nil {
 		fields = append(fields, sysmenu.FieldPid)
 	}
@@ -1841,6 +2656,8 @@ func (m *SysMenuMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case sysmenu.FieldRemark:
+		return m.AddedRemark()
 	case sysmenu.FieldPid:
 		return m.AddedPid()
 	case sysmenu.FieldMenuType:
@@ -1868,6 +2685,13 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case sysmenu.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRemark(v)
+		return nil
 	case sysmenu.FieldPid:
 		v, ok := value.(int64)
 		if !ok {
@@ -1948,6 +2772,9 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldDeleteAt) {
 		fields = append(fields, sysmenu.FieldDeleteAt)
 	}
+	if m.FieldCleared(sysmenu.FieldRemark) {
+		fields = append(fields, sysmenu.FieldRemark)
+	}
 	if m.FieldCleared(sysmenu.FieldName) {
 		fields = append(fields, sysmenu.FieldName)
 	}
@@ -1999,9 +2826,6 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldLinkURL) {
 		fields = append(fields, sysmenu.FieldLinkURL)
 	}
-	if m.FieldCleared(sysmenu.FieldRemark) {
-		fields = append(fields, sysmenu.FieldRemark)
-	}
 	return fields
 }
 
@@ -2024,6 +2848,9 @@ func (m *SysMenuMutation) ClearField(name string) error {
 		return nil
 	case sysmenu.FieldDeleteAt:
 		m.ClearDeleteAt()
+		return nil
+	case sysmenu.FieldRemark:
+		m.ClearRemark()
 		return nil
 	case sysmenu.FieldName:
 		m.ClearName()
@@ -2076,9 +2903,6 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldLinkURL:
 		m.ClearLinkURL()
 		return nil
-	case sysmenu.FieldRemark:
-		m.ClearRemark()
-		return nil
 	}
 	return fmt.Errorf("unknown SysMenu nullable field %s", name)
 }
@@ -2095,6 +2919,9 @@ func (m *SysMenuMutation) ResetField(name string) error {
 		return nil
 	case sysmenu.FieldDeleteAt:
 		m.ResetDeleteAt()
+		return nil
+	case sysmenu.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case sysmenu.FieldPid:
 		m.ResetPid()
@@ -2150,9 +2977,6 @@ func (m *SysMenuMutation) ResetField(name string) error {
 	case sysmenu.FieldLinkURL:
 		m.ResetLinkURL()
 		return nil
-	case sysmenu.FieldRemark:
-		m.ResetRemark()
-		return nil
 	}
 	return fmt.Errorf("unknown SysMenu field %s", name)
 }
@@ -2205,6 +3029,1010 @@ func (m *SysMenuMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown SysMenu edge %s", name)
 }
 
+// SysRoleMutation represents an operation that mutates the SysRole nodes in the graph.
+type SysRoleMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete_at     *time.Time
+	status        *int8
+	addstatus     *int8
+	remark        *int8
+	addremark     *int8
+	list_order    *int64
+	addlist_order *int64
+	name          *string
+	data_scope    *int8
+	adddata_scope *int8
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysRole, error)
+	predicates    []predicate.SysRole
+}
+
+var _ ent.Mutation = (*SysRoleMutation)(nil)
+
+// sysroleOption allows management of the mutation configuration using functional options.
+type sysroleOption func(*SysRoleMutation)
+
+// newSysRoleMutation creates new mutation for the SysRole entity.
+func newSysRoleMutation(c config, op Op, opts ...sysroleOption) *SysRoleMutation {
+	m := &SysRoleMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysRole,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysRoleID sets the ID field of the mutation.
+func withSysRoleID(id int64) sysroleOption {
+	return func(m *SysRoleMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysRole
+		)
+		m.oldValue = func(ctx context.Context) (*SysRole, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysRole.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysRole sets the old SysRole of the mutation.
+func withSysRole(node *SysRole) sysroleOption {
+	return func(m *SysRoleMutation) {
+		m.oldValue = func(context.Context) (*SysRole, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysRoleMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysRoleMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysRole entities.
+func (m *SysRoleMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysRoleMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysRoleMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysRole.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysRoleMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysRoleMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysRoleMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[sysrole.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysRoleMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysRoleMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, sysrole.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysRoleMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysRoleMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysRoleMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[sysrole.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysRoleMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysRoleMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, sysrole.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysRoleMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysRoleMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysRoleMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[sysrole.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysRoleMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysRoleMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, sysrole.FieldDeleteAt)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysRoleMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysRoleMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysRoleMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysRoleMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysRoleMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[sysrole.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysRoleMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysRoleMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, sysrole.FieldStatus)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysRoleMutation) SetRemark(i int8) {
+	m.remark = &i
+	m.addremark = nil
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysRoleMutation) Remark() (r int8, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldRemark(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// AddRemark adds i to the "remark" field.
+func (m *SysRoleMutation) AddRemark(i int8) {
+	if m.addremark != nil {
+		*m.addremark += i
+	} else {
+		m.addremark = &i
+	}
+}
+
+// AddedRemark returns the value that was added to the "remark" field in this mutation.
+func (m *SysRoleMutation) AddedRemark() (r int8, exists bool) {
+	v := m.addremark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysRoleMutation) ClearRemark() {
+	m.remark = nil
+	m.addremark = nil
+	m.clearedFields[sysrole.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysRoleMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysRoleMutation) ResetRemark() {
+	m.remark = nil
+	m.addremark = nil
+	delete(m.clearedFields, sysrole.FieldRemark)
+}
+
+// SetListOrder sets the "list_order" field.
+func (m *SysRoleMutation) SetListOrder(i int64) {
+	m.list_order = &i
+	m.addlist_order = nil
+}
+
+// ListOrder returns the value of the "list_order" field in the mutation.
+func (m *SysRoleMutation) ListOrder() (r int64, exists bool) {
+	v := m.list_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldListOrder returns the old "list_order" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldListOrder(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldListOrder is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldListOrder requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldListOrder: %w", err)
+	}
+	return oldValue.ListOrder, nil
+}
+
+// AddListOrder adds i to the "list_order" field.
+func (m *SysRoleMutation) AddListOrder(i int64) {
+	if m.addlist_order != nil {
+		*m.addlist_order += i
+	} else {
+		m.addlist_order = &i
+	}
+}
+
+// AddedListOrder returns the value that was added to the "list_order" field in this mutation.
+func (m *SysRoleMutation) AddedListOrder() (r int64, exists bool) {
+	v := m.addlist_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearListOrder clears the value of the "list_order" field.
+func (m *SysRoleMutation) ClearListOrder() {
+	m.list_order = nil
+	m.addlist_order = nil
+	m.clearedFields[sysrole.FieldListOrder] = struct{}{}
+}
+
+// ListOrderCleared returns if the "list_order" field was cleared in this mutation.
+func (m *SysRoleMutation) ListOrderCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldListOrder]
+	return ok
+}
+
+// ResetListOrder resets all changes to the "list_order" field.
+func (m *SysRoleMutation) ResetListOrder() {
+	m.list_order = nil
+	m.addlist_order = nil
+	delete(m.clearedFields, sysrole.FieldListOrder)
+}
+
+// SetName sets the "name" field.
+func (m *SysRoleMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *SysRoleMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ClearName clears the value of the "name" field.
+func (m *SysRoleMutation) ClearName() {
+	m.name = nil
+	m.clearedFields[sysrole.FieldName] = struct{}{}
+}
+
+// NameCleared returns if the "name" field was cleared in this mutation.
+func (m *SysRoleMutation) NameCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldName]
+	return ok
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *SysRoleMutation) ResetName() {
+	m.name = nil
+	delete(m.clearedFields, sysrole.FieldName)
+}
+
+// SetDataScope sets the "data_scope" field.
+func (m *SysRoleMutation) SetDataScope(i int8) {
+	m.data_scope = &i
+	m.adddata_scope = nil
+}
+
+// DataScope returns the value of the "data_scope" field in the mutation.
+func (m *SysRoleMutation) DataScope() (r int8, exists bool) {
+	v := m.data_scope
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDataScope returns the old "data_scope" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldDataScope(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDataScope is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDataScope requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDataScope: %w", err)
+	}
+	return oldValue.DataScope, nil
+}
+
+// AddDataScope adds i to the "data_scope" field.
+func (m *SysRoleMutation) AddDataScope(i int8) {
+	if m.adddata_scope != nil {
+		*m.adddata_scope += i
+	} else {
+		m.adddata_scope = &i
+	}
+}
+
+// AddedDataScope returns the value that was added to the "data_scope" field in this mutation.
+func (m *SysRoleMutation) AddedDataScope() (r int8, exists bool) {
+	v := m.adddata_scope
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDataScope clears the value of the "data_scope" field.
+func (m *SysRoleMutation) ClearDataScope() {
+	m.data_scope = nil
+	m.adddata_scope = nil
+	m.clearedFields[sysrole.FieldDataScope] = struct{}{}
+}
+
+// DataScopeCleared returns if the "data_scope" field was cleared in this mutation.
+func (m *SysRoleMutation) DataScopeCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldDataScope]
+	return ok
+}
+
+// ResetDataScope resets all changes to the "data_scope" field.
+func (m *SysRoleMutation) ResetDataScope() {
+	m.data_scope = nil
+	m.adddata_scope = nil
+	delete(m.clearedFields, sysrole.FieldDataScope)
+}
+
+// Where appends a list predicates to the SysRoleMutation builder.
+func (m *SysRoleMutation) Where(ps ...predicate.SysRole) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysRoleMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysRoleMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysRole, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysRoleMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysRoleMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysRole).
+func (m *SysRoleMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysRoleMutation) Fields() []string {
+	fields := make([]string, 0, 8)
+	if m.created_at != nil {
+		fields = append(fields, sysrole.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysrole.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, sysrole.FieldDeleteAt)
+	}
+	if m.status != nil {
+		fields = append(fields, sysrole.FieldStatus)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysrole.FieldRemark)
+	}
+	if m.list_order != nil {
+		fields = append(fields, sysrole.FieldListOrder)
+	}
+	if m.name != nil {
+		fields = append(fields, sysrole.FieldName)
+	}
+	if m.data_scope != nil {
+		fields = append(fields, sysrole.FieldDataScope)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysRoleMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysrole.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysrole.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysrole.FieldDeleteAt:
+		return m.DeleteAt()
+	case sysrole.FieldStatus:
+		return m.Status()
+	case sysrole.FieldRemark:
+		return m.Remark()
+	case sysrole.FieldListOrder:
+		return m.ListOrder()
+	case sysrole.FieldName:
+		return m.Name()
+	case sysrole.FieldDataScope:
+		return m.DataScope()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysRoleMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysrole.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysrole.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysrole.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case sysrole.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysrole.FieldRemark:
+		return m.OldRemark(ctx)
+	case sysrole.FieldListOrder:
+		return m.OldListOrder(ctx)
+	case sysrole.FieldName:
+		return m.OldName(ctx)
+	case sysrole.FieldDataScope:
+		return m.OldDataScope(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysRole field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysrole.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysrole.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysrole.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case sysrole.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysrole.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case sysrole.FieldListOrder:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetListOrder(v)
+		return nil
+	case sysrole.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case sysrole.FieldDataScope:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDataScope(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysRole field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysRoleMutation) AddedFields() []string {
+	var fields []string
+	if m.addstatus != nil {
+		fields = append(fields, sysrole.FieldStatus)
+	}
+	if m.addremark != nil {
+		fields = append(fields, sysrole.FieldRemark)
+	}
+	if m.addlist_order != nil {
+		fields = append(fields, sysrole.FieldListOrder)
+	}
+	if m.adddata_scope != nil {
+		fields = append(fields, sysrole.FieldDataScope)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysRoleMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysrole.FieldStatus:
+		return m.AddedStatus()
+	case sysrole.FieldRemark:
+		return m.AddedRemark()
+	case sysrole.FieldListOrder:
+		return m.AddedListOrder()
+	case sysrole.FieldDataScope:
+		return m.AddedDataScope()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysRoleMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysrole.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case sysrole.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRemark(v)
+		return nil
+	case sysrole.FieldListOrder:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddListOrder(v)
+		return nil
+	case sysrole.FieldDataScope:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDataScope(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysRole numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysRoleMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysrole.FieldCreatedAt) {
+		fields = append(fields, sysrole.FieldCreatedAt)
+	}
+	if m.FieldCleared(sysrole.FieldUpdatedAt) {
+		fields = append(fields, sysrole.FieldUpdatedAt)
+	}
+	if m.FieldCleared(sysrole.FieldDeleteAt) {
+		fields = append(fields, sysrole.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysrole.FieldStatus) {
+		fields = append(fields, sysrole.FieldStatus)
+	}
+	if m.FieldCleared(sysrole.FieldRemark) {
+		fields = append(fields, sysrole.FieldRemark)
+	}
+	if m.FieldCleared(sysrole.FieldListOrder) {
+		fields = append(fields, sysrole.FieldListOrder)
+	}
+	if m.FieldCleared(sysrole.FieldName) {
+		fields = append(fields, sysrole.FieldName)
+	}
+	if m.FieldCleared(sysrole.FieldDataScope) {
+		fields = append(fields, sysrole.FieldDataScope)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysRoleMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysRoleMutation) ClearField(name string) error {
+	switch name {
+	case sysrole.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case sysrole.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case sysrole.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case sysrole.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case sysrole.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case sysrole.FieldListOrder:
+		m.ClearListOrder()
+		return nil
+	case sysrole.FieldName:
+		m.ClearName()
+		return nil
+	case sysrole.FieldDataScope:
+		m.ClearDataScope()
+		return nil
+	}
+	return fmt.Errorf("unknown SysRole nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysRoleMutation) ResetField(name string) error {
+	switch name {
+	case sysrole.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysrole.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysrole.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case sysrole.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysrole.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case sysrole.FieldListOrder:
+		m.ResetListOrder()
+		return nil
+	case sysrole.FieldName:
+		m.ResetName()
+		return nil
+	case sysrole.FieldDataScope:
+		m.ResetDataScope()
+		return nil
+	}
+	return fmt.Errorf("unknown SysRole field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysRoleMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysRoleMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysRoleMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysRoleMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysRoleMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysRoleMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysRoleMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysRole unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysRoleMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysRole edge %s", name)
+}
+
 // SysUserMutation represents an operation that mutates the SysUser nodes in the graph.
 type SysUserMutation struct {
 	config
@@ -2214,6 +4042,8 @@ type SysUserMutation struct {
 	created_at      *time.Time
 	updated_at      *time.Time
 	delete_at       *time.Time
+	remark          *int8
+	addremark       *int8
 	user_name       *string
 	user_nickname   *string
 	mobile          *string
@@ -2234,7 +4064,6 @@ type SysUserMutation struct {
 	describe        *string
 	last_login_ip   *string
 	last_login_time *string
-	remark          *string
 	clearedFields   map[string]struct{}
 	done            bool
 	oldValue        func(context.Context) (*SysUser, error)
@@ -2490,6 +4319,76 @@ func (m *SysUserMutation) DeleteAtCleared() bool {
 func (m *SysUserMutation) ResetDeleteAt() {
 	m.delete_at = nil
 	delete(m.clearedFields, sysuser.FieldDeleteAt)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysUserMutation) SetRemark(i int8) {
+	m.remark = &i
+	m.addremark = nil
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysUserMutation) Remark() (r int8, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysUser entity.
+// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserMutation) OldRemark(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// AddRemark adds i to the "remark" field.
+func (m *SysUserMutation) AddRemark(i int8) {
+	if m.addremark != nil {
+		*m.addremark += i
+	} else {
+		m.addremark = &i
+	}
+}
+
+// AddedRemark returns the value that was added to the "remark" field in this mutation.
+func (m *SysUserMutation) AddedRemark() (r int8, exists bool) {
+	v := m.addremark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysUserMutation) ClearRemark() {
+	m.remark = nil
+	m.addremark = nil
+	m.clearedFields[sysuser.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysUserMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysUserMutation) ResetRemark() {
+	m.remark = nil
+	m.addremark = nil
+	delete(m.clearedFields, sysuser.FieldRemark)
 }
 
 // SetUserName sets the "user_name" field.
@@ -3347,55 +5246,6 @@ func (m *SysUserMutation) ResetLastLoginTime() {
 	delete(m.clearedFields, sysuser.FieldLastLoginTime)
 }
 
-// SetRemark sets the "remark" field.
-func (m *SysUserMutation) SetRemark(s string) {
-	m.remark = &s
-}
-
-// Remark returns the value of the "remark" field in the mutation.
-func (m *SysUserMutation) Remark() (r string, exists bool) {
-	v := m.remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRemark returns the old "remark" field's value of the SysUser entity.
-// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldRemark(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
-	}
-	return oldValue.Remark, nil
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (m *SysUserMutation) ClearRemark() {
-	m.remark = nil
-	m.clearedFields[sysuser.FieldRemark] = struct{}{}
-}
-
-// RemarkCleared returns if the "remark" field was cleared in this mutation.
-func (m *SysUserMutation) RemarkCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldRemark]
-	return ok
-}
-
-// ResetRemark resets all changes to the "remark" field.
-func (m *SysUserMutation) ResetRemark() {
-	m.remark = nil
-	delete(m.clearedFields, sysuser.FieldRemark)
-}
-
 // Where appends a list predicates to the SysUserMutation builder.
 func (m *SysUserMutation) Where(ps ...predicate.SysUser) {
 	m.predicates = append(m.predicates, ps...)
@@ -3439,6 +5289,9 @@ func (m *SysUserMutation) Fields() []string {
 	}
 	if m.delete_at != nil {
 		fields = append(fields, sysuser.FieldDeleteAt)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysuser.FieldRemark)
 	}
 	if m.user_name != nil {
 		fields = append(fields, sysuser.FieldUserName)
@@ -3488,9 +5341,6 @@ func (m *SysUserMutation) Fields() []string {
 	if m.last_login_time != nil {
 		fields = append(fields, sysuser.FieldLastLoginTime)
 	}
-	if m.remark != nil {
-		fields = append(fields, sysuser.FieldRemark)
-	}
 	return fields
 }
 
@@ -3505,6 +5355,8 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case sysuser.FieldDeleteAt:
 		return m.DeleteAt()
+	case sysuser.FieldRemark:
+		return m.Remark()
 	case sysuser.FieldUserName:
 		return m.UserName()
 	case sysuser.FieldUserNickname:
@@ -3537,8 +5389,6 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.LastLoginIP()
 	case sysuser.FieldLastLoginTime:
 		return m.LastLoginTime()
-	case sysuser.FieldRemark:
-		return m.Remark()
 	}
 	return nil, false
 }
@@ -3554,6 +5404,8 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case sysuser.FieldDeleteAt:
 		return m.OldDeleteAt(ctx)
+	case sysuser.FieldRemark:
+		return m.OldRemark(ctx)
 	case sysuser.FieldUserName:
 		return m.OldUserName(ctx)
 	case sysuser.FieldUserNickname:
@@ -3586,8 +5438,6 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldLastLoginIP(ctx)
 	case sysuser.FieldLastLoginTime:
 		return m.OldLastLoginTime(ctx)
-	case sysuser.FieldRemark:
-		return m.OldRemark(ctx)
 	}
 	return nil, fmt.Errorf("unknown SysUser field %s", name)
 }
@@ -3617,6 +5467,13 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeleteAt(v)
+		return nil
+	case sysuser.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
 		return nil
 	case sysuser.FieldUserName:
 		v, ok := value.(string)
@@ -3730,13 +5587,6 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetLastLoginTime(v)
 		return nil
-	case sysuser.FieldRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRemark(v)
-		return nil
 	}
 	return fmt.Errorf("unknown SysUser field %s", name)
 }
@@ -3745,6 +5595,9 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysUserMutation) AddedFields() []string {
 	var fields []string
+	if m.addremark != nil {
+		fields = append(fields, sysuser.FieldRemark)
+	}
 	if m.addsex != nil {
 		fields = append(fields, sysuser.FieldSex)
 	}
@@ -3765,6 +5618,8 @@ func (m *SysUserMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case sysuser.FieldRemark:
+		return m.AddedRemark()
 	case sysuser.FieldSex:
 		return m.AddedSex()
 	case sysuser.FieldIsAdmin:
@@ -3782,6 +5637,13 @@ func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysUserMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case sysuser.FieldRemark:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddRemark(v)
+		return nil
 	case sysuser.FieldSex:
 		v, ok := value.(int8)
 		if !ok {
@@ -3826,6 +5688,9 @@ func (m *SysUserMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(sysuser.FieldDeleteAt) {
 		fields = append(fields, sysuser.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysuser.FieldRemark) {
+		fields = append(fields, sysuser.FieldRemark)
 	}
 	if m.FieldCleared(sysuser.FieldUserNickname) {
 		fields = append(fields, sysuser.FieldUserNickname)
@@ -3872,9 +5737,6 @@ func (m *SysUserMutation) ClearedFields() []string {
 	if m.FieldCleared(sysuser.FieldLastLoginTime) {
 		fields = append(fields, sysuser.FieldLastLoginTime)
 	}
-	if m.FieldCleared(sysuser.FieldRemark) {
-		fields = append(fields, sysuser.FieldRemark)
-	}
 	return fields
 }
 
@@ -3897,6 +5759,9 @@ func (m *SysUserMutation) ClearField(name string) error {
 		return nil
 	case sysuser.FieldDeleteAt:
 		m.ClearDeleteAt()
+		return nil
+	case sysuser.FieldRemark:
+		m.ClearRemark()
 		return nil
 	case sysuser.FieldUserNickname:
 		m.ClearUserNickname()
@@ -3943,9 +5808,6 @@ func (m *SysUserMutation) ClearField(name string) error {
 	case sysuser.FieldLastLoginTime:
 		m.ClearLastLoginTime()
 		return nil
-	case sysuser.FieldRemark:
-		m.ClearRemark()
-		return nil
 	}
 	return fmt.Errorf("unknown SysUser nullable field %s", name)
 }
@@ -3962,6 +5824,9 @@ func (m *SysUserMutation) ResetField(name string) error {
 		return nil
 	case sysuser.FieldDeleteAt:
 		m.ResetDeleteAt()
+		return nil
+	case sysuser.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case sysuser.FieldUserName:
 		m.ResetUserName()
@@ -4010,9 +5875,6 @@ func (m *SysUserMutation) ResetField(name string) error {
 		return nil
 	case sysuser.FieldLastLoginTime:
 		m.ResetLastLoginTime()
-		return nil
-	case sysuser.FieldRemark:
-		m.ResetRemark()
 		return nil
 	}
 	return fmt.Errorf("unknown SysUser field %s", name)

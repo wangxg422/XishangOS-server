@@ -23,6 +23,8 @@ type SysUser struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
+	// Remark holds the value of the "remark" field.
+	Remark int8 `json:"remark,omitempty"`
 	// UserName holds the value of the "user_name" field.
 	UserName string `json:"user_name,omitempty"`
 	// 用户昵称
@@ -55,9 +57,7 @@ type SysUser struct {
 	LastLoginIP string `json:"last_login_ip,omitempty"`
 	// LastLoginTime holds the value of the "last_login_time" field.
 	LastLoginTime string `json:"last_login_time,omitempty"`
-	// Remark holds the value of the "remark" field.
-	Remark       string `json:"remark,omitempty"`
-	selectValues sql.SelectValues
+	selectValues  sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -65,9 +65,9 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
+		case sysuser.FieldID, sysuser.FieldRemark, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
 			values[i] = new(sql.NullInt64)
-		case sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime, sysuser.FieldRemark:
+		case sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -109,6 +109,12 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
 			} else if value.Valid {
 				su.DeleteAt = value.Time
+			}
+		case sysuser.FieldRemark:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				su.Remark = int8(value.Int64)
 			}
 		case sysuser.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -206,12 +212,6 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.LastLoginTime = value.String
 			}
-		case sysuser.FieldRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field remark", values[i])
-			} else if value.Valid {
-				su.Remark = value.String
-			}
 		default:
 			su.selectValues.Set(columns[i], values[i])
 		}
@@ -256,6 +256,9 @@ func (su *SysUser) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("delete_at=")
 	builder.WriteString(su.DeleteAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(fmt.Sprintf("%v", su.Remark))
 	builder.WriteString(", ")
 	builder.WriteString("user_name=")
 	builder.WriteString(su.UserName)
@@ -304,9 +307,6 @@ func (su *SysUser) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("last_login_time=")
 	builder.WriteString(su.LastLoginTime)
-	builder.WriteString(", ")
-	builder.WriteString("remark=")
-	builder.WriteString(su.Remark)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -26,6 +26,8 @@ type AppInstance struct {
 	DeleteAt time.Time `json:"delete_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
+	// Remark holds the value of the "remark" field.
+	Remark int8 `json:"remark,omitempty"`
 	// InstanceName holds the value of the "instance_name" field.
 	InstanceName string `json:"instance_name,omitempty"`
 	// InstanceCode holds the value of the "instance_code" field.
@@ -42,8 +44,6 @@ type AppInstance struct {
 	Installer int64 `json:"installer,omitempty"`
 	// Desc holds the value of the "desc" field.
 	Desc string `json:"desc,omitempty"`
-	// Remark holds the value of the "remark" field.
-	Remark string `json:"remark,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AppInstanceQuery when eager-loading is set.
 	Edges                    AppInstanceEdges `json:"edges"`
@@ -78,9 +78,9 @@ func (*AppInstance) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
+		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldRemark, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
 			values[i] = new(sql.NullInt64)
-		case appinstance.FieldInstanceName, appinstance.FieldInstanceCode, appinstance.FieldInstanceIcon, appinstance.FieldInstanceAddress, appinstance.FieldDesc, appinstance.FieldRemark:
+		case appinstance.FieldInstanceName, appinstance.FieldInstanceCode, appinstance.FieldInstanceIcon, appinstance.FieldInstanceAddress, appinstance.FieldDesc:
 			values[i] = new(sql.NullString)
 		case appinstance.FieldCreatedAt, appinstance.FieldUpdatedAt, appinstance.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -131,6 +131,12 @@ func (ai *AppInstance) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ai.Status = int8(value.Int64)
 			}
+		case appinstance.FieldRemark:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				ai.Remark = int8(value.Int64)
+			}
 		case appinstance.FieldInstanceName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field instance_name", values[i])
@@ -178,12 +184,6 @@ func (ai *AppInstance) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
 				ai.Desc = value.String
-			}
-		case appinstance.FieldRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field remark", values[i])
-			} else if value.Valid {
-				ai.Remark = value.String
 			}
 		case appinstance.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -245,6 +245,9 @@ func (ai *AppInstance) String() string {
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", ai.Status))
 	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(fmt.Sprintf("%v", ai.Remark))
+	builder.WriteString(", ")
 	builder.WriteString("instance_name=")
 	builder.WriteString(ai.InstanceName)
 	builder.WriteString(", ")
@@ -268,9 +271,6 @@ func (ai *AppInstance) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("desc=")
 	builder.WriteString(ai.Desc)
-	builder.WriteString(", ")
-	builder.WriteString("remark=")
-	builder.WriteString(ai.Remark)
 	builder.WriteByte(')')
 	return builder.String()
 }

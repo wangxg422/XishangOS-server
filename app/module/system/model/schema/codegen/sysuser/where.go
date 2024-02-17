@@ -69,6 +69,11 @@ func DeleteAt(v time.Time) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldDeleteAt, v))
 }
 
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldRemark, v))
+}
+
 // UserName applies equality check predicate on the "user_name" field. It's identical to UserNameEQ.
 func UserName(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldUserName, v))
@@ -147,11 +152,6 @@ func LastLoginIP(v string) predicate.SysUser {
 // LastLoginTime applies equality check predicate on the "last_login_time" field. It's identical to LastLoginTimeEQ.
 func LastLoginTime(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldLastLoginTime, v))
-}
-
-// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
-func Remark(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldRemark, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -302,6 +302,56 @@ func DeleteAtIsNil() predicate.SysUser {
 // DeleteAtNotNil applies the NotNil predicate on the "delete_at" field.
 func DeleteAtNotNil() predicate.SysUser {
 	return predicate.SysUser(sql.FieldNotNull(FieldDeleteAt))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v int8) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldRemark))
 }
 
 // UserNameEQ applies the EQ predicate on the "user_name" field.
@@ -1392,81 +1442,6 @@ func LastLoginTimeEqualFold(v string) predicate.SysUser {
 // LastLoginTimeContainsFold applies the ContainsFold predicate on the "last_login_time" field.
 func LastLoginTimeContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldLastLoginTime, v))
-}
-
-// RemarkEQ applies the EQ predicate on the "remark" field.
-func RemarkEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldRemark, v))
-}
-
-// RemarkNEQ applies the NEQ predicate on the "remark" field.
-func RemarkNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldRemark, v))
-}
-
-// RemarkIn applies the In predicate on the "remark" field.
-func RemarkIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldRemark, vs...))
-}
-
-// RemarkNotIn applies the NotIn predicate on the "remark" field.
-func RemarkNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldRemark, vs...))
-}
-
-// RemarkGT applies the GT predicate on the "remark" field.
-func RemarkGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldRemark, v))
-}
-
-// RemarkGTE applies the GTE predicate on the "remark" field.
-func RemarkGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldRemark, v))
-}
-
-// RemarkLT applies the LT predicate on the "remark" field.
-func RemarkLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldRemark, v))
-}
-
-// RemarkLTE applies the LTE predicate on the "remark" field.
-func RemarkLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldRemark, v))
-}
-
-// RemarkContains applies the Contains predicate on the "remark" field.
-func RemarkContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldRemark, v))
-}
-
-// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
-func RemarkHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldRemark, v))
-}
-
-// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
-func RemarkHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldRemark, v))
-}
-
-// RemarkIsNil applies the IsNil predicate on the "remark" field.
-func RemarkIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldRemark))
-}
-
-// RemarkNotNil applies the NotNil predicate on the "remark" field.
-func RemarkNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldRemark))
-}
-
-// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
-func RemarkEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldRemark, v))
-}
-
-// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
-func RemarkContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // And groups predicates with the AND operator between them.

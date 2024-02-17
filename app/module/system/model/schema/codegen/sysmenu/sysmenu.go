@@ -19,6 +19,8 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeleteAt holds the string denoting the delete_at field in the database.
 	FieldDeleteAt = "delete_at"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
 	// FieldPid holds the string denoting the pid field in the database.
 	FieldPid = "pid"
 	// FieldName holds the string denoting the name field in the database.
@@ -55,8 +57,6 @@ const (
 	FieldIsAffix = "is_affix"
 	// FieldLinkURL holds the string denoting the link_url field in the database.
 	FieldLinkURL = "link_url"
-	// FieldRemark holds the string denoting the remark field in the database.
-	FieldRemark = "remark"
 	// Table holds the table name of the sysmenu in the database.
 	Table = "sys_menu"
 )
@@ -67,6 +67,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeleteAt,
+	FieldRemark,
 	FieldPid,
 	FieldName,
 	FieldTitle,
@@ -85,7 +86,6 @@ var Columns = []string{
 	FieldRedirect,
 	FieldIsAffix,
 	FieldLinkURL,
-	FieldRemark,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -134,6 +134,11 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByDeleteAt orders the results by the delete_at field.
 func ByDeleteAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeleteAt, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByPid orders the results by the pid field.
@@ -224,9 +229,4 @@ func ByIsAffix(opts ...sql.OrderTermOption) OrderOption {
 // ByLinkURL orders the results by the link_url field.
 func ByLinkURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLinkURL, opts...).ToFunc()
-}
-
-// ByRemark orders the results by the remark field.
-func ByRemark(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }

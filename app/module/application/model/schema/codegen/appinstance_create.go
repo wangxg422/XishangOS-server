@@ -77,6 +77,20 @@ func (aic *AppInstanceCreate) SetNillableStatus(i *int8) *AppInstanceCreate {
 	return aic
 }
 
+// SetRemark sets the "remark" field.
+func (aic *AppInstanceCreate) SetRemark(i int8) *AppInstanceCreate {
+	aic.mutation.SetRemark(i)
+	return aic
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (aic *AppInstanceCreate) SetNillableRemark(i *int8) *AppInstanceCreate {
+	if i != nil {
+		aic.SetRemark(*i)
+	}
+	return aic
+}
+
 // SetInstanceName sets the "instance_name" field.
 func (aic *AppInstanceCreate) SetInstanceName(s string) *AppInstanceCreate {
 	aic.mutation.SetInstanceName(s)
@@ -161,20 +175,6 @@ func (aic *AppInstanceCreate) SetDesc(s string) *AppInstanceCreate {
 func (aic *AppInstanceCreate) SetNillableDesc(s *string) *AppInstanceCreate {
 	if s != nil {
 		aic.SetDesc(*s)
-	}
-	return aic
-}
-
-// SetRemark sets the "remark" field.
-func (aic *AppInstanceCreate) SetRemark(s string) *AppInstanceCreate {
-	aic.mutation.SetRemark(s)
-	return aic
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (aic *AppInstanceCreate) SetNillableRemark(s *string) *AppInstanceCreate {
-	if s != nil {
-		aic.SetRemark(*s)
 	}
 	return aic
 }
@@ -328,6 +328,10 @@ func (aic *AppInstanceCreate) createSpec() (*AppInstance, *sqlgraph.CreateSpec) 
 		_spec.SetField(appinstance.FieldStatus, field.TypeInt8, value)
 		_node.Status = value
 	}
+	if value, ok := aic.mutation.Remark(); ok {
+		_spec.SetField(appinstance.FieldRemark, field.TypeInt8, value)
+		_node.Remark = value
+	}
 	if value, ok := aic.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)
 		_node.InstanceName = value
@@ -359,10 +363,6 @@ func (aic *AppInstanceCreate) createSpec() (*AppInstance, *sqlgraph.CreateSpec) 
 	if value, ok := aic.mutation.Desc(); ok {
 		_spec.SetField(appinstance.FieldDesc, field.TypeString, value)
 		_node.Desc = value
-	}
-	if value, ok := aic.mutation.Remark(); ok {
-		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
-		_node.Remark = value
 	}
 	if nodes := aic.mutation.InstallFromIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -23,6 +23,8 @@ type SysMenu struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
+	// Remark holds the value of the "remark" field.
+	Remark int8 `json:"remark,omitempty"`
 	// 父ID
 	Pid int64 `json:"pid,omitempty"`
 	// 菜单名称
@@ -58,9 +60,7 @@ type SysMenu struct {
 	// 是否固定(1是,0否)
 	IsAffix int8 `json:"is_affix,omitempty"`
 	// 链接地址
-	LinkURL string `json:"link_url,omitempty"`
-	// Remark holds the value of the "remark" field.
-	Remark       string `json:"remark,omitempty"`
+	LinkURL      string `json:"link_url,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -69,9 +69,9 @@ func (*SysMenu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldID, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
+		case sysmenu.FieldID, sysmenu.FieldRemark, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
 			values[i] = new(sql.NullInt64)
-		case sysmenu.FieldName, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL, sysmenu.FieldRemark:
+		case sysmenu.FieldName, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL:
 			values[i] = new(sql.NullString)
 		case sysmenu.FieldCreatedAt, sysmenu.FieldUpdatedAt, sysmenu.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -113,6 +113,12 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
 			} else if value.Valid {
 				sm.DeleteAt = value.Time
+			}
+		case sysmenu.FieldRemark:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				sm.Remark = int8(value.Int64)
 			}
 		case sysmenu.FieldPid:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -222,12 +228,6 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.LinkURL = value.String
 			}
-		case sysmenu.FieldRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field remark", values[i])
-			} else if value.Valid {
-				sm.Remark = value.String
-			}
 		default:
 			sm.selectValues.Set(columns[i], values[i])
 		}
@@ -272,6 +272,9 @@ func (sm *SysMenu) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("delete_at=")
 	builder.WriteString(sm.DeleteAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(fmt.Sprintf("%v", sm.Remark))
 	builder.WriteString(", ")
 	builder.WriteString("pid=")
 	builder.WriteString(fmt.Sprintf("%v", sm.Pid))
@@ -326,9 +329,6 @@ func (sm *SysMenu) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("link_url=")
 	builder.WriteString(sm.LinkURL)
-	builder.WriteString(", ")
-	builder.WriteString("remark=")
-	builder.WriteString(sm.Remark)
 	builder.WriteByte(')')
 	return builder.String()
 }

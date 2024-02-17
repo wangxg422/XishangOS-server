@@ -29,6 +29,7 @@ func (AppInstance) Mixin() []ent.Mixin {
 		mixin.IdMixin{},
 		mixin.TimeMixin{},
 		mixin.StatusMixin{},
+		mixin.RemarkMixin{},
 	}
 }
 
@@ -43,7 +44,6 @@ func (AppInstance) Fields() []ent.Field {
 		field.Int8("instance_type").Optional(),
 		field.Int64("installer").Optional().Comment("安装应用的用户"),
 		field.String("desc").Optional(),
-		field.String("remark").Optional(),
 	}
 }
 

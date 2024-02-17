@@ -62,6 +62,20 @@ func (smc *SysMenuCreate) SetNillableDeleteAt(t *time.Time) *SysMenuCreate {
 	return smc
 }
 
+// SetRemark sets the "remark" field.
+func (smc *SysMenuCreate) SetRemark(i int8) *SysMenuCreate {
+	smc.mutation.SetRemark(i)
+	return smc
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableRemark(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetRemark(*i)
+	}
+	return smc
+}
+
 // SetPid sets the "pid" field.
 func (smc *SysMenuCreate) SetPid(i int64) *SysMenuCreate {
 	smc.mutation.SetPid(i)
@@ -306,20 +320,6 @@ func (smc *SysMenuCreate) SetNillableLinkURL(s *string) *SysMenuCreate {
 	return smc
 }
 
-// SetRemark sets the "remark" field.
-func (smc *SysMenuCreate) SetRemark(s string) *SysMenuCreate {
-	smc.mutation.SetRemark(s)
-	return smc
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableRemark(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetRemark(*s)
-	}
-	return smc
-}
-
 // SetID sets the "id" field.
 func (smc *SysMenuCreate) SetID(i int64) *SysMenuCreate {
 	smc.mutation.SetID(i)
@@ -436,6 +436,10 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysmenu.FieldDeleteAt, field.TypeTime, value)
 		_node.DeleteAt = value
 	}
+	if value, ok := smc.mutation.Remark(); ok {
+		_spec.SetField(sysmenu.FieldRemark, field.TypeInt8, value)
+		_node.Remark = value
+	}
 	if value, ok := smc.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)
 		_node.Pid = value
@@ -507,10 +511,6 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if value, ok := smc.mutation.LinkURL(); ok {
 		_spec.SetField(sysmenu.FieldLinkURL, field.TypeString, value)
 		_node.LinkURL = value
-	}
-	if value, ok := smc.mutation.Remark(); ok {
-		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
-		_node.Remark = value
 	}
 	return _node, _spec
 }
