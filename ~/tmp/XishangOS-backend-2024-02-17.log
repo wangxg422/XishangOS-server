@@ -21,3 +21,7 @@
 2024/02/17 19:32:54.912	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
 2024/02/17 19:34:47.129	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
 2024/02/17 19:34:50.636	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/gin_logger.go:24	/api/pub/v1/captcha/get	{"status": 200, "method": "GET", "path": "/api/pub/v1/captcha/get", "query": "", "ip": "127.0.0.1", "user-agent": "curl/8.4.0", "errors": "", "cost": 0.035700958}
+2024/02/17 19:42:33.512	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
+2024/02/17 19:44:05.754	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
+2024/02/17 19:44:16.517	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/gin_logger.go:24	/api/pub/v1/captcha/get	{"status": 200, "method": "GET", "path": "/api/pub/v1/captcha/get", "query": "", "ip": "127.0.0.1", "user-agent": "curl/8.4.0", "errors": "", "cost": 0.000628125}
+2024/02/17 19:44:34.026	info	/Users/wangxg/data/code/XishangOS-backend/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}

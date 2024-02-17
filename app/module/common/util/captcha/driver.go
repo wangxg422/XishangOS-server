@@ -12,8 +12,8 @@ func CaptchaDriver() *base64Captcha.DriverString {
 		d := &base64Captcha.DriverString{
 			Height:          global.AppConfig.Captcha.ImgHeight,
 			Width:           global.AppConfig.Captcha.ImgWidth,
-			NoiseCount:      50,
-			ShowLineOptions: 20,
+			NoiseCount:      global.AppConfig.Captcha.NoiseCount,
+			ShowLineOptions: global.AppConfig.Captcha.ShowLineOptions,
 			Length:          global.AppConfig.Captcha.KeyLong,
 			Source:          global.AppConfig.Captcha.Source,
 			Fonts:           []string{"chromohv.ttf"},
