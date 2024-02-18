@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/base/schema/mixin"
 )
@@ -55,5 +56,9 @@ func (SysUser) Fields() []ent.Field {
 
 // Edges of the SysUser.
 func (SysUser) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.From("belongTo", SysDept.Type).
+			Ref("sys_user").
+			Unique(),
+	}
 }
