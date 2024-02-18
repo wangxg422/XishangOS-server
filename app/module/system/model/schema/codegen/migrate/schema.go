@@ -9,24 +9,6 @@ import (
 )
 
 var (
-	// SysCasbinRuleColumns holds the columns for the "sys_casbin_rule" table.
-	SysCasbinRuleColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "ptype", Type: field.TypeString, Nullable: true},
-		{Name: "v0", Type: field.TypeString, Nullable: true},
-		{Name: "v1", Type: field.TypeString, Nullable: true},
-		{Name: "v2", Type: field.TypeString, Nullable: true},
-		{Name: "v3", Type: field.TypeString, Nullable: true},
-		{Name: "v4", Type: field.TypeString, Nullable: true},
-		{Name: "v5", Type: field.TypeString, Nullable: true},
-	}
-	// SysCasbinRuleTable holds the schema information for the "sys_casbin_rule" table.
-	SysCasbinRuleTable = &schema.Table{
-		Name:       "sys_casbin_rule",
-		Comment:    "casbin权限表",
-		Columns:    SysCasbinRuleColumns,
-		PrimaryKey: []*schema.Column{SysCasbinRuleColumns[0]},
-	}
 	// SysMenuColumns holds the columns for the "sys_menu" table.
 	SysMenuColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
@@ -112,7 +94,6 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		SysCasbinRuleTable,
 		SysMenuTable,
 		SysRoleTable,
 		SysUserTable,
@@ -120,9 +101,6 @@ var (
 )
 
 func init() {
-	SysCasbinRuleTable.Annotation = &entsql.Annotation{
-		Table: "sys_casbin_rule",
-	}
 	SysMenuTable.Annotation = &entsql.Annotation{
 		Table: "sys_menu",
 	}

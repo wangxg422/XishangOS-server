@@ -12,7 +12,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syscasbinrule"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
@@ -76,10 +75,9 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			syscasbinrule.Table: syscasbinrule.ValidColumn,
-			sysmenu.Table:       sysmenu.ValidColumn,
-			sysrole.Table:       sysrole.ValidColumn,
-			sysuser.Table:       sysuser.ValidColumn,
+			sysmenu.Table: sysmenu.ValidColumn,
+			sysrole.Table: sysrole.ValidColumn,
+			sysuser.Table: sysuser.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)
