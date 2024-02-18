@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/base/schema/mixin"
 )
@@ -43,5 +44,7 @@ func (SysDictType) Fields() []ent.Field {
 
 // Edges of the SysDictType.
 func (SysDictType) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("sys_dict_type", SysDictData.Type),
+	}
 }
