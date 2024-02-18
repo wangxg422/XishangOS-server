@@ -78,15 +78,15 @@ func (aic *AppInstanceCreate) SetNillableStatus(i *int8) *AppInstanceCreate {
 }
 
 // SetRemark sets the "remark" field.
-func (aic *AppInstanceCreate) SetRemark(i int8) *AppInstanceCreate {
-	aic.mutation.SetRemark(i)
+func (aic *AppInstanceCreate) SetRemark(s string) *AppInstanceCreate {
+	aic.mutation.SetRemark(s)
 	return aic
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (aic *AppInstanceCreate) SetNillableRemark(i *int8) *AppInstanceCreate {
-	if i != nil {
-		aic.SetRemark(*i)
+func (aic *AppInstanceCreate) SetNillableRemark(s *string) *AppInstanceCreate {
+	if s != nil {
+		aic.SetRemark(*s)
 	}
 	return aic
 }
@@ -329,7 +329,7 @@ func (aic *AppInstanceCreate) createSpec() (*AppInstance, *sqlgraph.CreateSpec) 
 		_node.Status = value
 	}
 	if value, ok := aic.mutation.Remark(); ok {
-		_spec.SetField(appinstance.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
 		_node.Remark = value
 	}
 	if value, ok := aic.mutation.InstanceName(); ok {

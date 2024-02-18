@@ -828,8 +828,7 @@ type SysMenuMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	delete_at     *time.Time
-	remark        *int8
-	addremark     *int8
+	remark        *string
 	pid           *int64
 	addpid        *int64
 	name          *string
@@ -1115,13 +1114,12 @@ func (m *SysMenuMutation) ResetDeleteAt() {
 }
 
 // SetRemark sets the "remark" field.
-func (m *SysMenuMutation) SetRemark(i int8) {
-	m.remark = &i
-	m.addremark = nil
+func (m *SysMenuMutation) SetRemark(s string) {
+	m.remark = &s
 }
 
 // Remark returns the value of the "remark" field in the mutation.
-func (m *SysMenuMutation) Remark() (r int8, exists bool) {
+func (m *SysMenuMutation) Remark() (r string, exists bool) {
 	v := m.remark
 	if v == nil {
 		return
@@ -1132,7 +1130,7 @@ func (m *SysMenuMutation) Remark() (r int8, exists bool) {
 // OldRemark returns the old "remark" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldRemark(ctx context.Context) (v int8, err error) {
+func (m *SysMenuMutation) OldRemark(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
 	}
@@ -1146,28 +1144,9 @@ func (m *SysMenuMutation) OldRemark(ctx context.Context) (v int8, err error) {
 	return oldValue.Remark, nil
 }
 
-// AddRemark adds i to the "remark" field.
-func (m *SysMenuMutation) AddRemark(i int8) {
-	if m.addremark != nil {
-		*m.addremark += i
-	} else {
-		m.addremark = &i
-	}
-}
-
-// AddedRemark returns the value that was added to the "remark" field in this mutation.
-func (m *SysMenuMutation) AddedRemark() (r int8, exists bool) {
-	v := m.addremark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearRemark clears the value of the "remark" field.
 func (m *SysMenuMutation) ClearRemark() {
 	m.remark = nil
-	m.addremark = nil
 	m.clearedFields[sysmenu.FieldRemark] = struct{}{}
 }
 
@@ -1180,7 +1159,6 @@ func (m *SysMenuMutation) RemarkCleared() bool {
 // ResetRemark resets all changes to the "remark" field.
 func (m *SysMenuMutation) ResetRemark() {
 	m.remark = nil
-	m.addremark = nil
 	delete(m.clearedFields, sysmenu.FieldRemark)
 }
 
@@ -2478,7 +2456,7 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		m.SetDeleteAt(v)
 		return nil
 	case sysmenu.FieldRemark:
-		v, ok := value.(int8)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2618,9 +2596,6 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysMenuMutation) AddedFields() []string {
 	var fields []string
-	if m.addremark != nil {
-		fields = append(fields, sysmenu.FieldRemark)
-	}
 	if m.addpid != nil {
 		fields = append(fields, sysmenu.FieldPid)
 	}
@@ -2656,8 +2631,6 @@ func (m *SysMenuMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case sysmenu.FieldRemark:
-		return m.AddedRemark()
 	case sysmenu.FieldPid:
 		return m.AddedPid()
 	case sysmenu.FieldMenuType:
@@ -2685,13 +2658,6 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case sysmenu.FieldRemark:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRemark(v)
-		return nil
 	case sysmenu.FieldPid:
 		v, ok := value.(int64)
 		if !ok {
@@ -3040,8 +3006,7 @@ type SysRoleMutation struct {
 	delete_at     *time.Time
 	status        *int8
 	addstatus     *int8
-	remark        *int8
-	addremark     *int8
+	remark        *string
 	list_order    *int64
 	addlist_order *int64
 	name          *string
@@ -3375,13 +3340,12 @@ func (m *SysRoleMutation) ResetStatus() {
 }
 
 // SetRemark sets the "remark" field.
-func (m *SysRoleMutation) SetRemark(i int8) {
-	m.remark = &i
-	m.addremark = nil
+func (m *SysRoleMutation) SetRemark(s string) {
+	m.remark = &s
 }
 
 // Remark returns the value of the "remark" field in the mutation.
-func (m *SysRoleMutation) Remark() (r int8, exists bool) {
+func (m *SysRoleMutation) Remark() (r string, exists bool) {
 	v := m.remark
 	if v == nil {
 		return
@@ -3392,7 +3356,7 @@ func (m *SysRoleMutation) Remark() (r int8, exists bool) {
 // OldRemark returns the old "remark" field's value of the SysRole entity.
 // If the SysRole object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysRoleMutation) OldRemark(ctx context.Context) (v int8, err error) {
+func (m *SysRoleMutation) OldRemark(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
 	}
@@ -3406,28 +3370,9 @@ func (m *SysRoleMutation) OldRemark(ctx context.Context) (v int8, err error) {
 	return oldValue.Remark, nil
 }
 
-// AddRemark adds i to the "remark" field.
-func (m *SysRoleMutation) AddRemark(i int8) {
-	if m.addremark != nil {
-		*m.addremark += i
-	} else {
-		m.addremark = &i
-	}
-}
-
-// AddedRemark returns the value that was added to the "remark" field in this mutation.
-func (m *SysRoleMutation) AddedRemark() (r int8, exists bool) {
-	v := m.addremark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearRemark clears the value of the "remark" field.
 func (m *SysRoleMutation) ClearRemark() {
 	m.remark = nil
-	m.addremark = nil
 	m.clearedFields[sysrole.FieldRemark] = struct{}{}
 }
 
@@ -3440,7 +3385,6 @@ func (m *SysRoleMutation) RemarkCleared() bool {
 // ResetRemark resets all changes to the "remark" field.
 func (m *SysRoleMutation) ResetRemark() {
 	m.remark = nil
-	m.addremark = nil
 	delete(m.clearedFields, sysrole.FieldRemark)
 }
 
@@ -3779,7 +3723,7 @@ func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 		m.SetStatus(v)
 		return nil
 	case sysrole.FieldRemark:
-		v, ok := value.(int8)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3817,9 +3761,6 @@ func (m *SysRoleMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, sysrole.FieldStatus)
 	}
-	if m.addremark != nil {
-		fields = append(fields, sysrole.FieldRemark)
-	}
 	if m.addlist_order != nil {
 		fields = append(fields, sysrole.FieldListOrder)
 	}
@@ -3836,8 +3777,6 @@ func (m *SysRoleMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case sysrole.FieldStatus:
 		return m.AddedStatus()
-	case sysrole.FieldRemark:
-		return m.AddedRemark()
 	case sysrole.FieldListOrder:
 		return m.AddedListOrder()
 	case sysrole.FieldDataScope:
@@ -3857,13 +3796,6 @@ func (m *SysRoleMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
-		return nil
-	case sysrole.FieldRemark:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRemark(v)
 		return nil
 	case sysrole.FieldListOrder:
 		v, ok := value.(int64)
@@ -4042,8 +3974,7 @@ type SysUserMutation struct {
 	created_at      *time.Time
 	updated_at      *time.Time
 	delete_at       *time.Time
-	remark          *int8
-	addremark       *int8
+	remark          *string
 	user_name       *string
 	user_nickname   *string
 	mobile          *string
@@ -4322,13 +4253,12 @@ func (m *SysUserMutation) ResetDeleteAt() {
 }
 
 // SetRemark sets the "remark" field.
-func (m *SysUserMutation) SetRemark(i int8) {
-	m.remark = &i
-	m.addremark = nil
+func (m *SysUserMutation) SetRemark(s string) {
+	m.remark = &s
 }
 
 // Remark returns the value of the "remark" field in the mutation.
-func (m *SysUserMutation) Remark() (r int8, exists bool) {
+func (m *SysUserMutation) Remark() (r string, exists bool) {
 	v := m.remark
 	if v == nil {
 		return
@@ -4339,7 +4269,7 @@ func (m *SysUserMutation) Remark() (r int8, exists bool) {
 // OldRemark returns the old "remark" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldRemark(ctx context.Context) (v int8, err error) {
+func (m *SysUserMutation) OldRemark(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
 	}
@@ -4353,28 +4283,9 @@ func (m *SysUserMutation) OldRemark(ctx context.Context) (v int8, err error) {
 	return oldValue.Remark, nil
 }
 
-// AddRemark adds i to the "remark" field.
-func (m *SysUserMutation) AddRemark(i int8) {
-	if m.addremark != nil {
-		*m.addremark += i
-	} else {
-		m.addremark = &i
-	}
-}
-
-// AddedRemark returns the value that was added to the "remark" field in this mutation.
-func (m *SysUserMutation) AddedRemark() (r int8, exists bool) {
-	v := m.addremark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearRemark clears the value of the "remark" field.
 func (m *SysUserMutation) ClearRemark() {
 	m.remark = nil
-	m.addremark = nil
 	m.clearedFields[sysuser.FieldRemark] = struct{}{}
 }
 
@@ -4387,7 +4298,6 @@ func (m *SysUserMutation) RemarkCleared() bool {
 // ResetRemark resets all changes to the "remark" field.
 func (m *SysUserMutation) ResetRemark() {
 	m.remark = nil
-	m.addremark = nil
 	delete(m.clearedFields, sysuser.FieldRemark)
 }
 
@@ -5469,7 +5379,7 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		m.SetDeleteAt(v)
 		return nil
 	case sysuser.FieldRemark:
-		v, ok := value.(int8)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5595,9 +5505,6 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysUserMutation) AddedFields() []string {
 	var fields []string
-	if m.addremark != nil {
-		fields = append(fields, sysuser.FieldRemark)
-	}
 	if m.addsex != nil {
 		fields = append(fields, sysuser.FieldSex)
 	}
@@ -5618,8 +5525,6 @@ func (m *SysUserMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case sysuser.FieldRemark:
-		return m.AddedRemark()
 	case sysuser.FieldSex:
 		return m.AddedSex()
 	case sysuser.FieldIsAdmin:
@@ -5637,13 +5542,6 @@ func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysUserMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case sysuser.FieldRemark:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRemark(v)
-		return nil
 	case sysuser.FieldSex:
 		v, ok := value.(int8)
 		if !ok {

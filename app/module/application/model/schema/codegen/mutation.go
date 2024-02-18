@@ -40,8 +40,7 @@ type AppInstanceMutation struct {
 	delete_at           *time.Time
 	status              *int8
 	addstatus           *int8
-	remark              *int8
-	addremark           *int8
+	remark              *string
 	instance_name       *string
 	instance_code       *string
 	instance_package    *int64
@@ -383,13 +382,12 @@ func (m *AppInstanceMutation) ResetStatus() {
 }
 
 // SetRemark sets the "remark" field.
-func (m *AppInstanceMutation) SetRemark(i int8) {
-	m.remark = &i
-	m.addremark = nil
+func (m *AppInstanceMutation) SetRemark(s string) {
+	m.remark = &s
 }
 
 // Remark returns the value of the "remark" field in the mutation.
-func (m *AppInstanceMutation) Remark() (r int8, exists bool) {
+func (m *AppInstanceMutation) Remark() (r string, exists bool) {
 	v := m.remark
 	if v == nil {
 		return
@@ -400,7 +398,7 @@ func (m *AppInstanceMutation) Remark() (r int8, exists bool) {
 // OldRemark returns the old "remark" field's value of the AppInstance entity.
 // If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AppInstanceMutation) OldRemark(ctx context.Context) (v int8, err error) {
+func (m *AppInstanceMutation) OldRemark(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
 	}
@@ -414,28 +412,9 @@ func (m *AppInstanceMutation) OldRemark(ctx context.Context) (v int8, err error)
 	return oldValue.Remark, nil
 }
 
-// AddRemark adds i to the "remark" field.
-func (m *AppInstanceMutation) AddRemark(i int8) {
-	if m.addremark != nil {
-		*m.addremark += i
-	} else {
-		m.addremark = &i
-	}
-}
-
-// AddedRemark returns the value that was added to the "remark" field in this mutation.
-func (m *AppInstanceMutation) AddedRemark() (r int8, exists bool) {
-	v := m.addremark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearRemark clears the value of the "remark" field.
 func (m *AppInstanceMutation) ClearRemark() {
 	m.remark = nil
-	m.addremark = nil
 	m.clearedFields[appinstance.FieldRemark] = struct{}{}
 }
 
@@ -448,7 +427,6 @@ func (m *AppInstanceMutation) RemarkCleared() bool {
 // ResetRemark resets all changes to the "remark" field.
 func (m *AppInstanceMutation) ResetRemark() {
 	m.remark = nil
-	m.addremark = nil
 	delete(m.clearedFields, appinstance.FieldRemark)
 }
 
@@ -1087,7 +1065,7 @@ func (m *AppInstanceMutation) SetField(name string, value ent.Value) error {
 		m.SetStatus(v)
 		return nil
 	case appinstance.FieldRemark:
-		v, ok := value.(int8)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1160,9 +1138,6 @@ func (m *AppInstanceMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, appinstance.FieldStatus)
 	}
-	if m.addremark != nil {
-		fields = append(fields, appinstance.FieldRemark)
-	}
 	if m.addinstance_package != nil {
 		fields = append(fields, appinstance.FieldInstancePackage)
 	}
@@ -1182,8 +1157,6 @@ func (m *AppInstanceMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case appinstance.FieldStatus:
 		return m.AddedStatus()
-	case appinstance.FieldRemark:
-		return m.AddedRemark()
 	case appinstance.FieldInstancePackage:
 		return m.AddedInstancePackage()
 	case appinstance.FieldInstanceType:
@@ -1205,13 +1178,6 @@ func (m *AppInstanceMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
-		return nil
-	case appinstance.FieldRemark:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddRemark(v)
 		return nil
 	case appinstance.FieldInstancePackage:
 		v, ok := value.(int64)

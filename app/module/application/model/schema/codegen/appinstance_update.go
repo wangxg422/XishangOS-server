@@ -54,23 +54,16 @@ func (aiu *AppInstanceUpdate) ClearDeleteAt() *AppInstanceUpdate {
 }
 
 // SetRemark sets the "remark" field.
-func (aiu *AppInstanceUpdate) SetRemark(i int8) *AppInstanceUpdate {
-	aiu.mutation.ResetRemark()
-	aiu.mutation.SetRemark(i)
+func (aiu *AppInstanceUpdate) SetRemark(s string) *AppInstanceUpdate {
+	aiu.mutation.SetRemark(s)
 	return aiu
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (aiu *AppInstanceUpdate) SetNillableRemark(i *int8) *AppInstanceUpdate {
-	if i != nil {
-		aiu.SetRemark(*i)
+func (aiu *AppInstanceUpdate) SetNillableRemark(s *string) *AppInstanceUpdate {
+	if s != nil {
+		aiu.SetRemark(*s)
 	}
-	return aiu
-}
-
-// AddRemark adds i to the "remark" field.
-func (aiu *AppInstanceUpdate) AddRemark(i int8) *AppInstanceUpdate {
-	aiu.mutation.AddRemark(i)
 	return aiu
 }
 
@@ -341,13 +334,10 @@ func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(appinstance.FieldStatus, field.TypeInt8)
 	}
 	if value, ok := aiu.mutation.Remark(); ok {
-		_spec.SetField(appinstance.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := aiu.mutation.AddedRemark(); ok {
-		_spec.AddField(appinstance.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
 	}
 	if aiu.mutation.RemarkCleared() {
-		_spec.ClearField(appinstance.FieldRemark, field.TypeInt8)
+		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
 	}
 	if value, ok := aiu.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)
@@ -471,23 +461,16 @@ func (aiuo *AppInstanceUpdateOne) ClearDeleteAt() *AppInstanceUpdateOne {
 }
 
 // SetRemark sets the "remark" field.
-func (aiuo *AppInstanceUpdateOne) SetRemark(i int8) *AppInstanceUpdateOne {
-	aiuo.mutation.ResetRemark()
-	aiuo.mutation.SetRemark(i)
+func (aiuo *AppInstanceUpdateOne) SetRemark(s string) *AppInstanceUpdateOne {
+	aiuo.mutation.SetRemark(s)
 	return aiuo
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (aiuo *AppInstanceUpdateOne) SetNillableRemark(i *int8) *AppInstanceUpdateOne {
-	if i != nil {
-		aiuo.SetRemark(*i)
+func (aiuo *AppInstanceUpdateOne) SetNillableRemark(s *string) *AppInstanceUpdateOne {
+	if s != nil {
+		aiuo.SetRemark(*s)
 	}
-	return aiuo
-}
-
-// AddRemark adds i to the "remark" field.
-func (aiuo *AppInstanceUpdateOne) AddRemark(i int8) *AppInstanceUpdateOne {
-	aiuo.mutation.AddRemark(i)
 	return aiuo
 }
 
@@ -788,13 +771,10 @@ func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstan
 		_spec.ClearField(appinstance.FieldStatus, field.TypeInt8)
 	}
 	if value, ok := aiuo.mutation.Remark(); ok {
-		_spec.SetField(appinstance.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := aiuo.mutation.AddedRemark(); ok {
-		_spec.AddField(appinstance.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
 	}
 	if aiuo.mutation.RemarkCleared() {
-		_spec.ClearField(appinstance.FieldRemark, field.TypeInt8)
+		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
 	}
 	if value, ok := aiuo.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)

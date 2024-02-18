@@ -18,7 +18,8 @@ type SysUserCreateUpdateReq struct {
 	PostIds  []int64 `json:"postIds"`
 	Remark   string  `json:"remark"`
 	RoleIds  []int64 `json:"roleIds"`
-	Sex      int     `json:"sex"`
-	Status   uint    `json:"status"`
+	Sex      int8    `json:"sex"`
+	Status   int8    `json:"status"`
 	IsAdmin  int     `json:"isAdmin"`
+	Address  string  `json:"address"`
 }

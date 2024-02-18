@@ -16,7 +16,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
 		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
-		{Name: "remark", Type: field.TypeInt8, Nullable: true},
+		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "instance_name", Type: field.TypeString},
 		{Name: "instance_code", Type: field.TypeString},
 		{Name: "instance_package", Type: field.TypeInt64},

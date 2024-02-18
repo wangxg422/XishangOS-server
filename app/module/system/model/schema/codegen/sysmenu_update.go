@@ -53,23 +53,16 @@ func (smu *SysMenuUpdate) ClearDeleteAt() *SysMenuUpdate {
 }
 
 // SetRemark sets the "remark" field.
-func (smu *SysMenuUpdate) SetRemark(i int8) *SysMenuUpdate {
-	smu.mutation.ResetRemark()
-	smu.mutation.SetRemark(i)
+func (smu *SysMenuUpdate) SetRemark(s string) *SysMenuUpdate {
+	smu.mutation.SetRemark(s)
 	return smu
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableRemark(i *int8) *SysMenuUpdate {
-	if i != nil {
-		smu.SetRemark(*i)
+func (smu *SysMenuUpdate) SetNillableRemark(s *string) *SysMenuUpdate {
+	if s != nil {
+		smu.SetRemark(*s)
 	}
-	return smu
-}
-
-// AddRemark adds i to the "remark" field.
-func (smu *SysMenuUpdate) AddRemark(i int8) *SysMenuUpdate {
-	smu.mutation.AddRemark(i)
 	return smu
 }
 
@@ -566,13 +559,10 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(sysmenu.FieldDeleteAt, field.TypeTime)
 	}
 	if value, ok := smu.mutation.Remark(); ok {
-		_spec.SetField(sysmenu.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := smu.mutation.AddedRemark(); ok {
-		_spec.AddField(sysmenu.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 	}
 	if smu.mutation.RemarkCleared() {
-		_spec.ClearField(sysmenu.FieldRemark, field.TypeInt8)
+		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
 	}
 	if value, ok := smu.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)
@@ -751,23 +741,16 @@ func (smuo *SysMenuUpdateOne) ClearDeleteAt() *SysMenuUpdateOne {
 }
 
 // SetRemark sets the "remark" field.
-func (smuo *SysMenuUpdateOne) SetRemark(i int8) *SysMenuUpdateOne {
-	smuo.mutation.ResetRemark()
-	smuo.mutation.SetRemark(i)
+func (smuo *SysMenuUpdateOne) SetRemark(s string) *SysMenuUpdateOne {
+	smuo.mutation.SetRemark(s)
 	return smuo
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableRemark(i *int8) *SysMenuUpdateOne {
-	if i != nil {
-		smuo.SetRemark(*i)
+func (smuo *SysMenuUpdateOne) SetNillableRemark(s *string) *SysMenuUpdateOne {
+	if s != nil {
+		smuo.SetRemark(*s)
 	}
-	return smuo
-}
-
-// AddRemark adds i to the "remark" field.
-func (smuo *SysMenuUpdateOne) AddRemark(i int8) *SysMenuUpdateOne {
-	smuo.mutation.AddRemark(i)
 	return smuo
 }
 
@@ -1294,13 +1277,10 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 		_spec.ClearField(sysmenu.FieldDeleteAt, field.TypeTime)
 	}
 	if value, ok := smuo.mutation.Remark(); ok {
-		_spec.SetField(sysmenu.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := smuo.mutation.AddedRemark(); ok {
-		_spec.AddField(sysmenu.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 	}
 	if smuo.mutation.RemarkCleared() {
-		_spec.ClearField(sysmenu.FieldRemark, field.TypeInt8)
+		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
 	}
 	if value, ok := smuo.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)

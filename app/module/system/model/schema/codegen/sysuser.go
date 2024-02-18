@@ -24,7 +24,7 @@ type SysUser struct {
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
 	// Remark holds the value of the "remark" field.
-	Remark int8 `json:"remark,omitempty"`
+	Remark string `json:"remark,omitempty"`
 	// UserName holds the value of the "user_name" field.
 	UserName string `json:"user_name,omitempty"`
 	// 用户昵称
@@ -65,9 +65,9 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID, sysuser.FieldRemark, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
+		case sysuser.FieldID, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
 			values[i] = new(sql.NullInt64)
-		case sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
+		case sysuser.FieldRemark, sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -111,10 +111,10 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 				su.DeleteAt = value.Time
 			}
 		case sysuser.FieldRemark:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
-				su.Remark = int8(value.Int64)
+				su.Remark = value.String
 			}
 		case sysuser.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -258,7 +258,7 @@ func (su *SysUser) String() string {
 	builder.WriteString(su.DeleteAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
-	builder.WriteString(fmt.Sprintf("%v", su.Remark))
+	builder.WriteString(su.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("user_name=")
 	builder.WriteString(su.UserName)

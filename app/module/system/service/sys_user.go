@@ -8,6 +8,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
 type SysUserService struct {
@@ -36,55 +37,29 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 	if err != nil {
 		return err
 	}
+
+	// 创建用户
 	user, err := tx.SysUser.Create().
 		SetUserName(req.UserName).
 		SetUserPassword(req.Password).
 		SetDeptID(req.DeptId).
 		SetUserEmail(req.Email).
 		SetUserNickname(req.NickName).
-		SetMobile(req.Mobile)).
+		SetMobile(req.Mobile).
 		SetRemark(req.Remark).
 		SetSex(req.Sex).
 		SetUserStatus(req.Status).
-		SetAddress(req.Sex).Save(ctx)
+		SetAddress(req.Address).Save(c)
 	if err != nil {
-		return rollback(tx, fmt.Errorf("failed creating the group: %w", err))
+		return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
 	}
-	// 创建 admin 组
-	dan, err := tx.User.
-		Create().
-		SetAge(29).
-		SetName("Dan").
-		AddManage(hub).
-		Save(ctx)
-	if err != nil {
-		return rollback(tx, err)
-	}
-	// 创建 "Ariel" 用户。
-	a8m, err := tx.User.
-		Create().
-		SetAge(30).
-		SetName("Ariel").
-		AddGroups(hub).
-		AddFriends(dan).
-		Save(ctx)
-	if err != nil {
-		return rollback(tx, err)
-	}
-	fmt.Println(a8m)
-	// 输出:
-	// User(id=2, age=30, name=Ariel)
 
-	// 提交事务
+	if user.ID != 0 {
+
+	}
+
+	// 关联角色
+	// 关联职位
+
 	return tx.Commit()
-}
-
-// 如果发生错误则调用 tx.Rollback 回滚并返回嵌套的错误信息
-func rollback(tx *ent.Tx, err error) error {
-	if rerr := tx.Rollback(); rerr != nil {
-		err = fmt.Errorf("%w: %v", err, rerr)
-	}
-	return err
-}
-	dao.SysUserDao.Add(req)
 }

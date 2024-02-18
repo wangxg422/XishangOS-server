@@ -54,4 +54,6 @@ deploy:
 	make run
 
 go run -mod=mod entgo.io/ent/cmd/ent generate ./app/module/application/model/schema  --target ./app/module/application/model/schema/codegen
+go run -mod=mod entgo.io/ent/cmd/ent generate ./app/module/system/model/schema  --target ./app/module/system/model/schema/codegen
+
 go run -mod=mod entgo.io/ent/cmd/ent new SysUser  --target ./app/module/system/model/schema

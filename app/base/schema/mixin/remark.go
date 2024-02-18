@@ -12,6 +12,6 @@ type RemarkMixin struct {
 
 func (RemarkMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8("remark").Optional(),
+		field.String("remark").Optional(),
 	}
 }

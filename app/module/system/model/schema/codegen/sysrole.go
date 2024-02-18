@@ -26,7 +26,7 @@ type SysRole struct {
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// Remark holds the value of the "remark" field.
-	Remark int8 `json:"remark,omitempty"`
+	Remark string `json:"remark,omitempty"`
 	// 排序
 	ListOrder int64 `json:"list_order,omitempty"`
 	// 角色名称
@@ -41,9 +41,9 @@ func (*SysRole) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrole.FieldID, sysrole.FieldStatus, sysrole.FieldRemark, sysrole.FieldListOrder, sysrole.FieldDataScope:
+		case sysrole.FieldID, sysrole.FieldStatus, sysrole.FieldListOrder, sysrole.FieldDataScope:
 			values[i] = new(sql.NullInt64)
-		case sysrole.FieldName:
+		case sysrole.FieldRemark, sysrole.FieldName:
 			values[i] = new(sql.NullString)
 		case sysrole.FieldCreatedAt, sysrole.FieldUpdatedAt, sysrole.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -93,10 +93,10 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 				sr.Status = int8(value.Int64)
 			}
 		case sysrole.FieldRemark:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
-				sr.Remark = int8(value.Int64)
+				sr.Remark = value.String
 			}
 		case sysrole.FieldListOrder:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -165,7 +165,7 @@ func (sr *SysRole) String() string {
 	builder.WriteString(fmt.Sprintf("%v", sr.Status))
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
-	builder.WriteString(fmt.Sprintf("%v", sr.Remark))
+	builder.WriteString(sr.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("list_order=")
 	builder.WriteString(fmt.Sprintf("%v", sr.ListOrder))

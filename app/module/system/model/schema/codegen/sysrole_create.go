@@ -76,15 +76,15 @@ func (src *SysRoleCreate) SetNillableStatus(i *int8) *SysRoleCreate {
 }
 
 // SetRemark sets the "remark" field.
-func (src *SysRoleCreate) SetRemark(i int8) *SysRoleCreate {
-	src.mutation.SetRemark(i)
+func (src *SysRoleCreate) SetRemark(s string) *SysRoleCreate {
+	src.mutation.SetRemark(s)
 	return src
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (src *SysRoleCreate) SetNillableRemark(i *int8) *SysRoleCreate {
-	if i != nil {
-		src.SetRemark(*i)
+func (src *SysRoleCreate) SetNillableRemark(s *string) *SysRoleCreate {
+	if s != nil {
+		src.SetRemark(*s)
 	}
 	return src
 }
@@ -253,7 +253,7 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_node.Status = value
 	}
 	if value, ok := src.mutation.Remark(); ok {
-		_spec.SetField(sysrole.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 		_node.Remark = value
 	}
 	if value, ok := src.mutation.ListOrder(); ok {

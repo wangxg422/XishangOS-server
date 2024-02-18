@@ -24,7 +24,7 @@ type SysMenu struct {
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
 	// Remark holds the value of the "remark" field.
-	Remark int8 `json:"remark,omitempty"`
+	Remark string `json:"remark,omitempty"`
 	// 父ID
 	Pid int64 `json:"pid,omitempty"`
 	// 菜单名称
@@ -69,9 +69,9 @@ func (*SysMenu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldID, sysmenu.FieldRemark, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
+		case sysmenu.FieldID, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
 			values[i] = new(sql.NullInt64)
-		case sysmenu.FieldName, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL:
+		case sysmenu.FieldRemark, sysmenu.FieldName, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL:
 			values[i] = new(sql.NullString)
 		case sysmenu.FieldCreatedAt, sysmenu.FieldUpdatedAt, sysmenu.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -115,10 +115,10 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 				sm.DeleteAt = value.Time
 			}
 		case sysmenu.FieldRemark:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
-				sm.Remark = int8(value.Int64)
+				sm.Remark = value.String
 			}
 		case sysmenu.FieldPid:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -274,7 +274,7 @@ func (sm *SysMenu) String() string {
 	builder.WriteString(sm.DeleteAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
-	builder.WriteString(fmt.Sprintf("%v", sm.Remark))
+	builder.WriteString(sm.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("pid=")
 	builder.WriteString(fmt.Sprintf("%v", sm.Pid))

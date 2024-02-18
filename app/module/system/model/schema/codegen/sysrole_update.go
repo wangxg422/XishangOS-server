@@ -53,23 +53,16 @@ func (sru *SysRoleUpdate) ClearDeleteAt() *SysRoleUpdate {
 }
 
 // SetRemark sets the "remark" field.
-func (sru *SysRoleUpdate) SetRemark(i int8) *SysRoleUpdate {
-	sru.mutation.ResetRemark()
-	sru.mutation.SetRemark(i)
+func (sru *SysRoleUpdate) SetRemark(s string) *SysRoleUpdate {
+	sru.mutation.SetRemark(s)
 	return sru
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (sru *SysRoleUpdate) SetNillableRemark(i *int8) *SysRoleUpdate {
-	if i != nil {
-		sru.SetRemark(*i)
+func (sru *SysRoleUpdate) SetNillableRemark(s *string) *SysRoleUpdate {
+	if s != nil {
+		sru.SetRemark(*s)
 	}
-	return sru
-}
-
-// AddRemark adds i to the "remark" field.
-func (sru *SysRoleUpdate) AddRemark(i int8) *SysRoleUpdate {
-	sru.mutation.AddRemark(i)
 	return sru
 }
 
@@ -226,13 +219,10 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(sysrole.FieldStatus, field.TypeInt8)
 	}
 	if value, ok := sru.mutation.Remark(); ok {
-		_spec.SetField(sysrole.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := sru.mutation.AddedRemark(); ok {
-		_spec.AddField(sysrole.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 	}
 	if sru.mutation.RemarkCleared() {
-		_spec.ClearField(sysrole.FieldRemark, field.TypeInt8)
+		_spec.ClearField(sysrole.FieldRemark, field.TypeString)
 	}
 	if value, ok := sru.mutation.ListOrder(); ok {
 		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)
@@ -303,23 +293,16 @@ func (sruo *SysRoleUpdateOne) ClearDeleteAt() *SysRoleUpdateOne {
 }
 
 // SetRemark sets the "remark" field.
-func (sruo *SysRoleUpdateOne) SetRemark(i int8) *SysRoleUpdateOne {
-	sruo.mutation.ResetRemark()
-	sruo.mutation.SetRemark(i)
+func (sruo *SysRoleUpdateOne) SetRemark(s string) *SysRoleUpdateOne {
+	sruo.mutation.SetRemark(s)
 	return sruo
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (sruo *SysRoleUpdateOne) SetNillableRemark(i *int8) *SysRoleUpdateOne {
-	if i != nil {
-		sruo.SetRemark(*i)
+func (sruo *SysRoleUpdateOne) SetNillableRemark(s *string) *SysRoleUpdateOne {
+	if s != nil {
+		sruo.SetRemark(*s)
 	}
-	return sruo
-}
-
-// AddRemark adds i to the "remark" field.
-func (sruo *SysRoleUpdateOne) AddRemark(i int8) *SysRoleUpdateOne {
-	sruo.mutation.AddRemark(i)
 	return sruo
 }
 
@@ -506,13 +489,10 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 		_spec.ClearField(sysrole.FieldStatus, field.TypeInt8)
 	}
 	if value, ok := sruo.mutation.Remark(); ok {
-		_spec.SetField(sysrole.FieldRemark, field.TypeInt8, value)
-	}
-	if value, ok := sruo.mutation.AddedRemark(); ok {
-		_spec.AddField(sysrole.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 	}
 	if sruo.mutation.RemarkCleared() {
-		_spec.ClearField(sysrole.FieldRemark, field.TypeInt8)
+		_spec.ClearField(sysrole.FieldRemark, field.TypeString)
 	}
 	if value, ok := sruo.mutation.ListOrder(); ok {
 		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)

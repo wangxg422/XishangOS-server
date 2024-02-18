@@ -63,15 +63,15 @@ func (suc *SysUserCreate) SetNillableDeleteAt(t *time.Time) *SysUserCreate {
 }
 
 // SetRemark sets the "remark" field.
-func (suc *SysUserCreate) SetRemark(i int8) *SysUserCreate {
-	suc.mutation.SetRemark(i)
+func (suc *SysUserCreate) SetRemark(s string) *SysUserCreate {
+	suc.mutation.SetRemark(s)
 	return suc
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableRemark(i *int8) *SysUserCreate {
-	if i != nil {
-		suc.SetRemark(*i)
+func (suc *SysUserCreate) SetNillableRemark(s *string) *SysUserCreate {
+	if s != nil {
+		suc.SetRemark(*s)
 	}
 	return suc
 }
@@ -409,7 +409,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_node.DeleteAt = value
 	}
 	if value, ok := suc.mutation.Remark(); ok {
-		_spec.SetField(sysuser.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
 		_node.Remark = value
 	}
 	if value, ok := suc.mutation.UserName(); ok {

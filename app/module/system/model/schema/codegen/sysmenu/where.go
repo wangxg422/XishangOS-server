@@ -70,7 +70,7 @@ func DeleteAt(v time.Time) predicate.SysMenu {
 }
 
 // Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
-func Remark(v int8) predicate.SysMenu {
+func Remark(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldRemark, v))
 }
 
@@ -315,43 +315,58 @@ func DeleteAtNotNil() predicate.SysMenu {
 }
 
 // RemarkEQ applies the EQ predicate on the "remark" field.
-func RemarkEQ(v int8) predicate.SysMenu {
+func RemarkEQ(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldRemark, v))
 }
 
 // RemarkNEQ applies the NEQ predicate on the "remark" field.
-func RemarkNEQ(v int8) predicate.SysMenu {
+func RemarkNEQ(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNEQ(FieldRemark, v))
 }
 
 // RemarkIn applies the In predicate on the "remark" field.
-func RemarkIn(vs ...int8) predicate.SysMenu {
+func RemarkIn(vs ...string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldIn(FieldRemark, vs...))
 }
 
 // RemarkNotIn applies the NotIn predicate on the "remark" field.
-func RemarkNotIn(vs ...int8) predicate.SysMenu {
+func RemarkNotIn(vs ...string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotIn(FieldRemark, vs...))
 }
 
 // RemarkGT applies the GT predicate on the "remark" field.
-func RemarkGT(v int8) predicate.SysMenu {
+func RemarkGT(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldGT(FieldRemark, v))
 }
 
 // RemarkGTE applies the GTE predicate on the "remark" field.
-func RemarkGTE(v int8) predicate.SysMenu {
+func RemarkGTE(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldGTE(FieldRemark, v))
 }
 
 // RemarkLT applies the LT predicate on the "remark" field.
-func RemarkLT(v int8) predicate.SysMenu {
+func RemarkLT(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldLT(FieldRemark, v))
 }
 
 // RemarkLTE applies the LTE predicate on the "remark" field.
-func RemarkLTE(v int8) predicate.SysMenu {
+func RemarkLTE(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasSuffix(FieldRemark, v))
 }
 
 // RemarkIsNil applies the IsNil predicate on the "remark" field.
@@ -362,6 +377,16 @@ func RemarkIsNil() predicate.SysMenu {
 // RemarkNotNil applies the NotNil predicate on the "remark" field.
 func RemarkNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // PidEQ applies the EQ predicate on the "pid" field.

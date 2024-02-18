@@ -63,15 +63,15 @@ func (smc *SysMenuCreate) SetNillableDeleteAt(t *time.Time) *SysMenuCreate {
 }
 
 // SetRemark sets the "remark" field.
-func (smc *SysMenuCreate) SetRemark(i int8) *SysMenuCreate {
-	smc.mutation.SetRemark(i)
+func (smc *SysMenuCreate) SetRemark(s string) *SysMenuCreate {
+	smc.mutation.SetRemark(s)
 	return smc
 }
 
 // SetNillableRemark sets the "remark" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableRemark(i *int8) *SysMenuCreate {
-	if i != nil {
-		smc.SetRemark(*i)
+func (smc *SysMenuCreate) SetNillableRemark(s *string) *SysMenuCreate {
+	if s != nil {
+		smc.SetRemark(*s)
 	}
 	return smc
 }
@@ -437,7 +437,7 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_node.DeleteAt = value
 	}
 	if value, ok := smc.mutation.Remark(); ok {
-		_spec.SetField(sysmenu.FieldRemark, field.TypeInt8, value)
+		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 		_node.Remark = value
 	}
 	if value, ok := smc.mutation.Pid(); ok {
