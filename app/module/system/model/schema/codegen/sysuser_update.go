@@ -12,6 +12,8 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -414,9 +416,70 @@ func (suu *SysUserUpdate) ClearLastLoginTime() *SysUserUpdate {
 	return suu
 }
 
+// SetBelongToID sets the "belongTo" edge to the SysDept entity by ID.
+func (suu *SysUserUpdate) SetBelongToID(id int64) *SysUserUpdate {
+	suu.mutation.SetBelongToID(id)
+	return suu
+}
+
+// SetNillableBelongToID sets the "belongTo" edge to the SysDept entity by ID if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableBelongToID(id *int64) *SysUserUpdate {
+	if id != nil {
+		suu = suu.SetBelongToID(*id)
+	}
+	return suu
+}
+
+// SetBelongTo sets the "belongTo" edge to the SysDept entity.
+func (suu *SysUserUpdate) SetBelongTo(s *SysDept) *SysUserUpdate {
+	return suu.SetBelongToID(s.ID)
+}
+
+// AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
+func (suu *SysUserUpdate) AddPostIDs(ids ...int64) *SysUserUpdate {
+	suu.mutation.AddPostIDs(ids...)
+	return suu
+}
+
+// AddPosts adds the "posts" edges to the SysPost entity.
+func (suu *SysUserUpdate) AddPosts(s ...*SysPost) *SysUserUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suu.AddPostIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suu *SysUserUpdate) Mutation() *SysUserMutation {
 	return suu.mutation
+}
+
+// ClearBelongTo clears the "belongTo" edge to the SysDept entity.
+func (suu *SysUserUpdate) ClearBelongTo() *SysUserUpdate {
+	suu.mutation.ClearBelongTo()
+	return suu
+}
+
+// ClearPosts clears all "posts" edges to the SysPost entity.
+func (suu *SysUserUpdate) ClearPosts() *SysUserUpdate {
+	suu.mutation.ClearPosts()
+	return suu
+}
+
+// RemovePostIDs removes the "posts" edge to SysPost entities by IDs.
+func (suu *SysUserUpdate) RemovePostIDs(ids ...int64) *SysUserUpdate {
+	suu.mutation.RemovePostIDs(ids...)
+	return suu
+}
+
+// RemovePosts removes "posts" edges to SysPost entities.
+func (suu *SysUserUpdate) RemovePosts(s ...*SysPost) *SysUserUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suu.RemovePostIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -593,6 +656,80 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if suu.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
+	}
+	if suu.mutation.BelongToCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuser.BelongToTable,
+			Columns: []string{sysuser.BelongToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suu.mutation.BelongToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuser.BelongToTable,
+			Columns: []string{sysuser.BelongToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suu.mutation.PostsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suu.mutation.RemovedPostsIDs(); len(nodes) > 0 && !suu.mutation.PostsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suu.mutation.PostsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, suu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -1000,9 +1137,70 @@ func (suuo *SysUserUpdateOne) ClearLastLoginTime() *SysUserUpdateOne {
 	return suuo
 }
 
+// SetBelongToID sets the "belongTo" edge to the SysDept entity by ID.
+func (suuo *SysUserUpdateOne) SetBelongToID(id int64) *SysUserUpdateOne {
+	suuo.mutation.SetBelongToID(id)
+	return suuo
+}
+
+// SetNillableBelongToID sets the "belongTo" edge to the SysDept entity by ID if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableBelongToID(id *int64) *SysUserUpdateOne {
+	if id != nil {
+		suuo = suuo.SetBelongToID(*id)
+	}
+	return suuo
+}
+
+// SetBelongTo sets the "belongTo" edge to the SysDept entity.
+func (suuo *SysUserUpdateOne) SetBelongTo(s *SysDept) *SysUserUpdateOne {
+	return suuo.SetBelongToID(s.ID)
+}
+
+// AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
+func (suuo *SysUserUpdateOne) AddPostIDs(ids ...int64) *SysUserUpdateOne {
+	suuo.mutation.AddPostIDs(ids...)
+	return suuo
+}
+
+// AddPosts adds the "posts" edges to the SysPost entity.
+func (suuo *SysUserUpdateOne) AddPosts(s ...*SysPost) *SysUserUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suuo.AddPostIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suuo *SysUserUpdateOne) Mutation() *SysUserMutation {
 	return suuo.mutation
+}
+
+// ClearBelongTo clears the "belongTo" edge to the SysDept entity.
+func (suuo *SysUserUpdateOne) ClearBelongTo() *SysUserUpdateOne {
+	suuo.mutation.ClearBelongTo()
+	return suuo
+}
+
+// ClearPosts clears all "posts" edges to the SysPost entity.
+func (suuo *SysUserUpdateOne) ClearPosts() *SysUserUpdateOne {
+	suuo.mutation.ClearPosts()
+	return suuo
+}
+
+// RemovePostIDs removes the "posts" edge to SysPost entities by IDs.
+func (suuo *SysUserUpdateOne) RemovePostIDs(ids ...int64) *SysUserUpdateOne {
+	suuo.mutation.RemovePostIDs(ids...)
+	return suuo
+}
+
+// RemovePosts removes "posts" edges to SysPost entities.
+func (suuo *SysUserUpdateOne) RemovePosts(s ...*SysPost) *SysUserUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suuo.RemovePostIDs(ids...)
 }
 
 // Where appends a list predicates to the SysUserUpdate builder.
@@ -1209,6 +1407,80 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if suuo.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
+	}
+	if suuo.mutation.BelongToCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuser.BelongToTable,
+			Columns: []string{sysuser.BelongToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suuo.mutation.BelongToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuser.BelongToTable,
+			Columns: []string{sysuser.BelongToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suuo.mutation.PostsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suuo.mutation.RemovedPostsIDs(); len(nodes) > 0 && !suuo.mutation.PostsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suuo.mutation.PostsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysUser{config: suuo.config}
 	_spec.Assign = _node.assignValues

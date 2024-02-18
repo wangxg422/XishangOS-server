@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 )
 
@@ -542,6 +543,29 @@ func DataScopeIsNil() predicate.SysRole {
 // DataScopeNotNil applies the NotNil predicate on the "data_scope" field.
 func DataScopeNotNil() predicate.SysRole {
 	return predicate.SysRole(sql.FieldNotNull(FieldDataScope))
+}
+
+// HasDepts applies the HasEdge predicate on the "depts" edge.
+func HasDepts() predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, DeptsTable, DeptsPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasDeptsWith applies the HasEdge predicate on the "depts" edge with a given conditions (other predicates).
+func HasDeptsWith(preds ...predicate.SysDept) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := newDeptsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

@@ -12,9 +12,17 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysconfig"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdictdata"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdicttype"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysloginlog"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysoperlog"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuseronline"
 )
 
 const (
@@ -26,10 +34,6887 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeSysMenu = "SysMenu"
-	TypeSysRole = "SysRole"
-	TypeSysUser = "SysUser"
+	TypeSysConfig     = "SysConfig"
+	TypeSysDept       = "SysDept"
+	TypeSysDictData   = "SysDictData"
+	TypeSysDictType   = "SysDictType"
+	TypeSysLoginLog   = "SysLoginLog"
+	TypeSysMenu       = "SysMenu"
+	TypeSysOperLog    = "SysOperLog"
+	TypeSysPost       = "SysPost"
+	TypeSysRole       = "SysRole"
+	TypeSysUser       = "SysUser"
+	TypeSysUserOnline = "SysUserOnline"
 )
+
+// SysConfigMutation represents an operation that mutates the SysConfig nodes in the graph.
+type SysConfigMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete_at     *time.Time
+	created_by    *int64
+	addcreated_by *int64
+	updated_by    *int64
+	addupdated_by *int64
+	delete_by     *int64
+	adddelete_by  *int64
+	remark        *string
+	config_name   *string
+	config_key    *string
+	config_value  *string
+	config_type   *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*SysConfig, error)
+	predicates    []predicate.SysConfig
+}
+
+var _ ent.Mutation = (*SysConfigMutation)(nil)
+
+// sysconfigOption allows management of the mutation configuration using functional options.
+type sysconfigOption func(*SysConfigMutation)
+
+// newSysConfigMutation creates new mutation for the SysConfig entity.
+func newSysConfigMutation(c config, op Op, opts ...sysconfigOption) *SysConfigMutation {
+	m := &SysConfigMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysConfig,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysConfigID sets the ID field of the mutation.
+func withSysConfigID(id int64) sysconfigOption {
+	return func(m *SysConfigMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysConfig
+		)
+		m.oldValue = func(ctx context.Context) (*SysConfig, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysConfig.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysConfig sets the old SysConfig of the mutation.
+func withSysConfig(node *SysConfig) sysconfigOption {
+	return func(m *SysConfigMutation) {
+		m.oldValue = func(context.Context) (*SysConfig, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysConfigMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysConfigMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysConfig entities.
+func (m *SysConfigMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysConfigMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysConfigMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysConfig.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysConfigMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysConfigMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysConfigMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[sysconfig.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysConfigMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysConfigMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, sysconfig.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysConfigMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysConfigMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysConfigMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[sysconfig.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysConfigMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysConfigMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, sysconfig.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysConfigMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysConfigMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysConfigMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[sysconfig.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysConfigMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysConfigMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, sysconfig.FieldDeleteAt)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SysConfigMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysConfigMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysConfigMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysConfigMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysConfigMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[sysconfig.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysConfigMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysConfigMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, sysconfig.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysConfigMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysConfigMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysConfigMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysConfigMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysConfigMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[sysconfig.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysConfigMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysConfigMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, sysconfig.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysConfigMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysConfigMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysConfigMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysConfigMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysConfigMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[sysconfig.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysConfigMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysConfigMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, sysconfig.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysConfigMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysConfigMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysConfigMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[sysconfig.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysConfigMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysConfigMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, sysconfig.FieldRemark)
+}
+
+// SetConfigName sets the "config_name" field.
+func (m *SysConfigMutation) SetConfigName(s string) {
+	m.config_name = &s
+}
+
+// ConfigName returns the value of the "config_name" field in the mutation.
+func (m *SysConfigMutation) ConfigName() (r string, exists bool) {
+	v := m.config_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfigName returns the old "config_name" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldConfigName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfigName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfigName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfigName: %w", err)
+	}
+	return oldValue.ConfigName, nil
+}
+
+// ClearConfigName clears the value of the "config_name" field.
+func (m *SysConfigMutation) ClearConfigName() {
+	m.config_name = nil
+	m.clearedFields[sysconfig.FieldConfigName] = struct{}{}
+}
+
+// ConfigNameCleared returns if the "config_name" field was cleared in this mutation.
+func (m *SysConfigMutation) ConfigNameCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldConfigName]
+	return ok
+}
+
+// ResetConfigName resets all changes to the "config_name" field.
+func (m *SysConfigMutation) ResetConfigName() {
+	m.config_name = nil
+	delete(m.clearedFields, sysconfig.FieldConfigName)
+}
+
+// SetConfigKey sets the "config_key" field.
+func (m *SysConfigMutation) SetConfigKey(s string) {
+	m.config_key = &s
+}
+
+// ConfigKey returns the value of the "config_key" field in the mutation.
+func (m *SysConfigMutation) ConfigKey() (r string, exists bool) {
+	v := m.config_key
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfigKey returns the old "config_key" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldConfigKey(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfigKey is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfigKey requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfigKey: %w", err)
+	}
+	return oldValue.ConfigKey, nil
+}
+
+// ClearConfigKey clears the value of the "config_key" field.
+func (m *SysConfigMutation) ClearConfigKey() {
+	m.config_key = nil
+	m.clearedFields[sysconfig.FieldConfigKey] = struct{}{}
+}
+
+// ConfigKeyCleared returns if the "config_key" field was cleared in this mutation.
+func (m *SysConfigMutation) ConfigKeyCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldConfigKey]
+	return ok
+}
+
+// ResetConfigKey resets all changes to the "config_key" field.
+func (m *SysConfigMutation) ResetConfigKey() {
+	m.config_key = nil
+	delete(m.clearedFields, sysconfig.FieldConfigKey)
+}
+
+// SetConfigValue sets the "config_value" field.
+func (m *SysConfigMutation) SetConfigValue(s string) {
+	m.config_value = &s
+}
+
+// ConfigValue returns the value of the "config_value" field in the mutation.
+func (m *SysConfigMutation) ConfigValue() (r string, exists bool) {
+	v := m.config_value
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfigValue returns the old "config_value" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldConfigValue(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfigValue is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfigValue requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfigValue: %w", err)
+	}
+	return oldValue.ConfigValue, nil
+}
+
+// ClearConfigValue clears the value of the "config_value" field.
+func (m *SysConfigMutation) ClearConfigValue() {
+	m.config_value = nil
+	m.clearedFields[sysconfig.FieldConfigValue] = struct{}{}
+}
+
+// ConfigValueCleared returns if the "config_value" field was cleared in this mutation.
+func (m *SysConfigMutation) ConfigValueCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldConfigValue]
+	return ok
+}
+
+// ResetConfigValue resets all changes to the "config_value" field.
+func (m *SysConfigMutation) ResetConfigValue() {
+	m.config_value = nil
+	delete(m.clearedFields, sysconfig.FieldConfigValue)
+}
+
+// SetConfigType sets the "config_type" field.
+func (m *SysConfigMutation) SetConfigType(s string) {
+	m.config_type = &s
+}
+
+// ConfigType returns the value of the "config_type" field in the mutation.
+func (m *SysConfigMutation) ConfigType() (r string, exists bool) {
+	v := m.config_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldConfigType returns the old "config_type" field's value of the SysConfig entity.
+// If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysConfigMutation) OldConfigType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldConfigType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldConfigType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldConfigType: %w", err)
+	}
+	return oldValue.ConfigType, nil
+}
+
+// ClearConfigType clears the value of the "config_type" field.
+func (m *SysConfigMutation) ClearConfigType() {
+	m.config_type = nil
+	m.clearedFields[sysconfig.FieldConfigType] = struct{}{}
+}
+
+// ConfigTypeCleared returns if the "config_type" field was cleared in this mutation.
+func (m *SysConfigMutation) ConfigTypeCleared() bool {
+	_, ok := m.clearedFields[sysconfig.FieldConfigType]
+	return ok
+}
+
+// ResetConfigType resets all changes to the "config_type" field.
+func (m *SysConfigMutation) ResetConfigType() {
+	m.config_type = nil
+	delete(m.clearedFields, sysconfig.FieldConfigType)
+}
+
+// Where appends a list predicates to the SysConfigMutation builder.
+func (m *SysConfigMutation) Where(ps ...predicate.SysConfig) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysConfigMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysConfigMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysConfig, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysConfigMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysConfigMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysConfig).
+func (m *SysConfigMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysConfigMutation) Fields() []string {
+	fields := make([]string, 0, 11)
+	if m.created_at != nil {
+		fields = append(fields, sysconfig.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysconfig.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, sysconfig.FieldDeleteAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, sysconfig.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, sysconfig.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, sysconfig.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysconfig.FieldRemark)
+	}
+	if m.config_name != nil {
+		fields = append(fields, sysconfig.FieldConfigName)
+	}
+	if m.config_key != nil {
+		fields = append(fields, sysconfig.FieldConfigKey)
+	}
+	if m.config_value != nil {
+		fields = append(fields, sysconfig.FieldConfigValue)
+	}
+	if m.config_type != nil {
+		fields = append(fields, sysconfig.FieldConfigType)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysConfigMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysconfig.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysconfig.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysconfig.FieldDeleteAt:
+		return m.DeleteAt()
+	case sysconfig.FieldCreatedBy:
+		return m.CreatedBy()
+	case sysconfig.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case sysconfig.FieldDeleteBy:
+		return m.DeleteBy()
+	case sysconfig.FieldRemark:
+		return m.Remark()
+	case sysconfig.FieldConfigName:
+		return m.ConfigName()
+	case sysconfig.FieldConfigKey:
+		return m.ConfigKey()
+	case sysconfig.FieldConfigValue:
+		return m.ConfigValue()
+	case sysconfig.FieldConfigType:
+		return m.ConfigType()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysConfigMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysconfig.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysconfig.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysconfig.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case sysconfig.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case sysconfig.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case sysconfig.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case sysconfig.FieldRemark:
+		return m.OldRemark(ctx)
+	case sysconfig.FieldConfigName:
+		return m.OldConfigName(ctx)
+	case sysconfig.FieldConfigKey:
+		return m.OldConfigKey(ctx)
+	case sysconfig.FieldConfigValue:
+		return m.OldConfigValue(ctx)
+	case sysconfig.FieldConfigType:
+		return m.OldConfigType(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysConfig field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysConfigMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysconfig.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysconfig.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysconfig.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case sysconfig.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case sysconfig.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case sysconfig.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case sysconfig.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case sysconfig.FieldConfigName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfigName(v)
+		return nil
+	case sysconfig.FieldConfigKey:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfigKey(v)
+		return nil
+	case sysconfig.FieldConfigValue:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfigValue(v)
+		return nil
+	case sysconfig.FieldConfigType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetConfigType(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysConfig field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysConfigMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, sysconfig.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, sysconfig.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, sysconfig.FieldDeleteBy)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysConfigMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysconfig.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case sysconfig.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case sysconfig.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysConfigMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysconfig.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case sysconfig.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case sysconfig.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysConfig numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysConfigMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysconfig.FieldCreatedAt) {
+		fields = append(fields, sysconfig.FieldCreatedAt)
+	}
+	if m.FieldCleared(sysconfig.FieldUpdatedAt) {
+		fields = append(fields, sysconfig.FieldUpdatedAt)
+	}
+	if m.FieldCleared(sysconfig.FieldDeleteAt) {
+		fields = append(fields, sysconfig.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysconfig.FieldCreatedBy) {
+		fields = append(fields, sysconfig.FieldCreatedBy)
+	}
+	if m.FieldCleared(sysconfig.FieldUpdatedBy) {
+		fields = append(fields, sysconfig.FieldUpdatedBy)
+	}
+	if m.FieldCleared(sysconfig.FieldDeleteBy) {
+		fields = append(fields, sysconfig.FieldDeleteBy)
+	}
+	if m.FieldCleared(sysconfig.FieldRemark) {
+		fields = append(fields, sysconfig.FieldRemark)
+	}
+	if m.FieldCleared(sysconfig.FieldConfigName) {
+		fields = append(fields, sysconfig.FieldConfigName)
+	}
+	if m.FieldCleared(sysconfig.FieldConfigKey) {
+		fields = append(fields, sysconfig.FieldConfigKey)
+	}
+	if m.FieldCleared(sysconfig.FieldConfigValue) {
+		fields = append(fields, sysconfig.FieldConfigValue)
+	}
+	if m.FieldCleared(sysconfig.FieldConfigType) {
+		fields = append(fields, sysconfig.FieldConfigType)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysConfigMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysConfigMutation) ClearField(name string) error {
+	switch name {
+	case sysconfig.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case sysconfig.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case sysconfig.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case sysconfig.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case sysconfig.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case sysconfig.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case sysconfig.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case sysconfig.FieldConfigName:
+		m.ClearConfigName()
+		return nil
+	case sysconfig.FieldConfigKey:
+		m.ClearConfigKey()
+		return nil
+	case sysconfig.FieldConfigValue:
+		m.ClearConfigValue()
+		return nil
+	case sysconfig.FieldConfigType:
+		m.ClearConfigType()
+		return nil
+	}
+	return fmt.Errorf("unknown SysConfig nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysConfigMutation) ResetField(name string) error {
+	switch name {
+	case sysconfig.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysconfig.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysconfig.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case sysconfig.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case sysconfig.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case sysconfig.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case sysconfig.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case sysconfig.FieldConfigName:
+		m.ResetConfigName()
+		return nil
+	case sysconfig.FieldConfigKey:
+		m.ResetConfigKey()
+		return nil
+	case sysconfig.FieldConfigValue:
+		m.ResetConfigValue()
+		return nil
+	case sysconfig.FieldConfigType:
+		m.ResetConfigType()
+		return nil
+	}
+	return fmt.Errorf("unknown SysConfig field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysConfigMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysConfigMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysConfigMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysConfigMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysConfigMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysConfigMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysConfigMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysConfig unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysConfigMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysConfig edge %s", name)
+}
+
+// SysDeptMutation represents an operation that mutates the SysDept nodes in the graph.
+type SysDeptMutation struct {
+	config
+	op              Op
+	typ             string
+	id              *int64
+	created_at      *time.Time
+	updated_at      *time.Time
+	delete_at       *time.Time
+	created_by      *int64
+	addcreated_by   *int64
+	updated_by      *int64
+	addupdated_by   *int64
+	delete_by       *int64
+	adddelete_by    *int64
+	remark          *string
+	status          *int8
+	addstatus       *int8
+	sort            *int
+	addsort         *int
+	parent_id       *int64
+	addparent_id    *int64
+	ancestors       *string
+	dept_name       *string
+	dept_code       *string
+	leader          *string
+	phone           *string
+	email           *string
+	clearedFields   map[string]struct{}
+	sys_user        map[int64]struct{}
+	removedsys_user map[int64]struct{}
+	clearedsys_user bool
+	roles           map[int64]struct{}
+	removedroles    map[int64]struct{}
+	clearedroles    bool
+	done            bool
+	oldValue        func(context.Context) (*SysDept, error)
+	predicates      []predicate.SysDept
+}
+
+var _ ent.Mutation = (*SysDeptMutation)(nil)
+
+// sysdeptOption allows management of the mutation configuration using functional options.
+type sysdeptOption func(*SysDeptMutation)
+
+// newSysDeptMutation creates new mutation for the SysDept entity.
+func newSysDeptMutation(c config, op Op, opts ...sysdeptOption) *SysDeptMutation {
+	m := &SysDeptMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysDept,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysDeptID sets the ID field of the mutation.
+func withSysDeptID(id int64) sysdeptOption {
+	return func(m *SysDeptMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysDept
+		)
+		m.oldValue = func(ctx context.Context) (*SysDept, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysDept.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysDept sets the old SysDept of the mutation.
+func withSysDept(node *SysDept) sysdeptOption {
+	return func(m *SysDeptMutation) {
+		m.oldValue = func(context.Context) (*SysDept, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysDeptMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysDeptMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysDept entities.
+func (m *SysDeptMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysDeptMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysDeptMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysDept.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysDeptMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysDeptMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysDeptMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[sysdept.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysDeptMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysDeptMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, sysdept.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysDeptMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysDeptMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysDeptMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[sysdept.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysDeptMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysDeptMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, sysdept.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysDeptMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysDeptMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysDeptMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[sysdept.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysDeptMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysDeptMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, sysdept.FieldDeleteAt)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SysDeptMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysDeptMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysDeptMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysDeptMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysDeptMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[sysdept.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysDeptMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysDeptMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, sysdept.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysDeptMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysDeptMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysDeptMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysDeptMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysDeptMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[sysdept.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysDeptMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysDeptMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, sysdept.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysDeptMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysDeptMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysDeptMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysDeptMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysDeptMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[sysdept.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysDeptMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysDeptMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, sysdept.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysDeptMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysDeptMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysDeptMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[sysdept.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysDeptMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysDeptMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, sysdept.FieldRemark)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysDeptMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysDeptMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysDeptMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysDeptMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysDeptMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[sysdept.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysDeptMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysDeptMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, sysdept.FieldStatus)
+}
+
+// SetSort sets the "sort" field.
+func (m *SysDeptMutation) SetSort(i int) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysDeptMutation) Sort() (r int, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldSort(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysDeptMutation) AddSort(i int) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysDeptMutation) AddedSort() (r int, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSort clears the value of the "sort" field.
+func (m *SysDeptMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[sysdept.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SysDeptMutation) SortCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldSort]
+	return ok
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysDeptMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+	delete(m.clearedFields, sysdept.FieldSort)
+}
+
+// SetParentID sets the "parent_id" field.
+func (m *SysDeptMutation) SetParentID(i int64) {
+	m.parent_id = &i
+	m.addparent_id = nil
+}
+
+// ParentID returns the value of the "parent_id" field in the mutation.
+func (m *SysDeptMutation) ParentID() (r int64, exists bool) {
+	v := m.parent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldParentID returns the old "parent_id" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldParentID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldParentID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldParentID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldParentID: %w", err)
+	}
+	return oldValue.ParentID, nil
+}
+
+// AddParentID adds i to the "parent_id" field.
+func (m *SysDeptMutation) AddParentID(i int64) {
+	if m.addparent_id != nil {
+		*m.addparent_id += i
+	} else {
+		m.addparent_id = &i
+	}
+}
+
+// AddedParentID returns the value that was added to the "parent_id" field in this mutation.
+func (m *SysDeptMutation) AddedParentID() (r int64, exists bool) {
+	v := m.addparent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetParentID resets all changes to the "parent_id" field.
+func (m *SysDeptMutation) ResetParentID() {
+	m.parent_id = nil
+	m.addparent_id = nil
+}
+
+// SetAncestors sets the "ancestors" field.
+func (m *SysDeptMutation) SetAncestors(s string) {
+	m.ancestors = &s
+}
+
+// Ancestors returns the value of the "ancestors" field in the mutation.
+func (m *SysDeptMutation) Ancestors() (r string, exists bool) {
+	v := m.ancestors
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAncestors returns the old "ancestors" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldAncestors(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAncestors is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAncestors requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAncestors: %w", err)
+	}
+	return oldValue.Ancestors, nil
+}
+
+// ClearAncestors clears the value of the "ancestors" field.
+func (m *SysDeptMutation) ClearAncestors() {
+	m.ancestors = nil
+	m.clearedFields[sysdept.FieldAncestors] = struct{}{}
+}
+
+// AncestorsCleared returns if the "ancestors" field was cleared in this mutation.
+func (m *SysDeptMutation) AncestorsCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldAncestors]
+	return ok
+}
+
+// ResetAncestors resets all changes to the "ancestors" field.
+func (m *SysDeptMutation) ResetAncestors() {
+	m.ancestors = nil
+	delete(m.clearedFields, sysdept.FieldAncestors)
+}
+
+// SetDeptName sets the "dept_name" field.
+func (m *SysDeptMutation) SetDeptName(s string) {
+	m.dept_name = &s
+}
+
+// DeptName returns the value of the "dept_name" field in the mutation.
+func (m *SysDeptMutation) DeptName() (r string, exists bool) {
+	v := m.dept_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeptName returns the old "dept_name" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldDeptName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeptName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeptName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeptName: %w", err)
+	}
+	return oldValue.DeptName, nil
+}
+
+// ClearDeptName clears the value of the "dept_name" field.
+func (m *SysDeptMutation) ClearDeptName() {
+	m.dept_name = nil
+	m.clearedFields[sysdept.FieldDeptName] = struct{}{}
+}
+
+// DeptNameCleared returns if the "dept_name" field was cleared in this mutation.
+func (m *SysDeptMutation) DeptNameCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldDeptName]
+	return ok
+}
+
+// ResetDeptName resets all changes to the "dept_name" field.
+func (m *SysDeptMutation) ResetDeptName() {
+	m.dept_name = nil
+	delete(m.clearedFields, sysdept.FieldDeptName)
+}
+
+// SetDeptCode sets the "dept_code" field.
+func (m *SysDeptMutation) SetDeptCode(s string) {
+	m.dept_code = &s
+}
+
+// DeptCode returns the value of the "dept_code" field in the mutation.
+func (m *SysDeptMutation) DeptCode() (r string, exists bool) {
+	v := m.dept_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeptCode returns the old "dept_code" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldDeptCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeptCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeptCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeptCode: %w", err)
+	}
+	return oldValue.DeptCode, nil
+}
+
+// ClearDeptCode clears the value of the "dept_code" field.
+func (m *SysDeptMutation) ClearDeptCode() {
+	m.dept_code = nil
+	m.clearedFields[sysdept.FieldDeptCode] = struct{}{}
+}
+
+// DeptCodeCleared returns if the "dept_code" field was cleared in this mutation.
+func (m *SysDeptMutation) DeptCodeCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldDeptCode]
+	return ok
+}
+
+// ResetDeptCode resets all changes to the "dept_code" field.
+func (m *SysDeptMutation) ResetDeptCode() {
+	m.dept_code = nil
+	delete(m.clearedFields, sysdept.FieldDeptCode)
+}
+
+// SetLeader sets the "leader" field.
+func (m *SysDeptMutation) SetLeader(s string) {
+	m.leader = &s
+}
+
+// Leader returns the value of the "leader" field in the mutation.
+func (m *SysDeptMutation) Leader() (r string, exists bool) {
+	v := m.leader
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLeader returns the old "leader" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldLeader(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLeader is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLeader requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLeader: %w", err)
+	}
+	return oldValue.Leader, nil
+}
+
+// ClearLeader clears the value of the "leader" field.
+func (m *SysDeptMutation) ClearLeader() {
+	m.leader = nil
+	m.clearedFields[sysdept.FieldLeader] = struct{}{}
+}
+
+// LeaderCleared returns if the "leader" field was cleared in this mutation.
+func (m *SysDeptMutation) LeaderCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldLeader]
+	return ok
+}
+
+// ResetLeader resets all changes to the "leader" field.
+func (m *SysDeptMutation) ResetLeader() {
+	m.leader = nil
+	delete(m.clearedFields, sysdept.FieldLeader)
+}
+
+// SetPhone sets the "phone" field.
+func (m *SysDeptMutation) SetPhone(s string) {
+	m.phone = &s
+}
+
+// Phone returns the value of the "phone" field in the mutation.
+func (m *SysDeptMutation) Phone() (r string, exists bool) {
+	v := m.phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhone returns the old "phone" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldPhone(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
+	}
+	return oldValue.Phone, nil
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (m *SysDeptMutation) ClearPhone() {
+	m.phone = nil
+	m.clearedFields[sysdept.FieldPhone] = struct{}{}
+}
+
+// PhoneCleared returns if the "phone" field was cleared in this mutation.
+func (m *SysDeptMutation) PhoneCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldPhone]
+	return ok
+}
+
+// ResetPhone resets all changes to the "phone" field.
+func (m *SysDeptMutation) ResetPhone() {
+	m.phone = nil
+	delete(m.clearedFields, sysdept.FieldPhone)
+}
+
+// SetEmail sets the "email" field.
+func (m *SysDeptMutation) SetEmail(s string) {
+	m.email = &s
+}
+
+// Email returns the value of the "email" field in the mutation.
+func (m *SysDeptMutation) Email() (r string, exists bool) {
+	v := m.email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEmail returns the old "email" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldEmail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
+	}
+	return oldValue.Email, nil
+}
+
+// ClearEmail clears the value of the "email" field.
+func (m *SysDeptMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[sysdept.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *SysDeptMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldEmail]
+	return ok
+}
+
+// ResetEmail resets all changes to the "email" field.
+func (m *SysDeptMutation) ResetEmail() {
+	m.email = nil
+	delete(m.clearedFields, sysdept.FieldEmail)
+}
+
+// AddSysUserIDs adds the "sys_user" edge to the SysUser entity by ids.
+func (m *SysDeptMutation) AddSysUserIDs(ids ...int64) {
+	if m.sys_user == nil {
+		m.sys_user = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.sys_user[ids[i]] = struct{}{}
+	}
+}
+
+// ClearSysUser clears the "sys_user" edge to the SysUser entity.
+func (m *SysDeptMutation) ClearSysUser() {
+	m.clearedsys_user = true
+}
+
+// SysUserCleared reports if the "sys_user" edge to the SysUser entity was cleared.
+func (m *SysDeptMutation) SysUserCleared() bool {
+	return m.clearedsys_user
+}
+
+// RemoveSysUserIDs removes the "sys_user" edge to the SysUser entity by IDs.
+func (m *SysDeptMutation) RemoveSysUserIDs(ids ...int64) {
+	if m.removedsys_user == nil {
+		m.removedsys_user = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.sys_user, ids[i])
+		m.removedsys_user[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedSysUser returns the removed IDs of the "sys_user" edge to the SysUser entity.
+func (m *SysDeptMutation) RemovedSysUserIDs() (ids []int64) {
+	for id := range m.removedsys_user {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// SysUserIDs returns the "sys_user" edge IDs in the mutation.
+func (m *SysDeptMutation) SysUserIDs() (ids []int64) {
+	for id := range m.sys_user {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetSysUser resets all changes to the "sys_user" edge.
+func (m *SysDeptMutation) ResetSysUser() {
+	m.sys_user = nil
+	m.clearedsys_user = false
+	m.removedsys_user = nil
+}
+
+// AddRoleIDs adds the "roles" edge to the SysRole entity by ids.
+func (m *SysDeptMutation) AddRoleIDs(ids ...int64) {
+	if m.roles == nil {
+		m.roles = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.roles[ids[i]] = struct{}{}
+	}
+}
+
+// ClearRoles clears the "roles" edge to the SysRole entity.
+func (m *SysDeptMutation) ClearRoles() {
+	m.clearedroles = true
+}
+
+// RolesCleared reports if the "roles" edge to the SysRole entity was cleared.
+func (m *SysDeptMutation) RolesCleared() bool {
+	return m.clearedroles
+}
+
+// RemoveRoleIDs removes the "roles" edge to the SysRole entity by IDs.
+func (m *SysDeptMutation) RemoveRoleIDs(ids ...int64) {
+	if m.removedroles == nil {
+		m.removedroles = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.roles, ids[i])
+		m.removedroles[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedRoles returns the removed IDs of the "roles" edge to the SysRole entity.
+func (m *SysDeptMutation) RemovedRolesIDs() (ids []int64) {
+	for id := range m.removedroles {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// RolesIDs returns the "roles" edge IDs in the mutation.
+func (m *SysDeptMutation) RolesIDs() (ids []int64) {
+	for id := range m.roles {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetRoles resets all changes to the "roles" edge.
+func (m *SysDeptMutation) ResetRoles() {
+	m.roles = nil
+	m.clearedroles = false
+	m.removedroles = nil
+}
+
+// Where appends a list predicates to the SysDeptMutation builder.
+func (m *SysDeptMutation) Where(ps ...predicate.SysDept) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysDeptMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysDeptMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysDept, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysDeptMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysDeptMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysDept).
+func (m *SysDeptMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysDeptMutation) Fields() []string {
+	fields := make([]string, 0, 16)
+	if m.created_at != nil {
+		fields = append(fields, sysdept.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysdept.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, sysdept.FieldDeleteAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, sysdept.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, sysdept.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, sysdept.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysdept.FieldRemark)
+	}
+	if m.status != nil {
+		fields = append(fields, sysdept.FieldStatus)
+	}
+	if m.sort != nil {
+		fields = append(fields, sysdept.FieldSort)
+	}
+	if m.parent_id != nil {
+		fields = append(fields, sysdept.FieldParentID)
+	}
+	if m.ancestors != nil {
+		fields = append(fields, sysdept.FieldAncestors)
+	}
+	if m.dept_name != nil {
+		fields = append(fields, sysdept.FieldDeptName)
+	}
+	if m.dept_code != nil {
+		fields = append(fields, sysdept.FieldDeptCode)
+	}
+	if m.leader != nil {
+		fields = append(fields, sysdept.FieldLeader)
+	}
+	if m.phone != nil {
+		fields = append(fields, sysdept.FieldPhone)
+	}
+	if m.email != nil {
+		fields = append(fields, sysdept.FieldEmail)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysDeptMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysdept.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysdept.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysdept.FieldDeleteAt:
+		return m.DeleteAt()
+	case sysdept.FieldCreatedBy:
+		return m.CreatedBy()
+	case sysdept.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case sysdept.FieldDeleteBy:
+		return m.DeleteBy()
+	case sysdept.FieldRemark:
+		return m.Remark()
+	case sysdept.FieldStatus:
+		return m.Status()
+	case sysdept.FieldSort:
+		return m.Sort()
+	case sysdept.FieldParentID:
+		return m.ParentID()
+	case sysdept.FieldAncestors:
+		return m.Ancestors()
+	case sysdept.FieldDeptName:
+		return m.DeptName()
+	case sysdept.FieldDeptCode:
+		return m.DeptCode()
+	case sysdept.FieldLeader:
+		return m.Leader()
+	case sysdept.FieldPhone:
+		return m.Phone()
+	case sysdept.FieldEmail:
+		return m.Email()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysDeptMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysdept.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysdept.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysdept.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case sysdept.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case sysdept.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case sysdept.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case sysdept.FieldRemark:
+		return m.OldRemark(ctx)
+	case sysdept.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysdept.FieldSort:
+		return m.OldSort(ctx)
+	case sysdept.FieldParentID:
+		return m.OldParentID(ctx)
+	case sysdept.FieldAncestors:
+		return m.OldAncestors(ctx)
+	case sysdept.FieldDeptName:
+		return m.OldDeptName(ctx)
+	case sysdept.FieldDeptCode:
+		return m.OldDeptCode(ctx)
+	case sysdept.FieldLeader:
+		return m.OldLeader(ctx)
+	case sysdept.FieldPhone:
+		return m.OldPhone(ctx)
+	case sysdept.FieldEmail:
+		return m.OldEmail(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysDept field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDeptMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysdept.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysdept.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysdept.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case sysdept.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case sysdept.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case sysdept.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case sysdept.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case sysdept.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysdept.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
+	case sysdept.FieldParentID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetParentID(v)
+		return nil
+	case sysdept.FieldAncestors:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAncestors(v)
+		return nil
+	case sysdept.FieldDeptName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeptName(v)
+		return nil
+	case sysdept.FieldDeptCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeptCode(v)
+		return nil
+	case sysdept.FieldLeader:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLeader(v)
+		return nil
+	case sysdept.FieldPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhone(v)
+		return nil
+	case sysdept.FieldEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEmail(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDept field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysDeptMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, sysdept.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, sysdept.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, sysdept.FieldDeleteBy)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysdept.FieldStatus)
+	}
+	if m.addsort != nil {
+		fields = append(fields, sysdept.FieldSort)
+	}
+	if m.addparent_id != nil {
+		fields = append(fields, sysdept.FieldParentID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysDeptMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysdept.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case sysdept.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case sysdept.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case sysdept.FieldStatus:
+		return m.AddedStatus()
+	case sysdept.FieldSort:
+		return m.AddedSort()
+	case sysdept.FieldParentID:
+		return m.AddedParentID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDeptMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysdept.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case sysdept.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case sysdept.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case sysdept.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case sysdept.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
+	case sysdept.FieldParentID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddParentID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDept numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysDeptMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysdept.FieldCreatedAt) {
+		fields = append(fields, sysdept.FieldCreatedAt)
+	}
+	if m.FieldCleared(sysdept.FieldUpdatedAt) {
+		fields = append(fields, sysdept.FieldUpdatedAt)
+	}
+	if m.FieldCleared(sysdept.FieldDeleteAt) {
+		fields = append(fields, sysdept.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysdept.FieldCreatedBy) {
+		fields = append(fields, sysdept.FieldCreatedBy)
+	}
+	if m.FieldCleared(sysdept.FieldUpdatedBy) {
+		fields = append(fields, sysdept.FieldUpdatedBy)
+	}
+	if m.FieldCleared(sysdept.FieldDeleteBy) {
+		fields = append(fields, sysdept.FieldDeleteBy)
+	}
+	if m.FieldCleared(sysdept.FieldRemark) {
+		fields = append(fields, sysdept.FieldRemark)
+	}
+	if m.FieldCleared(sysdept.FieldStatus) {
+		fields = append(fields, sysdept.FieldStatus)
+	}
+	if m.FieldCleared(sysdept.FieldSort) {
+		fields = append(fields, sysdept.FieldSort)
+	}
+	if m.FieldCleared(sysdept.FieldAncestors) {
+		fields = append(fields, sysdept.FieldAncestors)
+	}
+	if m.FieldCleared(sysdept.FieldDeptName) {
+		fields = append(fields, sysdept.FieldDeptName)
+	}
+	if m.FieldCleared(sysdept.FieldDeptCode) {
+		fields = append(fields, sysdept.FieldDeptCode)
+	}
+	if m.FieldCleared(sysdept.FieldLeader) {
+		fields = append(fields, sysdept.FieldLeader)
+	}
+	if m.FieldCleared(sysdept.FieldPhone) {
+		fields = append(fields, sysdept.FieldPhone)
+	}
+	if m.FieldCleared(sysdept.FieldEmail) {
+		fields = append(fields, sysdept.FieldEmail)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysDeptMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysDeptMutation) ClearField(name string) error {
+	switch name {
+	case sysdept.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case sysdept.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case sysdept.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case sysdept.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case sysdept.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case sysdept.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case sysdept.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case sysdept.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case sysdept.FieldSort:
+		m.ClearSort()
+		return nil
+	case sysdept.FieldAncestors:
+		m.ClearAncestors()
+		return nil
+	case sysdept.FieldDeptName:
+		m.ClearDeptName()
+		return nil
+	case sysdept.FieldDeptCode:
+		m.ClearDeptCode()
+		return nil
+	case sysdept.FieldLeader:
+		m.ClearLeader()
+		return nil
+	case sysdept.FieldPhone:
+		m.ClearPhone()
+		return nil
+	case sysdept.FieldEmail:
+		m.ClearEmail()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDept nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysDeptMutation) ResetField(name string) error {
+	switch name {
+	case sysdept.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysdept.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysdept.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case sysdept.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case sysdept.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case sysdept.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case sysdept.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case sysdept.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysdept.FieldSort:
+		m.ResetSort()
+		return nil
+	case sysdept.FieldParentID:
+		m.ResetParentID()
+		return nil
+	case sysdept.FieldAncestors:
+		m.ResetAncestors()
+		return nil
+	case sysdept.FieldDeptName:
+		m.ResetDeptName()
+		return nil
+	case sysdept.FieldDeptCode:
+		m.ResetDeptCode()
+		return nil
+	case sysdept.FieldLeader:
+		m.ResetLeader()
+		return nil
+	case sysdept.FieldPhone:
+		m.ResetPhone()
+		return nil
+	case sysdept.FieldEmail:
+		m.ResetEmail()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDept field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysDeptMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.sys_user != nil {
+		edges = append(edges, sysdept.EdgeSysUser)
+	}
+	if m.roles != nil {
+		edges = append(edges, sysdept.EdgeRoles)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysDeptMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysdept.EdgeSysUser:
+		ids := make([]ent.Value, 0, len(m.sys_user))
+		for id := range m.sys_user {
+			ids = append(ids, id)
+		}
+		return ids
+	case sysdept.EdgeRoles:
+		ids := make([]ent.Value, 0, len(m.roles))
+		for id := range m.roles {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysDeptMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.removedsys_user != nil {
+		edges = append(edges, sysdept.EdgeSysUser)
+	}
+	if m.removedroles != nil {
+		edges = append(edges, sysdept.EdgeRoles)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysDeptMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sysdept.EdgeSysUser:
+		ids := make([]ent.Value, 0, len(m.removedsys_user))
+		for id := range m.removedsys_user {
+			ids = append(ids, id)
+		}
+		return ids
+	case sysdept.EdgeRoles:
+		ids := make([]ent.Value, 0, len(m.removedroles))
+		for id := range m.removedroles {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysDeptMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.clearedsys_user {
+		edges = append(edges, sysdept.EdgeSysUser)
+	}
+	if m.clearedroles {
+		edges = append(edges, sysdept.EdgeRoles)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysDeptMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysdept.EdgeSysUser:
+		return m.clearedsys_user
+	case sysdept.EdgeRoles:
+		return m.clearedroles
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysDeptMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysDept unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysDeptMutation) ResetEdge(name string) error {
+	switch name {
+	case sysdept.EdgeSysUser:
+		m.ResetSysUser()
+		return nil
+	case sysdept.EdgeRoles:
+		m.ResetRoles()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDept edge %s", name)
+}
+
+// SysDictDataMutation represents an operation that mutates the SysDictData nodes in the graph.
+type SysDictDataMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete_at     *time.Time
+	created_by    *int64
+	addcreated_by *int64
+	updated_by    *int64
+	addupdated_by *int64
+	delete_by     *int64
+	adddelete_by  *int64
+	remark        *string
+	status        *int8
+	addstatus     *int8
+	sort          *int
+	addsort       *int
+	dict_label    *string
+	dict_value    *string
+	dict_type     *string
+	css_class     *string
+	list_class    *string
+	is_default    *int8
+	addis_default *int8
+	clearedFields map[string]struct{}
+	owner         *int64
+	clearedowner  bool
+	done          bool
+	oldValue      func(context.Context) (*SysDictData, error)
+	predicates    []predicate.SysDictData
+}
+
+var _ ent.Mutation = (*SysDictDataMutation)(nil)
+
+// sysdictdataOption allows management of the mutation configuration using functional options.
+type sysdictdataOption func(*SysDictDataMutation)
+
+// newSysDictDataMutation creates new mutation for the SysDictData entity.
+func newSysDictDataMutation(c config, op Op, opts ...sysdictdataOption) *SysDictDataMutation {
+	m := &SysDictDataMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysDictData,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysDictDataID sets the ID field of the mutation.
+func withSysDictDataID(id int64) sysdictdataOption {
+	return func(m *SysDictDataMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysDictData
+		)
+		m.oldValue = func(ctx context.Context) (*SysDictData, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysDictData.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysDictData sets the old SysDictData of the mutation.
+func withSysDictData(node *SysDictData) sysdictdataOption {
+	return func(m *SysDictDataMutation) {
+		m.oldValue = func(context.Context) (*SysDictData, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysDictDataMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysDictDataMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysDictData entities.
+func (m *SysDictDataMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysDictDataMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysDictDataMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysDictData.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysDictDataMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysDictDataMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysDictDataMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[sysdictdata.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysDictDataMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysDictDataMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, sysdictdata.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysDictDataMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysDictDataMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysDictDataMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[sysdictdata.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysDictDataMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysDictDataMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, sysdictdata.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysDictDataMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysDictDataMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysDictDataMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[sysdictdata.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysDictDataMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysDictDataMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, sysdictdata.FieldDeleteAt)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SysDictDataMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysDictDataMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysDictDataMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysDictDataMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysDictDataMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[sysdictdata.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysDictDataMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysDictDataMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, sysdictdata.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysDictDataMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysDictDataMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysDictDataMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysDictDataMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysDictDataMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[sysdictdata.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysDictDataMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysDictDataMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, sysdictdata.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysDictDataMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysDictDataMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysDictDataMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysDictDataMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysDictDataMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[sysdictdata.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysDictDataMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysDictDataMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, sysdictdata.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysDictDataMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysDictDataMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysDictDataMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[sysdictdata.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysDictDataMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysDictDataMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, sysdictdata.FieldRemark)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysDictDataMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysDictDataMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysDictDataMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysDictDataMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysDictDataMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[sysdictdata.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysDictDataMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysDictDataMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, sysdictdata.FieldStatus)
+}
+
+// SetSort sets the "sort" field.
+func (m *SysDictDataMutation) SetSort(i int) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysDictDataMutation) Sort() (r int, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldSort(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysDictDataMutation) AddSort(i int) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysDictDataMutation) AddedSort() (r int, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSort clears the value of the "sort" field.
+func (m *SysDictDataMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[sysdictdata.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SysDictDataMutation) SortCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldSort]
+	return ok
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysDictDataMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+	delete(m.clearedFields, sysdictdata.FieldSort)
+}
+
+// SetDictLabel sets the "dict_label" field.
+func (m *SysDictDataMutation) SetDictLabel(s string) {
+	m.dict_label = &s
+}
+
+// DictLabel returns the value of the "dict_label" field in the mutation.
+func (m *SysDictDataMutation) DictLabel() (r string, exists bool) {
+	v := m.dict_label
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDictLabel returns the old "dict_label" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldDictLabel(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDictLabel is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDictLabel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDictLabel: %w", err)
+	}
+	return oldValue.DictLabel, nil
+}
+
+// ClearDictLabel clears the value of the "dict_label" field.
+func (m *SysDictDataMutation) ClearDictLabel() {
+	m.dict_label = nil
+	m.clearedFields[sysdictdata.FieldDictLabel] = struct{}{}
+}
+
+// DictLabelCleared returns if the "dict_label" field was cleared in this mutation.
+func (m *SysDictDataMutation) DictLabelCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDictLabel]
+	return ok
+}
+
+// ResetDictLabel resets all changes to the "dict_label" field.
+func (m *SysDictDataMutation) ResetDictLabel() {
+	m.dict_label = nil
+	delete(m.clearedFields, sysdictdata.FieldDictLabel)
+}
+
+// SetDictValue sets the "dict_value" field.
+func (m *SysDictDataMutation) SetDictValue(s string) {
+	m.dict_value = &s
+}
+
+// DictValue returns the value of the "dict_value" field in the mutation.
+func (m *SysDictDataMutation) DictValue() (r string, exists bool) {
+	v := m.dict_value
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDictValue returns the old "dict_value" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldDictValue(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDictValue is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDictValue requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDictValue: %w", err)
+	}
+	return oldValue.DictValue, nil
+}
+
+// ClearDictValue clears the value of the "dict_value" field.
+func (m *SysDictDataMutation) ClearDictValue() {
+	m.dict_value = nil
+	m.clearedFields[sysdictdata.FieldDictValue] = struct{}{}
+}
+
+// DictValueCleared returns if the "dict_value" field was cleared in this mutation.
+func (m *SysDictDataMutation) DictValueCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDictValue]
+	return ok
+}
+
+// ResetDictValue resets all changes to the "dict_value" field.
+func (m *SysDictDataMutation) ResetDictValue() {
+	m.dict_value = nil
+	delete(m.clearedFields, sysdictdata.FieldDictValue)
+}
+
+// SetDictType sets the "dict_type" field.
+func (m *SysDictDataMutation) SetDictType(s string) {
+	m.dict_type = &s
+}
+
+// DictType returns the value of the "dict_type" field in the mutation.
+func (m *SysDictDataMutation) DictType() (r string, exists bool) {
+	v := m.dict_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDictType returns the old "dict_type" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldDictType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDictType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDictType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDictType: %w", err)
+	}
+	return oldValue.DictType, nil
+}
+
+// ClearDictType clears the value of the "dict_type" field.
+func (m *SysDictDataMutation) ClearDictType() {
+	m.dict_type = nil
+	m.clearedFields[sysdictdata.FieldDictType] = struct{}{}
+}
+
+// DictTypeCleared returns if the "dict_type" field was cleared in this mutation.
+func (m *SysDictDataMutation) DictTypeCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDictType]
+	return ok
+}
+
+// ResetDictType resets all changes to the "dict_type" field.
+func (m *SysDictDataMutation) ResetDictType() {
+	m.dict_type = nil
+	delete(m.clearedFields, sysdictdata.FieldDictType)
+}
+
+// SetCSSClass sets the "css_class" field.
+func (m *SysDictDataMutation) SetCSSClass(s string) {
+	m.css_class = &s
+}
+
+// CSSClass returns the value of the "css_class" field in the mutation.
+func (m *SysDictDataMutation) CSSClass() (r string, exists bool) {
+	v := m.css_class
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCSSClass returns the old "css_class" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldCSSClass(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCSSClass is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCSSClass requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCSSClass: %w", err)
+	}
+	return oldValue.CSSClass, nil
+}
+
+// ClearCSSClass clears the value of the "css_class" field.
+func (m *SysDictDataMutation) ClearCSSClass() {
+	m.css_class = nil
+	m.clearedFields[sysdictdata.FieldCSSClass] = struct{}{}
+}
+
+// CSSClassCleared returns if the "css_class" field was cleared in this mutation.
+func (m *SysDictDataMutation) CSSClassCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldCSSClass]
+	return ok
+}
+
+// ResetCSSClass resets all changes to the "css_class" field.
+func (m *SysDictDataMutation) ResetCSSClass() {
+	m.css_class = nil
+	delete(m.clearedFields, sysdictdata.FieldCSSClass)
+}
+
+// SetListClass sets the "list_class" field.
+func (m *SysDictDataMutation) SetListClass(s string) {
+	m.list_class = &s
+}
+
+// ListClass returns the value of the "list_class" field in the mutation.
+func (m *SysDictDataMutation) ListClass() (r string, exists bool) {
+	v := m.list_class
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldListClass returns the old "list_class" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldListClass(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldListClass is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldListClass requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldListClass: %w", err)
+	}
+	return oldValue.ListClass, nil
+}
+
+// ClearListClass clears the value of the "list_class" field.
+func (m *SysDictDataMutation) ClearListClass() {
+	m.list_class = nil
+	m.clearedFields[sysdictdata.FieldListClass] = struct{}{}
+}
+
+// ListClassCleared returns if the "list_class" field was cleared in this mutation.
+func (m *SysDictDataMutation) ListClassCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldListClass]
+	return ok
+}
+
+// ResetListClass resets all changes to the "list_class" field.
+func (m *SysDictDataMutation) ResetListClass() {
+	m.list_class = nil
+	delete(m.clearedFields, sysdictdata.FieldListClass)
+}
+
+// SetIsDefault sets the "is_default" field.
+func (m *SysDictDataMutation) SetIsDefault(i int8) {
+	m.is_default = &i
+	m.addis_default = nil
+}
+
+// IsDefault returns the value of the "is_default" field in the mutation.
+func (m *SysDictDataMutation) IsDefault() (r int8, exists bool) {
+	v := m.is_default
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsDefault returns the old "is_default" field's value of the SysDictData entity.
+// If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictDataMutation) OldIsDefault(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsDefault is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsDefault requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsDefault: %w", err)
+	}
+	return oldValue.IsDefault, nil
+}
+
+// AddIsDefault adds i to the "is_default" field.
+func (m *SysDictDataMutation) AddIsDefault(i int8) {
+	if m.addis_default != nil {
+		*m.addis_default += i
+	} else {
+		m.addis_default = &i
+	}
+}
+
+// AddedIsDefault returns the value that was added to the "is_default" field in this mutation.
+func (m *SysDictDataMutation) AddedIsDefault() (r int8, exists bool) {
+	v := m.addis_default
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIsDefault clears the value of the "is_default" field.
+func (m *SysDictDataMutation) ClearIsDefault() {
+	m.is_default = nil
+	m.addis_default = nil
+	m.clearedFields[sysdictdata.FieldIsDefault] = struct{}{}
+}
+
+// IsDefaultCleared returns if the "is_default" field was cleared in this mutation.
+func (m *SysDictDataMutation) IsDefaultCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldIsDefault]
+	return ok
+}
+
+// ResetIsDefault resets all changes to the "is_default" field.
+func (m *SysDictDataMutation) ResetIsDefault() {
+	m.is_default = nil
+	m.addis_default = nil
+	delete(m.clearedFields, sysdictdata.FieldIsDefault)
+}
+
+// SetOwnerID sets the "owner" edge to the SysDictType entity by id.
+func (m *SysDictDataMutation) SetOwnerID(id int64) {
+	m.owner = &id
+}
+
+// ClearOwner clears the "owner" edge to the SysDictType entity.
+func (m *SysDictDataMutation) ClearOwner() {
+	m.clearedowner = true
+}
+
+// OwnerCleared reports if the "owner" edge to the SysDictType entity was cleared.
+func (m *SysDictDataMutation) OwnerCleared() bool {
+	return m.clearedowner
+}
+
+// OwnerID returns the "owner" edge ID in the mutation.
+func (m *SysDictDataMutation) OwnerID() (id int64, exists bool) {
+	if m.owner != nil {
+		return *m.owner, true
+	}
+	return
+}
+
+// OwnerIDs returns the "owner" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// OwnerID instead. It exists only for internal usage by the builders.
+func (m *SysDictDataMutation) OwnerIDs() (ids []int64) {
+	if id := m.owner; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOwner resets all changes to the "owner" edge.
+func (m *SysDictDataMutation) ResetOwner() {
+	m.owner = nil
+	m.clearedowner = false
+}
+
+// Where appends a list predicates to the SysDictDataMutation builder.
+func (m *SysDictDataMutation) Where(ps ...predicate.SysDictData) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysDictDataMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysDictDataMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysDictData, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysDictDataMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysDictDataMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysDictData).
+func (m *SysDictDataMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysDictDataMutation) Fields() []string {
+	fields := make([]string, 0, 15)
+	if m.created_at != nil {
+		fields = append(fields, sysdictdata.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysdictdata.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, sysdictdata.FieldDeleteAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, sysdictdata.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, sysdictdata.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, sysdictdata.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysdictdata.FieldRemark)
+	}
+	if m.status != nil {
+		fields = append(fields, sysdictdata.FieldStatus)
+	}
+	if m.sort != nil {
+		fields = append(fields, sysdictdata.FieldSort)
+	}
+	if m.dict_label != nil {
+		fields = append(fields, sysdictdata.FieldDictLabel)
+	}
+	if m.dict_value != nil {
+		fields = append(fields, sysdictdata.FieldDictValue)
+	}
+	if m.dict_type != nil {
+		fields = append(fields, sysdictdata.FieldDictType)
+	}
+	if m.css_class != nil {
+		fields = append(fields, sysdictdata.FieldCSSClass)
+	}
+	if m.list_class != nil {
+		fields = append(fields, sysdictdata.FieldListClass)
+	}
+	if m.is_default != nil {
+		fields = append(fields, sysdictdata.FieldIsDefault)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysDictDataMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysdictdata.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysdictdata.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysdictdata.FieldDeleteAt:
+		return m.DeleteAt()
+	case sysdictdata.FieldCreatedBy:
+		return m.CreatedBy()
+	case sysdictdata.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case sysdictdata.FieldDeleteBy:
+		return m.DeleteBy()
+	case sysdictdata.FieldRemark:
+		return m.Remark()
+	case sysdictdata.FieldStatus:
+		return m.Status()
+	case sysdictdata.FieldSort:
+		return m.Sort()
+	case sysdictdata.FieldDictLabel:
+		return m.DictLabel()
+	case sysdictdata.FieldDictValue:
+		return m.DictValue()
+	case sysdictdata.FieldDictType:
+		return m.DictType()
+	case sysdictdata.FieldCSSClass:
+		return m.CSSClass()
+	case sysdictdata.FieldListClass:
+		return m.ListClass()
+	case sysdictdata.FieldIsDefault:
+		return m.IsDefault()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysDictDataMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysdictdata.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysdictdata.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysdictdata.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case sysdictdata.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case sysdictdata.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case sysdictdata.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case sysdictdata.FieldRemark:
+		return m.OldRemark(ctx)
+	case sysdictdata.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysdictdata.FieldSort:
+		return m.OldSort(ctx)
+	case sysdictdata.FieldDictLabel:
+		return m.OldDictLabel(ctx)
+	case sysdictdata.FieldDictValue:
+		return m.OldDictValue(ctx)
+	case sysdictdata.FieldDictType:
+		return m.OldDictType(ctx)
+	case sysdictdata.FieldCSSClass:
+		return m.OldCSSClass(ctx)
+	case sysdictdata.FieldListClass:
+		return m.OldListClass(ctx)
+	case sysdictdata.FieldIsDefault:
+		return m.OldIsDefault(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysDictData field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDictDataMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysdictdata.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysdictdata.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysdictdata.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case sysdictdata.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case sysdictdata.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case sysdictdata.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case sysdictdata.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case sysdictdata.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysdictdata.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
+	case sysdictdata.FieldDictLabel:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDictLabel(v)
+		return nil
+	case sysdictdata.FieldDictValue:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDictValue(v)
+		return nil
+	case sysdictdata.FieldDictType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDictType(v)
+		return nil
+	case sysdictdata.FieldCSSClass:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCSSClass(v)
+		return nil
+	case sysdictdata.FieldListClass:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetListClass(v)
+		return nil
+	case sysdictdata.FieldIsDefault:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsDefault(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysDictDataMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, sysdictdata.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, sysdictdata.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, sysdictdata.FieldDeleteBy)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysdictdata.FieldStatus)
+	}
+	if m.addsort != nil {
+		fields = append(fields, sysdictdata.FieldSort)
+	}
+	if m.addis_default != nil {
+		fields = append(fields, sysdictdata.FieldIsDefault)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysDictDataMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysdictdata.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case sysdictdata.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case sysdictdata.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case sysdictdata.FieldStatus:
+		return m.AddedStatus()
+	case sysdictdata.FieldSort:
+		return m.AddedSort()
+	case sysdictdata.FieldIsDefault:
+		return m.AddedIsDefault()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDictDataMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysdictdata.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case sysdictdata.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case sysdictdata.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case sysdictdata.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case sysdictdata.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
+	case sysdictdata.FieldIsDefault:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIsDefault(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysDictDataMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysdictdata.FieldCreatedAt) {
+		fields = append(fields, sysdictdata.FieldCreatedAt)
+	}
+	if m.FieldCleared(sysdictdata.FieldUpdatedAt) {
+		fields = append(fields, sysdictdata.FieldUpdatedAt)
+	}
+	if m.FieldCleared(sysdictdata.FieldDeleteAt) {
+		fields = append(fields, sysdictdata.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysdictdata.FieldCreatedBy) {
+		fields = append(fields, sysdictdata.FieldCreatedBy)
+	}
+	if m.FieldCleared(sysdictdata.FieldUpdatedBy) {
+		fields = append(fields, sysdictdata.FieldUpdatedBy)
+	}
+	if m.FieldCleared(sysdictdata.FieldDeleteBy) {
+		fields = append(fields, sysdictdata.FieldDeleteBy)
+	}
+	if m.FieldCleared(sysdictdata.FieldRemark) {
+		fields = append(fields, sysdictdata.FieldRemark)
+	}
+	if m.FieldCleared(sysdictdata.FieldStatus) {
+		fields = append(fields, sysdictdata.FieldStatus)
+	}
+	if m.FieldCleared(sysdictdata.FieldSort) {
+		fields = append(fields, sysdictdata.FieldSort)
+	}
+	if m.FieldCleared(sysdictdata.FieldDictLabel) {
+		fields = append(fields, sysdictdata.FieldDictLabel)
+	}
+	if m.FieldCleared(sysdictdata.FieldDictValue) {
+		fields = append(fields, sysdictdata.FieldDictValue)
+	}
+	if m.FieldCleared(sysdictdata.FieldDictType) {
+		fields = append(fields, sysdictdata.FieldDictType)
+	}
+	if m.FieldCleared(sysdictdata.FieldCSSClass) {
+		fields = append(fields, sysdictdata.FieldCSSClass)
+	}
+	if m.FieldCleared(sysdictdata.FieldListClass) {
+		fields = append(fields, sysdictdata.FieldListClass)
+	}
+	if m.FieldCleared(sysdictdata.FieldIsDefault) {
+		fields = append(fields, sysdictdata.FieldIsDefault)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysDictDataMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysDictDataMutation) ClearField(name string) error {
+	switch name {
+	case sysdictdata.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case sysdictdata.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case sysdictdata.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case sysdictdata.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case sysdictdata.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case sysdictdata.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case sysdictdata.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case sysdictdata.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case sysdictdata.FieldSort:
+		m.ClearSort()
+		return nil
+	case sysdictdata.FieldDictLabel:
+		m.ClearDictLabel()
+		return nil
+	case sysdictdata.FieldDictValue:
+		m.ClearDictValue()
+		return nil
+	case sysdictdata.FieldDictType:
+		m.ClearDictType()
+		return nil
+	case sysdictdata.FieldCSSClass:
+		m.ClearCSSClass()
+		return nil
+	case sysdictdata.FieldListClass:
+		m.ClearListClass()
+		return nil
+	case sysdictdata.FieldIsDefault:
+		m.ClearIsDefault()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysDictDataMutation) ResetField(name string) error {
+	switch name {
+	case sysdictdata.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysdictdata.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysdictdata.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case sysdictdata.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case sysdictdata.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case sysdictdata.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case sysdictdata.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case sysdictdata.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysdictdata.FieldSort:
+		m.ResetSort()
+		return nil
+	case sysdictdata.FieldDictLabel:
+		m.ResetDictLabel()
+		return nil
+	case sysdictdata.FieldDictValue:
+		m.ResetDictValue()
+		return nil
+	case sysdictdata.FieldDictType:
+		m.ResetDictType()
+		return nil
+	case sysdictdata.FieldCSSClass:
+		m.ResetCSSClass()
+		return nil
+	case sysdictdata.FieldListClass:
+		m.ResetListClass()
+		return nil
+	case sysdictdata.FieldIsDefault:
+		m.ResetIsDefault()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysDictDataMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.owner != nil {
+		edges = append(edges, sysdictdata.EdgeOwner)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysDictDataMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysdictdata.EdgeOwner:
+		if id := m.owner; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysDictDataMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysDictDataMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysDictDataMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedowner {
+		edges = append(edges, sysdictdata.EdgeOwner)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysDictDataMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysdictdata.EdgeOwner:
+		return m.clearedowner
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysDictDataMutation) ClearEdge(name string) error {
+	switch name {
+	case sysdictdata.EdgeOwner:
+		m.ClearOwner()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysDictDataMutation) ResetEdge(name string) error {
+	switch name {
+	case sysdictdata.EdgeOwner:
+		m.ResetOwner()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictData edge %s", name)
+}
+
+// SysDictTypeMutation represents an operation that mutates the SysDictType nodes in the graph.
+type SysDictTypeMutation struct {
+	config
+	op                  Op
+	typ                 string
+	id                  *int64
+	created_at          *time.Time
+	updated_at          *time.Time
+	delete_at           *time.Time
+	created_by          *int64
+	addcreated_by       *int64
+	updated_by          *int64
+	addupdated_by       *int64
+	delete_by           *int64
+	adddelete_by        *int64
+	remark              *string
+	status              *int8
+	addstatus           *int8
+	dict_name           *string
+	dict_type           *string
+	clearedFields       map[string]struct{}
+	sysDictDatas        map[int64]struct{}
+	removedsysDictDatas map[int64]struct{}
+	clearedsysDictDatas bool
+	done                bool
+	oldValue            func(context.Context) (*SysDictType, error)
+	predicates          []predicate.SysDictType
+}
+
+var _ ent.Mutation = (*SysDictTypeMutation)(nil)
+
+// sysdicttypeOption allows management of the mutation configuration using functional options.
+type sysdicttypeOption func(*SysDictTypeMutation)
+
+// newSysDictTypeMutation creates new mutation for the SysDictType entity.
+func newSysDictTypeMutation(c config, op Op, opts ...sysdicttypeOption) *SysDictTypeMutation {
+	m := &SysDictTypeMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysDictType,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysDictTypeID sets the ID field of the mutation.
+func withSysDictTypeID(id int64) sysdicttypeOption {
+	return func(m *SysDictTypeMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysDictType
+		)
+		m.oldValue = func(ctx context.Context) (*SysDictType, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysDictType.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysDictType sets the old SysDictType of the mutation.
+func withSysDictType(node *SysDictType) sysdicttypeOption {
+	return func(m *SysDictTypeMutation) {
+		m.oldValue = func(context.Context) (*SysDictType, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysDictTypeMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysDictTypeMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysDictType entities.
+func (m *SysDictTypeMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysDictTypeMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysDictTypeMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysDictType.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysDictTypeMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysDictTypeMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysDictTypeMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[sysdicttype.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysDictTypeMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysDictTypeMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, sysdicttype.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysDictTypeMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysDictTypeMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysDictTypeMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[sysdicttype.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysDictTypeMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysDictTypeMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, sysdicttype.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysDictTypeMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysDictTypeMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysDictTypeMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[sysdicttype.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysDictTypeMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysDictTypeMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, sysdicttype.FieldDeleteAt)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SysDictTypeMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysDictTypeMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysDictTypeMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysDictTypeMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysDictTypeMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[sysdicttype.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysDictTypeMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysDictTypeMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, sysdicttype.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysDictTypeMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysDictTypeMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysDictTypeMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysDictTypeMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysDictTypeMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[sysdicttype.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysDictTypeMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysDictTypeMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, sysdicttype.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysDictTypeMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysDictTypeMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysDictTypeMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysDictTypeMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysDictTypeMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[sysdicttype.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysDictTypeMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysDictTypeMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, sysdicttype.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysDictTypeMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysDictTypeMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysDictTypeMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[sysdicttype.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysDictTypeMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysDictTypeMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, sysdicttype.FieldRemark)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysDictTypeMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysDictTypeMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysDictTypeMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysDictTypeMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysDictTypeMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[sysdicttype.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysDictTypeMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysDictTypeMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, sysdicttype.FieldStatus)
+}
+
+// SetDictName sets the "dict_name" field.
+func (m *SysDictTypeMutation) SetDictName(s string) {
+	m.dict_name = &s
+}
+
+// DictName returns the value of the "dict_name" field in the mutation.
+func (m *SysDictTypeMutation) DictName() (r string, exists bool) {
+	v := m.dict_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDictName returns the old "dict_name" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldDictName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDictName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDictName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDictName: %w", err)
+	}
+	return oldValue.DictName, nil
+}
+
+// ClearDictName clears the value of the "dict_name" field.
+func (m *SysDictTypeMutation) ClearDictName() {
+	m.dict_name = nil
+	m.clearedFields[sysdicttype.FieldDictName] = struct{}{}
+}
+
+// DictNameCleared returns if the "dict_name" field was cleared in this mutation.
+func (m *SysDictTypeMutation) DictNameCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldDictName]
+	return ok
+}
+
+// ResetDictName resets all changes to the "dict_name" field.
+func (m *SysDictTypeMutation) ResetDictName() {
+	m.dict_name = nil
+	delete(m.clearedFields, sysdicttype.FieldDictName)
+}
+
+// SetDictType sets the "dict_type" field.
+func (m *SysDictTypeMutation) SetDictType(s string) {
+	m.dict_type = &s
+}
+
+// DictType returns the value of the "dict_type" field in the mutation.
+func (m *SysDictTypeMutation) DictType() (r string, exists bool) {
+	v := m.dict_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDictType returns the old "dict_type" field's value of the SysDictType entity.
+// If the SysDictType object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDictTypeMutation) OldDictType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDictType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDictType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDictType: %w", err)
+	}
+	return oldValue.DictType, nil
+}
+
+// ClearDictType clears the value of the "dict_type" field.
+func (m *SysDictTypeMutation) ClearDictType() {
+	m.dict_type = nil
+	m.clearedFields[sysdicttype.FieldDictType] = struct{}{}
+}
+
+// DictTypeCleared returns if the "dict_type" field was cleared in this mutation.
+func (m *SysDictTypeMutation) DictTypeCleared() bool {
+	_, ok := m.clearedFields[sysdicttype.FieldDictType]
+	return ok
+}
+
+// ResetDictType resets all changes to the "dict_type" field.
+func (m *SysDictTypeMutation) ResetDictType() {
+	m.dict_type = nil
+	delete(m.clearedFields, sysdicttype.FieldDictType)
+}
+
+// AddSysDictDataIDs adds the "sysDictDatas" edge to the SysDictData entity by ids.
+func (m *SysDictTypeMutation) AddSysDictDataIDs(ids ...int64) {
+	if m.sysDictDatas == nil {
+		m.sysDictDatas = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.sysDictDatas[ids[i]] = struct{}{}
+	}
+}
+
+// ClearSysDictDatas clears the "sysDictDatas" edge to the SysDictData entity.
+func (m *SysDictTypeMutation) ClearSysDictDatas() {
+	m.clearedsysDictDatas = true
+}
+
+// SysDictDatasCleared reports if the "sysDictDatas" edge to the SysDictData entity was cleared.
+func (m *SysDictTypeMutation) SysDictDatasCleared() bool {
+	return m.clearedsysDictDatas
+}
+
+// RemoveSysDictDataIDs removes the "sysDictDatas" edge to the SysDictData entity by IDs.
+func (m *SysDictTypeMutation) RemoveSysDictDataIDs(ids ...int64) {
+	if m.removedsysDictDatas == nil {
+		m.removedsysDictDatas = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.sysDictDatas, ids[i])
+		m.removedsysDictDatas[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedSysDictDatas returns the removed IDs of the "sysDictDatas" edge to the SysDictData entity.
+func (m *SysDictTypeMutation) RemovedSysDictDatasIDs() (ids []int64) {
+	for id := range m.removedsysDictDatas {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// SysDictDatasIDs returns the "sysDictDatas" edge IDs in the mutation.
+func (m *SysDictTypeMutation) SysDictDatasIDs() (ids []int64) {
+	for id := range m.sysDictDatas {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetSysDictDatas resets all changes to the "sysDictDatas" edge.
+func (m *SysDictTypeMutation) ResetSysDictDatas() {
+	m.sysDictDatas = nil
+	m.clearedsysDictDatas = false
+	m.removedsysDictDatas = nil
+}
+
+// Where appends a list predicates to the SysDictTypeMutation builder.
+func (m *SysDictTypeMutation) Where(ps ...predicate.SysDictType) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysDictTypeMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysDictTypeMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysDictType, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysDictTypeMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysDictTypeMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysDictType).
+func (m *SysDictTypeMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysDictTypeMutation) Fields() []string {
+	fields := make([]string, 0, 10)
+	if m.created_at != nil {
+		fields = append(fields, sysdicttype.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, sysdicttype.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, sysdicttype.FieldDeleteAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, sysdicttype.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, sysdicttype.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, sysdicttype.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, sysdicttype.FieldRemark)
+	}
+	if m.status != nil {
+		fields = append(fields, sysdicttype.FieldStatus)
+	}
+	if m.dict_name != nil {
+		fields = append(fields, sysdicttype.FieldDictName)
+	}
+	if m.dict_type != nil {
+		fields = append(fields, sysdicttype.FieldDictType)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysDictTypeMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysdicttype.FieldCreatedAt:
+		return m.CreatedAt()
+	case sysdicttype.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case sysdicttype.FieldDeleteAt:
+		return m.DeleteAt()
+	case sysdicttype.FieldCreatedBy:
+		return m.CreatedBy()
+	case sysdicttype.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case sysdicttype.FieldDeleteBy:
+		return m.DeleteBy()
+	case sysdicttype.FieldRemark:
+		return m.Remark()
+	case sysdicttype.FieldStatus:
+		return m.Status()
+	case sysdicttype.FieldDictName:
+		return m.DictName()
+	case sysdicttype.FieldDictType:
+		return m.DictType()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysDictTypeMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysdicttype.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case sysdicttype.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case sysdicttype.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case sysdicttype.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case sysdicttype.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case sysdicttype.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case sysdicttype.FieldRemark:
+		return m.OldRemark(ctx)
+	case sysdicttype.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysdicttype.FieldDictName:
+		return m.OldDictName(ctx)
+	case sysdicttype.FieldDictType:
+		return m.OldDictType(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysDictType field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDictTypeMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysdicttype.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case sysdicttype.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case sysdicttype.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case sysdicttype.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case sysdicttype.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case sysdicttype.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case sysdicttype.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case sysdicttype.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysdicttype.FieldDictName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDictName(v)
+		return nil
+	case sysdicttype.FieldDictType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDictType(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictType field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysDictTypeMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, sysdicttype.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, sysdicttype.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, sysdicttype.FieldDeleteBy)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysdicttype.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysDictTypeMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysdicttype.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case sysdicttype.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case sysdicttype.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case sysdicttype.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysDictTypeMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysdicttype.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case sysdicttype.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case sysdicttype.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case sysdicttype.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictType numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysDictTypeMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysdicttype.FieldCreatedAt) {
+		fields = append(fields, sysdicttype.FieldCreatedAt)
+	}
+	if m.FieldCleared(sysdicttype.FieldUpdatedAt) {
+		fields = append(fields, sysdicttype.FieldUpdatedAt)
+	}
+	if m.FieldCleared(sysdicttype.FieldDeleteAt) {
+		fields = append(fields, sysdicttype.FieldDeleteAt)
+	}
+	if m.FieldCleared(sysdicttype.FieldCreatedBy) {
+		fields = append(fields, sysdicttype.FieldCreatedBy)
+	}
+	if m.FieldCleared(sysdicttype.FieldUpdatedBy) {
+		fields = append(fields, sysdicttype.FieldUpdatedBy)
+	}
+	if m.FieldCleared(sysdicttype.FieldDeleteBy) {
+		fields = append(fields, sysdicttype.FieldDeleteBy)
+	}
+	if m.FieldCleared(sysdicttype.FieldRemark) {
+		fields = append(fields, sysdicttype.FieldRemark)
+	}
+	if m.FieldCleared(sysdicttype.FieldStatus) {
+		fields = append(fields, sysdicttype.FieldStatus)
+	}
+	if m.FieldCleared(sysdicttype.FieldDictName) {
+		fields = append(fields, sysdicttype.FieldDictName)
+	}
+	if m.FieldCleared(sysdicttype.FieldDictType) {
+		fields = append(fields, sysdicttype.FieldDictType)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysDictTypeMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysDictTypeMutation) ClearField(name string) error {
+	switch name {
+	case sysdicttype.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case sysdicttype.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case sysdicttype.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case sysdicttype.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case sysdicttype.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case sysdicttype.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case sysdicttype.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case sysdicttype.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case sysdicttype.FieldDictName:
+		m.ClearDictName()
+		return nil
+	case sysdicttype.FieldDictType:
+		m.ClearDictType()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictType nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysDictTypeMutation) ResetField(name string) error {
+	switch name {
+	case sysdicttype.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case sysdicttype.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case sysdicttype.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case sysdicttype.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case sysdicttype.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case sysdicttype.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case sysdicttype.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case sysdicttype.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysdicttype.FieldDictName:
+		m.ResetDictName()
+		return nil
+	case sysdicttype.FieldDictType:
+		m.ResetDictType()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictType field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysDictTypeMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.sysDictDatas != nil {
+		edges = append(edges, sysdicttype.EdgeSysDictDatas)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysDictTypeMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysdicttype.EdgeSysDictDatas:
+		ids := make([]ent.Value, 0, len(m.sysDictDatas))
+		for id := range m.sysDictDatas {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysDictTypeMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removedsysDictDatas != nil {
+		edges = append(edges, sysdicttype.EdgeSysDictDatas)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysDictTypeMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sysdicttype.EdgeSysDictDatas:
+		ids := make([]ent.Value, 0, len(m.removedsysDictDatas))
+		for id := range m.removedsysDictDatas {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysDictTypeMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedsysDictDatas {
+		edges = append(edges, sysdicttype.EdgeSysDictDatas)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysDictTypeMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysdicttype.EdgeSysDictDatas:
+		return m.clearedsysDictDatas
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysDictTypeMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysDictType unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysDictTypeMutation) ResetEdge(name string) error {
+	switch name {
+	case sysdicttype.EdgeSysDictDatas:
+		m.ResetSysDictDatas()
+		return nil
+	}
+	return fmt.Errorf("unknown SysDictType edge %s", name)
+}
+
+// SysLoginLogMutation represents an operation that mutates the SysLoginLog nodes in the graph.
+type SysLoginLogMutation struct {
+	config
+	op             Op
+	typ            string
+	id             *int64
+	status         *int8
+	addstatus      *int8
+	login_name     *string
+	ip_addr        *string
+	login_location *string
+	browser        *string
+	os             *string
+	msg            *string
+	login_time     *time.Time
+	module         *string
+	clearedFields  map[string]struct{}
+	done           bool
+	oldValue       func(context.Context) (*SysLoginLog, error)
+	predicates     []predicate.SysLoginLog
+}
+
+var _ ent.Mutation = (*SysLoginLogMutation)(nil)
+
+// sysloginlogOption allows management of the mutation configuration using functional options.
+type sysloginlogOption func(*SysLoginLogMutation)
+
+// newSysLoginLogMutation creates new mutation for the SysLoginLog entity.
+func newSysLoginLogMutation(c config, op Op, opts ...sysloginlogOption) *SysLoginLogMutation {
+	m := &SysLoginLogMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysLoginLog,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysLoginLogID sets the ID field of the mutation.
+func withSysLoginLogID(id int64) sysloginlogOption {
+	return func(m *SysLoginLogMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysLoginLog
+		)
+		m.oldValue = func(ctx context.Context) (*SysLoginLog, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysLoginLog.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysLoginLog sets the old SysLoginLog of the mutation.
+func withSysLoginLog(node *SysLoginLog) sysloginlogOption {
+	return func(m *SysLoginLogMutation) {
+		m.oldValue = func(context.Context) (*SysLoginLog, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysLoginLogMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysLoginLogMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysLoginLog entities.
+func (m *SysLoginLogMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysLoginLogMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysLoginLogMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysLoginLog.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetStatus sets the "status" field.
+func (m *SysLoginLogMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysLoginLogMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysLoginLogMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysLoginLogMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysLoginLogMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[sysloginlog.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysLoginLogMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysLoginLogMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, sysloginlog.FieldStatus)
+}
+
+// SetLoginName sets the "login_name" field.
+func (m *SysLoginLogMutation) SetLoginName(s string) {
+	m.login_name = &s
+}
+
+// LoginName returns the value of the "login_name" field in the mutation.
+func (m *SysLoginLogMutation) LoginName() (r string, exists bool) {
+	v := m.login_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLoginName returns the old "login_name" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldLoginName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLoginName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLoginName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLoginName: %w", err)
+	}
+	return oldValue.LoginName, nil
+}
+
+// ClearLoginName clears the value of the "login_name" field.
+func (m *SysLoginLogMutation) ClearLoginName() {
+	m.login_name = nil
+	m.clearedFields[sysloginlog.FieldLoginName] = struct{}{}
+}
+
+// LoginNameCleared returns if the "login_name" field was cleared in this mutation.
+func (m *SysLoginLogMutation) LoginNameCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldLoginName]
+	return ok
+}
+
+// ResetLoginName resets all changes to the "login_name" field.
+func (m *SysLoginLogMutation) ResetLoginName() {
+	m.login_name = nil
+	delete(m.clearedFields, sysloginlog.FieldLoginName)
+}
+
+// SetIPAddr sets the "ip_addr" field.
+func (m *SysLoginLogMutation) SetIPAddr(s string) {
+	m.ip_addr = &s
+}
+
+// IPAddr returns the value of the "ip_addr" field in the mutation.
+func (m *SysLoginLogMutation) IPAddr() (r string, exists bool) {
+	v := m.ip_addr
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIPAddr returns the old "ip_addr" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldIPAddr(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIPAddr is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIPAddr requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIPAddr: %w", err)
+	}
+	return oldValue.IPAddr, nil
+}
+
+// ClearIPAddr clears the value of the "ip_addr" field.
+func (m *SysLoginLogMutation) ClearIPAddr() {
+	m.ip_addr = nil
+	m.clearedFields[sysloginlog.FieldIPAddr] = struct{}{}
+}
+
+// IPAddrCleared returns if the "ip_addr" field was cleared in this mutation.
+func (m *SysLoginLogMutation) IPAddrCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldIPAddr]
+	return ok
+}
+
+// ResetIPAddr resets all changes to the "ip_addr" field.
+func (m *SysLoginLogMutation) ResetIPAddr() {
+	m.ip_addr = nil
+	delete(m.clearedFields, sysloginlog.FieldIPAddr)
+}
+
+// SetLoginLocation sets the "login_location" field.
+func (m *SysLoginLogMutation) SetLoginLocation(s string) {
+	m.login_location = &s
+}
+
+// LoginLocation returns the value of the "login_location" field in the mutation.
+func (m *SysLoginLogMutation) LoginLocation() (r string, exists bool) {
+	v := m.login_location
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLoginLocation returns the old "login_location" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldLoginLocation(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLoginLocation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLoginLocation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLoginLocation: %w", err)
+	}
+	return oldValue.LoginLocation, nil
+}
+
+// ClearLoginLocation clears the value of the "login_location" field.
+func (m *SysLoginLogMutation) ClearLoginLocation() {
+	m.login_location = nil
+	m.clearedFields[sysloginlog.FieldLoginLocation] = struct{}{}
+}
+
+// LoginLocationCleared returns if the "login_location" field was cleared in this mutation.
+func (m *SysLoginLogMutation) LoginLocationCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldLoginLocation]
+	return ok
+}
+
+// ResetLoginLocation resets all changes to the "login_location" field.
+func (m *SysLoginLogMutation) ResetLoginLocation() {
+	m.login_location = nil
+	delete(m.clearedFields, sysloginlog.FieldLoginLocation)
+}
+
+// SetBrowser sets the "browser" field.
+func (m *SysLoginLogMutation) SetBrowser(s string) {
+	m.browser = &s
+}
+
+// Browser returns the value of the "browser" field in the mutation.
+func (m *SysLoginLogMutation) Browser() (r string, exists bool) {
+	v := m.browser
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBrowser returns the old "browser" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldBrowser(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBrowser is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBrowser requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBrowser: %w", err)
+	}
+	return oldValue.Browser, nil
+}
+
+// ClearBrowser clears the value of the "browser" field.
+func (m *SysLoginLogMutation) ClearBrowser() {
+	m.browser = nil
+	m.clearedFields[sysloginlog.FieldBrowser] = struct{}{}
+}
+
+// BrowserCleared returns if the "browser" field was cleared in this mutation.
+func (m *SysLoginLogMutation) BrowserCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldBrowser]
+	return ok
+}
+
+// ResetBrowser resets all changes to the "browser" field.
+func (m *SysLoginLogMutation) ResetBrowser() {
+	m.browser = nil
+	delete(m.clearedFields, sysloginlog.FieldBrowser)
+}
+
+// SetOs sets the "os" field.
+func (m *SysLoginLogMutation) SetOs(s string) {
+	m.os = &s
+}
+
+// Os returns the value of the "os" field in the mutation.
+func (m *SysLoginLogMutation) Os() (r string, exists bool) {
+	v := m.os
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOs returns the old "os" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldOs(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOs: %w", err)
+	}
+	return oldValue.Os, nil
+}
+
+// ClearOs clears the value of the "os" field.
+func (m *SysLoginLogMutation) ClearOs() {
+	m.os = nil
+	m.clearedFields[sysloginlog.FieldOs] = struct{}{}
+}
+
+// OsCleared returns if the "os" field was cleared in this mutation.
+func (m *SysLoginLogMutation) OsCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldOs]
+	return ok
+}
+
+// ResetOs resets all changes to the "os" field.
+func (m *SysLoginLogMutation) ResetOs() {
+	m.os = nil
+	delete(m.clearedFields, sysloginlog.FieldOs)
+}
+
+// SetMsg sets the "msg" field.
+func (m *SysLoginLogMutation) SetMsg(s string) {
+	m.msg = &s
+}
+
+// Msg returns the value of the "msg" field in the mutation.
+func (m *SysLoginLogMutation) Msg() (r string, exists bool) {
+	v := m.msg
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMsg returns the old "msg" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldMsg(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMsg is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMsg requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMsg: %w", err)
+	}
+	return oldValue.Msg, nil
+}
+
+// ClearMsg clears the value of the "msg" field.
+func (m *SysLoginLogMutation) ClearMsg() {
+	m.msg = nil
+	m.clearedFields[sysloginlog.FieldMsg] = struct{}{}
+}
+
+// MsgCleared returns if the "msg" field was cleared in this mutation.
+func (m *SysLoginLogMutation) MsgCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldMsg]
+	return ok
+}
+
+// ResetMsg resets all changes to the "msg" field.
+func (m *SysLoginLogMutation) ResetMsg() {
+	m.msg = nil
+	delete(m.clearedFields, sysloginlog.FieldMsg)
+}
+
+// SetLoginTime sets the "login_time" field.
+func (m *SysLoginLogMutation) SetLoginTime(t time.Time) {
+	m.login_time = &t
+}
+
+// LoginTime returns the value of the "login_time" field in the mutation.
+func (m *SysLoginLogMutation) LoginTime() (r time.Time, exists bool) {
+	v := m.login_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLoginTime returns the old "login_time" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldLoginTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLoginTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLoginTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLoginTime: %w", err)
+	}
+	return oldValue.LoginTime, nil
+}
+
+// ClearLoginTime clears the value of the "login_time" field.
+func (m *SysLoginLogMutation) ClearLoginTime() {
+	m.login_time = nil
+	m.clearedFields[sysloginlog.FieldLoginTime] = struct{}{}
+}
+
+// LoginTimeCleared returns if the "login_time" field was cleared in this mutation.
+func (m *SysLoginLogMutation) LoginTimeCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldLoginTime]
+	return ok
+}
+
+// ResetLoginTime resets all changes to the "login_time" field.
+func (m *SysLoginLogMutation) ResetLoginTime() {
+	m.login_time = nil
+	delete(m.clearedFields, sysloginlog.FieldLoginTime)
+}
+
+// SetModule sets the "module" field.
+func (m *SysLoginLogMutation) SetModule(s string) {
+	m.module = &s
+}
+
+// Module returns the value of the "module" field in the mutation.
+func (m *SysLoginLogMutation) Module() (r string, exists bool) {
+	v := m.module
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldModule returns the old "module" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldModule(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldModule is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldModule requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldModule: %w", err)
+	}
+	return oldValue.Module, nil
+}
+
+// ClearModule clears the value of the "module" field.
+func (m *SysLoginLogMutation) ClearModule() {
+	m.module = nil
+	m.clearedFields[sysloginlog.FieldModule] = struct{}{}
+}
+
+// ModuleCleared returns if the "module" field was cleared in this mutation.
+func (m *SysLoginLogMutation) ModuleCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldModule]
+	return ok
+}
+
+// ResetModule resets all changes to the "module" field.
+func (m *SysLoginLogMutation) ResetModule() {
+	m.module = nil
+	delete(m.clearedFields, sysloginlog.FieldModule)
+}
+
+// Where appends a list predicates to the SysLoginLogMutation builder.
+func (m *SysLoginLogMutation) Where(ps ...predicate.SysLoginLog) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysLoginLogMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysLoginLogMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysLoginLog, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysLoginLogMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysLoginLogMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysLoginLog).
+func (m *SysLoginLogMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysLoginLogMutation) Fields() []string {
+	fields := make([]string, 0, 9)
+	if m.status != nil {
+		fields = append(fields, sysloginlog.FieldStatus)
+	}
+	if m.login_name != nil {
+		fields = append(fields, sysloginlog.FieldLoginName)
+	}
+	if m.ip_addr != nil {
+		fields = append(fields, sysloginlog.FieldIPAddr)
+	}
+	if m.login_location != nil {
+		fields = append(fields, sysloginlog.FieldLoginLocation)
+	}
+	if m.browser != nil {
+		fields = append(fields, sysloginlog.FieldBrowser)
+	}
+	if m.os != nil {
+		fields = append(fields, sysloginlog.FieldOs)
+	}
+	if m.msg != nil {
+		fields = append(fields, sysloginlog.FieldMsg)
+	}
+	if m.login_time != nil {
+		fields = append(fields, sysloginlog.FieldLoginTime)
+	}
+	if m.module != nil {
+		fields = append(fields, sysloginlog.FieldModule)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysLoginLogMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysloginlog.FieldStatus:
+		return m.Status()
+	case sysloginlog.FieldLoginName:
+		return m.LoginName()
+	case sysloginlog.FieldIPAddr:
+		return m.IPAddr()
+	case sysloginlog.FieldLoginLocation:
+		return m.LoginLocation()
+	case sysloginlog.FieldBrowser:
+		return m.Browser()
+	case sysloginlog.FieldOs:
+		return m.Os()
+	case sysloginlog.FieldMsg:
+		return m.Msg()
+	case sysloginlog.FieldLoginTime:
+		return m.LoginTime()
+	case sysloginlog.FieldModule:
+		return m.Module()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysLoginLogMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysloginlog.FieldStatus:
+		return m.OldStatus(ctx)
+	case sysloginlog.FieldLoginName:
+		return m.OldLoginName(ctx)
+	case sysloginlog.FieldIPAddr:
+		return m.OldIPAddr(ctx)
+	case sysloginlog.FieldLoginLocation:
+		return m.OldLoginLocation(ctx)
+	case sysloginlog.FieldBrowser:
+		return m.OldBrowser(ctx)
+	case sysloginlog.FieldOs:
+		return m.OldOs(ctx)
+	case sysloginlog.FieldMsg:
+		return m.OldMsg(ctx)
+	case sysloginlog.FieldLoginTime:
+		return m.OldLoginTime(ctx)
+	case sysloginlog.FieldModule:
+		return m.OldModule(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysLoginLog field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysLoginLogMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysloginlog.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case sysloginlog.FieldLoginName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLoginName(v)
+		return nil
+	case sysloginlog.FieldIPAddr:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIPAddr(v)
+		return nil
+	case sysloginlog.FieldLoginLocation:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLoginLocation(v)
+		return nil
+	case sysloginlog.FieldBrowser:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBrowser(v)
+		return nil
+	case sysloginlog.FieldOs:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOs(v)
+		return nil
+	case sysloginlog.FieldMsg:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMsg(v)
+		return nil
+	case sysloginlog.FieldLoginTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLoginTime(v)
+		return nil
+	case sysloginlog.FieldModule:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetModule(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysLoginLog field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysLoginLogMutation) AddedFields() []string {
+	var fields []string
+	if m.addstatus != nil {
+		fields = append(fields, sysloginlog.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysLoginLogMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysloginlog.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysLoginLogMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysloginlog.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysLoginLog numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysLoginLogMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysloginlog.FieldStatus) {
+		fields = append(fields, sysloginlog.FieldStatus)
+	}
+	if m.FieldCleared(sysloginlog.FieldLoginName) {
+		fields = append(fields, sysloginlog.FieldLoginName)
+	}
+	if m.FieldCleared(sysloginlog.FieldIPAddr) {
+		fields = append(fields, sysloginlog.FieldIPAddr)
+	}
+	if m.FieldCleared(sysloginlog.FieldLoginLocation) {
+		fields = append(fields, sysloginlog.FieldLoginLocation)
+	}
+	if m.FieldCleared(sysloginlog.FieldBrowser) {
+		fields = append(fields, sysloginlog.FieldBrowser)
+	}
+	if m.FieldCleared(sysloginlog.FieldOs) {
+		fields = append(fields, sysloginlog.FieldOs)
+	}
+	if m.FieldCleared(sysloginlog.FieldMsg) {
+		fields = append(fields, sysloginlog.FieldMsg)
+	}
+	if m.FieldCleared(sysloginlog.FieldLoginTime) {
+		fields = append(fields, sysloginlog.FieldLoginTime)
+	}
+	if m.FieldCleared(sysloginlog.FieldModule) {
+		fields = append(fields, sysloginlog.FieldModule)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysLoginLogMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysLoginLogMutation) ClearField(name string) error {
+	switch name {
+	case sysloginlog.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case sysloginlog.FieldLoginName:
+		m.ClearLoginName()
+		return nil
+	case sysloginlog.FieldIPAddr:
+		m.ClearIPAddr()
+		return nil
+	case sysloginlog.FieldLoginLocation:
+		m.ClearLoginLocation()
+		return nil
+	case sysloginlog.FieldBrowser:
+		m.ClearBrowser()
+		return nil
+	case sysloginlog.FieldOs:
+		m.ClearOs()
+		return nil
+	case sysloginlog.FieldMsg:
+		m.ClearMsg()
+		return nil
+	case sysloginlog.FieldLoginTime:
+		m.ClearLoginTime()
+		return nil
+	case sysloginlog.FieldModule:
+		m.ClearModule()
+		return nil
+	}
+	return fmt.Errorf("unknown SysLoginLog nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysLoginLogMutation) ResetField(name string) error {
+	switch name {
+	case sysloginlog.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case sysloginlog.FieldLoginName:
+		m.ResetLoginName()
+		return nil
+	case sysloginlog.FieldIPAddr:
+		m.ResetIPAddr()
+		return nil
+	case sysloginlog.FieldLoginLocation:
+		m.ResetLoginLocation()
+		return nil
+	case sysloginlog.FieldBrowser:
+		m.ResetBrowser()
+		return nil
+	case sysloginlog.FieldOs:
+		m.ResetOs()
+		return nil
+	case sysloginlog.FieldMsg:
+		m.ResetMsg()
+		return nil
+	case sysloginlog.FieldLoginTime:
+		m.ResetLoginTime()
+		return nil
+	case sysloginlog.FieldModule:
+		m.ResetModule()
+		return nil
+	}
+	return fmt.Errorf("unknown SysLoginLog field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysLoginLogMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysLoginLogMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysLoginLogMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysLoginLogMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysLoginLogMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysLoginLogMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysLoginLogMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysLoginLog unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysLoginLogMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysLoginLog edge %s", name)
+}
 
 // SysMenuMutation represents an operation that mutates the SysMenu nodes in the graph.
 type SysMenuMutation struct {
@@ -2207,6 +9092,2657 @@ func (m *SysMenuMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown SysMenu edge %s", name)
 }
 
+// SysOperLogMutation represents an operation that mutates the SysOperLog nodes in the graph.
+type SysOperLogMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *int64
+	title            *string
+	business_type    *int
+	addbusiness_type *int
+	method           *string
+	request_method   *string
+	oper_type        *int8
+	addoper_type     *int8
+	oper_name        *string
+	dept_name        *string
+	oper_url         *string
+	oper_ip          *string
+	oper_location    *string
+	oper_param       *string
+	error_msg        *string
+	oper_time        *time.Time
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*SysOperLog, error)
+	predicates       []predicate.SysOperLog
+}
+
+var _ ent.Mutation = (*SysOperLogMutation)(nil)
+
+// sysoperlogOption allows management of the mutation configuration using functional options.
+type sysoperlogOption func(*SysOperLogMutation)
+
+// newSysOperLogMutation creates new mutation for the SysOperLog entity.
+func newSysOperLogMutation(c config, op Op, opts ...sysoperlogOption) *SysOperLogMutation {
+	m := &SysOperLogMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysOperLog,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysOperLogID sets the ID field of the mutation.
+func withSysOperLogID(id int64) sysoperlogOption {
+	return func(m *SysOperLogMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysOperLog
+		)
+		m.oldValue = func(ctx context.Context) (*SysOperLog, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysOperLog.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysOperLog sets the old SysOperLog of the mutation.
+func withSysOperLog(node *SysOperLog) sysoperlogOption {
+	return func(m *SysOperLogMutation) {
+		m.oldValue = func(context.Context) (*SysOperLog, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysOperLogMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysOperLogMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysOperLog entities.
+func (m *SysOperLogMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysOperLogMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysOperLogMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysOperLog.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetTitle sets the "title" field.
+func (m *SysOperLogMutation) SetTitle(s string) {
+	m.title = &s
+}
+
+// Title returns the value of the "title" field in the mutation.
+func (m *SysOperLogMutation) Title() (r string, exists bool) {
+	v := m.title
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTitle returns the old "title" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldTitle(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTitle requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
+	}
+	return oldValue.Title, nil
+}
+
+// ClearTitle clears the value of the "title" field.
+func (m *SysOperLogMutation) ClearTitle() {
+	m.title = nil
+	m.clearedFields[sysoperlog.FieldTitle] = struct{}{}
+}
+
+// TitleCleared returns if the "title" field was cleared in this mutation.
+func (m *SysOperLogMutation) TitleCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldTitle]
+	return ok
+}
+
+// ResetTitle resets all changes to the "title" field.
+func (m *SysOperLogMutation) ResetTitle() {
+	m.title = nil
+	delete(m.clearedFields, sysoperlog.FieldTitle)
+}
+
+// SetBusinessType sets the "business_type" field.
+func (m *SysOperLogMutation) SetBusinessType(i int) {
+	m.business_type = &i
+	m.addbusiness_type = nil
+}
+
+// BusinessType returns the value of the "business_type" field in the mutation.
+func (m *SysOperLogMutation) BusinessType() (r int, exists bool) {
+	v := m.business_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBusinessType returns the old "business_type" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldBusinessType(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBusinessType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBusinessType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBusinessType: %w", err)
+	}
+	return oldValue.BusinessType, nil
+}
+
+// AddBusinessType adds i to the "business_type" field.
+func (m *SysOperLogMutation) AddBusinessType(i int) {
+	if m.addbusiness_type != nil {
+		*m.addbusiness_type += i
+	} else {
+		m.addbusiness_type = &i
+	}
+}
+
+// AddedBusinessType returns the value that was added to the "business_type" field in this mutation.
+func (m *SysOperLogMutation) AddedBusinessType() (r int, exists bool) {
+	v := m.addbusiness_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearBusinessType clears the value of the "business_type" field.
+func (m *SysOperLogMutation) ClearBusinessType() {
+	m.business_type = nil
+	m.addbusiness_type = nil
+	m.clearedFields[sysoperlog.FieldBusinessType] = struct{}{}
+}
+
+// BusinessTypeCleared returns if the "business_type" field was cleared in this mutation.
+func (m *SysOperLogMutation) BusinessTypeCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldBusinessType]
+	return ok
+}
+
+// ResetBusinessType resets all changes to the "business_type" field.
+func (m *SysOperLogMutation) ResetBusinessType() {
+	m.business_type = nil
+	m.addbusiness_type = nil
+	delete(m.clearedFields, sysoperlog.FieldBusinessType)
+}
+
+// SetMethod sets the "method" field.
+func (m *SysOperLogMutation) SetMethod(s string) {
+	m.method = &s
+}
+
+// Method returns the value of the "method" field in the mutation.
+func (m *SysOperLogMutation) Method() (r string, exists bool) {
+	v := m.method
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMethod returns the old "method" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldMethod(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMethod is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMethod requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMethod: %w", err)
+	}
+	return oldValue.Method, nil
+}
+
+// ClearMethod clears the value of the "method" field.
+func (m *SysOperLogMutation) ClearMethod() {
+	m.method = nil
+	m.clearedFields[sysoperlog.FieldMethod] = struct{}{}
+}
+
+// MethodCleared returns if the "method" field was cleared in this mutation.
+func (m *SysOperLogMutation) MethodCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldMethod]
+	return ok
+}
+
+// ResetMethod resets all changes to the "method" field.
+func (m *SysOperLogMutation) ResetMethod() {
+	m.method = nil
+	delete(m.clearedFields, sysoperlog.FieldMethod)
+}
+
+// SetRequestMethod sets the "request_method" field.
+func (m *SysOperLogMutation) SetRequestMethod(s string) {
+	m.request_method = &s
+}
+
+// RequestMethod returns the value of the "request_method" field in the mutation.
+func (m *SysOperLogMutation) RequestMethod() (r string, exists bool) {
+	v := m.request_method
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRequestMethod returns the old "request_method" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldRequestMethod(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRequestMethod is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRequestMethod requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRequestMethod: %w", err)
+	}
+	return oldValue.RequestMethod, nil
+}
+
+// ClearRequestMethod clears the value of the "request_method" field.
+func (m *SysOperLogMutation) ClearRequestMethod() {
+	m.request_method = nil
+	m.clearedFields[sysoperlog.FieldRequestMethod] = struct{}{}
+}
+
+// RequestMethodCleared returns if the "request_method" field was cleared in this mutation.
+func (m *SysOperLogMutation) RequestMethodCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldRequestMethod]
+	return ok
+}
+
+// ResetRequestMethod resets all changes to the "request_method" field.
+func (m *SysOperLogMutation) ResetRequestMethod() {
+	m.request_method = nil
+	delete(m.clearedFields, sysoperlog.FieldRequestMethod)
+}
+
+// SetOperType sets the "oper_type" field.
+func (m *SysOperLogMutation) SetOperType(i int8) {
+	m.oper_type = &i
+	m.addoper_type = nil
+}
+
+// OperType returns the value of the "oper_type" field in the mutation.
+func (m *SysOperLogMutation) OperType() (r int8, exists bool) {
+	v := m.oper_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperType returns the old "oper_type" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperType(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperType: %w", err)
+	}
+	return oldValue.OperType, nil
+}
+
+// AddOperType adds i to the "oper_type" field.
+func (m *SysOperLogMutation) AddOperType(i int8) {
+	if m.addoper_type != nil {
+		*m.addoper_type += i
+	} else {
+		m.addoper_type = &i
+	}
+}
+
+// AddedOperType returns the value that was added to the "oper_type" field in this mutation.
+func (m *SysOperLogMutation) AddedOperType() (r int8, exists bool) {
+	v := m.addoper_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearOperType clears the value of the "oper_type" field.
+func (m *SysOperLogMutation) ClearOperType() {
+	m.oper_type = nil
+	m.addoper_type = nil
+	m.clearedFields[sysoperlog.FieldOperType] = struct{}{}
+}
+
+// OperTypeCleared returns if the "oper_type" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperTypeCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperType]
+	return ok
+}
+
+// ResetOperType resets all changes to the "oper_type" field.
+func (m *SysOperLogMutation) ResetOperType() {
+	m.oper_type = nil
+	m.addoper_type = nil
+	delete(m.clearedFields, sysoperlog.FieldOperType)
+}
+
+// SetOperName sets the "oper_name" field.
+func (m *SysOperLogMutation) SetOperName(s string) {
+	m.oper_name = &s
+}
+
+// OperName returns the value of the "oper_name" field in the mutation.
+func (m *SysOperLogMutation) OperName() (r string, exists bool) {
+	v := m.oper_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperName returns the old "oper_name" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperName: %w", err)
+	}
+	return oldValue.OperName, nil
+}
+
+// ClearOperName clears the value of the "oper_name" field.
+func (m *SysOperLogMutation) ClearOperName() {
+	m.oper_name = nil
+	m.clearedFields[sysoperlog.FieldOperName] = struct{}{}
+}
+
+// OperNameCleared returns if the "oper_name" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperNameCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperName]
+	return ok
+}
+
+// ResetOperName resets all changes to the "oper_name" field.
+func (m *SysOperLogMutation) ResetOperName() {
+	m.oper_name = nil
+	delete(m.clearedFields, sysoperlog.FieldOperName)
+}
+
+// SetDeptName sets the "dept_name" field.
+func (m *SysOperLogMutation) SetDeptName(s string) {
+	m.dept_name = &s
+}
+
+// DeptName returns the value of the "dept_name" field in the mutation.
+func (m *SysOperLogMutation) DeptName() (r string, exists bool) {
+	v := m.dept_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeptName returns the old "dept_name" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldDeptName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeptName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeptName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeptName: %w", err)
+	}
+	return oldValue.DeptName, nil
+}
+
+// ClearDeptName clears the value of the "dept_name" field.
+func (m *SysOperLogMutation) ClearDeptName() {
+	m.dept_name = nil
+	m.clearedFields[sysoperlog.FieldDeptName] = struct{}{}
+}
+
+// DeptNameCleared returns if the "dept_name" field was cleared in this mutation.
+func (m *SysOperLogMutation) DeptNameCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldDeptName]
+	return ok
+}
+
+// ResetDeptName resets all changes to the "dept_name" field.
+func (m *SysOperLogMutation) ResetDeptName() {
+	m.dept_name = nil
+	delete(m.clearedFields, sysoperlog.FieldDeptName)
+}
+
+// SetOperURL sets the "oper_url" field.
+func (m *SysOperLogMutation) SetOperURL(s string) {
+	m.oper_url = &s
+}
+
+// OperURL returns the value of the "oper_url" field in the mutation.
+func (m *SysOperLogMutation) OperURL() (r string, exists bool) {
+	v := m.oper_url
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperURL returns the old "oper_url" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperURL(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperURL is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperURL requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperURL: %w", err)
+	}
+	return oldValue.OperURL, nil
+}
+
+// ClearOperURL clears the value of the "oper_url" field.
+func (m *SysOperLogMutation) ClearOperURL() {
+	m.oper_url = nil
+	m.clearedFields[sysoperlog.FieldOperURL] = struct{}{}
+}
+
+// OperURLCleared returns if the "oper_url" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperURLCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperURL]
+	return ok
+}
+
+// ResetOperURL resets all changes to the "oper_url" field.
+func (m *SysOperLogMutation) ResetOperURL() {
+	m.oper_url = nil
+	delete(m.clearedFields, sysoperlog.FieldOperURL)
+}
+
+// SetOperIP sets the "oper_ip" field.
+func (m *SysOperLogMutation) SetOperIP(s string) {
+	m.oper_ip = &s
+}
+
+// OperIP returns the value of the "oper_ip" field in the mutation.
+func (m *SysOperLogMutation) OperIP() (r string, exists bool) {
+	v := m.oper_ip
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperIP returns the old "oper_ip" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperIP(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperIP is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperIP requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperIP: %w", err)
+	}
+	return oldValue.OperIP, nil
+}
+
+// ClearOperIP clears the value of the "oper_ip" field.
+func (m *SysOperLogMutation) ClearOperIP() {
+	m.oper_ip = nil
+	m.clearedFields[sysoperlog.FieldOperIP] = struct{}{}
+}
+
+// OperIPCleared returns if the "oper_ip" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperIPCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperIP]
+	return ok
+}
+
+// ResetOperIP resets all changes to the "oper_ip" field.
+func (m *SysOperLogMutation) ResetOperIP() {
+	m.oper_ip = nil
+	delete(m.clearedFields, sysoperlog.FieldOperIP)
+}
+
+// SetOperLocation sets the "oper_location" field.
+func (m *SysOperLogMutation) SetOperLocation(s string) {
+	m.oper_location = &s
+}
+
+// OperLocation returns the value of the "oper_location" field in the mutation.
+func (m *SysOperLogMutation) OperLocation() (r string, exists bool) {
+	v := m.oper_location
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperLocation returns the old "oper_location" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperLocation(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperLocation is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperLocation requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperLocation: %w", err)
+	}
+	return oldValue.OperLocation, nil
+}
+
+// ClearOperLocation clears the value of the "oper_location" field.
+func (m *SysOperLogMutation) ClearOperLocation() {
+	m.oper_location = nil
+	m.clearedFields[sysoperlog.FieldOperLocation] = struct{}{}
+}
+
+// OperLocationCleared returns if the "oper_location" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperLocationCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperLocation]
+	return ok
+}
+
+// ResetOperLocation resets all changes to the "oper_location" field.
+func (m *SysOperLogMutation) ResetOperLocation() {
+	m.oper_location = nil
+	delete(m.clearedFields, sysoperlog.FieldOperLocation)
+}
+
+// SetOperParam sets the "oper_param" field.
+func (m *SysOperLogMutation) SetOperParam(s string) {
+	m.oper_param = &s
+}
+
+// OperParam returns the value of the "oper_param" field in the mutation.
+func (m *SysOperLogMutation) OperParam() (r string, exists bool) {
+	v := m.oper_param
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperParam returns the old "oper_param" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperParam(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperParam is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperParam requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperParam: %w", err)
+	}
+	return oldValue.OperParam, nil
+}
+
+// ClearOperParam clears the value of the "oper_param" field.
+func (m *SysOperLogMutation) ClearOperParam() {
+	m.oper_param = nil
+	m.clearedFields[sysoperlog.FieldOperParam] = struct{}{}
+}
+
+// OperParamCleared returns if the "oper_param" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperParamCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperParam]
+	return ok
+}
+
+// ResetOperParam resets all changes to the "oper_param" field.
+func (m *SysOperLogMutation) ResetOperParam() {
+	m.oper_param = nil
+	delete(m.clearedFields, sysoperlog.FieldOperParam)
+}
+
+// SetErrorMsg sets the "error_msg" field.
+func (m *SysOperLogMutation) SetErrorMsg(s string) {
+	m.error_msg = &s
+}
+
+// ErrorMsg returns the value of the "error_msg" field in the mutation.
+func (m *SysOperLogMutation) ErrorMsg() (r string, exists bool) {
+	v := m.error_msg
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldErrorMsg returns the old "error_msg" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldErrorMsg(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldErrorMsg is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldErrorMsg requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldErrorMsg: %w", err)
+	}
+	return oldValue.ErrorMsg, nil
+}
+
+// ClearErrorMsg clears the value of the "error_msg" field.
+func (m *SysOperLogMutation) ClearErrorMsg() {
+	m.error_msg = nil
+	m.clearedFields[sysoperlog.FieldErrorMsg] = struct{}{}
+}
+
+// ErrorMsgCleared returns if the "error_msg" field was cleared in this mutation.
+func (m *SysOperLogMutation) ErrorMsgCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldErrorMsg]
+	return ok
+}
+
+// ResetErrorMsg resets all changes to the "error_msg" field.
+func (m *SysOperLogMutation) ResetErrorMsg() {
+	m.error_msg = nil
+	delete(m.clearedFields, sysoperlog.FieldErrorMsg)
+}
+
+// SetOperTime sets the "oper_time" field.
+func (m *SysOperLogMutation) SetOperTime(t time.Time) {
+	m.oper_time = &t
+}
+
+// OperTime returns the value of the "oper_time" field in the mutation.
+func (m *SysOperLogMutation) OperTime() (r time.Time, exists bool) {
+	v := m.oper_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperTime returns the old "oper_time" field's value of the SysOperLog entity.
+// If the SysOperLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysOperLogMutation) OldOperTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperTime: %w", err)
+	}
+	return oldValue.OperTime, nil
+}
+
+// ClearOperTime clears the value of the "oper_time" field.
+func (m *SysOperLogMutation) ClearOperTime() {
+	m.oper_time = nil
+	m.clearedFields[sysoperlog.FieldOperTime] = struct{}{}
+}
+
+// OperTimeCleared returns if the "oper_time" field was cleared in this mutation.
+func (m *SysOperLogMutation) OperTimeCleared() bool {
+	_, ok := m.clearedFields[sysoperlog.FieldOperTime]
+	return ok
+}
+
+// ResetOperTime resets all changes to the "oper_time" field.
+func (m *SysOperLogMutation) ResetOperTime() {
+	m.oper_time = nil
+	delete(m.clearedFields, sysoperlog.FieldOperTime)
+}
+
+// Where appends a list predicates to the SysOperLogMutation builder.
+func (m *SysOperLogMutation) Where(ps ...predicate.SysOperLog) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysOperLogMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysOperLogMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysOperLog, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysOperLogMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysOperLogMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysOperLog).
+func (m *SysOperLogMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysOperLogMutation) Fields() []string {
+	fields := make([]string, 0, 13)
+	if m.title != nil {
+		fields = append(fields, sysoperlog.FieldTitle)
+	}
+	if m.business_type != nil {
+		fields = append(fields, sysoperlog.FieldBusinessType)
+	}
+	if m.method != nil {
+		fields = append(fields, sysoperlog.FieldMethod)
+	}
+	if m.request_method != nil {
+		fields = append(fields, sysoperlog.FieldRequestMethod)
+	}
+	if m.oper_type != nil {
+		fields = append(fields, sysoperlog.FieldOperType)
+	}
+	if m.oper_name != nil {
+		fields = append(fields, sysoperlog.FieldOperName)
+	}
+	if m.dept_name != nil {
+		fields = append(fields, sysoperlog.FieldDeptName)
+	}
+	if m.oper_url != nil {
+		fields = append(fields, sysoperlog.FieldOperURL)
+	}
+	if m.oper_ip != nil {
+		fields = append(fields, sysoperlog.FieldOperIP)
+	}
+	if m.oper_location != nil {
+		fields = append(fields, sysoperlog.FieldOperLocation)
+	}
+	if m.oper_param != nil {
+		fields = append(fields, sysoperlog.FieldOperParam)
+	}
+	if m.error_msg != nil {
+		fields = append(fields, sysoperlog.FieldErrorMsg)
+	}
+	if m.oper_time != nil {
+		fields = append(fields, sysoperlog.FieldOperTime)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysOperLogMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysoperlog.FieldTitle:
+		return m.Title()
+	case sysoperlog.FieldBusinessType:
+		return m.BusinessType()
+	case sysoperlog.FieldMethod:
+		return m.Method()
+	case sysoperlog.FieldRequestMethod:
+		return m.RequestMethod()
+	case sysoperlog.FieldOperType:
+		return m.OperType()
+	case sysoperlog.FieldOperName:
+		return m.OperName()
+	case sysoperlog.FieldDeptName:
+		return m.DeptName()
+	case sysoperlog.FieldOperURL:
+		return m.OperURL()
+	case sysoperlog.FieldOperIP:
+		return m.OperIP()
+	case sysoperlog.FieldOperLocation:
+		return m.OperLocation()
+	case sysoperlog.FieldOperParam:
+		return m.OperParam()
+	case sysoperlog.FieldErrorMsg:
+		return m.ErrorMsg()
+	case sysoperlog.FieldOperTime:
+		return m.OperTime()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysOperLogMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysoperlog.FieldTitle:
+		return m.OldTitle(ctx)
+	case sysoperlog.FieldBusinessType:
+		return m.OldBusinessType(ctx)
+	case sysoperlog.FieldMethod:
+		return m.OldMethod(ctx)
+	case sysoperlog.FieldRequestMethod:
+		return m.OldRequestMethod(ctx)
+	case sysoperlog.FieldOperType:
+		return m.OldOperType(ctx)
+	case sysoperlog.FieldOperName:
+		return m.OldOperName(ctx)
+	case sysoperlog.FieldDeptName:
+		return m.OldDeptName(ctx)
+	case sysoperlog.FieldOperURL:
+		return m.OldOperURL(ctx)
+	case sysoperlog.FieldOperIP:
+		return m.OldOperIP(ctx)
+	case sysoperlog.FieldOperLocation:
+		return m.OldOperLocation(ctx)
+	case sysoperlog.FieldOperParam:
+		return m.OldOperParam(ctx)
+	case sysoperlog.FieldErrorMsg:
+		return m.OldErrorMsg(ctx)
+	case sysoperlog.FieldOperTime:
+		return m.OldOperTime(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysOperLog field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysOperLogMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysoperlog.FieldTitle:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTitle(v)
+		return nil
+	case sysoperlog.FieldBusinessType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBusinessType(v)
+		return nil
+	case sysoperlog.FieldMethod:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMethod(v)
+		return nil
+	case sysoperlog.FieldRequestMethod:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRequestMethod(v)
+		return nil
+	case sysoperlog.FieldOperType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperType(v)
+		return nil
+	case sysoperlog.FieldOperName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperName(v)
+		return nil
+	case sysoperlog.FieldDeptName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeptName(v)
+		return nil
+	case sysoperlog.FieldOperURL:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperURL(v)
+		return nil
+	case sysoperlog.FieldOperIP:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperIP(v)
+		return nil
+	case sysoperlog.FieldOperLocation:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperLocation(v)
+		return nil
+	case sysoperlog.FieldOperParam:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperParam(v)
+		return nil
+	case sysoperlog.FieldErrorMsg:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetErrorMsg(v)
+		return nil
+	case sysoperlog.FieldOperTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperTime(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysOperLog field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysOperLogMutation) AddedFields() []string {
+	var fields []string
+	if m.addbusiness_type != nil {
+		fields = append(fields, sysoperlog.FieldBusinessType)
+	}
+	if m.addoper_type != nil {
+		fields = append(fields, sysoperlog.FieldOperType)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysOperLogMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysoperlog.FieldBusinessType:
+		return m.AddedBusinessType()
+	case sysoperlog.FieldOperType:
+		return m.AddedOperType()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysOperLogMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysoperlog.FieldBusinessType:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBusinessType(v)
+		return nil
+	case sysoperlog.FieldOperType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOperType(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysOperLog numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysOperLogMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysoperlog.FieldTitle) {
+		fields = append(fields, sysoperlog.FieldTitle)
+	}
+	if m.FieldCleared(sysoperlog.FieldBusinessType) {
+		fields = append(fields, sysoperlog.FieldBusinessType)
+	}
+	if m.FieldCleared(sysoperlog.FieldMethod) {
+		fields = append(fields, sysoperlog.FieldMethod)
+	}
+	if m.FieldCleared(sysoperlog.FieldRequestMethod) {
+		fields = append(fields, sysoperlog.FieldRequestMethod)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperType) {
+		fields = append(fields, sysoperlog.FieldOperType)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperName) {
+		fields = append(fields, sysoperlog.FieldOperName)
+	}
+	if m.FieldCleared(sysoperlog.FieldDeptName) {
+		fields = append(fields, sysoperlog.FieldDeptName)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperURL) {
+		fields = append(fields, sysoperlog.FieldOperURL)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperIP) {
+		fields = append(fields, sysoperlog.FieldOperIP)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperLocation) {
+		fields = append(fields, sysoperlog.FieldOperLocation)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperParam) {
+		fields = append(fields, sysoperlog.FieldOperParam)
+	}
+	if m.FieldCleared(sysoperlog.FieldErrorMsg) {
+		fields = append(fields, sysoperlog.FieldErrorMsg)
+	}
+	if m.FieldCleared(sysoperlog.FieldOperTime) {
+		fields = append(fields, sysoperlog.FieldOperTime)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysOperLogMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysOperLogMutation) ClearField(name string) error {
+	switch name {
+	case sysoperlog.FieldTitle:
+		m.ClearTitle()
+		return nil
+	case sysoperlog.FieldBusinessType:
+		m.ClearBusinessType()
+		return nil
+	case sysoperlog.FieldMethod:
+		m.ClearMethod()
+		return nil
+	case sysoperlog.FieldRequestMethod:
+		m.ClearRequestMethod()
+		return nil
+	case sysoperlog.FieldOperType:
+		m.ClearOperType()
+		return nil
+	case sysoperlog.FieldOperName:
+		m.ClearOperName()
+		return nil
+	case sysoperlog.FieldDeptName:
+		m.ClearDeptName()
+		return nil
+	case sysoperlog.FieldOperURL:
+		m.ClearOperURL()
+		return nil
+	case sysoperlog.FieldOperIP:
+		m.ClearOperIP()
+		return nil
+	case sysoperlog.FieldOperLocation:
+		m.ClearOperLocation()
+		return nil
+	case sysoperlog.FieldOperParam:
+		m.ClearOperParam()
+		return nil
+	case sysoperlog.FieldErrorMsg:
+		m.ClearErrorMsg()
+		return nil
+	case sysoperlog.FieldOperTime:
+		m.ClearOperTime()
+		return nil
+	}
+	return fmt.Errorf("unknown SysOperLog nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysOperLogMutation) ResetField(name string) error {
+	switch name {
+	case sysoperlog.FieldTitle:
+		m.ResetTitle()
+		return nil
+	case sysoperlog.FieldBusinessType:
+		m.ResetBusinessType()
+		return nil
+	case sysoperlog.FieldMethod:
+		m.ResetMethod()
+		return nil
+	case sysoperlog.FieldRequestMethod:
+		m.ResetRequestMethod()
+		return nil
+	case sysoperlog.FieldOperType:
+		m.ResetOperType()
+		return nil
+	case sysoperlog.FieldOperName:
+		m.ResetOperName()
+		return nil
+	case sysoperlog.FieldDeptName:
+		m.ResetDeptName()
+		return nil
+	case sysoperlog.FieldOperURL:
+		m.ResetOperURL()
+		return nil
+	case sysoperlog.FieldOperIP:
+		m.ResetOperIP()
+		return nil
+	case sysoperlog.FieldOperLocation:
+		m.ResetOperLocation()
+		return nil
+	case sysoperlog.FieldOperParam:
+		m.ResetOperParam()
+		return nil
+	case sysoperlog.FieldErrorMsg:
+		m.ResetErrorMsg()
+		return nil
+	case sysoperlog.FieldOperTime:
+		m.ResetOperTime()
+		return nil
+	}
+	return fmt.Errorf("unknown SysOperLog field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysOperLogMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysOperLogMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysOperLogMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysOperLogMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysOperLogMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysOperLogMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysOperLogMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysOperLog unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysOperLogMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysOperLog edge %s", name)
+}
+
+// SysPostMutation represents an operation that mutates the SysPost nodes in the graph.
+type SysPostMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	delete_at     *time.Time
+	created_by    *int64
+	addcreated_by *int64
+	updated_by    *int64
+	addupdated_by *int64
+	delete_by     *int64
+	adddelete_by  *int64
+	remark        *string
+	status        *int8
+	addstatus     *int8
+	sort          *int
+	addsort       *int
+	post_code     *string
+	post_name     *string
+	clearedFields map[string]struct{}
+	users         map[int64]struct{}
+	removedusers  map[int64]struct{}
+	clearedusers  bool
+	done          bool
+	oldValue      func(context.Context) (*SysPost, error)
+	predicates    []predicate.SysPost
+}
+
+var _ ent.Mutation = (*SysPostMutation)(nil)
+
+// syspostOption allows management of the mutation configuration using functional options.
+type syspostOption func(*SysPostMutation)
+
+// newSysPostMutation creates new mutation for the SysPost entity.
+func newSysPostMutation(c config, op Op, opts ...syspostOption) *SysPostMutation {
+	m := &SysPostMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysPost,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysPostID sets the ID field of the mutation.
+func withSysPostID(id int64) syspostOption {
+	return func(m *SysPostMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysPost
+		)
+		m.oldValue = func(ctx context.Context) (*SysPost, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysPost.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysPost sets the old SysPost of the mutation.
+func withSysPost(node *SysPost) syspostOption {
+	return func(m *SysPostMutation) {
+		m.oldValue = func(context.Context) (*SysPost, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysPostMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysPostMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysPost entities.
+func (m *SysPostMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysPostMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysPostMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysPost.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SysPostMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SysPostMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (m *SysPostMutation) ClearCreatedAt() {
+	m.created_at = nil
+	m.clearedFields[syspost.FieldCreatedAt] = struct{}{}
+}
+
+// CreatedAtCleared returns if the "created_at" field was cleared in this mutation.
+func (m *SysPostMutation) CreatedAtCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldCreatedAt]
+	return ok
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SysPostMutation) ResetCreatedAt() {
+	m.created_at = nil
+	delete(m.clearedFields, syspost.FieldCreatedAt)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SysPostMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SysPostMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (m *SysPostMutation) ClearUpdatedAt() {
+	m.updated_at = nil
+	m.clearedFields[syspost.FieldUpdatedAt] = struct{}{}
+}
+
+// UpdatedAtCleared returns if the "updated_at" field was cleared in this mutation.
+func (m *SysPostMutation) UpdatedAtCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldUpdatedAt]
+	return ok
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SysPostMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	delete(m.clearedFields, syspost.FieldUpdatedAt)
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *SysPostMutation) SetDeleteAt(t time.Time) {
+	m.delete_at = &t
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *SysPostMutation) DeleteAt() (r time.Time, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldDeleteAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// ClearDeleteAt clears the value of the "delete_at" field.
+func (m *SysPostMutation) ClearDeleteAt() {
+	m.delete_at = nil
+	m.clearedFields[syspost.FieldDeleteAt] = struct{}{}
+}
+
+// DeleteAtCleared returns if the "delete_at" field was cleared in this mutation.
+func (m *SysPostMutation) DeleteAtCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldDeleteAt]
+	return ok
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *SysPostMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	delete(m.clearedFields, syspost.FieldDeleteAt)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SysPostMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysPostMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysPostMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysPostMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysPostMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[syspost.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysPostMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysPostMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, syspost.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysPostMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysPostMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysPostMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysPostMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysPostMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[syspost.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysPostMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysPostMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, syspost.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysPostMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysPostMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysPostMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysPostMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysPostMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[syspost.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysPostMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysPostMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, syspost.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *SysPostMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *SysPostMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *SysPostMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[syspost.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *SysPostMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *SysPostMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, syspost.FieldRemark)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysPostMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysPostMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysPostMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysPostMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *SysPostMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[syspost.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *SysPostMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysPostMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, syspost.FieldStatus)
+}
+
+// SetSort sets the "sort" field.
+func (m *SysPostMutation) SetSort(i int) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysPostMutation) Sort() (r int, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldSort(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysPostMutation) AddSort(i int) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysPostMutation) AddedSort() (r int, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSort clears the value of the "sort" field.
+func (m *SysPostMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[syspost.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SysPostMutation) SortCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldSort]
+	return ok
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysPostMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+	delete(m.clearedFields, syspost.FieldSort)
+}
+
+// SetPostCode sets the "post_code" field.
+func (m *SysPostMutation) SetPostCode(s string) {
+	m.post_code = &s
+}
+
+// PostCode returns the value of the "post_code" field in the mutation.
+func (m *SysPostMutation) PostCode() (r string, exists bool) {
+	v := m.post_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPostCode returns the old "post_code" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldPostCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPostCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPostCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPostCode: %w", err)
+	}
+	return oldValue.PostCode, nil
+}
+
+// ClearPostCode clears the value of the "post_code" field.
+func (m *SysPostMutation) ClearPostCode() {
+	m.post_code = nil
+	m.clearedFields[syspost.FieldPostCode] = struct{}{}
+}
+
+// PostCodeCleared returns if the "post_code" field was cleared in this mutation.
+func (m *SysPostMutation) PostCodeCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldPostCode]
+	return ok
+}
+
+// ResetPostCode resets all changes to the "post_code" field.
+func (m *SysPostMutation) ResetPostCode() {
+	m.post_code = nil
+	delete(m.clearedFields, syspost.FieldPostCode)
+}
+
+// SetPostName sets the "post_name" field.
+func (m *SysPostMutation) SetPostName(s string) {
+	m.post_name = &s
+}
+
+// PostName returns the value of the "post_name" field in the mutation.
+func (m *SysPostMutation) PostName() (r string, exists bool) {
+	v := m.post_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPostName returns the old "post_name" field's value of the SysPost entity.
+// If the SysPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysPostMutation) OldPostName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPostName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPostName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPostName: %w", err)
+	}
+	return oldValue.PostName, nil
+}
+
+// ClearPostName clears the value of the "post_name" field.
+func (m *SysPostMutation) ClearPostName() {
+	m.post_name = nil
+	m.clearedFields[syspost.FieldPostName] = struct{}{}
+}
+
+// PostNameCleared returns if the "post_name" field was cleared in this mutation.
+func (m *SysPostMutation) PostNameCleared() bool {
+	_, ok := m.clearedFields[syspost.FieldPostName]
+	return ok
+}
+
+// ResetPostName resets all changes to the "post_name" field.
+func (m *SysPostMutation) ResetPostName() {
+	m.post_name = nil
+	delete(m.clearedFields, syspost.FieldPostName)
+}
+
+// AddUserIDs adds the "users" edge to the SysUser entity by ids.
+func (m *SysPostMutation) AddUserIDs(ids ...int64) {
+	if m.users == nil {
+		m.users = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.users[ids[i]] = struct{}{}
+	}
+}
+
+// ClearUsers clears the "users" edge to the SysUser entity.
+func (m *SysPostMutation) ClearUsers() {
+	m.clearedusers = true
+}
+
+// UsersCleared reports if the "users" edge to the SysUser entity was cleared.
+func (m *SysPostMutation) UsersCleared() bool {
+	return m.clearedusers
+}
+
+// RemoveUserIDs removes the "users" edge to the SysUser entity by IDs.
+func (m *SysPostMutation) RemoveUserIDs(ids ...int64) {
+	if m.removedusers == nil {
+		m.removedusers = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.users, ids[i])
+		m.removedusers[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedUsers returns the removed IDs of the "users" edge to the SysUser entity.
+func (m *SysPostMutation) RemovedUsersIDs() (ids []int64) {
+	for id := range m.removedusers {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// UsersIDs returns the "users" edge IDs in the mutation.
+func (m *SysPostMutation) UsersIDs() (ids []int64) {
+	for id := range m.users {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetUsers resets all changes to the "users" edge.
+func (m *SysPostMutation) ResetUsers() {
+	m.users = nil
+	m.clearedusers = false
+	m.removedusers = nil
+}
+
+// Where appends a list predicates to the SysPostMutation builder.
+func (m *SysPostMutation) Where(ps ...predicate.SysPost) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysPostMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysPostMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysPost, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysPostMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysPostMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysPost).
+func (m *SysPostMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysPostMutation) Fields() []string {
+	fields := make([]string, 0, 11)
+	if m.created_at != nil {
+		fields = append(fields, syspost.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, syspost.FieldUpdatedAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, syspost.FieldDeleteAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, syspost.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, syspost.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, syspost.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, syspost.FieldRemark)
+	}
+	if m.status != nil {
+		fields = append(fields, syspost.FieldStatus)
+	}
+	if m.sort != nil {
+		fields = append(fields, syspost.FieldSort)
+	}
+	if m.post_code != nil {
+		fields = append(fields, syspost.FieldPostCode)
+	}
+	if m.post_name != nil {
+		fields = append(fields, syspost.FieldPostName)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysPostMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case syspost.FieldCreatedAt:
+		return m.CreatedAt()
+	case syspost.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case syspost.FieldDeleteAt:
+		return m.DeleteAt()
+	case syspost.FieldCreatedBy:
+		return m.CreatedBy()
+	case syspost.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case syspost.FieldDeleteBy:
+		return m.DeleteBy()
+	case syspost.FieldRemark:
+		return m.Remark()
+	case syspost.FieldStatus:
+		return m.Status()
+	case syspost.FieldSort:
+		return m.Sort()
+	case syspost.FieldPostCode:
+		return m.PostCode()
+	case syspost.FieldPostName:
+		return m.PostName()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysPostMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case syspost.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case syspost.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case syspost.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	case syspost.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case syspost.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case syspost.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case syspost.FieldRemark:
+		return m.OldRemark(ctx)
+	case syspost.FieldStatus:
+		return m.OldStatus(ctx)
+	case syspost.FieldSort:
+		return m.OldSort(ctx)
+	case syspost.FieldPostCode:
+		return m.OldPostCode(ctx)
+	case syspost.FieldPostName:
+		return m.OldPostName(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysPost field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysPostMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case syspost.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case syspost.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case syspost.FieldDeleteAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	case syspost.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case syspost.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case syspost.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case syspost.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case syspost.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	case syspost.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
+	case syspost.FieldPostCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPostCode(v)
+		return nil
+	case syspost.FieldPostName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPostName(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysPost field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysPostMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, syspost.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, syspost.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, syspost.FieldDeleteBy)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, syspost.FieldStatus)
+	}
+	if m.addsort != nil {
+		fields = append(fields, syspost.FieldSort)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysPostMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case syspost.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case syspost.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case syspost.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case syspost.FieldStatus:
+		return m.AddedStatus()
+	case syspost.FieldSort:
+		return m.AddedSort()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysPostMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case syspost.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case syspost.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case syspost.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case syspost.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case syspost.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysPost numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysPostMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(syspost.FieldCreatedAt) {
+		fields = append(fields, syspost.FieldCreatedAt)
+	}
+	if m.FieldCleared(syspost.FieldUpdatedAt) {
+		fields = append(fields, syspost.FieldUpdatedAt)
+	}
+	if m.FieldCleared(syspost.FieldDeleteAt) {
+		fields = append(fields, syspost.FieldDeleteAt)
+	}
+	if m.FieldCleared(syspost.FieldCreatedBy) {
+		fields = append(fields, syspost.FieldCreatedBy)
+	}
+	if m.FieldCleared(syspost.FieldUpdatedBy) {
+		fields = append(fields, syspost.FieldUpdatedBy)
+	}
+	if m.FieldCleared(syspost.FieldDeleteBy) {
+		fields = append(fields, syspost.FieldDeleteBy)
+	}
+	if m.FieldCleared(syspost.FieldRemark) {
+		fields = append(fields, syspost.FieldRemark)
+	}
+	if m.FieldCleared(syspost.FieldStatus) {
+		fields = append(fields, syspost.FieldStatus)
+	}
+	if m.FieldCleared(syspost.FieldSort) {
+		fields = append(fields, syspost.FieldSort)
+	}
+	if m.FieldCleared(syspost.FieldPostCode) {
+		fields = append(fields, syspost.FieldPostCode)
+	}
+	if m.FieldCleared(syspost.FieldPostName) {
+		fields = append(fields, syspost.FieldPostName)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysPostMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysPostMutation) ClearField(name string) error {
+	switch name {
+	case syspost.FieldCreatedAt:
+		m.ClearCreatedAt()
+		return nil
+	case syspost.FieldUpdatedAt:
+		m.ClearUpdatedAt()
+		return nil
+	case syspost.FieldDeleteAt:
+		m.ClearDeleteAt()
+		return nil
+	case syspost.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case syspost.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case syspost.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case syspost.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case syspost.FieldStatus:
+		m.ClearStatus()
+		return nil
+	case syspost.FieldSort:
+		m.ClearSort()
+		return nil
+	case syspost.FieldPostCode:
+		m.ClearPostCode()
+		return nil
+	case syspost.FieldPostName:
+		m.ClearPostName()
+		return nil
+	}
+	return fmt.Errorf("unknown SysPost nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysPostMutation) ResetField(name string) error {
+	switch name {
+	case syspost.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case syspost.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case syspost.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	case syspost.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case syspost.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case syspost.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case syspost.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case syspost.FieldStatus:
+		m.ResetStatus()
+		return nil
+	case syspost.FieldSort:
+		m.ResetSort()
+		return nil
+	case syspost.FieldPostCode:
+		m.ResetPostCode()
+		return nil
+	case syspost.FieldPostName:
+		m.ResetPostName()
+		return nil
+	}
+	return fmt.Errorf("unknown SysPost field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysPostMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.users != nil {
+		edges = append(edges, syspost.EdgeUsers)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysPostMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case syspost.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.users))
+		for id := range m.users {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysPostMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removedusers != nil {
+		edges = append(edges, syspost.EdgeUsers)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysPostMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case syspost.EdgeUsers:
+		ids := make([]ent.Value, 0, len(m.removedusers))
+		for id := range m.removedusers {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysPostMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedusers {
+		edges = append(edges, syspost.EdgeUsers)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysPostMutation) EdgeCleared(name string) bool {
+	switch name {
+	case syspost.EdgeUsers:
+		return m.clearedusers
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysPostMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown SysPost unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysPostMutation) ResetEdge(name string) error {
+	switch name {
+	case syspost.EdgeUsers:
+		m.ResetUsers()
+		return nil
+	}
+	return fmt.Errorf("unknown SysPost edge %s", name)
+}
+
 // SysRoleMutation represents an operation that mutates the SysRole nodes in the graph.
 type SysRoleMutation struct {
 	config
@@ -2225,6 +11761,9 @@ type SysRoleMutation struct {
 	data_scope    *int8
 	adddata_scope *int8
 	clearedFields map[string]struct{}
+	depts         map[int64]struct{}
+	removeddepts  map[int64]struct{}
+	cleareddepts  bool
 	done          bool
 	oldValue      func(context.Context) (*SysRole, error)
 	predicates    []predicate.SysRole
@@ -2789,6 +12328,60 @@ func (m *SysRoleMutation) ResetDataScope() {
 	delete(m.clearedFields, sysrole.FieldDataScope)
 }
 
+// AddDeptIDs adds the "depts" edge to the SysDept entity by ids.
+func (m *SysRoleMutation) AddDeptIDs(ids ...int64) {
+	if m.depts == nil {
+		m.depts = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.depts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearDepts clears the "depts" edge to the SysDept entity.
+func (m *SysRoleMutation) ClearDepts() {
+	m.cleareddepts = true
+}
+
+// DeptsCleared reports if the "depts" edge to the SysDept entity was cleared.
+func (m *SysRoleMutation) DeptsCleared() bool {
+	return m.cleareddepts
+}
+
+// RemoveDeptIDs removes the "depts" edge to the SysDept entity by IDs.
+func (m *SysRoleMutation) RemoveDeptIDs(ids ...int64) {
+	if m.removeddepts == nil {
+		m.removeddepts = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.depts, ids[i])
+		m.removeddepts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedDepts returns the removed IDs of the "depts" edge to the SysDept entity.
+func (m *SysRoleMutation) RemovedDeptsIDs() (ids []int64) {
+	for id := range m.removeddepts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// DeptsIDs returns the "depts" edge IDs in the mutation.
+func (m *SysRoleMutation) DeptsIDs() (ids []int64) {
+	for id := range m.depts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetDepts resets all changes to the "depts" edge.
+func (m *SysRoleMutation) ResetDepts() {
+	m.depts = nil
+	m.cleareddepts = false
+	m.removeddepts = nil
+}
+
 // Where appends a list predicates to the SysRoleMutation builder.
 func (m *SysRoleMutation) Where(ps ...predicate.SysRole) {
 	m.predicates = append(m.predicates, ps...)
@@ -3131,49 +12724,85 @@ func (m *SysRoleMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysRoleMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.depts != nil {
+		edges = append(edges, sysrole.EdgeDepts)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysRoleMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysrole.EdgeDepts:
+		ids := make([]ent.Value, 0, len(m.depts))
+		for id := range m.depts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysRoleMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.removeddepts != nil {
+		edges = append(edges, sysrole.EdgeDepts)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysRoleMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sysrole.EdgeDepts:
+		ids := make([]ent.Value, 0, len(m.removeddepts))
+		for id := range m.removeddepts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysRoleMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.cleareddepts {
+		edges = append(edges, sysrole.EdgeDepts)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysRoleMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysrole.EdgeDepts:
+		return m.cleareddepts
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysRoleMutation) ClearEdge(name string) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown SysRole unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysRoleMutation) ResetEdge(name string) error {
+	switch name {
+	case sysrole.EdgeDepts:
+		m.ResetDepts()
+		return nil
+	}
 	return fmt.Errorf("unknown SysRole edge %s", name)
 }
 
@@ -3208,6 +12837,11 @@ type SysUserMutation struct {
 	last_login_ip   *string
 	last_login_time *string
 	clearedFields   map[string]struct{}
+	belongTo        *int64
+	clearedbelongTo bool
+	posts           map[int64]struct{}
+	removedposts    map[int64]struct{}
+	clearedposts    bool
 	done            bool
 	oldValue        func(context.Context) (*SysUser, error)
 	predicates      []predicate.SysUser
@@ -4368,6 +14002,99 @@ func (m *SysUserMutation) ResetLastLoginTime() {
 	delete(m.clearedFields, sysuser.FieldLastLoginTime)
 }
 
+// SetBelongToID sets the "belongTo" edge to the SysDept entity by id.
+func (m *SysUserMutation) SetBelongToID(id int64) {
+	m.belongTo = &id
+}
+
+// ClearBelongTo clears the "belongTo" edge to the SysDept entity.
+func (m *SysUserMutation) ClearBelongTo() {
+	m.clearedbelongTo = true
+}
+
+// BelongToCleared reports if the "belongTo" edge to the SysDept entity was cleared.
+func (m *SysUserMutation) BelongToCleared() bool {
+	return m.clearedbelongTo
+}
+
+// BelongToID returns the "belongTo" edge ID in the mutation.
+func (m *SysUserMutation) BelongToID() (id int64, exists bool) {
+	if m.belongTo != nil {
+		return *m.belongTo, true
+	}
+	return
+}
+
+// BelongToIDs returns the "belongTo" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// BelongToID instead. It exists only for internal usage by the builders.
+func (m *SysUserMutation) BelongToIDs() (ids []int64) {
+	if id := m.belongTo; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetBelongTo resets all changes to the "belongTo" edge.
+func (m *SysUserMutation) ResetBelongTo() {
+	m.belongTo = nil
+	m.clearedbelongTo = false
+}
+
+// AddPostIDs adds the "posts" edge to the SysPost entity by ids.
+func (m *SysUserMutation) AddPostIDs(ids ...int64) {
+	if m.posts == nil {
+		m.posts = make(map[int64]struct{})
+	}
+	for i := range ids {
+		m.posts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPosts clears the "posts" edge to the SysPost entity.
+func (m *SysUserMutation) ClearPosts() {
+	m.clearedposts = true
+}
+
+// PostsCleared reports if the "posts" edge to the SysPost entity was cleared.
+func (m *SysUserMutation) PostsCleared() bool {
+	return m.clearedposts
+}
+
+// RemovePostIDs removes the "posts" edge to the SysPost entity by IDs.
+func (m *SysUserMutation) RemovePostIDs(ids ...int64) {
+	if m.removedposts == nil {
+		m.removedposts = make(map[int64]struct{})
+	}
+	for i := range ids {
+		delete(m.posts, ids[i])
+		m.removedposts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPosts returns the removed IDs of the "posts" edge to the SysPost entity.
+func (m *SysUserMutation) RemovedPostsIDs() (ids []int64) {
+	for id := range m.removedposts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PostsIDs returns the "posts" edge IDs in the mutation.
+func (m *SysUserMutation) PostsIDs() (ids []int64) {
+	for id := range m.posts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPosts resets all changes to the "posts" edge.
+func (m *SysUserMutation) ResetPosts() {
+	m.posts = nil
+	m.clearedposts = false
+	m.removedposts = nil
+}
+
 // Where appends a list predicates to the SysUserMutation builder.
 func (m *SysUserMutation) Where(ps ...predicate.SysUser) {
 	m.predicates = append(m.predicates, ps...)
@@ -4992,48 +14719,1135 @@ func (m *SysUserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysUserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.belongTo != nil {
+		edges = append(edges, sysuser.EdgeBelongTo)
+	}
+	if m.posts != nil {
+		edges = append(edges, sysuser.EdgePosts)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *SysUserMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case sysuser.EdgeBelongTo:
+		if id := m.belongTo; id != nil {
+			return []ent.Value{*id}
+		}
+	case sysuser.EdgePosts:
+		ids := make([]ent.Value, 0, len(m.posts))
+		for id := range m.posts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *SysUserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.removedposts != nil {
+		edges = append(edges, sysuser.EdgePosts)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *SysUserMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case sysuser.EdgePosts:
+		ids := make([]ent.Value, 0, len(m.removedposts))
+		for id := range m.removedposts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysUserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.clearedbelongTo {
+		edges = append(edges, sysuser.EdgeBelongTo)
+	}
+	if m.clearedposts {
+		edges = append(edges, sysuser.EdgePosts)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *SysUserMutation) EdgeCleared(name string) bool {
+	switch name {
+	case sysuser.EdgeBelongTo:
+		return m.clearedbelongTo
+	case sysuser.EdgePosts:
+		return m.clearedposts
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *SysUserMutation) ClearEdge(name string) error {
+	switch name {
+	case sysuser.EdgeBelongTo:
+		m.ClearBelongTo()
+		return nil
+	}
 	return fmt.Errorf("unknown SysUser unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *SysUserMutation) ResetEdge(name string) error {
+	switch name {
+	case sysuser.EdgeBelongTo:
+		m.ResetBelongTo()
+		return nil
+	case sysuser.EdgePosts:
+		m.ResetPosts()
+		return nil
+	}
 	return fmt.Errorf("unknown SysUser edge %s", name)
+}
+
+// SysUserOnlineMutation represents an operation that mutates the SysUserOnline nodes in the graph.
+type SysUserOnlineMutation struct {
+	config
+	op             Op
+	typ            string
+	id             *int64
+	uuid           *int64
+	adduuid        *int64
+	token          *int64
+	addtoken       *int64
+	create_time    *int64
+	addcreate_time *int64
+	user_name      *int64
+	adduser_name   *int64
+	ip_addr        *int64
+	addip_addr     *int64
+	browser        *int64
+	addbrowser     *int64
+	os             *int64
+	addos          *int64
+	clearedFields  map[string]struct{}
+	done           bool
+	oldValue       func(context.Context) (*SysUserOnline, error)
+	predicates     []predicate.SysUserOnline
+}
+
+var _ ent.Mutation = (*SysUserOnlineMutation)(nil)
+
+// sysuseronlineOption allows management of the mutation configuration using functional options.
+type sysuseronlineOption func(*SysUserOnlineMutation)
+
+// newSysUserOnlineMutation creates new mutation for the SysUserOnline entity.
+func newSysUserOnlineMutation(c config, op Op, opts ...sysuseronlineOption) *SysUserOnlineMutation {
+	m := &SysUserOnlineMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSysUserOnline,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSysUserOnlineID sets the ID field of the mutation.
+func withSysUserOnlineID(id int64) sysuseronlineOption {
+	return func(m *SysUserOnlineMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SysUserOnline
+		)
+		m.oldValue = func(ctx context.Context) (*SysUserOnline, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SysUserOnline.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSysUserOnline sets the old SysUserOnline of the mutation.
+func withSysUserOnline(node *SysUserOnline) sysuseronlineOption {
+	return func(m *SysUserOnlineMutation) {
+		m.oldValue = func(context.Context) (*SysUserOnline, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SysUserOnlineMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SysUserOnlineMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("codegen: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SysUserOnline entities.
+func (m *SysUserOnlineMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SysUserOnlineMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SysUserOnlineMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SysUserOnline.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetUUID sets the "uuid" field.
+func (m *SysUserOnlineMutation) SetUUID(i int64) {
+	m.uuid = &i
+	m.adduuid = nil
+}
+
+// UUID returns the value of the "uuid" field in the mutation.
+func (m *SysUserOnlineMutation) UUID() (r int64, exists bool) {
+	v := m.uuid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUUID returns the old "uuid" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldUUID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUUID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUUID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUUID: %w", err)
+	}
+	return oldValue.UUID, nil
+}
+
+// AddUUID adds i to the "uuid" field.
+func (m *SysUserOnlineMutation) AddUUID(i int64) {
+	if m.adduuid != nil {
+		*m.adduuid += i
+	} else {
+		m.adduuid = &i
+	}
+}
+
+// AddedUUID returns the value that was added to the "uuid" field in this mutation.
+func (m *SysUserOnlineMutation) AddedUUID() (r int64, exists bool) {
+	v := m.adduuid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUUID clears the value of the "uuid" field.
+func (m *SysUserOnlineMutation) ClearUUID() {
+	m.uuid = nil
+	m.adduuid = nil
+	m.clearedFields[sysuseronline.FieldUUID] = struct{}{}
+}
+
+// UUIDCleared returns if the "uuid" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) UUIDCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldUUID]
+	return ok
+}
+
+// ResetUUID resets all changes to the "uuid" field.
+func (m *SysUserOnlineMutation) ResetUUID() {
+	m.uuid = nil
+	m.adduuid = nil
+	delete(m.clearedFields, sysuseronline.FieldUUID)
+}
+
+// SetToken sets the "token" field.
+func (m *SysUserOnlineMutation) SetToken(i int64) {
+	m.token = &i
+	m.addtoken = nil
+}
+
+// Token returns the value of the "token" field in the mutation.
+func (m *SysUserOnlineMutation) Token() (r int64, exists bool) {
+	v := m.token
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldToken returns the old "token" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldToken(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldToken is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldToken requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldToken: %w", err)
+	}
+	return oldValue.Token, nil
+}
+
+// AddToken adds i to the "token" field.
+func (m *SysUserOnlineMutation) AddToken(i int64) {
+	if m.addtoken != nil {
+		*m.addtoken += i
+	} else {
+		m.addtoken = &i
+	}
+}
+
+// AddedToken returns the value that was added to the "token" field in this mutation.
+func (m *SysUserOnlineMutation) AddedToken() (r int64, exists bool) {
+	v := m.addtoken
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearToken clears the value of the "token" field.
+func (m *SysUserOnlineMutation) ClearToken() {
+	m.token = nil
+	m.addtoken = nil
+	m.clearedFields[sysuseronline.FieldToken] = struct{}{}
+}
+
+// TokenCleared returns if the "token" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) TokenCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldToken]
+	return ok
+}
+
+// ResetToken resets all changes to the "token" field.
+func (m *SysUserOnlineMutation) ResetToken() {
+	m.token = nil
+	m.addtoken = nil
+	delete(m.clearedFields, sysuseronline.FieldToken)
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *SysUserOnlineMutation) SetCreateTime(i int64) {
+	m.create_time = &i
+	m.addcreate_time = nil
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *SysUserOnlineMutation) CreateTime() (r int64, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldCreateTime(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// AddCreateTime adds i to the "create_time" field.
+func (m *SysUserOnlineMutation) AddCreateTime(i int64) {
+	if m.addcreate_time != nil {
+		*m.addcreate_time += i
+	} else {
+		m.addcreate_time = &i
+	}
+}
+
+// AddedCreateTime returns the value that was added to the "create_time" field in this mutation.
+func (m *SysUserOnlineMutation) AddedCreateTime() (r int64, exists bool) {
+	v := m.addcreate_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *SysUserOnlineMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.addcreate_time = nil
+	m.clearedFields[sysuseronline.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldCreateTime]
+	return ok
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *SysUserOnlineMutation) ResetCreateTime() {
+	m.create_time = nil
+	m.addcreate_time = nil
+	delete(m.clearedFields, sysuseronline.FieldCreateTime)
+}
+
+// SetUserName sets the "user_name" field.
+func (m *SysUserOnlineMutation) SetUserName(i int64) {
+	m.user_name = &i
+	m.adduser_name = nil
+}
+
+// UserName returns the value of the "user_name" field in the mutation.
+func (m *SysUserOnlineMutation) UserName() (r int64, exists bool) {
+	v := m.user_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserName returns the old "user_name" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldUserName(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserName: %w", err)
+	}
+	return oldValue.UserName, nil
+}
+
+// AddUserName adds i to the "user_name" field.
+func (m *SysUserOnlineMutation) AddUserName(i int64) {
+	if m.adduser_name != nil {
+		*m.adduser_name += i
+	} else {
+		m.adduser_name = &i
+	}
+}
+
+// AddedUserName returns the value that was added to the "user_name" field in this mutation.
+func (m *SysUserOnlineMutation) AddedUserName() (r int64, exists bool) {
+	v := m.adduser_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUserName clears the value of the "user_name" field.
+func (m *SysUserOnlineMutation) ClearUserName() {
+	m.user_name = nil
+	m.adduser_name = nil
+	m.clearedFields[sysuseronline.FieldUserName] = struct{}{}
+}
+
+// UserNameCleared returns if the "user_name" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) UserNameCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldUserName]
+	return ok
+}
+
+// ResetUserName resets all changes to the "user_name" field.
+func (m *SysUserOnlineMutation) ResetUserName() {
+	m.user_name = nil
+	m.adduser_name = nil
+	delete(m.clearedFields, sysuseronline.FieldUserName)
+}
+
+// SetIPAddr sets the "ip_addr" field.
+func (m *SysUserOnlineMutation) SetIPAddr(i int64) {
+	m.ip_addr = &i
+	m.addip_addr = nil
+}
+
+// IPAddr returns the value of the "ip_addr" field in the mutation.
+func (m *SysUserOnlineMutation) IPAddr() (r int64, exists bool) {
+	v := m.ip_addr
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIPAddr returns the old "ip_addr" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldIPAddr(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIPAddr is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIPAddr requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIPAddr: %w", err)
+	}
+	return oldValue.IPAddr, nil
+}
+
+// AddIPAddr adds i to the "ip_addr" field.
+func (m *SysUserOnlineMutation) AddIPAddr(i int64) {
+	if m.addip_addr != nil {
+		*m.addip_addr += i
+	} else {
+		m.addip_addr = &i
+	}
+}
+
+// AddedIPAddr returns the value that was added to the "ip_addr" field in this mutation.
+func (m *SysUserOnlineMutation) AddedIPAddr() (r int64, exists bool) {
+	v := m.addip_addr
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIPAddr clears the value of the "ip_addr" field.
+func (m *SysUserOnlineMutation) ClearIPAddr() {
+	m.ip_addr = nil
+	m.addip_addr = nil
+	m.clearedFields[sysuseronline.FieldIPAddr] = struct{}{}
+}
+
+// IPAddrCleared returns if the "ip_addr" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) IPAddrCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldIPAddr]
+	return ok
+}
+
+// ResetIPAddr resets all changes to the "ip_addr" field.
+func (m *SysUserOnlineMutation) ResetIPAddr() {
+	m.ip_addr = nil
+	m.addip_addr = nil
+	delete(m.clearedFields, sysuseronline.FieldIPAddr)
+}
+
+// SetBrowser sets the "browser" field.
+func (m *SysUserOnlineMutation) SetBrowser(i int64) {
+	m.browser = &i
+	m.addbrowser = nil
+}
+
+// Browser returns the value of the "browser" field in the mutation.
+func (m *SysUserOnlineMutation) Browser() (r int64, exists bool) {
+	v := m.browser
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBrowser returns the old "browser" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldBrowser(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBrowser is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBrowser requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBrowser: %w", err)
+	}
+	return oldValue.Browser, nil
+}
+
+// AddBrowser adds i to the "browser" field.
+func (m *SysUserOnlineMutation) AddBrowser(i int64) {
+	if m.addbrowser != nil {
+		*m.addbrowser += i
+	} else {
+		m.addbrowser = &i
+	}
+}
+
+// AddedBrowser returns the value that was added to the "browser" field in this mutation.
+func (m *SysUserOnlineMutation) AddedBrowser() (r int64, exists bool) {
+	v := m.addbrowser
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearBrowser clears the value of the "browser" field.
+func (m *SysUserOnlineMutation) ClearBrowser() {
+	m.browser = nil
+	m.addbrowser = nil
+	m.clearedFields[sysuseronline.FieldBrowser] = struct{}{}
+}
+
+// BrowserCleared returns if the "browser" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) BrowserCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldBrowser]
+	return ok
+}
+
+// ResetBrowser resets all changes to the "browser" field.
+func (m *SysUserOnlineMutation) ResetBrowser() {
+	m.browser = nil
+	m.addbrowser = nil
+	delete(m.clearedFields, sysuseronline.FieldBrowser)
+}
+
+// SetOs sets the "os" field.
+func (m *SysUserOnlineMutation) SetOs(i int64) {
+	m.os = &i
+	m.addos = nil
+}
+
+// Os returns the value of the "os" field in the mutation.
+func (m *SysUserOnlineMutation) Os() (r int64, exists bool) {
+	v := m.os
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOs returns the old "os" field's value of the SysUserOnline entity.
+// If the SysUserOnline object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysUserOnlineMutation) OldOs(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOs is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOs requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOs: %w", err)
+	}
+	return oldValue.Os, nil
+}
+
+// AddOs adds i to the "os" field.
+func (m *SysUserOnlineMutation) AddOs(i int64) {
+	if m.addos != nil {
+		*m.addos += i
+	} else {
+		m.addos = &i
+	}
+}
+
+// AddedOs returns the value that was added to the "os" field in this mutation.
+func (m *SysUserOnlineMutation) AddedOs() (r int64, exists bool) {
+	v := m.addos
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearOs clears the value of the "os" field.
+func (m *SysUserOnlineMutation) ClearOs() {
+	m.os = nil
+	m.addos = nil
+	m.clearedFields[sysuseronline.FieldOs] = struct{}{}
+}
+
+// OsCleared returns if the "os" field was cleared in this mutation.
+func (m *SysUserOnlineMutation) OsCleared() bool {
+	_, ok := m.clearedFields[sysuseronline.FieldOs]
+	return ok
+}
+
+// ResetOs resets all changes to the "os" field.
+func (m *SysUserOnlineMutation) ResetOs() {
+	m.os = nil
+	m.addos = nil
+	delete(m.clearedFields, sysuseronline.FieldOs)
+}
+
+// Where appends a list predicates to the SysUserOnlineMutation builder.
+func (m *SysUserOnlineMutation) Where(ps ...predicate.SysUserOnline) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SysUserOnlineMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SysUserOnlineMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SysUserOnline, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SysUserOnlineMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SysUserOnlineMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SysUserOnline).
+func (m *SysUserOnlineMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SysUserOnlineMutation) Fields() []string {
+	fields := make([]string, 0, 7)
+	if m.uuid != nil {
+		fields = append(fields, sysuseronline.FieldUUID)
+	}
+	if m.token != nil {
+		fields = append(fields, sysuseronline.FieldToken)
+	}
+	if m.create_time != nil {
+		fields = append(fields, sysuseronline.FieldCreateTime)
+	}
+	if m.user_name != nil {
+		fields = append(fields, sysuseronline.FieldUserName)
+	}
+	if m.ip_addr != nil {
+		fields = append(fields, sysuseronline.FieldIPAddr)
+	}
+	if m.browser != nil {
+		fields = append(fields, sysuseronline.FieldBrowser)
+	}
+	if m.os != nil {
+		fields = append(fields, sysuseronline.FieldOs)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SysUserOnlineMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case sysuseronline.FieldUUID:
+		return m.UUID()
+	case sysuseronline.FieldToken:
+		return m.Token()
+	case sysuseronline.FieldCreateTime:
+		return m.CreateTime()
+	case sysuseronline.FieldUserName:
+		return m.UserName()
+	case sysuseronline.FieldIPAddr:
+		return m.IPAddr()
+	case sysuseronline.FieldBrowser:
+		return m.Browser()
+	case sysuseronline.FieldOs:
+		return m.Os()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SysUserOnlineMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case sysuseronline.FieldUUID:
+		return m.OldUUID(ctx)
+	case sysuseronline.FieldToken:
+		return m.OldToken(ctx)
+	case sysuseronline.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case sysuseronline.FieldUserName:
+		return m.OldUserName(ctx)
+	case sysuseronline.FieldIPAddr:
+		return m.OldIPAddr(ctx)
+	case sysuseronline.FieldBrowser:
+		return m.OldBrowser(ctx)
+	case sysuseronline.FieldOs:
+		return m.OldOs(ctx)
+	}
+	return nil, fmt.Errorf("unknown SysUserOnline field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysUserOnlineMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case sysuseronline.FieldUUID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUUID(v)
+		return nil
+	case sysuseronline.FieldToken:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetToken(v)
+		return nil
+	case sysuseronline.FieldCreateTime:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case sysuseronline.FieldUserName:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserName(v)
+		return nil
+	case sysuseronline.FieldIPAddr:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIPAddr(v)
+		return nil
+	case sysuseronline.FieldBrowser:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBrowser(v)
+		return nil
+	case sysuseronline.FieldOs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOs(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysUserOnline field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SysUserOnlineMutation) AddedFields() []string {
+	var fields []string
+	if m.adduuid != nil {
+		fields = append(fields, sysuseronline.FieldUUID)
+	}
+	if m.addtoken != nil {
+		fields = append(fields, sysuseronline.FieldToken)
+	}
+	if m.addcreate_time != nil {
+		fields = append(fields, sysuseronline.FieldCreateTime)
+	}
+	if m.adduser_name != nil {
+		fields = append(fields, sysuseronline.FieldUserName)
+	}
+	if m.addip_addr != nil {
+		fields = append(fields, sysuseronline.FieldIPAddr)
+	}
+	if m.addbrowser != nil {
+		fields = append(fields, sysuseronline.FieldBrowser)
+	}
+	if m.addos != nil {
+		fields = append(fields, sysuseronline.FieldOs)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SysUserOnlineMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case sysuseronline.FieldUUID:
+		return m.AddedUUID()
+	case sysuseronline.FieldToken:
+		return m.AddedToken()
+	case sysuseronline.FieldCreateTime:
+		return m.AddedCreateTime()
+	case sysuseronline.FieldUserName:
+		return m.AddedUserName()
+	case sysuseronline.FieldIPAddr:
+		return m.AddedIPAddr()
+	case sysuseronline.FieldBrowser:
+		return m.AddedBrowser()
+	case sysuseronline.FieldOs:
+		return m.AddedOs()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SysUserOnlineMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case sysuseronline.FieldUUID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUUID(v)
+		return nil
+	case sysuseronline.FieldToken:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddToken(v)
+		return nil
+	case sysuseronline.FieldCreateTime:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreateTime(v)
+		return nil
+	case sysuseronline.FieldUserName:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUserName(v)
+		return nil
+	case sysuseronline.FieldIPAddr:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIPAddr(v)
+		return nil
+	case sysuseronline.FieldBrowser:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBrowser(v)
+		return nil
+	case sysuseronline.FieldOs:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOs(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SysUserOnline numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SysUserOnlineMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(sysuseronline.FieldUUID) {
+		fields = append(fields, sysuseronline.FieldUUID)
+	}
+	if m.FieldCleared(sysuseronline.FieldToken) {
+		fields = append(fields, sysuseronline.FieldToken)
+	}
+	if m.FieldCleared(sysuseronline.FieldCreateTime) {
+		fields = append(fields, sysuseronline.FieldCreateTime)
+	}
+	if m.FieldCleared(sysuseronline.FieldUserName) {
+		fields = append(fields, sysuseronline.FieldUserName)
+	}
+	if m.FieldCleared(sysuseronline.FieldIPAddr) {
+		fields = append(fields, sysuseronline.FieldIPAddr)
+	}
+	if m.FieldCleared(sysuseronline.FieldBrowser) {
+		fields = append(fields, sysuseronline.FieldBrowser)
+	}
+	if m.FieldCleared(sysuseronline.FieldOs) {
+		fields = append(fields, sysuseronline.FieldOs)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SysUserOnlineMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SysUserOnlineMutation) ClearField(name string) error {
+	switch name {
+	case sysuseronline.FieldUUID:
+		m.ClearUUID()
+		return nil
+	case sysuseronline.FieldToken:
+		m.ClearToken()
+		return nil
+	case sysuseronline.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case sysuseronline.FieldUserName:
+		m.ClearUserName()
+		return nil
+	case sysuseronline.FieldIPAddr:
+		m.ClearIPAddr()
+		return nil
+	case sysuseronline.FieldBrowser:
+		m.ClearBrowser()
+		return nil
+	case sysuseronline.FieldOs:
+		m.ClearOs()
+		return nil
+	}
+	return fmt.Errorf("unknown SysUserOnline nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SysUserOnlineMutation) ResetField(name string) error {
+	switch name {
+	case sysuseronline.FieldUUID:
+		m.ResetUUID()
+		return nil
+	case sysuseronline.FieldToken:
+		m.ResetToken()
+		return nil
+	case sysuseronline.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case sysuseronline.FieldUserName:
+		m.ResetUserName()
+		return nil
+	case sysuseronline.FieldIPAddr:
+		m.ResetIPAddr()
+		return nil
+	case sysuseronline.FieldBrowser:
+		m.ResetBrowser()
+		return nil
+	case sysuseronline.FieldOs:
+		m.ResetOs()
+		return nil
+	}
+	return fmt.Errorf("unknown SysUserOnline field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SysUserOnlineMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SysUserOnlineMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SysUserOnlineMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SysUserOnlineMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SysUserOnlineMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SysUserOnlineMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SysUserOnlineMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SysUserOnline unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SysUserOnlineMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SysUserOnline edge %s", name)
 }

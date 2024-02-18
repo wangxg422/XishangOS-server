@@ -14,9 +14,18 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysconfig"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdictdata"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdicttype"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysloginlog"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysoperlog"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuseronline"
 )
 
 // Client is the client that holds all ent builders.
@@ -24,12 +33,28 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// SysConfig is the client for interacting with the SysConfig builders.
+	SysConfig *SysConfigClient
+	// SysDept is the client for interacting with the SysDept builders.
+	SysDept *SysDeptClient
+	// SysDictData is the client for interacting with the SysDictData builders.
+	SysDictData *SysDictDataClient
+	// SysDictType is the client for interacting with the SysDictType builders.
+	SysDictType *SysDictTypeClient
+	// SysLoginLog is the client for interacting with the SysLoginLog builders.
+	SysLoginLog *SysLoginLogClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
+	// SysOperLog is the client for interacting with the SysOperLog builders.
+	SysOperLog *SysOperLogClient
+	// SysPost is the client for interacting with the SysPost builders.
+	SysPost *SysPostClient
 	// SysRole is the client for interacting with the SysRole builders.
 	SysRole *SysRoleClient
 	// SysUser is the client for interacting with the SysUser builders.
 	SysUser *SysUserClient
+	// SysUserOnline is the client for interacting with the SysUserOnline builders.
+	SysUserOnline *SysUserOnlineClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -41,9 +66,17 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.SysConfig = NewSysConfigClient(c.config)
+	c.SysDept = NewSysDeptClient(c.config)
+	c.SysDictData = NewSysDictDataClient(c.config)
+	c.SysDictType = NewSysDictTypeClient(c.config)
+	c.SysLoginLog = NewSysLoginLogClient(c.config)
 	c.SysMenu = NewSysMenuClient(c.config)
+	c.SysOperLog = NewSysOperLogClient(c.config)
+	c.SysPost = NewSysPostClient(c.config)
 	c.SysRole = NewSysRoleClient(c.config)
 	c.SysUser = NewSysUserClient(c.config)
+	c.SysUserOnline = NewSysUserOnlineClient(c.config)
 }
 
 type (
@@ -134,11 +167,19 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		SysMenu: NewSysMenuClient(cfg),
-		SysRole: NewSysRoleClient(cfg),
-		SysUser: NewSysUserClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		SysConfig:     NewSysConfigClient(cfg),
+		SysDept:       NewSysDeptClient(cfg),
+		SysDictData:   NewSysDictDataClient(cfg),
+		SysDictType:   NewSysDictTypeClient(cfg),
+		SysLoginLog:   NewSysLoginLogClient(cfg),
+		SysMenu:       NewSysMenuClient(cfg),
+		SysOperLog:    NewSysOperLogClient(cfg),
+		SysPost:       NewSysPostClient(cfg),
+		SysRole:       NewSysRoleClient(cfg),
+		SysUser:       NewSysUserClient(cfg),
+		SysUserOnline: NewSysUserOnlineClient(cfg),
 	}, nil
 }
 
@@ -156,18 +197,26 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		SysMenu: NewSysMenuClient(cfg),
-		SysRole: NewSysRoleClient(cfg),
-		SysUser: NewSysUserClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		SysConfig:     NewSysConfigClient(cfg),
+		SysDept:       NewSysDeptClient(cfg),
+		SysDictData:   NewSysDictDataClient(cfg),
+		SysDictType:   NewSysDictTypeClient(cfg),
+		SysLoginLog:   NewSysLoginLogClient(cfg),
+		SysMenu:       NewSysMenuClient(cfg),
+		SysOperLog:    NewSysOperLogClient(cfg),
+		SysPost:       NewSysPostClient(cfg),
+		SysRole:       NewSysRoleClient(cfg),
+		SysUser:       NewSysUserClient(cfg),
+		SysUserOnline: NewSysUserOnlineClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		SysMenu.
+//		SysConfig.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -189,30 +238,781 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.SysMenu.Use(hooks...)
-	c.SysRole.Use(hooks...)
-	c.SysUser.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.SysConfig, c.SysDept, c.SysDictData, c.SysDictType, c.SysLoginLog, c.SysMenu,
+		c.SysOperLog, c.SysPost, c.SysRole, c.SysUser, c.SysUserOnline,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.SysMenu.Intercept(interceptors...)
-	c.SysRole.Intercept(interceptors...)
-	c.SysUser.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.SysConfig, c.SysDept, c.SysDictData, c.SysDictType, c.SysLoginLog, c.SysMenu,
+		c.SysOperLog, c.SysPost, c.SysRole, c.SysUser, c.SysUserOnline,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *SysConfigMutation:
+		return c.SysConfig.mutate(ctx, m)
+	case *SysDeptMutation:
+		return c.SysDept.mutate(ctx, m)
+	case *SysDictDataMutation:
+		return c.SysDictData.mutate(ctx, m)
+	case *SysDictTypeMutation:
+		return c.SysDictType.mutate(ctx, m)
+	case *SysLoginLogMutation:
+		return c.SysLoginLog.mutate(ctx, m)
 	case *SysMenuMutation:
 		return c.SysMenu.mutate(ctx, m)
+	case *SysOperLogMutation:
+		return c.SysOperLog.mutate(ctx, m)
+	case *SysPostMutation:
+		return c.SysPost.mutate(ctx, m)
 	case *SysRoleMutation:
 		return c.SysRole.mutate(ctx, m)
 	case *SysUserMutation:
 		return c.SysUser.mutate(ctx, m)
+	case *SysUserOnlineMutation:
+		return c.SysUserOnline.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("codegen: unknown mutation type %T", m)
+	}
+}
+
+// SysConfigClient is a client for the SysConfig schema.
+type SysConfigClient struct {
+	config
+}
+
+// NewSysConfigClient returns a client for the SysConfig from the given config.
+func NewSysConfigClient(c config) *SysConfigClient {
+	return &SysConfigClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysconfig.Hooks(f(g(h())))`.
+func (c *SysConfigClient) Use(hooks ...Hook) {
+	c.hooks.SysConfig = append(c.hooks.SysConfig, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysconfig.Intercept(f(g(h())))`.
+func (c *SysConfigClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysConfig = append(c.inters.SysConfig, interceptors...)
+}
+
+// Create returns a builder for creating a SysConfig entity.
+func (c *SysConfigClient) Create() *SysConfigCreate {
+	mutation := newSysConfigMutation(c.config, OpCreate)
+	return &SysConfigCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysConfig entities.
+func (c *SysConfigClient) CreateBulk(builders ...*SysConfigCreate) *SysConfigCreateBulk {
+	return &SysConfigCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysConfigClient) MapCreateBulk(slice any, setFunc func(*SysConfigCreate, int)) *SysConfigCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysConfigCreateBulk{err: fmt.Errorf("calling to SysConfigClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysConfigCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysConfigCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysConfig.
+func (c *SysConfigClient) Update() *SysConfigUpdate {
+	mutation := newSysConfigMutation(c.config, OpUpdate)
+	return &SysConfigUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysConfigClient) UpdateOne(sc *SysConfig) *SysConfigUpdateOne {
+	mutation := newSysConfigMutation(c.config, OpUpdateOne, withSysConfig(sc))
+	return &SysConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysConfigClient) UpdateOneID(id int64) *SysConfigUpdateOne {
+	mutation := newSysConfigMutation(c.config, OpUpdateOne, withSysConfigID(id))
+	return &SysConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysConfig.
+func (c *SysConfigClient) Delete() *SysConfigDelete {
+	mutation := newSysConfigMutation(c.config, OpDelete)
+	return &SysConfigDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysConfigClient) DeleteOne(sc *SysConfig) *SysConfigDeleteOne {
+	return c.DeleteOneID(sc.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysConfigClient) DeleteOneID(id int64) *SysConfigDeleteOne {
+	builder := c.Delete().Where(sysconfig.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysConfigDeleteOne{builder}
+}
+
+// Query returns a query builder for SysConfig.
+func (c *SysConfigClient) Query() *SysConfigQuery {
+	return &SysConfigQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysConfig},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysConfig entity by its id.
+func (c *SysConfigClient) Get(ctx context.Context, id int64) (*SysConfig, error) {
+	return c.Query().Where(sysconfig.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysConfigClient) GetX(ctx context.Context, id int64) *SysConfig {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysConfigClient) Hooks() []Hook {
+	return c.hooks.SysConfig
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysConfigClient) Interceptors() []Interceptor {
+	return c.inters.SysConfig
+}
+
+func (c *SysConfigClient) mutate(ctx context.Context, m *SysConfigMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysConfigCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysConfigUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysConfigUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysConfigDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysConfig mutation op: %q", m.Op())
+	}
+}
+
+// SysDeptClient is a client for the SysDept schema.
+type SysDeptClient struct {
+	config
+}
+
+// NewSysDeptClient returns a client for the SysDept from the given config.
+func NewSysDeptClient(c config) *SysDeptClient {
+	return &SysDeptClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysdept.Hooks(f(g(h())))`.
+func (c *SysDeptClient) Use(hooks ...Hook) {
+	c.hooks.SysDept = append(c.hooks.SysDept, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysdept.Intercept(f(g(h())))`.
+func (c *SysDeptClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysDept = append(c.inters.SysDept, interceptors...)
+}
+
+// Create returns a builder for creating a SysDept entity.
+func (c *SysDeptClient) Create() *SysDeptCreate {
+	mutation := newSysDeptMutation(c.config, OpCreate)
+	return &SysDeptCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysDept entities.
+func (c *SysDeptClient) CreateBulk(builders ...*SysDeptCreate) *SysDeptCreateBulk {
+	return &SysDeptCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysDeptClient) MapCreateBulk(slice any, setFunc func(*SysDeptCreate, int)) *SysDeptCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysDeptCreateBulk{err: fmt.Errorf("calling to SysDeptClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysDeptCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysDeptCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysDept.
+func (c *SysDeptClient) Update() *SysDeptUpdate {
+	mutation := newSysDeptMutation(c.config, OpUpdate)
+	return &SysDeptUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysDeptClient) UpdateOne(sd *SysDept) *SysDeptUpdateOne {
+	mutation := newSysDeptMutation(c.config, OpUpdateOne, withSysDept(sd))
+	return &SysDeptUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysDeptClient) UpdateOneID(id int64) *SysDeptUpdateOne {
+	mutation := newSysDeptMutation(c.config, OpUpdateOne, withSysDeptID(id))
+	return &SysDeptUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysDept.
+func (c *SysDeptClient) Delete() *SysDeptDelete {
+	mutation := newSysDeptMutation(c.config, OpDelete)
+	return &SysDeptDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysDeptClient) DeleteOne(sd *SysDept) *SysDeptDeleteOne {
+	return c.DeleteOneID(sd.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysDeptClient) DeleteOneID(id int64) *SysDeptDeleteOne {
+	builder := c.Delete().Where(sysdept.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysDeptDeleteOne{builder}
+}
+
+// Query returns a query builder for SysDept.
+func (c *SysDeptClient) Query() *SysDeptQuery {
+	return &SysDeptQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysDept},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysDept entity by its id.
+func (c *SysDeptClient) Get(ctx context.Context, id int64) (*SysDept, error) {
+	return c.Query().Where(sysdept.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysDeptClient) GetX(ctx context.Context, id int64) *SysDept {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QuerySysUser queries the sys_user edge of a SysDept.
+func (c *SysDeptClient) QuerySysUser(sd *SysDept) *SysUserQuery {
+	query := (&SysUserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdept.Table, sysdept.FieldID, id),
+			sqlgraph.To(sysuser.Table, sysuser.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysdept.SysUserTable, sysdept.SysUserColumn),
+		)
+		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryRoles queries the roles edge of a SysDept.
+func (c *SysDeptClient) QueryRoles(sd *SysDept) *SysRoleQuery {
+	query := (&SysRoleClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdept.Table, sysdept.FieldID, id),
+			sqlgraph.To(sysrole.Table, sysrole.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, sysdept.RolesTable, sysdept.RolesPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysDeptClient) Hooks() []Hook {
+	return c.hooks.SysDept
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysDeptClient) Interceptors() []Interceptor {
+	return c.inters.SysDept
+}
+
+func (c *SysDeptClient) mutate(ctx context.Context, m *SysDeptMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysDeptCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysDeptUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysDeptUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysDeptDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysDept mutation op: %q", m.Op())
+	}
+}
+
+// SysDictDataClient is a client for the SysDictData schema.
+type SysDictDataClient struct {
+	config
+}
+
+// NewSysDictDataClient returns a client for the SysDictData from the given config.
+func NewSysDictDataClient(c config) *SysDictDataClient {
+	return &SysDictDataClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysdictdata.Hooks(f(g(h())))`.
+func (c *SysDictDataClient) Use(hooks ...Hook) {
+	c.hooks.SysDictData = append(c.hooks.SysDictData, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysdictdata.Intercept(f(g(h())))`.
+func (c *SysDictDataClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysDictData = append(c.inters.SysDictData, interceptors...)
+}
+
+// Create returns a builder for creating a SysDictData entity.
+func (c *SysDictDataClient) Create() *SysDictDataCreate {
+	mutation := newSysDictDataMutation(c.config, OpCreate)
+	return &SysDictDataCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysDictData entities.
+func (c *SysDictDataClient) CreateBulk(builders ...*SysDictDataCreate) *SysDictDataCreateBulk {
+	return &SysDictDataCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysDictDataClient) MapCreateBulk(slice any, setFunc func(*SysDictDataCreate, int)) *SysDictDataCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysDictDataCreateBulk{err: fmt.Errorf("calling to SysDictDataClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysDictDataCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysDictDataCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysDictData.
+func (c *SysDictDataClient) Update() *SysDictDataUpdate {
+	mutation := newSysDictDataMutation(c.config, OpUpdate)
+	return &SysDictDataUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysDictDataClient) UpdateOne(sdd *SysDictData) *SysDictDataUpdateOne {
+	mutation := newSysDictDataMutation(c.config, OpUpdateOne, withSysDictData(sdd))
+	return &SysDictDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysDictDataClient) UpdateOneID(id int64) *SysDictDataUpdateOne {
+	mutation := newSysDictDataMutation(c.config, OpUpdateOne, withSysDictDataID(id))
+	return &SysDictDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysDictData.
+func (c *SysDictDataClient) Delete() *SysDictDataDelete {
+	mutation := newSysDictDataMutation(c.config, OpDelete)
+	return &SysDictDataDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysDictDataClient) DeleteOne(sdd *SysDictData) *SysDictDataDeleteOne {
+	return c.DeleteOneID(sdd.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysDictDataClient) DeleteOneID(id int64) *SysDictDataDeleteOne {
+	builder := c.Delete().Where(sysdictdata.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysDictDataDeleteOne{builder}
+}
+
+// Query returns a query builder for SysDictData.
+func (c *SysDictDataClient) Query() *SysDictDataQuery {
+	return &SysDictDataQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysDictData},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysDictData entity by its id.
+func (c *SysDictDataClient) Get(ctx context.Context, id int64) (*SysDictData, error) {
+	return c.Query().Where(sysdictdata.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysDictDataClient) GetX(ctx context.Context, id int64) *SysDictData {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryOwner queries the owner edge of a SysDictData.
+func (c *SysDictDataClient) QueryOwner(sdd *SysDictData) *SysDictTypeQuery {
+	query := (&SysDictTypeClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sdd.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdictdata.Table, sysdictdata.FieldID, id),
+			sqlgraph.To(sysdicttype.Table, sysdicttype.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysdictdata.OwnerTable, sysdictdata.OwnerColumn),
+		)
+		fromV = sqlgraph.Neighbors(sdd.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysDictDataClient) Hooks() []Hook {
+	return c.hooks.SysDictData
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysDictDataClient) Interceptors() []Interceptor {
+	return c.inters.SysDictData
+}
+
+func (c *SysDictDataClient) mutate(ctx context.Context, m *SysDictDataMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysDictDataCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysDictDataUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysDictDataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysDictDataDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysDictData mutation op: %q", m.Op())
+	}
+}
+
+// SysDictTypeClient is a client for the SysDictType schema.
+type SysDictTypeClient struct {
+	config
+}
+
+// NewSysDictTypeClient returns a client for the SysDictType from the given config.
+func NewSysDictTypeClient(c config) *SysDictTypeClient {
+	return &SysDictTypeClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysdicttype.Hooks(f(g(h())))`.
+func (c *SysDictTypeClient) Use(hooks ...Hook) {
+	c.hooks.SysDictType = append(c.hooks.SysDictType, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysdicttype.Intercept(f(g(h())))`.
+func (c *SysDictTypeClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysDictType = append(c.inters.SysDictType, interceptors...)
+}
+
+// Create returns a builder for creating a SysDictType entity.
+func (c *SysDictTypeClient) Create() *SysDictTypeCreate {
+	mutation := newSysDictTypeMutation(c.config, OpCreate)
+	return &SysDictTypeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysDictType entities.
+func (c *SysDictTypeClient) CreateBulk(builders ...*SysDictTypeCreate) *SysDictTypeCreateBulk {
+	return &SysDictTypeCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysDictTypeClient) MapCreateBulk(slice any, setFunc func(*SysDictTypeCreate, int)) *SysDictTypeCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysDictTypeCreateBulk{err: fmt.Errorf("calling to SysDictTypeClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysDictTypeCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysDictTypeCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysDictType.
+func (c *SysDictTypeClient) Update() *SysDictTypeUpdate {
+	mutation := newSysDictTypeMutation(c.config, OpUpdate)
+	return &SysDictTypeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysDictTypeClient) UpdateOne(sdt *SysDictType) *SysDictTypeUpdateOne {
+	mutation := newSysDictTypeMutation(c.config, OpUpdateOne, withSysDictType(sdt))
+	return &SysDictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysDictTypeClient) UpdateOneID(id int64) *SysDictTypeUpdateOne {
+	mutation := newSysDictTypeMutation(c.config, OpUpdateOne, withSysDictTypeID(id))
+	return &SysDictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysDictType.
+func (c *SysDictTypeClient) Delete() *SysDictTypeDelete {
+	mutation := newSysDictTypeMutation(c.config, OpDelete)
+	return &SysDictTypeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysDictTypeClient) DeleteOne(sdt *SysDictType) *SysDictTypeDeleteOne {
+	return c.DeleteOneID(sdt.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysDictTypeClient) DeleteOneID(id int64) *SysDictTypeDeleteOne {
+	builder := c.Delete().Where(sysdicttype.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysDictTypeDeleteOne{builder}
+}
+
+// Query returns a query builder for SysDictType.
+func (c *SysDictTypeClient) Query() *SysDictTypeQuery {
+	return &SysDictTypeQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysDictType},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysDictType entity by its id.
+func (c *SysDictTypeClient) Get(ctx context.Context, id int64) (*SysDictType, error) {
+	return c.Query().Where(sysdicttype.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysDictTypeClient) GetX(ctx context.Context, id int64) *SysDictType {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QuerySysDictDatas queries the sysDictDatas edge of a SysDictType.
+func (c *SysDictTypeClient) QuerySysDictDatas(sdt *SysDictType) *SysDictDataQuery {
+	query := (&SysDictDataClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sdt.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysdicttype.Table, sysdicttype.FieldID, id),
+			sqlgraph.To(sysdictdata.Table, sysdictdata.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysdicttype.SysDictDatasTable, sysdicttype.SysDictDatasColumn),
+		)
+		fromV = sqlgraph.Neighbors(sdt.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysDictTypeClient) Hooks() []Hook {
+	return c.hooks.SysDictType
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysDictTypeClient) Interceptors() []Interceptor {
+	return c.inters.SysDictType
+}
+
+func (c *SysDictTypeClient) mutate(ctx context.Context, m *SysDictTypeMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysDictTypeCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysDictTypeUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysDictTypeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysDictTypeDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysDictType mutation op: %q", m.Op())
+	}
+}
+
+// SysLoginLogClient is a client for the SysLoginLog schema.
+type SysLoginLogClient struct {
+	config
+}
+
+// NewSysLoginLogClient returns a client for the SysLoginLog from the given config.
+func NewSysLoginLogClient(c config) *SysLoginLogClient {
+	return &SysLoginLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysloginlog.Hooks(f(g(h())))`.
+func (c *SysLoginLogClient) Use(hooks ...Hook) {
+	c.hooks.SysLoginLog = append(c.hooks.SysLoginLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysloginlog.Intercept(f(g(h())))`.
+func (c *SysLoginLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysLoginLog = append(c.inters.SysLoginLog, interceptors...)
+}
+
+// Create returns a builder for creating a SysLoginLog entity.
+func (c *SysLoginLogClient) Create() *SysLoginLogCreate {
+	mutation := newSysLoginLogMutation(c.config, OpCreate)
+	return &SysLoginLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysLoginLog entities.
+func (c *SysLoginLogClient) CreateBulk(builders ...*SysLoginLogCreate) *SysLoginLogCreateBulk {
+	return &SysLoginLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysLoginLogClient) MapCreateBulk(slice any, setFunc func(*SysLoginLogCreate, int)) *SysLoginLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysLoginLogCreateBulk{err: fmt.Errorf("calling to SysLoginLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysLoginLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysLoginLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysLoginLog.
+func (c *SysLoginLogClient) Update() *SysLoginLogUpdate {
+	mutation := newSysLoginLogMutation(c.config, OpUpdate)
+	return &SysLoginLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysLoginLogClient) UpdateOne(sll *SysLoginLog) *SysLoginLogUpdateOne {
+	mutation := newSysLoginLogMutation(c.config, OpUpdateOne, withSysLoginLog(sll))
+	return &SysLoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysLoginLogClient) UpdateOneID(id int64) *SysLoginLogUpdateOne {
+	mutation := newSysLoginLogMutation(c.config, OpUpdateOne, withSysLoginLogID(id))
+	return &SysLoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysLoginLog.
+func (c *SysLoginLogClient) Delete() *SysLoginLogDelete {
+	mutation := newSysLoginLogMutation(c.config, OpDelete)
+	return &SysLoginLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysLoginLogClient) DeleteOne(sll *SysLoginLog) *SysLoginLogDeleteOne {
+	return c.DeleteOneID(sll.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysLoginLogClient) DeleteOneID(id int64) *SysLoginLogDeleteOne {
+	builder := c.Delete().Where(sysloginlog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysLoginLogDeleteOne{builder}
+}
+
+// Query returns a query builder for SysLoginLog.
+func (c *SysLoginLogClient) Query() *SysLoginLogQuery {
+	return &SysLoginLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysLoginLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysLoginLog entity by its id.
+func (c *SysLoginLogClient) Get(ctx context.Context, id int64) (*SysLoginLog, error) {
+	return c.Query().Where(sysloginlog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysLoginLogClient) GetX(ctx context.Context, id int64) *SysLoginLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysLoginLogClient) Hooks() []Hook {
+	return c.hooks.SysLoginLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysLoginLogClient) Interceptors() []Interceptor {
+	return c.inters.SysLoginLog
+}
+
+func (c *SysLoginLogClient) mutate(ctx context.Context, m *SysLoginLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysLoginLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysLoginLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysLoginLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysLoginLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysLoginLog mutation op: %q", m.Op())
 	}
 }
 
@@ -349,6 +1149,288 @@ func (c *SysMenuClient) mutate(ctx context.Context, m *SysMenuMutation) (Value, 
 	}
 }
 
+// SysOperLogClient is a client for the SysOperLog schema.
+type SysOperLogClient struct {
+	config
+}
+
+// NewSysOperLogClient returns a client for the SysOperLog from the given config.
+func NewSysOperLogClient(c config) *SysOperLogClient {
+	return &SysOperLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysoperlog.Hooks(f(g(h())))`.
+func (c *SysOperLogClient) Use(hooks ...Hook) {
+	c.hooks.SysOperLog = append(c.hooks.SysOperLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysoperlog.Intercept(f(g(h())))`.
+func (c *SysOperLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysOperLog = append(c.inters.SysOperLog, interceptors...)
+}
+
+// Create returns a builder for creating a SysOperLog entity.
+func (c *SysOperLogClient) Create() *SysOperLogCreate {
+	mutation := newSysOperLogMutation(c.config, OpCreate)
+	return &SysOperLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysOperLog entities.
+func (c *SysOperLogClient) CreateBulk(builders ...*SysOperLogCreate) *SysOperLogCreateBulk {
+	return &SysOperLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysOperLogClient) MapCreateBulk(slice any, setFunc func(*SysOperLogCreate, int)) *SysOperLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysOperLogCreateBulk{err: fmt.Errorf("calling to SysOperLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysOperLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysOperLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysOperLog.
+func (c *SysOperLogClient) Update() *SysOperLogUpdate {
+	mutation := newSysOperLogMutation(c.config, OpUpdate)
+	return &SysOperLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysOperLogClient) UpdateOne(sol *SysOperLog) *SysOperLogUpdateOne {
+	mutation := newSysOperLogMutation(c.config, OpUpdateOne, withSysOperLog(sol))
+	return &SysOperLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysOperLogClient) UpdateOneID(id int64) *SysOperLogUpdateOne {
+	mutation := newSysOperLogMutation(c.config, OpUpdateOne, withSysOperLogID(id))
+	return &SysOperLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysOperLog.
+func (c *SysOperLogClient) Delete() *SysOperLogDelete {
+	mutation := newSysOperLogMutation(c.config, OpDelete)
+	return &SysOperLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysOperLogClient) DeleteOne(sol *SysOperLog) *SysOperLogDeleteOne {
+	return c.DeleteOneID(sol.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysOperLogClient) DeleteOneID(id int64) *SysOperLogDeleteOne {
+	builder := c.Delete().Where(sysoperlog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysOperLogDeleteOne{builder}
+}
+
+// Query returns a query builder for SysOperLog.
+func (c *SysOperLogClient) Query() *SysOperLogQuery {
+	return &SysOperLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysOperLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysOperLog entity by its id.
+func (c *SysOperLogClient) Get(ctx context.Context, id int64) (*SysOperLog, error) {
+	return c.Query().Where(sysoperlog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysOperLogClient) GetX(ctx context.Context, id int64) *SysOperLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysOperLogClient) Hooks() []Hook {
+	return c.hooks.SysOperLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysOperLogClient) Interceptors() []Interceptor {
+	return c.inters.SysOperLog
+}
+
+func (c *SysOperLogClient) mutate(ctx context.Context, m *SysOperLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysOperLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysOperLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysOperLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysOperLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysOperLog mutation op: %q", m.Op())
+	}
+}
+
+// SysPostClient is a client for the SysPost schema.
+type SysPostClient struct {
+	config
+}
+
+// NewSysPostClient returns a client for the SysPost from the given config.
+func NewSysPostClient(c config) *SysPostClient {
+	return &SysPostClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `syspost.Hooks(f(g(h())))`.
+func (c *SysPostClient) Use(hooks ...Hook) {
+	c.hooks.SysPost = append(c.hooks.SysPost, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `syspost.Intercept(f(g(h())))`.
+func (c *SysPostClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysPost = append(c.inters.SysPost, interceptors...)
+}
+
+// Create returns a builder for creating a SysPost entity.
+func (c *SysPostClient) Create() *SysPostCreate {
+	mutation := newSysPostMutation(c.config, OpCreate)
+	return &SysPostCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysPost entities.
+func (c *SysPostClient) CreateBulk(builders ...*SysPostCreate) *SysPostCreateBulk {
+	return &SysPostCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysPostClient) MapCreateBulk(slice any, setFunc func(*SysPostCreate, int)) *SysPostCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysPostCreateBulk{err: fmt.Errorf("calling to SysPostClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysPostCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysPostCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysPost.
+func (c *SysPostClient) Update() *SysPostUpdate {
+	mutation := newSysPostMutation(c.config, OpUpdate)
+	return &SysPostUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysPostClient) UpdateOne(sp *SysPost) *SysPostUpdateOne {
+	mutation := newSysPostMutation(c.config, OpUpdateOne, withSysPost(sp))
+	return &SysPostUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysPostClient) UpdateOneID(id int64) *SysPostUpdateOne {
+	mutation := newSysPostMutation(c.config, OpUpdateOne, withSysPostID(id))
+	return &SysPostUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysPost.
+func (c *SysPostClient) Delete() *SysPostDelete {
+	mutation := newSysPostMutation(c.config, OpDelete)
+	return &SysPostDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysPostClient) DeleteOne(sp *SysPost) *SysPostDeleteOne {
+	return c.DeleteOneID(sp.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysPostClient) DeleteOneID(id int64) *SysPostDeleteOne {
+	builder := c.Delete().Where(syspost.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysPostDeleteOne{builder}
+}
+
+// Query returns a query builder for SysPost.
+func (c *SysPostClient) Query() *SysPostQuery {
+	return &SysPostQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysPost},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysPost entity by its id.
+func (c *SysPostClient) Get(ctx context.Context, id int64) (*SysPost, error) {
+	return c.Query().Where(syspost.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysPostClient) GetX(ctx context.Context, id int64) *SysPost {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryUsers queries the users edge of a SysPost.
+func (c *SysPostClient) QueryUsers(sp *SysPost) *SysUserQuery {
+	query := (&SysUserClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sp.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(syspost.Table, syspost.FieldID, id),
+			sqlgraph.To(sysuser.Table, sysuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, syspost.UsersTable, syspost.UsersPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(sp.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *SysPostClient) Hooks() []Hook {
+	return c.hooks.SysPost
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysPostClient) Interceptors() []Interceptor {
+	return c.inters.SysPost
+}
+
+func (c *SysPostClient) mutate(ctx context.Context, m *SysPostMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysPostCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysPostUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysPostUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysPostDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysPost mutation op: %q", m.Op())
+	}
+}
+
 // SysRoleClient is a client for the SysRole schema.
 type SysRoleClient struct {
 	config
@@ -455,6 +1537,22 @@ func (c *SysRoleClient) GetX(ctx context.Context, id int64) *SysRole {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryDepts queries the depts edge of a SysRole.
+func (c *SysRoleClient) QueryDepts(sr *SysRole) *SysDeptQuery {
+	query := (&SysDeptClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := sr.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysrole.Table, sysrole.FieldID, id),
+			sqlgraph.To(sysdept.Table, sysdept.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysrole.DeptsTable, sysrole.DeptsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(sr.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -590,6 +1688,38 @@ func (c *SysUserClient) GetX(ctx context.Context, id int64) *SysUser {
 	return obj
 }
 
+// QueryBelongTo queries the belongTo edge of a SysUser.
+func (c *SysUserClient) QueryBelongTo(su *SysUser) *SysDeptQuery {
+	query := (&SysDeptClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := su.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
+			sqlgraph.To(sysdept.Table, sysdept.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToTable, sysuser.BelongToColumn),
+		)
+		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPosts queries the posts edge of a SysUser.
+func (c *SysUserClient) QueryPosts(su *SysUser) *SysPostQuery {
+	query := (&SysPostClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := su.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
+			sqlgraph.To(syspost.Table, syspost.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.PostsTable, sysuser.PostsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *SysUserClient) Hooks() []Hook {
 	return c.hooks.SysUser
@@ -615,12 +1745,147 @@ func (c *SysUserClient) mutate(ctx context.Context, m *SysUserMutation) (Value, 
 	}
 }
 
+// SysUserOnlineClient is a client for the SysUserOnline schema.
+type SysUserOnlineClient struct {
+	config
+}
+
+// NewSysUserOnlineClient returns a client for the SysUserOnline from the given config.
+func NewSysUserOnlineClient(c config) *SysUserOnlineClient {
+	return &SysUserOnlineClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `sysuseronline.Hooks(f(g(h())))`.
+func (c *SysUserOnlineClient) Use(hooks ...Hook) {
+	c.hooks.SysUserOnline = append(c.hooks.SysUserOnline, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `sysuseronline.Intercept(f(g(h())))`.
+func (c *SysUserOnlineClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SysUserOnline = append(c.inters.SysUserOnline, interceptors...)
+}
+
+// Create returns a builder for creating a SysUserOnline entity.
+func (c *SysUserOnlineClient) Create() *SysUserOnlineCreate {
+	mutation := newSysUserOnlineMutation(c.config, OpCreate)
+	return &SysUserOnlineCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SysUserOnline entities.
+func (c *SysUserOnlineClient) CreateBulk(builders ...*SysUserOnlineCreate) *SysUserOnlineCreateBulk {
+	return &SysUserOnlineCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SysUserOnlineClient) MapCreateBulk(slice any, setFunc func(*SysUserOnlineCreate, int)) *SysUserOnlineCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SysUserOnlineCreateBulk{err: fmt.Errorf("calling to SysUserOnlineClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SysUserOnlineCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SysUserOnlineCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SysUserOnline.
+func (c *SysUserOnlineClient) Update() *SysUserOnlineUpdate {
+	mutation := newSysUserOnlineMutation(c.config, OpUpdate)
+	return &SysUserOnlineUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SysUserOnlineClient) UpdateOne(suo *SysUserOnline) *SysUserOnlineUpdateOne {
+	mutation := newSysUserOnlineMutation(c.config, OpUpdateOne, withSysUserOnline(suo))
+	return &SysUserOnlineUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SysUserOnlineClient) UpdateOneID(id int64) *SysUserOnlineUpdateOne {
+	mutation := newSysUserOnlineMutation(c.config, OpUpdateOne, withSysUserOnlineID(id))
+	return &SysUserOnlineUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SysUserOnline.
+func (c *SysUserOnlineClient) Delete() *SysUserOnlineDelete {
+	mutation := newSysUserOnlineMutation(c.config, OpDelete)
+	return &SysUserOnlineDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SysUserOnlineClient) DeleteOne(suo *SysUserOnline) *SysUserOnlineDeleteOne {
+	return c.DeleteOneID(suo.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SysUserOnlineClient) DeleteOneID(id int64) *SysUserOnlineDeleteOne {
+	builder := c.Delete().Where(sysuseronline.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SysUserOnlineDeleteOne{builder}
+}
+
+// Query returns a query builder for SysUserOnline.
+func (c *SysUserOnlineClient) Query() *SysUserOnlineQuery {
+	return &SysUserOnlineQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSysUserOnline},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SysUserOnline entity by its id.
+func (c *SysUserOnlineClient) Get(ctx context.Context, id int64) (*SysUserOnline, error) {
+	return c.Query().Where(sysuseronline.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SysUserOnlineClient) GetX(ctx context.Context, id int64) *SysUserOnline {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SysUserOnlineClient) Hooks() []Hook {
+	return c.hooks.SysUserOnline
+}
+
+// Interceptors returns the client interceptors.
+func (c *SysUserOnlineClient) Interceptors() []Interceptor {
+	return c.inters.SysUserOnline
+}
+
+func (c *SysUserOnlineClient) mutate(ctx context.Context, m *SysUserOnlineMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SysUserOnlineCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SysUserOnlineUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SysUserOnlineUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SysUserOnlineDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("codegen: unknown SysUserOnline mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		SysMenu, SysRole, SysUser []ent.Hook
+		SysConfig, SysDept, SysDictData, SysDictType, SysLoginLog, SysMenu, SysOperLog,
+		SysPost, SysRole, SysUser, SysUserOnline []ent.Hook
 	}
 	inters struct {
-		SysMenu, SysRole, SysUser []ent.Interceptor
+		SysConfig, SysDept, SysDictData, SysDictType, SysLoginLog, SysMenu, SysOperLog,
+		SysPost, SysRole, SysUser, SysUserOnline []ent.Interceptor
 	}
 )

@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
@@ -145,6 +146,21 @@ func (src *SysRoleCreate) SetNillableID(i *int64) *SysRoleCreate {
 	return src
 }
 
+// AddDeptIDs adds the "depts" edge to the SysDept entity by IDs.
+func (src *SysRoleCreate) AddDeptIDs(ids ...int64) *SysRoleCreate {
+	src.mutation.AddDeptIDs(ids...)
+	return src
+}
+
+// AddDepts adds the "depts" edges to the SysDept entity.
+func (src *SysRoleCreate) AddDepts(s ...*SysDept) *SysRoleCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return src.AddDeptIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (src *SysRoleCreate) Mutation() *SysRoleMutation {
 	return src.mutation
@@ -267,6 +283,22 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	if value, ok := src.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)
 		_node.DataScope = value
+	}
+	if nodes := src.mutation.DeptsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

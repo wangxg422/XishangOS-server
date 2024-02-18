@@ -16,7 +16,7 @@ type SysUserOnline struct {
 // Annotations 修改表名称
 func (SysUserOnline) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "sys_dict_type"},
+		entsql.Annotation{Table: "sys_user_online"},
 		entsql.WithComments(true),
 		schema.Comment("在线用户表"),
 	}

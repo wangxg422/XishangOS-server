@@ -9,6 +9,66 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 )
 
+// The SysConfigFunc type is an adapter to allow the use of ordinary
+// function as SysConfig mutator.
+type SysConfigFunc func(context.Context, *codegen.SysConfigMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysConfigFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysConfigMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysConfigMutation", m)
+}
+
+// The SysDeptFunc type is an adapter to allow the use of ordinary
+// function as SysDept mutator.
+type SysDeptFunc func(context.Context, *codegen.SysDeptMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysDeptFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysDeptMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysDeptMutation", m)
+}
+
+// The SysDictDataFunc type is an adapter to allow the use of ordinary
+// function as SysDictData mutator.
+type SysDictDataFunc func(context.Context, *codegen.SysDictDataMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysDictDataFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysDictDataMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysDictDataMutation", m)
+}
+
+// The SysDictTypeFunc type is an adapter to allow the use of ordinary
+// function as SysDictType mutator.
+type SysDictTypeFunc func(context.Context, *codegen.SysDictTypeMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysDictTypeFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysDictTypeMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysDictTypeMutation", m)
+}
+
+// The SysLoginLogFunc type is an adapter to allow the use of ordinary
+// function as SysLoginLog mutator.
+type SysLoginLogFunc func(context.Context, *codegen.SysLoginLogMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysLoginLogFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysLoginLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysLoginLogMutation", m)
+}
+
 // The SysMenuFunc type is an adapter to allow the use of ordinary
 // function as SysMenu mutator.
 type SysMenuFunc func(context.Context, *codegen.SysMenuMutation) (codegen.Value, error)
@@ -19,6 +79,30 @@ func (f SysMenuFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Va
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysMenuMutation", m)
+}
+
+// The SysOperLogFunc type is an adapter to allow the use of ordinary
+// function as SysOperLog mutator.
+type SysOperLogFunc func(context.Context, *codegen.SysOperLogMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysOperLogFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysOperLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysOperLogMutation", m)
+}
+
+// The SysPostFunc type is an adapter to allow the use of ordinary
+// function as SysPost mutator.
+type SysPostFunc func(context.Context, *codegen.SysPostMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysPostFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysPostMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysPostMutation", m)
 }
 
 // The SysRoleFunc type is an adapter to allow the use of ordinary
@@ -43,6 +127,18 @@ func (f SysUserFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Va
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysUserMutation", m)
+}
+
+// The SysUserOnlineFunc type is an adapter to allow the use of ordinary
+// function as SysUserOnline mutator.
+type SysUserOnlineFunc func(context.Context, *codegen.SysUserOnlineMutation) (codegen.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SysUserOnlineFunc) Mutate(ctx context.Context, m codegen.Mutation) (codegen.Value, error) {
+	if mv, ok := m.(*codegen.SysUserOnlineMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *codegen.SysUserOnlineMutation", m)
 }
 
 // Condition is a hook condition function.

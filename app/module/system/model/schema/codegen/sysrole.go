@@ -32,8 +32,29 @@ type SysRole struct {
 	// 角色名称
 	Name string `json:"name,omitempty"`
 	// 数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)
-	DataScope    int8 `json:"data_scope,omitempty"`
+	DataScope int8 `json:"data_scope,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysRoleQuery when eager-loading is set.
+	Edges        SysRoleEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SysRoleEdges holds the relations/edges for other nodes in the graph.
+type SysRoleEdges struct {
+	// Depts holds the value of the depts edge.
+	Depts []*SysDept `json:"depts,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// DeptsOrErr returns the Depts value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysRoleEdges) DeptsOrErr() ([]*SysDept, error) {
+	if e.loadedTypes[0] {
+		return e.Depts, nil
+	}
+	return nil, &NotLoadedError{edge: "depts"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -127,6 +148,11 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sr *SysRole) Value(name string) (ent.Value, error) {
 	return sr.selectValues.Get(name)
+}
+
+// QueryDepts queries the "depts" edge of the SysRole entity.
+func (sr *SysRole) QueryDepts() *SysDeptQuery {
+	return NewSysRoleClient(sr.config).QueryDepts(sr)
 }
 
 // Update returns a builder for updating this SysRole.

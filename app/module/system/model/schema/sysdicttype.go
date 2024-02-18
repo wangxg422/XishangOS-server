@@ -45,6 +45,6 @@ func (SysDictType) Fields() []ent.Field {
 // Edges of the SysDictType.
 func (SysDictType) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("sys_dict_type", SysDictData.Type),
+		edge.To("sysDictDatas", SysDictData.Type),
 	}
 }

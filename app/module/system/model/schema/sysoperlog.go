@@ -16,7 +16,7 @@ type SysOperLog struct {
 // Annotations 修改表名称
 func (SysOperLog) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "sys_dict_type"},
+		entsql.Annotation{Table: "sys_oper_log"},
 		entsql.WithComments(true),
 		schema.Comment("系统操作日志表"),
 	}

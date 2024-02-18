@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -29,8 +30,15 @@ const (
 	FieldName = "name"
 	// FieldDataScope holds the string denoting the data_scope field in the database.
 	FieldDataScope = "data_scope"
+	// EdgeDepts holds the string denoting the depts edge name in mutations.
+	EdgeDepts = "depts"
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_role"
+	// DeptsTable is the table that holds the depts relation/edge. The primary key declared below.
+	DeptsTable = "sys_role_depts"
+	// DeptsInverseTable is the table name for the SysDept entity.
+	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
+	DeptsInverseTable = "sys_dept"
 )
 
 // Columns holds all SQL columns for sysrole fields.
@@ -45,6 +53,12 @@ var Columns = []string{
 	FieldName,
 	FieldDataScope,
 }
+
+var (
+	// DeptsPrimaryKey and DeptsColumn2 are the table columns denoting the
+	// primary key for the depts relation (M2M).
+	DeptsPrimaryKey = []string{"sys_role_id", "sys_dept_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -119,4 +133,25 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByDataScope orders the results by the data_scope field.
 func ByDataScope(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDataScope, opts...).ToFunc()
+}
+
+// ByDeptsCount orders the results by depts count.
+func ByDeptsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newDeptsStep(), opts...)
+	}
+}
+
+// ByDepts orders the results by depts terms.
+func ByDepts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newDeptsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newDeptsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(DeptsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, DeptsTable, DeptsPrimaryKey...),
+	)
 }

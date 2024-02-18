@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -53,8 +54,24 @@ const (
 	FieldLastLoginIP = "last_login_ip"
 	// FieldLastLoginTime holds the string denoting the last_login_time field in the database.
 	FieldLastLoginTime = "last_login_time"
+	// EdgeBelongTo holds the string denoting the belongto edge name in mutations.
+	EdgeBelongTo = "belongTo"
+	// EdgePosts holds the string denoting the posts edge name in mutations.
+	EdgePosts = "posts"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_user"
+	// BelongToTable is the table that holds the belongTo relation/edge.
+	BelongToTable = "sys_user"
+	// BelongToInverseTable is the table name for the SysDept entity.
+	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
+	BelongToInverseTable = "sys_dept"
+	// BelongToColumn is the table column denoting the belongTo relation/edge.
+	BelongToColumn = "sys_dept_sys_user"
+	// PostsTable is the table that holds the posts relation/edge. The primary key declared below.
+	PostsTable = "sys_user_posts"
+	// PostsInverseTable is the table name for the SysPost entity.
+	// It exists in this package in order to avoid circular dependency with the "syspost" package.
+	PostsInverseTable = "sys_post"
 )
 
 // Columns holds all SQL columns for sysuser fields.
@@ -82,10 +99,27 @@ var Columns = []string{
 	FieldLastLoginTime,
 }
 
+// ForeignKeys holds the SQL foreign-keys that are owned by the "sys_user"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"sys_dept_sys_user",
+}
+
+var (
+	// PostsPrimaryKey and PostsColumn2 are the table columns denoting the
+	// primary key for the posts relation (M2M).
+	PostsPrimaryKey = []string{"sys_user_id", "sys_post_id"}
+)
+
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -213,4 +247,39 @@ func ByLastLoginIP(opts ...sql.OrderTermOption) OrderOption {
 // ByLastLoginTime orders the results by the last_login_time field.
 func ByLastLoginTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastLoginTime, opts...).ToFunc()
+}
+
+// ByBelongToField orders the results by belongTo field.
+func ByBelongToField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newBelongToStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByPostsCount orders the results by posts count.
+func ByPostsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newPostsStep(), opts...)
+	}
+}
+
+// ByPosts orders the results by posts terms.
+func ByPosts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newPostsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newBelongToStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(BelongToInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, BelongToTable, BelongToColumn),
+	)
+}
+func newPostsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(PostsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, PostsTable, PostsPrimaryKey...),
+	)
 }

@@ -12,12 +12,28 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// SysConfig is the client for interacting with the SysConfig builders.
+	SysConfig *SysConfigClient
+	// SysDept is the client for interacting with the SysDept builders.
+	SysDept *SysDeptClient
+	// SysDictData is the client for interacting with the SysDictData builders.
+	SysDictData *SysDictDataClient
+	// SysDictType is the client for interacting with the SysDictType builders.
+	SysDictType *SysDictTypeClient
+	// SysLoginLog is the client for interacting with the SysLoginLog builders.
+	SysLoginLog *SysLoginLogClient
 	// SysMenu is the client for interacting with the SysMenu builders.
 	SysMenu *SysMenuClient
+	// SysOperLog is the client for interacting with the SysOperLog builders.
+	SysOperLog *SysOperLogClient
+	// SysPost is the client for interacting with the SysPost builders.
+	SysPost *SysPostClient
 	// SysRole is the client for interacting with the SysRole builders.
 	SysRole *SysRoleClient
 	// SysUser is the client for interacting with the SysUser builders.
 	SysUser *SysUserClient
+	// SysUserOnline is the client for interacting with the SysUserOnline builders.
+	SysUserOnline *SysUserOnlineClient
 
 	// lazily loaded.
 	client     *Client
@@ -149,9 +165,17 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.SysConfig = NewSysConfigClient(tx.config)
+	tx.SysDept = NewSysDeptClient(tx.config)
+	tx.SysDictData = NewSysDictDataClient(tx.config)
+	tx.SysDictType = NewSysDictTypeClient(tx.config)
+	tx.SysLoginLog = NewSysLoginLogClient(tx.config)
 	tx.SysMenu = NewSysMenuClient(tx.config)
+	tx.SysOperLog = NewSysOperLogClient(tx.config)
+	tx.SysPost = NewSysPostClient(tx.config)
 	tx.SysRole = NewSysRoleClient(tx.config)
 	tx.SysUser = NewSysUserClient(tx.config)
+	tx.SysUserOnline = NewSysUserOnlineClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
@@ -161,7 +185,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: SysMenu.QueryXXX(), the query will be executed
+// applies a query, for example: SysConfig.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

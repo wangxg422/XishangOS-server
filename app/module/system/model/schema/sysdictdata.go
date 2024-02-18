@@ -51,7 +51,7 @@ func (SysDictData) Fields() []ent.Field {
 func (SysDictData) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("owner", SysDictType.Type).
-			Ref("sys_dict_data").
+			Ref("sysDictDatas").
 			Unique(),
 	}
 }

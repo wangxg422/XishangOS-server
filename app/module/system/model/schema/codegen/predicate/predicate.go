@@ -6,11 +6,35 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// SysConfig is the predicate function for sysconfig builders.
+type SysConfig func(*sql.Selector)
+
+// SysDept is the predicate function for sysdept builders.
+type SysDept func(*sql.Selector)
+
+// SysDictData is the predicate function for sysdictdata builders.
+type SysDictData func(*sql.Selector)
+
+// SysDictType is the predicate function for sysdicttype builders.
+type SysDictType func(*sql.Selector)
+
+// SysLoginLog is the predicate function for sysloginlog builders.
+type SysLoginLog func(*sql.Selector)
+
 // SysMenu is the predicate function for sysmenu builders.
 type SysMenu func(*sql.Selector)
+
+// SysOperLog is the predicate function for sysoperlog builders.
+type SysOperLog func(*sql.Selector)
+
+// SysPost is the predicate function for syspost builders.
+type SysPost func(*sql.Selector)
 
 // SysRole is the predicate function for sysrole builders.
 type SysRole func(*sql.Selector)
 
 // SysUser is the predicate function for sysuser builders.
 type SysUser func(*sql.Selector)
+
+// SysUserOnline is the predicate function for sysuseronline builders.
+type SysUserOnline func(*sql.Selector)

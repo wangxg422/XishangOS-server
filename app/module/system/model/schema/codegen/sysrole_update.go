@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
@@ -146,9 +147,45 @@ func (sru *SysRoleUpdate) ClearDataScope() *SysRoleUpdate {
 	return sru
 }
 
+// AddDeptIDs adds the "depts" edge to the SysDept entity by IDs.
+func (sru *SysRoleUpdate) AddDeptIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.AddDeptIDs(ids...)
+	return sru
+}
+
+// AddDepts adds the "depts" edges to the SysDept entity.
+func (sru *SysRoleUpdate) AddDepts(s ...*SysDept) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.AddDeptIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sru *SysRoleUpdate) Mutation() *SysRoleMutation {
 	return sru.mutation
+}
+
+// ClearDepts clears all "depts" edges to the SysDept entity.
+func (sru *SysRoleUpdate) ClearDepts() *SysRoleUpdate {
+	sru.mutation.ClearDepts()
+	return sru
+}
+
+// RemoveDeptIDs removes the "depts" edge to SysDept entities by IDs.
+func (sru *SysRoleUpdate) RemoveDeptIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.RemoveDeptIDs(ids...)
+	return sru
+}
+
+// RemoveDepts removes "depts" edges to SysDept entities.
+func (sru *SysRoleUpdate) RemoveDepts(s ...*SysDept) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.RemoveDeptIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -247,6 +284,51 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if sru.mutation.DataScopeCleared() {
 		_spec.ClearField(sysrole.FieldDataScope, field.TypeInt8)
+	}
+	if sru.mutation.DeptsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.RemovedDeptsIDs(); len(nodes) > 0 && !sru.mutation.DeptsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.DeptsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, sru.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -386,9 +468,45 @@ func (sruo *SysRoleUpdateOne) ClearDataScope() *SysRoleUpdateOne {
 	return sruo
 }
 
+// AddDeptIDs adds the "depts" edge to the SysDept entity by IDs.
+func (sruo *SysRoleUpdateOne) AddDeptIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.AddDeptIDs(ids...)
+	return sruo
+}
+
+// AddDepts adds the "depts" edges to the SysDept entity.
+func (sruo *SysRoleUpdateOne) AddDepts(s ...*SysDept) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.AddDeptIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sruo *SysRoleUpdateOne) Mutation() *SysRoleMutation {
 	return sruo.mutation
+}
+
+// ClearDepts clears all "depts" edges to the SysDept entity.
+func (sruo *SysRoleUpdateOne) ClearDepts() *SysRoleUpdateOne {
+	sruo.mutation.ClearDepts()
+	return sruo
+}
+
+// RemoveDeptIDs removes the "depts" edge to SysDept entities by IDs.
+func (sruo *SysRoleUpdateOne) RemoveDeptIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.RemoveDeptIDs(ids...)
+	return sruo
+}
+
+// RemoveDepts removes "depts" edges to SysDept entities.
+func (sruo *SysRoleUpdateOne) RemoveDepts(s ...*SysDept) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.RemoveDeptIDs(ids...)
 }
 
 // Where appends a list predicates to the SysRoleUpdate builder.
@@ -517,6 +635,51 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	}
 	if sruo.mutation.DataScopeCleared() {
 		_spec.ClearField(sysrole.FieldDataScope, field.TypeInt8)
+	}
+	if sruo.mutation.DeptsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.RemovedDeptsIDs(); len(nodes) > 0 && !sruo.mutation.DeptsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.DeptsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.DeptsTable,
+			Columns: sysrole.DeptsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysRole{config: sruo.config}
 	_spec.Assign = _node.assignValues

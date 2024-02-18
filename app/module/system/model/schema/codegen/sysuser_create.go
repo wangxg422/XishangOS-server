@@ -10,6 +10,8 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -306,6 +308,40 @@ func (suc *SysUserCreate) SetNillableID(i *int64) *SysUserCreate {
 	return suc
 }
 
+// SetBelongToID sets the "belongTo" edge to the SysDept entity by ID.
+func (suc *SysUserCreate) SetBelongToID(id int64) *SysUserCreate {
+	suc.mutation.SetBelongToID(id)
+	return suc
+}
+
+// SetNillableBelongToID sets the "belongTo" edge to the SysDept entity by ID if the given value is not nil.
+func (suc *SysUserCreate) SetNillableBelongToID(id *int64) *SysUserCreate {
+	if id != nil {
+		suc = suc.SetBelongToID(*id)
+	}
+	return suc
+}
+
+// SetBelongTo sets the "belongTo" edge to the SysDept entity.
+func (suc *SysUserCreate) SetBelongTo(s *SysDept) *SysUserCreate {
+	return suc.SetBelongToID(s.ID)
+}
+
+// AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
+func (suc *SysUserCreate) AddPostIDs(ids ...int64) *SysUserCreate {
+	suc.mutation.AddPostIDs(ids...)
+	return suc
+}
+
+// AddPosts adds the "posts" edges to the SysPost entity.
+func (suc *SysUserCreate) AddPosts(s ...*SysPost) *SysUserCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suc.AddPostIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suc *SysUserCreate) Mutation() *SysUserMutation {
 	return suc.mutation
@@ -475,6 +511,39 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	if value, ok := suc.mutation.LastLoginTime(); ok {
 		_spec.SetField(sysuser.FieldLastLoginTime, field.TypeString, value)
 		_node.LastLoginTime = value
+	}
+	if nodes := suc.mutation.BelongToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysuser.BelongToTable,
+			Columns: []string{sysuser.BelongToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.sys_dept_sys_user = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := suc.mutation.PostsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.PostsTable,
+			Columns: sysuser.PostsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

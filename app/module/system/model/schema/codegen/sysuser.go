@@ -9,6 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -57,7 +58,44 @@ type SysUser struct {
 	LastLoginIP string `json:"last_login_ip,omitempty"`
 	// LastLoginTime holds the value of the "last_login_time" field.
 	LastLoginTime string `json:"last_login_time,omitempty"`
-	selectValues  sql.SelectValues
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysUserQuery when eager-loading is set.
+	Edges             SysUserEdges `json:"edges"`
+	sys_dept_sys_user *int64
+	selectValues      sql.SelectValues
+}
+
+// SysUserEdges holds the relations/edges for other nodes in the graph.
+type SysUserEdges struct {
+	// BelongTo holds the value of the belongTo edge.
+	BelongTo *SysDept `json:"belongTo,omitempty"`
+	// Posts holds the value of the posts edge.
+	Posts []*SysPost `json:"posts,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// BelongToOrErr returns the BelongTo value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SysUserEdges) BelongToOrErr() (*SysDept, error) {
+	if e.loadedTypes[0] {
+		if e.BelongTo == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: sysdept.Label}
+		}
+		return e.BelongTo, nil
+	}
+	return nil, &NotLoadedError{edge: "belongTo"}
+}
+
+// PostsOrErr returns the Posts value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysUserEdges) PostsOrErr() ([]*SysPost, error) {
+	if e.loadedTypes[1] {
+		return e.Posts, nil
+	}
+	return nil, &NotLoadedError{edge: "posts"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -71,6 +109,8 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
+		case sysuser.ForeignKeys[0]: // sys_dept_sys_user
+			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -212,6 +252,13 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.LastLoginTime = value.String
 			}
+		case sysuser.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field sys_dept_sys_user", value)
+			} else if value.Valid {
+				su.sys_dept_sys_user = new(int64)
+				*su.sys_dept_sys_user = int64(value.Int64)
+			}
 		default:
 			su.selectValues.Set(columns[i], values[i])
 		}
@@ -223,6 +270,16 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (su *SysUser) Value(name string) (ent.Value, error) {
 	return su.selectValues.Get(name)
+}
+
+// QueryBelongTo queries the "belongTo" edge of the SysUser entity.
+func (su *SysUser) QueryBelongTo() *SysDeptQuery {
+	return NewSysUserClient(su.config).QueryBelongTo(su)
+}
+
+// QueryPosts queries the "posts" edge of the SysUser entity.
+func (su *SysUser) QueryPosts() *SysPostQuery {
+	return NewSysUserClient(su.config).QueryPosts(su)
 }
 
 // Update returns a builder for updating this SysUser.
