@@ -323,14 +323,14 @@ func (sdu *SysDeptUpdate) ClearEmail() *SysDeptUpdate {
 	return sdu
 }
 
-// AddSysUserIDs adds the "sys_user" edge to the SysUser entity by IDs.
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
 func (sdu *SysDeptUpdate) AddSysUserIDs(ids ...int64) *SysDeptUpdate {
 	sdu.mutation.AddSysUserIDs(ids...)
 	return sdu
 }
 
-// AddSysUser adds the "sys_user" edges to the SysUser entity.
-func (sdu *SysDeptUpdate) AddSysUser(s ...*SysUser) *SysDeptUpdate {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (sdu *SysDeptUpdate) AddSysUsers(s ...*SysUser) *SysDeptUpdate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
@@ -358,20 +358,20 @@ func (sdu *SysDeptUpdate) Mutation() *SysDeptMutation {
 	return sdu.mutation
 }
 
-// ClearSysUser clears all "sys_user" edges to the SysUser entity.
-func (sdu *SysDeptUpdate) ClearSysUser() *SysDeptUpdate {
-	sdu.mutation.ClearSysUser()
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (sdu *SysDeptUpdate) ClearSysUsers() *SysDeptUpdate {
+	sdu.mutation.ClearSysUsers()
 	return sdu
 }
 
-// RemoveSysUserIDs removes the "sys_user" edge to SysUser entities by IDs.
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
 func (sdu *SysDeptUpdate) RemoveSysUserIDs(ids ...int64) *SysDeptUpdate {
 	sdu.mutation.RemoveSysUserIDs(ids...)
 	return sdu
 }
 
-// RemoveSysUser removes "sys_user" edges to SysUser entities.
-func (sdu *SysDeptUpdate) RemoveSysUser(s ...*SysUser) *SysDeptUpdate {
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (sdu *SysDeptUpdate) RemoveSysUsers(s ...*SysUser) *SysDeptUpdate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
@@ -551,12 +551,12 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sdu.mutation.EmailCleared() {
 		_spec.ClearField(sysdept.FieldEmail, field.TypeString)
 	}
-	if sdu.mutation.SysUserCleared() {
+	if sdu.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -564,12 +564,12 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sdu.mutation.RemovedSysUserIDs(); len(nodes) > 0 && !sdu.mutation.SysUserCleared() {
+	if nodes := sdu.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !sdu.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -580,12 +580,12 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sdu.mutation.SysUserIDs(); len(nodes) > 0 {
+	if nodes := sdu.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -954,14 +954,14 @@ func (sduo *SysDeptUpdateOne) ClearEmail() *SysDeptUpdateOne {
 	return sduo
 }
 
-// AddSysUserIDs adds the "sys_user" edge to the SysUser entity by IDs.
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
 func (sduo *SysDeptUpdateOne) AddSysUserIDs(ids ...int64) *SysDeptUpdateOne {
 	sduo.mutation.AddSysUserIDs(ids...)
 	return sduo
 }
 
-// AddSysUser adds the "sys_user" edges to the SysUser entity.
-func (sduo *SysDeptUpdateOne) AddSysUser(s ...*SysUser) *SysDeptUpdateOne {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (sduo *SysDeptUpdateOne) AddSysUsers(s ...*SysUser) *SysDeptUpdateOne {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
@@ -989,20 +989,20 @@ func (sduo *SysDeptUpdateOne) Mutation() *SysDeptMutation {
 	return sduo.mutation
 }
 
-// ClearSysUser clears all "sys_user" edges to the SysUser entity.
-func (sduo *SysDeptUpdateOne) ClearSysUser() *SysDeptUpdateOne {
-	sduo.mutation.ClearSysUser()
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (sduo *SysDeptUpdateOne) ClearSysUsers() *SysDeptUpdateOne {
+	sduo.mutation.ClearSysUsers()
 	return sduo
 }
 
-// RemoveSysUserIDs removes the "sys_user" edge to SysUser entities by IDs.
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
 func (sduo *SysDeptUpdateOne) RemoveSysUserIDs(ids ...int64) *SysDeptUpdateOne {
 	sduo.mutation.RemoveSysUserIDs(ids...)
 	return sduo
 }
 
-// RemoveSysUser removes "sys_user" edges to SysUser entities.
-func (sduo *SysDeptUpdateOne) RemoveSysUser(s ...*SysUser) *SysDeptUpdateOne {
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (sduo *SysDeptUpdateOne) RemoveSysUsers(s ...*SysUser) *SysDeptUpdateOne {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
@@ -1212,12 +1212,12 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 	if sduo.mutation.EmailCleared() {
 		_spec.ClearField(sysdept.FieldEmail, field.TypeString)
 	}
-	if sduo.mutation.SysUserCleared() {
+	if sduo.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -1225,12 +1225,12 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sduo.mutation.RemovedSysUserIDs(); len(nodes) > 0 && !sduo.mutation.SysUserCleared() {
+	if nodes := sduo.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !sduo.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -1241,12 +1241,12 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sduo.mutation.SysUserIDs(); len(nodes) > 0 {
+	if nodes := sduo.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),

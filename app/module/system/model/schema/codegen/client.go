@@ -528,15 +528,15 @@ func (c *SysDeptClient) GetX(ctx context.Context, id int64) *SysDept {
 	return obj
 }
 
-// QuerySysUser queries the sys_user edge of a SysDept.
-func (c *SysDeptClient) QuerySysUser(sd *SysDept) *SysUserQuery {
+// QuerySysUsers queries the sysUsers edge of a SysDept.
+func (c *SysDeptClient) QuerySysUsers(sd *SysDept) *SysUserQuery {
 	query := (&SysUserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := sd.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdept.Table, sysdept.FieldID, id),
 			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysdept.SysUserTable, sysdept.SysUserColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysdept.SysUsersTable, sysdept.SysUsersColumn),
 		)
 		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
 		return fromV, nil
@@ -1688,15 +1688,15 @@ func (c *SysUserClient) GetX(ctx context.Context, id int64) *SysUser {
 	return obj
 }
 
-// QueryBelongTo queries the belongTo edge of a SysUser.
-func (c *SysUserClient) QueryBelongTo(su *SysUser) *SysDeptQuery {
+// QueryBelongToDept queries the belongToDept edge of a SysUser.
+func (c *SysUserClient) QueryBelongToDept(su *SysUser) *SysDeptQuery {
 	query := (&SysDeptClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := su.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToTable, sysuser.BelongToColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToDeptTable, sysuser.BelongToDeptColumn),
 		)
 		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
 		return fromV, nil

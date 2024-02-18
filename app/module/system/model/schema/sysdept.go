@@ -51,8 +51,7 @@ func (SysDept) Fields() []ent.Field {
 // Edges of the SysDept.
 func (SysDept) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("sys_user", SysUser.Type).
-			StorageKey(edge.Column("id")),
+		edge.To("sysUsers", SysUser.Type),
 		edge.From("roles", SysRole.Type).
 			Ref("depts"),
 	}

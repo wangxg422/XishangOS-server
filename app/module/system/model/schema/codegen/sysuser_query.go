@@ -20,12 +20,12 @@ import (
 // SysUserQuery is the builder for querying SysUser entities.
 type SysUserQuery struct {
 	config
-	ctx          *QueryContext
-	order        []sysuser.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.SysUser
-	withBelongTo *SysDeptQuery
-	withPosts    *SysPostQuery
+	ctx              *QueryContext
+	order            []sysuser.OrderOption
+	inters           []Interceptor
+	predicates       []predicate.SysUser
+	withBelongToDept *SysDeptQuery
+	withPosts        *SysPostQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -62,8 +62,8 @@ func (suq *SysUserQuery) Order(o ...sysuser.OrderOption) *SysUserQuery {
 	return suq
 }
 
-// QueryBelongTo chains the current query on the "belongTo" edge.
-func (suq *SysUserQuery) QueryBelongTo() *SysDeptQuery {
+// QueryBelongToDept chains the current query on the "belongToDept" edge.
+func (suq *SysUserQuery) QueryBelongToDept() *SysDeptQuery {
 	query := (&SysDeptClient{config: suq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := suq.prepareQuery(ctx); err != nil {
@@ -76,7 +76,7 @@ func (suq *SysUserQuery) QueryBelongTo() *SysDeptQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToTable, sysuser.BelongToColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToDeptTable, sysuser.BelongToDeptColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,27 +293,27 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 		return nil
 	}
 	return &SysUserQuery{
-		config:       suq.config,
-		ctx:          suq.ctx.Clone(),
-		order:        append([]sysuser.OrderOption{}, suq.order...),
-		inters:       append([]Interceptor{}, suq.inters...),
-		predicates:   append([]predicate.SysUser{}, suq.predicates...),
-		withBelongTo: suq.withBelongTo.Clone(),
-		withPosts:    suq.withPosts.Clone(),
+		config:           suq.config,
+		ctx:              suq.ctx.Clone(),
+		order:            append([]sysuser.OrderOption{}, suq.order...),
+		inters:           append([]Interceptor{}, suq.inters...),
+		predicates:       append([]predicate.SysUser{}, suq.predicates...),
+		withBelongToDept: suq.withBelongToDept.Clone(),
+		withPosts:        suq.withPosts.Clone(),
 		// clone intermediate query.
 		sql:  suq.sql.Clone(),
 		path: suq.path,
 	}
 }
 
-// WithBelongTo tells the query-builder to eager-load the nodes that are connected to
-// the "belongTo" edge. The optional arguments are used to configure the query builder of the edge.
-func (suq *SysUserQuery) WithBelongTo(opts ...func(*SysDeptQuery)) *SysUserQuery {
+// WithBelongToDept tells the query-builder to eager-load the nodes that are connected to
+// the "belongToDept" edge. The optional arguments are used to configure the query builder of the edge.
+func (suq *SysUserQuery) WithBelongToDept(opts ...func(*SysDeptQuery)) *SysUserQuery {
 	query := (&SysDeptClient{config: suq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	suq.withBelongTo = query
+	suq.withBelongToDept = query
 	return suq
 }
 
@@ -407,7 +407,7 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		nodes       = []*SysUser{}
 		_spec       = suq.querySpec()
 		loadedTypes = [2]bool{
-			suq.withBelongTo != nil,
+			suq.withBelongToDept != nil,
 			suq.withPosts != nil,
 		}
 	)
@@ -429,9 +429,9 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := suq.withBelongTo; query != nil {
-		if err := suq.loadBelongTo(ctx, query, nodes, nil,
-			func(n *SysUser, e *SysDept) { n.Edges.BelongTo = e }); err != nil {
+	if query := suq.withBelongToDept; query != nil {
+		if err := suq.loadBelongToDept(ctx, query, nodes, nil,
+			func(n *SysUser, e *SysDept) { n.Edges.BelongToDept = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -445,11 +445,11 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	return nodes, nil
 }
 
-func (suq *SysUserQuery) loadBelongTo(ctx context.Context, query *SysDeptQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysDept)) error {
+func (suq *SysUserQuery) loadBelongToDept(ctx context.Context, query *SysDeptQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysDept)) error {
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SysUser)
 	for i := range nodes {
-		fk := nodes[i].ID
+		fk := nodes[i].DeptID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -466,7 +466,7 @@ func (suq *SysUserQuery) loadBelongTo(ctx context.Context, query *SysDeptQuery, 
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "dept_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -560,6 +560,9 @@ func (suq *SysUserQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != sysuser.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if suq.withBelongToDept != nil {
+			_spec.Node.AddColumnOnce(sysuser.FieldDeptID)
 		}
 	}
 	if ps := suq.predicates; len(ps) > 0 {

@@ -76,6 +76,7 @@ var (
 		{Name: "css_class", Type: field.TypeString, Nullable: true, Comment: "样式属性"},
 		{Name: "list_class", Type: field.TypeString, Nullable: true, Comment: "表格回显样式"},
 		{Name: "is_default", Type: field.TypeInt8, Nullable: true, Comment: "是否默认(1是0否)"},
+		{Name: "sys_dict_type_sys_dict_datas", Type: field.TypeInt64, Nullable: true},
 	}
 	// SysDictDataTable holds the schema information for the "sys_dict_data" table.
 	SysDictDataTable = &schema.Table{
@@ -86,9 +87,9 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_dict_data_sys_dict_type_sysDictDatas",
-				Columns:    []*schema.Column{SysDictDataColumns[0]},
+				Columns:    []*schema.Column{SysDictDataColumns[16]},
 				RefColumns: []*schema.Column{SysDictTypeColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}
@@ -249,11 +250,11 @@ var (
 		{Name: "avatar", Type: field.TypeString, Nullable: true, Comment: "用户头像地址"},
 		{Name: "is_admin", Type: field.TypeInt8, Nullable: true},
 		{Name: "user_status", Type: field.TypeInt8, Nullable: true, Comment: "用户状态(0禁用,1正常,2未知)"},
-		{Name: "dept_id", Type: field.TypeInt64, Nullable: true, Comment: "用户所属部门"},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "用户联系地址"},
 		{Name: "describe", Type: field.TypeString, Nullable: true},
 		{Name: "last_login_ip", Type: field.TypeString, Nullable: true},
 		{Name: "last_login_time", Type: field.TypeString, Nullable: true},
+		{Name: "dept_id", Type: field.TypeInt64, Nullable: true, Comment: "用户所属部门"},
 	}
 	// SysUserTable holds the schema information for the "sys_user" table.
 	SysUserTable = &schema.Table{
@@ -263,10 +264,10 @@ var (
 		PrimaryKey: []*schema.Column{SysUserColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "sys_user_sys_dept_sys_user",
-				Columns:    []*schema.Column{SysUserColumns[0]},
+				Symbol:     "sys_user_sys_dept_sysUsers",
+				Columns:    []*schema.Column{SysUserColumns[20]},
 				RefColumns: []*schema.Column{SysDeptColumns[0]},
-				OnDelete:   schema.NoAction,
+				OnDelete:   schema.SetNull,
 			},
 		},
 	}

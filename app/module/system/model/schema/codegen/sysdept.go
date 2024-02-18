@@ -57,8 +57,8 @@ type SysDept struct {
 
 // SysDeptEdges holds the relations/edges for other nodes in the graph.
 type SysDeptEdges struct {
-	// SysUser holds the value of the sys_user edge.
-	SysUser []*SysUser `json:"sys_user,omitempty"`
+	// SysUsers holds the value of the sysUsers edge.
+	SysUsers []*SysUser `json:"sysUsers,omitempty"`
 	// Roles holds the value of the roles edge.
 	Roles []*SysRole `json:"roles,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -66,13 +66,13 @@ type SysDeptEdges struct {
 	loadedTypes [2]bool
 }
 
-// SysUserOrErr returns the SysUser value or an error if the edge
+// SysUsersOrErr returns the SysUsers value or an error if the edge
 // was not loaded in eager-loading.
-func (e SysDeptEdges) SysUserOrErr() ([]*SysUser, error) {
+func (e SysDeptEdges) SysUsersOrErr() ([]*SysUser, error) {
 	if e.loadedTypes[0] {
-		return e.SysUser, nil
+		return e.SysUsers, nil
 	}
-	return nil, &NotLoadedError{edge: "sys_user"}
+	return nil, &NotLoadedError{edge: "sysUsers"}
 }
 
 // RolesOrErr returns the Roles value or an error if the edge
@@ -225,9 +225,9 @@ func (sd *SysDept) Value(name string) (ent.Value, error) {
 	return sd.selectValues.Get(name)
 }
 
-// QuerySysUser queries the "sys_user" edge of the SysDept entity.
-func (sd *SysDept) QuerySysUser() *SysUserQuery {
-	return NewSysDeptClient(sd.config).QuerySysUser(sd)
+// QuerySysUsers queries the "sysUsers" edge of the SysDept entity.
+func (sd *SysDept) QuerySysUsers() *SysUserQuery {
+	return NewSysDeptClient(sd.config).QuerySysUsers(sd)
 }
 
 // QueryRoles queries the "roles" edge of the SysDept entity.

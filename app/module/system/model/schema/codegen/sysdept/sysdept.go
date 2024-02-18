@@ -46,19 +46,19 @@ const (
 	FieldPhone = "phone"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
-	// EdgeSysUser holds the string denoting the sys_user edge name in mutations.
-	EdgeSysUser = "sys_user"
+	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
+	EdgeSysUsers = "sysUsers"
 	// EdgeRoles holds the string denoting the roles edge name in mutations.
 	EdgeRoles = "roles"
 	// Table holds the table name of the sysdept in the database.
 	Table = "sys_dept"
-	// SysUserTable is the table that holds the sys_user relation/edge.
-	SysUserTable = "sys_user"
-	// SysUserInverseTable is the table name for the SysUser entity.
+	// SysUsersTable is the table that holds the sysUsers relation/edge.
+	SysUsersTable = "sys_user"
+	// SysUsersInverseTable is the table name for the SysUser entity.
 	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
-	SysUserInverseTable = "sys_user"
-	// SysUserColumn is the table column denoting the sys_user relation/edge.
-	SysUserColumn = "id"
+	SysUsersInverseTable = "sys_user"
+	// SysUsersColumn is the table column denoting the sysUsers relation/edge.
+	SysUsersColumn = "dept_id"
 	// RolesTable is the table that holds the roles relation/edge. The primary key declared below.
 	RolesTable = "sys_role_dept"
 	// RolesInverseTable is the table name for the SysRole entity.
@@ -208,17 +208,17 @@ func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
-// BySysUserCount orders the results by sys_user count.
-func BySysUserCount(opts ...sql.OrderTermOption) OrderOption {
+// BySysUsersCount orders the results by sysUsers count.
+func BySysUsersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newSysUserStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSysUsersStep(), opts...)
 	}
 }
 
-// BySysUser orders the results by sys_user terms.
-func BySysUser(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySysUsers orders the results by sysUsers terms.
+func BySysUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newSysUserStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSysUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -235,11 +235,11 @@ func ByRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newSysUserStep() *sqlgraph.Step {
+func newSysUsersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(SysUserInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, SysUserTable, SysUserColumn),
+		sqlgraph.To(SysUsersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, SysUsersTable, SysUsersColumn),
 	)
 }
 func newRolesStep() *sqlgraph.Step {

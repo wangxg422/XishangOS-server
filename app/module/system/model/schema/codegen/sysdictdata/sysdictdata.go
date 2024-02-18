@@ -54,7 +54,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysdicttype" package.
 	OwnerInverseTable = "sys_dict_type"
 	// OwnerColumn is the table column denoting the owner relation/edge.
-	OwnerColumn = "id"
+	OwnerColumn = "sys_dict_type_sys_dict_datas"
 )
 
 // Columns holds all SQL columns for sysdictdata fields.
@@ -77,10 +77,21 @@ var Columns = []string{
 	FieldIsDefault,
 }
 
+// ForeignKeys holds the SQL foreign-keys that are owned by the "sys_dict_data"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"sys_dict_type_sys_dict_datas",
+}
+
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}

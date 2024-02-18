@@ -1140,26 +1140,6 @@ func DeptIDNotIn(vs ...int64) predicate.SysUser {
 	return predicate.SysUser(sql.FieldNotIn(FieldDeptID, vs...))
 }
 
-// DeptIDGT applies the GT predicate on the "dept_id" field.
-func DeptIDGT(v int64) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldDeptID, v))
-}
-
-// DeptIDGTE applies the GTE predicate on the "dept_id" field.
-func DeptIDGTE(v int64) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldDeptID, v))
-}
-
-// DeptIDLT applies the LT predicate on the "dept_id" field.
-func DeptIDLT(v int64) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldDeptID, v))
-}
-
-// DeptIDLTE applies the LTE predicate on the "dept_id" field.
-func DeptIDLTE(v int64) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldDeptID, v))
-}
-
 // DeptIDIsNil applies the IsNil predicate on the "dept_id" field.
 func DeptIDIsNil() predicate.SysUser {
 	return predicate.SysUser(sql.FieldIsNull(FieldDeptID))
@@ -1470,21 +1450,21 @@ func LastLoginTimeContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldLastLoginTime, v))
 }
 
-// HasBelongTo applies the HasEdge predicate on the "belongTo" edge.
-func HasBelongTo() predicate.SysUser {
+// HasBelongToDept applies the HasEdge predicate on the "belongToDept" edge.
+func HasBelongToDept() predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, BelongToTable, BelongToColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, BelongToDeptTable, BelongToDeptColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasBelongToWith applies the HasEdge predicate on the "belongTo" edge with a given conditions (other predicates).
-func HasBelongToWith(preds ...predicate.SysDept) predicate.SysUser {
+// HasBelongToDeptWith applies the HasEdge predicate on the "belongToDept" edge with a given conditions (other predicates).
+func HasBelongToDeptWith(preds ...predicate.SysDept) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
-		step := newBelongToStep()
+		step := newBelongToDeptStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

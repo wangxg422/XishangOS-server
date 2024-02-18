@@ -57,8 +57,8 @@ func (SysUser) Fields() []ent.Field {
 // Edges of the SysUser.
 func (SysUser) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("belongTo", SysDept.Type).
-			Ref("sys_user").
+		edge.From("belongToDept", SysDept.Type).
+			Ref("sysUsers").Field("dept_id").
 			Unique(),
 		edge.To("posts", SysPost.Type).
 			StorageKey(edge.Table("sys_user_post"), edge.Columns("user_id", "post_id")),

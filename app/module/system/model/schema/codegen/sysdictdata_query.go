@@ -23,6 +23,7 @@ type SysDictDataQuery struct {
 	inters     []Interceptor
 	predicates []predicate.SysDictData
 	withOwner  *SysDictTypeQuery
+	withFKs    bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -368,11 +369,18 @@ func (sddq *SysDictDataQuery) prepareQuery(ctx context.Context) error {
 func (sddq *SysDictDataQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SysDictData, error) {
 	var (
 		nodes       = []*SysDictData{}
+		withFKs     = sddq.withFKs
 		_spec       = sddq.querySpec()
 		loadedTypes = [1]bool{
 			sddq.withOwner != nil,
 		}
 	)
+	if sddq.withOwner != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, sysdictdata.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SysDictData).scanValues(nil, columns)
 	}
@@ -404,7 +412,10 @@ func (sddq *SysDictDataQuery) loadOwner(ctx context.Context, query *SysDictTypeQ
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SysDictData)
 	for i := range nodes {
-		fk := nodes[i].ID
+		if nodes[i].sys_dict_type_sys_dict_datas == nil {
+			continue
+		}
+		fk := *nodes[i].sys_dict_type_sys_dict_datas
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -421,7 +432,7 @@ func (sddq *SysDictDataQuery) loadOwner(ctx context.Context, query *SysDictTypeQ
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "sys_dict_type_sys_dict_datas" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

@@ -1100,21 +1100,21 @@ func EmailContainsFold(v string) predicate.SysDept {
 	return predicate.SysDept(sql.FieldContainsFold(FieldEmail, v))
 }
 
-// HasSysUser applies the HasEdge predicate on the "sys_user" edge.
-func HasSysUser() predicate.SysDept {
+// HasSysUsers applies the HasEdge predicate on the "sysUsers" edge.
+func HasSysUsers() predicate.SysDept {
 	return predicate.SysDept(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, SysUserTable, SysUserColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, SysUsersTable, SysUsersColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasSysUserWith applies the HasEdge predicate on the "sys_user" edge with a given conditions (other predicates).
-func HasSysUserWith(preds ...predicate.SysUser) predicate.SysDept {
+// HasSysUsersWith applies the HasEdge predicate on the "sysUsers" edge with a given conditions (other predicates).
+func HasSysUsersWith(preds ...predicate.SysUser) predicate.SysDept {
 	return predicate.SysDept(func(s *sql.Selector) {
-		step := newSysUserStep()
+		step := newSysUsersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

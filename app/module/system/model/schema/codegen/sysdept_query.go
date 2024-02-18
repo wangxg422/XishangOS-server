@@ -20,12 +20,12 @@ import (
 // SysDeptQuery is the builder for querying SysDept entities.
 type SysDeptQuery struct {
 	config
-	ctx         *QueryContext
-	order       []sysdept.OrderOption
-	inters      []Interceptor
-	predicates  []predicate.SysDept
-	withSysUser *SysUserQuery
-	withRoles   *SysRoleQuery
+	ctx          *QueryContext
+	order        []sysdept.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.SysDept
+	withSysUsers *SysUserQuery
+	withRoles    *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -62,8 +62,8 @@ func (sdq *SysDeptQuery) Order(o ...sysdept.OrderOption) *SysDeptQuery {
 	return sdq
 }
 
-// QuerySysUser chains the current query on the "sys_user" edge.
-func (sdq *SysDeptQuery) QuerySysUser() *SysUserQuery {
+// QuerySysUsers chains the current query on the "sysUsers" edge.
+func (sdq *SysDeptQuery) QuerySysUsers() *SysUserQuery {
 	query := (&SysUserClient{config: sdq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := sdq.prepareQuery(ctx); err != nil {
@@ -76,7 +76,7 @@ func (sdq *SysDeptQuery) QuerySysUser() *SysUserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdept.Table, sysdept.FieldID, selector),
 			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, sysdept.SysUserTable, sysdept.SysUserColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, sysdept.SysUsersTable, sysdept.SysUsersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sdq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,27 +293,27 @@ func (sdq *SysDeptQuery) Clone() *SysDeptQuery {
 		return nil
 	}
 	return &SysDeptQuery{
-		config:      sdq.config,
-		ctx:         sdq.ctx.Clone(),
-		order:       append([]sysdept.OrderOption{}, sdq.order...),
-		inters:      append([]Interceptor{}, sdq.inters...),
-		predicates:  append([]predicate.SysDept{}, sdq.predicates...),
-		withSysUser: sdq.withSysUser.Clone(),
-		withRoles:   sdq.withRoles.Clone(),
+		config:       sdq.config,
+		ctx:          sdq.ctx.Clone(),
+		order:        append([]sysdept.OrderOption{}, sdq.order...),
+		inters:       append([]Interceptor{}, sdq.inters...),
+		predicates:   append([]predicate.SysDept{}, sdq.predicates...),
+		withSysUsers: sdq.withSysUsers.Clone(),
+		withRoles:    sdq.withRoles.Clone(),
 		// clone intermediate query.
 		sql:  sdq.sql.Clone(),
 		path: sdq.path,
 	}
 }
 
-// WithSysUser tells the query-builder to eager-load the nodes that are connected to
-// the "sys_user" edge. The optional arguments are used to configure the query builder of the edge.
-func (sdq *SysDeptQuery) WithSysUser(opts ...func(*SysUserQuery)) *SysDeptQuery {
+// WithSysUsers tells the query-builder to eager-load the nodes that are connected to
+// the "sysUsers" edge. The optional arguments are used to configure the query builder of the edge.
+func (sdq *SysDeptQuery) WithSysUsers(opts ...func(*SysUserQuery)) *SysDeptQuery {
 	query := (&SysUserClient{config: sdq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	sdq.withSysUser = query
+	sdq.withSysUsers = query
 	return sdq
 }
 
@@ -407,7 +407,7 @@ func (sdq *SysDeptQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		nodes       = []*SysDept{}
 		_spec       = sdq.querySpec()
 		loadedTypes = [2]bool{
-			sdq.withSysUser != nil,
+			sdq.withSysUsers != nil,
 			sdq.withRoles != nil,
 		}
 	)
@@ -429,10 +429,10 @@ func (sdq *SysDeptQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := sdq.withSysUser; query != nil {
-		if err := sdq.loadSysUser(ctx, query, nodes,
-			func(n *SysDept) { n.Edges.SysUser = []*SysUser{} },
-			func(n *SysDept, e *SysUser) { n.Edges.SysUser = append(n.Edges.SysUser, e) }); err != nil {
+	if query := sdq.withSysUsers; query != nil {
+		if err := sdq.loadSysUsers(ctx, query, nodes,
+			func(n *SysDept) { n.Edges.SysUsers = []*SysUser{} },
+			func(n *SysDept, e *SysUser) { n.Edges.SysUsers = append(n.Edges.SysUsers, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -446,7 +446,7 @@ func (sdq *SysDeptQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	return nodes, nil
 }
 
-func (sdq *SysDeptQuery) loadSysUser(ctx context.Context, query *SysUserQuery, nodes []*SysDept, init func(*SysDept), assign func(*SysDept, *SysUser)) error {
+func (sdq *SysDeptQuery) loadSysUsers(ctx context.Context, query *SysUserQuery, nodes []*SysDept, init func(*SysDept), assign func(*SysDept, *SysUser)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int64]*SysDept)
 	for i := range nodes {
@@ -456,18 +456,21 @@ func (sdq *SysDeptQuery) loadSysUser(ctx context.Context, query *SysUserQuery, n
 			init(nodes[i])
 		}
 	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(sysuser.FieldDeptID)
+	}
 	query.Where(predicate.SysUser(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(sysdept.SysUserColumn), fks...))
+		s.Where(sql.InValues(s.C(sysdept.SysUsersColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.ID
+		fk := n.DeptID
 		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "dept_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}

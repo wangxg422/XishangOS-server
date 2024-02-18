@@ -66,8 +66,8 @@ type SysUser struct {
 
 // SysUserEdges holds the relations/edges for other nodes in the graph.
 type SysUserEdges struct {
-	// BelongTo holds the value of the belongTo edge.
-	BelongTo *SysDept `json:"belongTo,omitempty"`
+	// BelongToDept holds the value of the belongToDept edge.
+	BelongToDept *SysDept `json:"belongToDept,omitempty"`
 	// Posts holds the value of the posts edge.
 	Posts []*SysPost `json:"posts,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -75,17 +75,17 @@ type SysUserEdges struct {
 	loadedTypes [2]bool
 }
 
-// BelongToOrErr returns the BelongTo value or an error if the edge
+// BelongToDeptOrErr returns the BelongToDept value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e SysUserEdges) BelongToOrErr() (*SysDept, error) {
+func (e SysUserEdges) BelongToDeptOrErr() (*SysDept, error) {
 	if e.loadedTypes[0] {
-		if e.BelongTo == nil {
+		if e.BelongToDept == nil {
 			// Edge was loaded but was not found.
 			return nil, &NotFoundError{label: sysdept.Label}
 		}
-		return e.BelongTo, nil
+		return e.BelongToDept, nil
 	}
-	return nil, &NotLoadedError{edge: "belongTo"}
+	return nil, &NotLoadedError{edge: "belongToDept"}
 }
 
 // PostsOrErr returns the Posts value or an error if the edge
@@ -262,9 +262,9 @@ func (su *SysUser) Value(name string) (ent.Value, error) {
 	return su.selectValues.Get(name)
 }
 
-// QueryBelongTo queries the "belongTo" edge of the SysUser entity.
-func (su *SysUser) QueryBelongTo() *SysDeptQuery {
-	return NewSysUserClient(su.config).QueryBelongTo(su)
+// QueryBelongToDept queries the "belongToDept" edge of the SysUser entity.
+func (su *SysUser) QueryBelongToDept() *SysDeptQuery {
+	return NewSysUserClient(su.config).QueryBelongToDept(su)
 }
 
 // QueryPosts queries the "posts" edge of the SysUser entity.

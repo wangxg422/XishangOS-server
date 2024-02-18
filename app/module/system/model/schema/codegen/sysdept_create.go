@@ -252,14 +252,14 @@ func (sdc *SysDeptCreate) SetNillableID(i *int64) *SysDeptCreate {
 	return sdc
 }
 
-// AddSysUserIDs adds the "sys_user" edge to the SysUser entity by IDs.
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
 func (sdc *SysDeptCreate) AddSysUserIDs(ids ...int64) *SysDeptCreate {
 	sdc.mutation.AddSysUserIDs(ids...)
 	return sdc
 }
 
-// AddSysUser adds the "sys_user" edges to the SysUser entity.
-func (sdc *SysDeptCreate) AddSysUser(s ...*SysUser) *SysDeptCreate {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (sdc *SysDeptCreate) AddSysUsers(s ...*SysUser) *SysDeptCreate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
@@ -440,12 +440,12 @@ func (sdc *SysDeptCreate) createSpec() (*SysDept, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysdept.FieldEmail, field.TypeString, value)
 		_node.Email = value
 	}
-	if nodes := sdc.mutation.SysUserIDs(); len(nodes) > 0 {
+	if nodes := sdc.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   sysdept.SysUserTable,
-			Columns: []string{sysdept.SysUserColumn},
+			Table:   sysdept.SysUsersTable,
+			Columns: []string{sysdept.SysUsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
