@@ -60,5 +60,6 @@ func (SysUser) Edges() []ent.Edge {
 		edge.From("belongTo", SysDept.Type).
 			Ref("sys_user").
 			Unique(),
+		edge.To("posts", SysPost.Type),
 	}
 }
