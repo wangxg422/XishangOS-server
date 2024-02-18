@@ -52,5 +52,7 @@ func (SysDept) Fields() []ent.Field {
 func (SysDept) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("sys_user", SysUser.Type),
+		edge.From("roles", SysRole.Type).
+			Ref("depts"),
 	}
 }
