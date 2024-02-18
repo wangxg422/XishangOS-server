@@ -9,6 +9,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 	"github.com/wangxg422/XishangOS-backend/middleware/casbin"
 )
@@ -25,7 +26,7 @@ func (m *SysUserService) GetUserByUsername(username string) (*codegen.SysUser, e
 }
 
 func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq) error {
-	// 检查用户是否已经存在
+	// 检查用户是否已经存在,保证用户名唯一
 	existUser, err := dao.SysUserDao.GetUserByUsername(req.UserName)
 	if existUser.ID != 0 {
 		return errors.New("用户已存在")
@@ -63,7 +64,14 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 	}
 
 	// 添加用户岗位
-	// 先删除原先岗位
+	if len(req.PostIds) != 0 {
+		// 先删除原先岗位
+		_, err := tx.SysPost.Delete().Where(syspost.IDIn(req.PostIds...)).Exec(c)
+		if err != nil {
+			return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
+		}
+		// 添加新的岗位
+	}
 
 	return tx.Commit()
 }

@@ -60,9 +60,8 @@ type SysUser struct {
 	LastLoginTime string `json:"last_login_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysUserQuery when eager-loading is set.
-	Edges             SysUserEdges `json:"edges"`
-	sys_dept_sys_user *int64
-	selectValues      sql.SelectValues
+	Edges        SysUserEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // SysUserEdges holds the relations/edges for other nodes in the graph.
@@ -109,8 +108,6 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
-		case sysuser.ForeignKeys[0]: // sys_dept_sys_user
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -251,13 +248,6 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field last_login_time", values[i])
 			} else if value.Valid {
 				su.LastLoginTime = value.String
-			}
-		case sysuser.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field sys_dept_sys_user", value)
-			} else if value.Valid {
-				su.sys_dept_sys_user = new(int64)
-				*su.sys_dept_sys_user = int64(value.Int64)
 			}
 		default:
 			su.selectValues.Set(columns[i], values[i])

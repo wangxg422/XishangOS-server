@@ -66,9 +66,9 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
 	BelongToInverseTable = "sys_dept"
 	// BelongToColumn is the table column denoting the belongTo relation/edge.
-	BelongToColumn = "sys_dept_sys_user"
+	BelongToColumn = "id"
 	// PostsTable is the table that holds the posts relation/edge. The primary key declared below.
-	PostsTable = "sys_user_posts"
+	PostsTable = "sys_user_post"
 	// PostsInverseTable is the table name for the SysPost entity.
 	// It exists in this package in order to avoid circular dependency with the "syspost" package.
 	PostsInverseTable = "sys_post"
@@ -99,27 +99,16 @@ var Columns = []string{
 	FieldLastLoginTime,
 }
 
-// ForeignKeys holds the SQL foreign-keys that are owned by the "sys_user"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"sys_dept_sys_user",
-}
-
 var (
 	// PostsPrimaryKey and PostsColumn2 are the table columns denoting the
 	// primary key for the posts relation (M2M).
-	PostsPrimaryKey = []string{"sys_user_id", "sys_post_id"}
+	PostsPrimaryKey = []string{"user_id", "post_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}

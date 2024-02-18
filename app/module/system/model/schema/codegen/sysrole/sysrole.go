@@ -35,7 +35,7 @@ const (
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_role"
 	// DeptsTable is the table that holds the depts relation/edge. The primary key declared below.
-	DeptsTable = "sys_role_depts"
+	DeptsTable = "sys_role_dept"
 	// DeptsInverseTable is the table name for the SysDept entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
 	DeptsInverseTable = "sys_dept"
@@ -57,7 +57,7 @@ var Columns = []string{
 var (
 	// DeptsPrimaryKey and DeptsColumn2 are the table columns denoting the
 	// primary key for the depts relation (M2M).
-	DeptsPrimaryKey = []string{"sys_role_id", "sys_dept_id"}
+	DeptsPrimaryKey = []string{"role_id", "dept_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).

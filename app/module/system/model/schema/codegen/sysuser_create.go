@@ -526,7 +526,7 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.sys_dept_sys_user = &nodes[0]
+		_node.ID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := suc.mutation.PostsIDs(); len(nodes) > 0 {

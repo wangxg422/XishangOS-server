@@ -60,6 +60,7 @@ func (SysUser) Edges() []ent.Edge {
 		edge.From("belongTo", SysDept.Type).
 			Ref("sys_user").
 			Unique(),
-		edge.To("posts", SysPost.Type),
+		edge.To("posts", SysPost.Type).
+			StorageKey(edge.Table("sys_user_post"), edge.Columns("user_id", "post_id")),
 	}
 }

@@ -26,7 +26,6 @@ type SysUserQuery struct {
 	predicates   []predicate.SysUser
 	withBelongTo *SysDeptQuery
 	withPosts    *SysPostQuery
-	withFKs      bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -406,19 +405,12 @@ func (suq *SysUserQuery) prepareQuery(ctx context.Context) error {
 func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SysUser, error) {
 	var (
 		nodes       = []*SysUser{}
-		withFKs     = suq.withFKs
 		_spec       = suq.querySpec()
 		loadedTypes = [2]bool{
 			suq.withBelongTo != nil,
 			suq.withPosts != nil,
 		}
 	)
-	if suq.withBelongTo != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, sysuser.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SysUser).scanValues(nil, columns)
 	}
@@ -457,10 +449,7 @@ func (suq *SysUserQuery) loadBelongTo(ctx context.Context, query *SysDeptQuery, 
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SysUser)
 	for i := range nodes {
-		if nodes[i].sys_dept_sys_user == nil {
-			continue
-		}
-		fk := *nodes[i].sys_dept_sys_user
+		fk := nodes[i].ID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -477,7 +466,7 @@ func (suq *SysUserQuery) loadBelongTo(ctx context.Context, query *SysDeptQuery, 
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "sys_dept_sys_user" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

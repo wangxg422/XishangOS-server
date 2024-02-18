@@ -22,7 +22,7 @@ func CreateMySQLClient(drv *sql.Driver) {
 		AppDbClient = client
 	}
 
-	if err := AppDbClient.Schema.Create(context.Background(), appMigrate.WithForeignKeys(false)); err != nil {
+	if err := AppDbClient.Schema.Create(context.Background(), appMigrate.WithForeignKeys(global.AppConfig.Database.EnableForeignKey)); err != nil {
 		logger.Error("failed creating schema resources: %v", zap.String("error", err.Error()))
 		panic(err)
 	}

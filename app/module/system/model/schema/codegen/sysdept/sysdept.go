@@ -58,9 +58,9 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
 	SysUserInverseTable = "sys_user"
 	// SysUserColumn is the table column denoting the sys_user relation/edge.
-	SysUserColumn = "sys_dept_sys_user"
+	SysUserColumn = "id"
 	// RolesTable is the table that holds the roles relation/edge. The primary key declared below.
-	RolesTable = "sys_role_depts"
+	RolesTable = "sys_role_dept"
 	// RolesInverseTable is the table name for the SysRole entity.
 	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
 	RolesInverseTable = "sys_role"
@@ -90,7 +90,7 @@ var Columns = []string{
 var (
 	// RolesPrimaryKey and RolesColumn2 are the table columns denoting the
 	// primary key for the roles relation (M2M).
-	RolesPrimaryKey = []string{"sys_role_id", "sys_dept_id"}
+	RolesPrimaryKey = []string{"role_id", "dept_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).

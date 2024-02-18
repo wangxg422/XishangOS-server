@@ -428,7 +428,7 @@ func (sddc *SysDictDataCreate) createSpec() (*SysDictData, *sqlgraph.CreateSpec)
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.sys_dict_type_sys_dict_datas = &nodes[0]
+		_node.ID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

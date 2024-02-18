@@ -41,7 +41,7 @@ const (
 	// Table holds the table name of the syspost in the database.
 	Table = "sys_post"
 	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
-	UsersTable = "sys_user_posts"
+	UsersTable = "sys_user_post"
 	// UsersInverseTable is the table name for the SysUser entity.
 	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
 	UsersInverseTable = "sys_user"
@@ -66,7 +66,7 @@ var Columns = []string{
 var (
 	// UsersPrimaryKey and UsersColumn2 are the table columns denoting the
 	// primary key for the users relation (M2M).
-	UsersPrimaryKey = []string{"sys_user_id", "sys_post_id"}
+	UsersPrimaryKey = []string{"user_id", "post_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).

@@ -50,9 +50,8 @@ type SysDictData struct {
 	IsDefault int8 `json:"is_default,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDictDataQuery when eager-loading is set.
-	Edges                        SysDictDataEdges `json:"edges"`
-	sys_dict_type_sys_dict_datas *int64
-	selectValues                 sql.SelectValues
+	Edges        SysDictDataEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // SysDictDataEdges holds the relations/edges for other nodes in the graph.
@@ -88,8 +87,6 @@ func (*SysDictData) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case sysdictdata.FieldCreatedAt, sysdictdata.FieldUpdatedAt, sysdictdata.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
-		case sysdictdata.ForeignKeys[0]: // sys_dict_type_sys_dict_datas
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -200,13 +197,6 @@ func (sdd *SysDictData) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field is_default", values[i])
 			} else if value.Valid {
 				sdd.IsDefault = int8(value.Int64)
-			}
-		case sysdictdata.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field sys_dict_type_sys_dict_datas", value)
-			} else if value.Valid {
-				sdd.sys_dict_type_sys_dict_datas = new(int64)
-				*sdd.sys_dict_type_sys_dict_datas = int64(value.Int64)
 			}
 		default:
 			sdd.selectValues.Set(columns[i], values[i])

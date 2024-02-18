@@ -412,7 +412,6 @@ func (sdtq *SysDictTypeQuery) loadSysDictDatas(ctx context.Context, query *SysDi
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
 	query.Where(predicate.SysDictData(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(sysdicttype.SysDictDatasColumn), fks...))
 	}))
@@ -421,13 +420,10 @@ func (sdtq *SysDictTypeQuery) loadSysDictDatas(ctx context.Context, query *SysDi
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.sys_dict_type_sys_dict_datas
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "sys_dict_type_sys_dict_datas" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		fk := n.ID
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "sys_dict_type_sys_dict_datas" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}

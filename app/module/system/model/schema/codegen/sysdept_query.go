@@ -456,7 +456,6 @@ func (sdq *SysDeptQuery) loadSysUser(ctx context.Context, query *SysUserQuery, n
 			init(nodes[i])
 		}
 	}
-	query.withFKs = true
 	query.Where(predicate.SysUser(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(sysdept.SysUserColumn), fks...))
 	}))
@@ -465,13 +464,10 @@ func (sdq *SysDeptQuery) loadSysUser(ctx context.Context, query *SysUserQuery, n
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.sys_dept_sys_user
-		if fk == nil {
-			return fmt.Errorf(`foreign-key "sys_dept_sys_user" is nil for node %v`, n.ID)
-		}
-		node, ok := nodeids[*fk]
+		fk := n.ID
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "sys_dept_sys_user" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}

@@ -1,8 +1,9 @@
 package config
 
 type Database struct {
-	Type  string `mapstructure:"type" json:"type" yaml:"type"`    // 数据库类型
-	Mysql Mysql  `mapstructure:"mysql" json:"mysql" yaml:"mysql"` // mysql数据库配置
+	Type             string `mapstructure:"type" json:"type" yaml:"type"`                                           // 数据库类型
+	EnableForeignKey bool   `mapstructure:"enable-foreign-key" json:"enable-foreign-key" yaml:"enable-foreign-key"` // 启动数据库外键
+	Mysql            Mysql  `mapstructure:"mysql" json:"mysql" yaml:"mysql"`                                        // mysql数据库配置
 }
 type Mysql struct {
 	Address     string `mapstructure:"address" json:"address" yaml:"address"`                   // 服务器地址:端口
