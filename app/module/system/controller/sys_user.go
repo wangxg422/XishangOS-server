@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/service"
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
@@ -16,4 +17,20 @@ func (m *SysUserController) List(c *gin.Context) {
 		return
 	}
 	result.OkWithData(list, c)
+}
+
+func (m *SysUserController) Add(c *gin.Context) {
+	req := new(request.SysUserCreateUpdateReq)
+	err := c.ShouldBind(req)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = service.AppSysUserService.Add(c, req)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.Ok(c)
 }

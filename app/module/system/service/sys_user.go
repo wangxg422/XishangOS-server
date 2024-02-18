@@ -28,7 +28,7 @@ func (m *SysUserService) GetUserByUsername(username string) (*codegen.SysUser, e
 func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq) error {
 	// 检查用户是否已经存在,保证用户名唯一
 	existUser, err := dao.SysUserDao.GetUserByUsername(req.UserName)
-	if existUser.ID != 0 {
+	if existUser != nil {
 		return errors.New("用户已存在")
 	}
 	if err != nil {
@@ -71,6 +71,7 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 			return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
 		}
 		// 添加新的岗位
+
 	}
 
 	return tx.Commit()

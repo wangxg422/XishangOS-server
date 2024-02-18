@@ -56,19 +56,3 @@ func (m *SysLoginController) Login(c *gin.Context) {
 	// 查询用户菜单及权限
 	userService.AppSysMenuService.GetUserMenuAndPermissions(user)
 }
-
-func (m *SysLoginController) Add(c *gin.Context) {
-	req := &request.SysUserCreateUpdateReq{}
-	err := c.ShouldBind(req)
-	if err != nil {
-		result.FailWithMessage(err.Error(), c)
-		return
-	}
-
-	err = userService.AppSysUserService.Add(c, req)
-	if err != nil {
-		result.FailWithMessage(err.Error(), c)
-		return
-	}
-	result.Ok(c)
-}
