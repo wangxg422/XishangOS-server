@@ -4,11 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/dao"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
+	"github.com/wangxg422/XishangOS-backend/middleware/casbin"
 )
 
 type SysUserService struct {
@@ -54,12 +56,14 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 		return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
 	}
 
-	if user.ID != 0 {
-
+	// 关联角色
+	enforcer := casbin.AppCasbinService.GetCasbinEnforcer()
+	for _, v := range req.RoleIds {
+		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", "u_", user.ID), gconv.String(v))
 	}
 
-	// 关联角色
-	// 关联职位
+	// 添加用户岗位
+	// 先删除原先岗位
 
 	return tx.Commit()
 }

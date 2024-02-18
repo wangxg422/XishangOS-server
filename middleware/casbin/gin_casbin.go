@@ -1,7 +1,6 @@
 package casbin
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +17,6 @@ func CasbinHandler() gin.HandlerFunc {
 
 		//判断策略是否存在
 		success, _ := e.Enforce(sub, obj, act)
-		fmt.Println("====", sub, obj, act, success)
 		//如果环境变量是开发者模式或者casbin校验通过
 		if success {
 			c.Next()

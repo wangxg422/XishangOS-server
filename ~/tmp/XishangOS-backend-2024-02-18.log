@@ -19,3 +19,4 @@
 2024/02/18 13:03:40.402	info	C:/MyFile/Code/XishangOS-server/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
 2024/02/18 13:03:47.436	info	C:/MyFile/Code/XishangOS-server/middleware/logger/gin_logger.go:24	/api/system/v1/user/list	{"status": 200, "method": "GET", "path": "/api/system/v1/user/list", "query": "", "ip": "127.0.0.1", "user-agent": "curl/8.4.0", "errors": "", "cost": 0.4029749}
 2024/02/18 13:29:40.910	info	C:/MyFile/Code/XishangOS-server/middleware/logger/logger.go:9	redis connect ping response:	{"pong": "PONG"}
+2024/02/18 13:30:01.971	info	C:/MyFile/Code/XishangOS-server/middleware/logger/gin_logger.go:24	/api/system/v1/user/list	{"status": 200, "method": "GET", "path": "/api/system/v1/user/list", "query": "", "ip": "127.0.0.1", "user-agent": "curl/8.4.0", "errors": "", "cost": 0.3763067}
