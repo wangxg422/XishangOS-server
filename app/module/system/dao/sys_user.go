@@ -45,3 +45,7 @@ func (m *SysUser) UserNameOrMobileExist(c *gin.Context, username string, mobile 
 	}
 	return nil
 }
+
+func (m *SysUser) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser, error) {
+	return initial.SysDbClient.SysUser.Query().Where(sysuser.IDEQ(id)).WithSysPosts().WithSysRoles().WithSysDept().First(c)
+}

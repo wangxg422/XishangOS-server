@@ -91,3 +91,8 @@ func (m *SysUserService) updateUser(tx *codegen.Tx, c *gin.Context, req *request
 		SetDeptID(req.DeptId).
 		Exec(c)
 }
+
+// GetUserInfo 获取用户的详细信息，包含用户的角色，部门，职位
+func (m *SysUserService) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser, error) {
+	return dao.SysUserDao.GetUserInfo(c, id)
+}

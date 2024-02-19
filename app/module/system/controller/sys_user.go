@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/service"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/param"
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
@@ -51,10 +52,21 @@ func (m *SysUserController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysUserController) Delete(context *gin.Context) {
+func (m *SysUserController) Delete(c *gin.Context) {
 
 }
 
-func (m *SysUserController) GetUserInfo(context *gin.Context) {
+func (m *SysUserController) GetUserInfo(c *gin.Context) {
+	id, err := param.ParamInt64("id", c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
 
+	user, err := service.AppSysUserService.GetUserInfo(c, id)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.OkWithData(user, c)
 }
