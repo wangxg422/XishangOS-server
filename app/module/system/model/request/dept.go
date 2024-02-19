@@ -21,7 +21,7 @@ type SysDeptCreateReq struct {
 }
 
 type SysDeptUpdateReq struct {
-	Id       int64  `json:"id"`
+	Id       int64  `json:"id,string"`
 	DeptName string `json:"deptName" v:"required#部门名称不能为空"`
 	DeptCode string `json:"deptCode" v:"required#部门编码不能为空"`
 	ParentId int64  `json:"parentId,string"`

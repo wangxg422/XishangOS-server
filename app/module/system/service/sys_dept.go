@@ -13,6 +13,17 @@ import (
 type SysDeptService struct {
 }
 
+func (m *SysDeptService) DeptExist(deptCode string, id int64, c *gin.Context) error {
+	count, err := initial.SysDbClient.SysDept.Query().Where(sysdept.DeptCode(deptCode), sysdept.IDNEQ(id)).Count(c)
+	if err != nil {
+		return err
+	}
+	if count == 1 {
+		return errors.New("部门编码已存在")
+	}
+	return nil
+}
+
 func (m *SysDeptService) GetDeptByCode(deptCode string, c *gin.Context) (*codegen.SysDept, error) {
 	d, err := initial.SysDbClient.SysDept.Query().Where(sysdept.DeptCode(deptCode)).First(c)
 	if exception.NotNoRecordError(err) {
@@ -23,15 +34,29 @@ func (m *SysDeptService) GetDeptByCode(deptCode string, c *gin.Context) (*codege
 
 func (m *SysDeptService) Add(req *request.SysDeptCreateReq, c *gin.Context) error {
 	// 校验dept_code唯一
-	d, err := m.GetDeptByCode(req.DeptCode, c)
+	err := m.DeptExist(req.DeptCode, 0, c)
 	if err != nil {
 		return err
 	}
-	if d != nil {
-		return errors.New("部门编码已存在")
-	}
 
 	return initial.SysDbClient.SysDept.Create().
+		SetParentID(req.ParentId).
+		SetDeptName(req.DeptName).
+		SetDeptCode(req.DeptCode).
+		SetEmail(req.Email).
+		SetPhone(req.Phone).
+		SetAddress(req.Address).
+		SetRemark(req.Remark).
+		SetLeader(req.Leader).Exec(c)
+}
+
+func (m *SysDeptService) Update(req *request.SysDeptUpdateReq, c *gin.Context) error {
+	err := m.DeptExist(req.DeptCode, req.Id, c)
+	if err != nil {
+		return err
+	}
+
+	return initial.SysDbClient.SysDept.Update().Where(sysdept.ID(req.Id)).
 		SetParentID(req.ParentId).
 		SetDeptName(req.DeptName).
 		SetDeptCode(req.DeptCode).
