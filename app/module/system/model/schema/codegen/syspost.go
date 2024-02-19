@@ -47,20 +47,20 @@ type SysPost struct {
 
 // SysPostEdges holds the relations/edges for other nodes in the graph.
 type SysPostEdges struct {
-	// Users holds the value of the users edge.
-	Users []*SysUser `json:"users,omitempty"`
+	// SysUsers holds the value of the sysUsers edge.
+	SysUsers []*SysUser `json:"sysUsers,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// UsersOrErr returns the Users value or an error if the edge
+// SysUsersOrErr returns the SysUsers value or an error if the edge
 // was not loaded in eager-loading.
-func (e SysPostEdges) UsersOrErr() ([]*SysUser, error) {
+func (e SysPostEdges) SysUsersOrErr() ([]*SysUser, error) {
 	if e.loadedTypes[0] {
-		return e.Users, nil
+		return e.SysUsers, nil
 	}
-	return nil, &NotLoadedError{edge: "users"}
+	return nil, &NotLoadedError{edge: "sysUsers"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -174,9 +174,9 @@ func (sp *SysPost) Value(name string) (ent.Value, error) {
 	return sp.selectValues.Get(name)
 }
 
-// QueryUsers queries the "users" edge of the SysPost entity.
-func (sp *SysPost) QueryUsers() *SysUserQuery {
-	return NewSysPostClient(sp.config).QueryUsers(sp)
+// QuerySysUsers queries the "sysUsers" edge of the SysPost entity.
+func (sp *SysPost) QuerySysUsers() *SysUserQuery {
+	return NewSysPostClient(sp.config).QuerySysUsers(sp)
 }
 
 // Update returns a builder for updating this SysPost.

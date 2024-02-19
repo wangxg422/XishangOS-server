@@ -48,8 +48,8 @@ const (
 	FieldEmail = "email"
 	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
 	EdgeSysUsers = "sysUsers"
-	// EdgeRoles holds the string denoting the roles edge name in mutations.
-	EdgeRoles = "roles"
+	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
+	EdgeSysRoles = "sysRoles"
 	// Table holds the table name of the sysdept in the database.
 	Table = "sys_dept"
 	// SysUsersTable is the table that holds the sysUsers relation/edge.
@@ -59,11 +59,11 @@ const (
 	SysUsersInverseTable = "sys_user"
 	// SysUsersColumn is the table column denoting the sysUsers relation/edge.
 	SysUsersColumn = "dept_id"
-	// RolesTable is the table that holds the roles relation/edge. The primary key declared below.
-	RolesTable = "sys_role_dept"
-	// RolesInverseTable is the table name for the SysRole entity.
+	// SysRolesTable is the table that holds the sysRoles relation/edge. The primary key declared below.
+	SysRolesTable = "sys_role_dept"
+	// SysRolesInverseTable is the table name for the SysRole entity.
 	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
-	RolesInverseTable = "sys_role"
+	SysRolesInverseTable = "sys_role"
 )
 
 // Columns holds all SQL columns for sysdept fields.
@@ -88,9 +88,9 @@ var Columns = []string{
 }
 
 var (
-	// RolesPrimaryKey and RolesColumn2 are the table columns denoting the
-	// primary key for the roles relation (M2M).
-	RolesPrimaryKey = []string{"role_id", "dept_id"}
+	// SysRolesPrimaryKey and SysRolesColumn2 are the table columns denoting the
+	// primary key for the sysRoles relation (M2M).
+	SysRolesPrimaryKey = []string{"role_id", "dept_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -222,17 +222,17 @@ func BySysUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByRolesCount orders the results by roles count.
-func ByRolesCount(opts ...sql.OrderTermOption) OrderOption {
+// BySysRolesCount orders the results by sysRoles count.
+func BySysRolesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newRolesStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSysRolesStep(), opts...)
 	}
 }
 
-// ByRoles orders the results by roles terms.
-func ByRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySysRoles orders the results by sysRoles terms.
+func BySysRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSysRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 func newSysUsersStep() *sqlgraph.Step {
@@ -242,10 +242,10 @@ func newSysUsersStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2M, false, SysUsersTable, SysUsersColumn),
 	)
 }
-func newRolesStep() *sqlgraph.Step {
+func newSysRolesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(RolesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, true, RolesTable, RolesPrimaryKey...),
+		sqlgraph.To(SysRolesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, SysRolesTable, SysRolesPrimaryKey...),
 	)
 }

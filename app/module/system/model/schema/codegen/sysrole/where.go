@@ -545,21 +545,21 @@ func DataScopeNotNil() predicate.SysRole {
 	return predicate.SysRole(sql.FieldNotNull(FieldDataScope))
 }
 
-// HasDepts applies the HasEdge predicate on the "depts" edge.
-func HasDepts() predicate.SysRole {
+// HasSysDepts applies the HasEdge predicate on the "sysDepts" edge.
+func HasSysDepts() predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, DeptsTable, DeptsPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, SysDeptsTable, SysDeptsPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasDeptsWith applies the HasEdge predicate on the "depts" edge with a given conditions (other predicates).
-func HasDeptsWith(preds ...predicate.SysDept) predicate.SysRole {
+// HasSysDeptsWith applies the HasEdge predicate on the "sysDepts" edge with a given conditions (other predicates).
+func HasSysDeptsWith(preds ...predicate.SysDept) predicate.SysRole {
 	return predicate.SysRole(func(s *sql.Selector) {
-		step := newDeptsStep()
+		step := newSysDeptsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

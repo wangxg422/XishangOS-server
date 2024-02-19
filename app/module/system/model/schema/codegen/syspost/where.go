@@ -735,21 +735,21 @@ func PostNameContainsFold(v string) predicate.SysPost {
 	return predicate.SysPost(sql.FieldContainsFold(FieldPostName, v))
 }
 
-// HasUsers applies the HasEdge predicate on the "users" edge.
-func HasUsers() predicate.SysPost {
+// HasSysUsers applies the HasEdge predicate on the "sysUsers" edge.
+func HasSysUsers() predicate.SysPost {
 	return predicate.SysPost(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, UsersTable, UsersPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, SysUsersTable, SysUsersPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasUsersWith applies the HasEdge predicate on the "users" edge with a given conditions (other predicates).
-func HasUsersWith(preds ...predicate.SysUser) predicate.SysPost {
+// HasSysUsersWith applies the HasEdge predicate on the "sysUsers" edge with a given conditions (other predicates).
+func HasSysUsersWith(preds ...predicate.SysUser) predicate.SysPost {
 	return predicate.SysPost(func(s *sql.Selector) {
-		step := newUsersStep()
+		step := newSysUsersStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

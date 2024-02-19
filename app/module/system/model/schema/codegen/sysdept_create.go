@@ -267,19 +267,19 @@ func (sdc *SysDeptCreate) AddSysUsers(s ...*SysUser) *SysDeptCreate {
 	return sdc.AddSysUserIDs(ids...)
 }
 
-// AddRoleIDs adds the "roles" edge to the SysRole entity by IDs.
-func (sdc *SysDeptCreate) AddRoleIDs(ids ...int64) *SysDeptCreate {
-	sdc.mutation.AddRoleIDs(ids...)
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (sdc *SysDeptCreate) AddSysRoleIDs(ids ...int64) *SysDeptCreate {
+	sdc.mutation.AddSysRoleIDs(ids...)
 	return sdc
 }
 
-// AddRoles adds the "roles" edges to the SysRole entity.
-func (sdc *SysDeptCreate) AddRoles(s ...*SysRole) *SysDeptCreate {
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (sdc *SysDeptCreate) AddSysRoles(s ...*SysRole) *SysDeptCreate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return sdc.AddRoleIDs(ids...)
+	return sdc.AddSysRoleIDs(ids...)
 }
 
 // Mutation returns the SysDeptMutation object of the builder.
@@ -456,12 +456,12 @@ func (sdc *SysDeptCreate) createSpec() (*SysDept, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := sdc.mutation.RolesIDs(); len(nodes) > 0 {
+	if nodes := sdc.mutation.SysRolesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   sysdept.RolesTable,
-			Columns: sysdept.RolesPrimaryKey,
+			Table:   sysdept.SysRolesTable,
+			Columns: sysdept.SysRolesPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),

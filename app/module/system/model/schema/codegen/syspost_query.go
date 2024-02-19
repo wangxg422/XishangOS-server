@@ -19,11 +19,11 @@ import (
 // SysPostQuery is the builder for querying SysPost entities.
 type SysPostQuery struct {
 	config
-	ctx        *QueryContext
-	order      []syspost.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SysPost
-	withUsers  *SysUserQuery
+	ctx          *QueryContext
+	order        []syspost.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.SysPost
+	withSysUsers *SysUserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -60,8 +60,8 @@ func (spq *SysPostQuery) Order(o ...syspost.OrderOption) *SysPostQuery {
 	return spq
 }
 
-// QueryUsers chains the current query on the "users" edge.
-func (spq *SysPostQuery) QueryUsers() *SysUserQuery {
+// QuerySysUsers chains the current query on the "sysUsers" edge.
+func (spq *SysPostQuery) QuerySysUsers() *SysUserQuery {
 	query := (&SysUserClient{config: spq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := spq.prepareQuery(ctx); err != nil {
@@ -74,7 +74,7 @@ func (spq *SysPostQuery) QueryUsers() *SysUserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(syspost.Table, syspost.FieldID, selector),
 			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, syspost.UsersTable, syspost.UsersPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, syspost.SysUsersTable, syspost.SysUsersPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(spq.driver.Dialect(), step)
 		return fromU, nil
@@ -269,26 +269,26 @@ func (spq *SysPostQuery) Clone() *SysPostQuery {
 		return nil
 	}
 	return &SysPostQuery{
-		config:     spq.config,
-		ctx:        spq.ctx.Clone(),
-		order:      append([]syspost.OrderOption{}, spq.order...),
-		inters:     append([]Interceptor{}, spq.inters...),
-		predicates: append([]predicate.SysPost{}, spq.predicates...),
-		withUsers:  spq.withUsers.Clone(),
+		config:       spq.config,
+		ctx:          spq.ctx.Clone(),
+		order:        append([]syspost.OrderOption{}, spq.order...),
+		inters:       append([]Interceptor{}, spq.inters...),
+		predicates:   append([]predicate.SysPost{}, spq.predicates...),
+		withSysUsers: spq.withSysUsers.Clone(),
 		// clone intermediate query.
 		sql:  spq.sql.Clone(),
 		path: spq.path,
 	}
 }
 
-// WithUsers tells the query-builder to eager-load the nodes that are connected to
-// the "users" edge. The optional arguments are used to configure the query builder of the edge.
-func (spq *SysPostQuery) WithUsers(opts ...func(*SysUserQuery)) *SysPostQuery {
+// WithSysUsers tells the query-builder to eager-load the nodes that are connected to
+// the "sysUsers" edge. The optional arguments are used to configure the query builder of the edge.
+func (spq *SysPostQuery) WithSysUsers(opts ...func(*SysUserQuery)) *SysPostQuery {
 	query := (&SysUserClient{config: spq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	spq.withUsers = query
+	spq.withSysUsers = query
 	return spq
 }
 
@@ -371,7 +371,7 @@ func (spq *SysPostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		nodes       = []*SysPost{}
 		_spec       = spq.querySpec()
 		loadedTypes = [1]bool{
-			spq.withUsers != nil,
+			spq.withSysUsers != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -392,17 +392,17 @@ func (spq *SysPostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := spq.withUsers; query != nil {
-		if err := spq.loadUsers(ctx, query, nodes,
-			func(n *SysPost) { n.Edges.Users = []*SysUser{} },
-			func(n *SysPost, e *SysUser) { n.Edges.Users = append(n.Edges.Users, e) }); err != nil {
+	if query := spq.withSysUsers; query != nil {
+		if err := spq.loadSysUsers(ctx, query, nodes,
+			func(n *SysPost) { n.Edges.SysUsers = []*SysUser{} },
+			func(n *SysPost, e *SysUser) { n.Edges.SysUsers = append(n.Edges.SysUsers, e) }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (spq *SysPostQuery) loadUsers(ctx context.Context, query *SysUserQuery, nodes []*SysPost, init func(*SysPost), assign func(*SysPost, *SysUser)) error {
+func (spq *SysPostQuery) loadSysUsers(ctx context.Context, query *SysUserQuery, nodes []*SysPost, init func(*SysPost), assign func(*SysPost, *SysUser)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[int64]*SysPost)
 	nids := make(map[int64]map[*SysPost]struct{})
@@ -414,11 +414,11 @@ func (spq *SysPostQuery) loadUsers(ctx context.Context, query *SysUserQuery, nod
 		}
 	}
 	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(syspost.UsersTable)
-		s.Join(joinT).On(s.C(sysuser.FieldID), joinT.C(syspost.UsersPrimaryKey[0]))
-		s.Where(sql.InValues(joinT.C(syspost.UsersPrimaryKey[1]), edgeIDs...))
+		joinT := sql.Table(syspost.SysUsersTable)
+		s.Join(joinT).On(s.C(sysuser.FieldID), joinT.C(syspost.SysUsersPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(syspost.SysUsersPrimaryKey[1]), edgeIDs...))
 		columns := s.SelectedColumns()
-		s.Select(joinT.C(syspost.UsersPrimaryKey[1]))
+		s.Select(joinT.C(syspost.SysUsersPrimaryKey[1]))
 		s.AppendSelect(columns...)
 		s.SetDistinct(false)
 	})
@@ -455,7 +455,7 @@ func (spq *SysPostQuery) loadUsers(ctx context.Context, query *SysUserQuery, nod
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "users" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "sysUsers" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)

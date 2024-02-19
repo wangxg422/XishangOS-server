@@ -309,24 +309,38 @@ func (suc *SysUserCreate) SetNillableID(i *int64) *SysUserCreate {
 	return suc
 }
 
-// SetDept sets the "dept" edge to the SysDept entity.
-func (suc *SysUserCreate) SetDept(s *SysDept) *SysUserCreate {
-	return suc.SetDeptID(s.ID)
-}
-
-// AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
-func (suc *SysUserCreate) AddPostIDs(ids ...int64) *SysUserCreate {
-	suc.mutation.AddPostIDs(ids...)
+// SetSysDeptID sets the "sysDept" edge to the SysDept entity by ID.
+func (suc *SysUserCreate) SetSysDeptID(id int64) *SysUserCreate {
+	suc.mutation.SetSysDeptID(id)
 	return suc
 }
 
-// AddPosts adds the "posts" edges to the SysPost entity.
-func (suc *SysUserCreate) AddPosts(s ...*SysPost) *SysUserCreate {
+// SetNillableSysDeptID sets the "sysDept" edge to the SysDept entity by ID if the given value is not nil.
+func (suc *SysUserCreate) SetNillableSysDeptID(id *int64) *SysUserCreate {
+	if id != nil {
+		suc = suc.SetSysDeptID(*id)
+	}
+	return suc
+}
+
+// SetSysDept sets the "sysDept" edge to the SysDept entity.
+func (suc *SysUserCreate) SetSysDept(s *SysDept) *SysUserCreate {
+	return suc.SetSysDeptID(s.ID)
+}
+
+// AddSysPostIDs adds the "sysPosts" edge to the SysPost entity by IDs.
+func (suc *SysUserCreate) AddSysPostIDs(ids ...int64) *SysUserCreate {
+	suc.mutation.AddSysPostIDs(ids...)
+	return suc
+}
+
+// AddSysPosts adds the "sysPosts" edges to the SysPost entity.
+func (suc *SysUserCreate) AddSysPosts(s ...*SysPost) *SysUserCreate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return suc.AddPostIDs(ids...)
+	return suc.AddSysPostIDs(ids...)
 }
 
 // AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
@@ -510,12 +524,12 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldLastLoginTime, field.TypeString, value)
 		_node.LastLoginTime = value
 	}
-	if nodes := suc.mutation.DeptIDs(); len(nodes) > 0 {
+	if nodes := suc.mutation.SysDeptIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.DeptTable,
-			Columns: []string{sysuser.DeptColumn},
+			Table:   sysuser.SysDeptTable,
+			Columns: []string{sysuser.SysDeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
@@ -527,12 +541,12 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_node.DeptID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := suc.mutation.PostsIDs(); len(nodes) > 0 {
+	if nodes := suc.mutation.SysPostsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   sysuser.PostsTable,
-			Columns: sysuser.PostsPrimaryKey,
+			Table:   sysuser.SysPostsTable,
+			Columns: sysuser.SysPostsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),

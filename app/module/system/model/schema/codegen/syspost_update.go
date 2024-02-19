@@ -221,19 +221,19 @@ func (spu *SysPostUpdate) ClearPostName() *SysPostUpdate {
 	return spu
 }
 
-// AddUserIDs adds the "users" edge to the SysUser entity by IDs.
-func (spu *SysPostUpdate) AddUserIDs(ids ...int64) *SysPostUpdate {
-	spu.mutation.AddUserIDs(ids...)
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (spu *SysPostUpdate) AddSysUserIDs(ids ...int64) *SysPostUpdate {
+	spu.mutation.AddSysUserIDs(ids...)
 	return spu
 }
 
-// AddUsers adds the "users" edges to the SysUser entity.
-func (spu *SysPostUpdate) AddUsers(s ...*SysUser) *SysPostUpdate {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (spu *SysPostUpdate) AddSysUsers(s ...*SysUser) *SysPostUpdate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return spu.AddUserIDs(ids...)
+	return spu.AddSysUserIDs(ids...)
 }
 
 // Mutation returns the SysPostMutation object of the builder.
@@ -241,25 +241,25 @@ func (spu *SysPostUpdate) Mutation() *SysPostMutation {
 	return spu.mutation
 }
 
-// ClearUsers clears all "users" edges to the SysUser entity.
-func (spu *SysPostUpdate) ClearUsers() *SysPostUpdate {
-	spu.mutation.ClearUsers()
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (spu *SysPostUpdate) ClearSysUsers() *SysPostUpdate {
+	spu.mutation.ClearSysUsers()
 	return spu
 }
 
-// RemoveUserIDs removes the "users" edge to SysUser entities by IDs.
-func (spu *SysPostUpdate) RemoveUserIDs(ids ...int64) *SysPostUpdate {
-	spu.mutation.RemoveUserIDs(ids...)
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
+func (spu *SysPostUpdate) RemoveSysUserIDs(ids ...int64) *SysPostUpdate {
+	spu.mutation.RemoveSysUserIDs(ids...)
 	return spu
 }
 
-// RemoveUsers removes "users" edges to SysUser entities.
-func (spu *SysPostUpdate) RemoveUsers(s ...*SysUser) *SysPostUpdate {
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (spu *SysPostUpdate) RemoveSysUsers(s ...*SysUser) *SysPostUpdate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return spu.RemoveUserIDs(ids...)
+	return spu.RemoveSysUserIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -383,12 +383,12 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if spu.mutation.PostNameCleared() {
 		_spec.ClearField(syspost.FieldPostName, field.TypeString)
 	}
-	if spu.mutation.UsersCleared() {
+	if spu.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -396,12 +396,12 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := spu.mutation.RemovedUsersIDs(); len(nodes) > 0 && !spu.mutation.UsersCleared() {
+	if nodes := spu.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !spu.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -412,12 +412,12 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := spu.mutation.UsersIDs(); len(nodes) > 0 {
+	if nodes := spu.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -640,19 +640,19 @@ func (spuo *SysPostUpdateOne) ClearPostName() *SysPostUpdateOne {
 	return spuo
 }
 
-// AddUserIDs adds the "users" edge to the SysUser entity by IDs.
-func (spuo *SysPostUpdateOne) AddUserIDs(ids ...int64) *SysPostUpdateOne {
-	spuo.mutation.AddUserIDs(ids...)
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (spuo *SysPostUpdateOne) AddSysUserIDs(ids ...int64) *SysPostUpdateOne {
+	spuo.mutation.AddSysUserIDs(ids...)
 	return spuo
 }
 
-// AddUsers adds the "users" edges to the SysUser entity.
-func (spuo *SysPostUpdateOne) AddUsers(s ...*SysUser) *SysPostUpdateOne {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (spuo *SysPostUpdateOne) AddSysUsers(s ...*SysUser) *SysPostUpdateOne {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return spuo.AddUserIDs(ids...)
+	return spuo.AddSysUserIDs(ids...)
 }
 
 // Mutation returns the SysPostMutation object of the builder.
@@ -660,25 +660,25 @@ func (spuo *SysPostUpdateOne) Mutation() *SysPostMutation {
 	return spuo.mutation
 }
 
-// ClearUsers clears all "users" edges to the SysUser entity.
-func (spuo *SysPostUpdateOne) ClearUsers() *SysPostUpdateOne {
-	spuo.mutation.ClearUsers()
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (spuo *SysPostUpdateOne) ClearSysUsers() *SysPostUpdateOne {
+	spuo.mutation.ClearSysUsers()
 	return spuo
 }
 
-// RemoveUserIDs removes the "users" edge to SysUser entities by IDs.
-func (spuo *SysPostUpdateOne) RemoveUserIDs(ids ...int64) *SysPostUpdateOne {
-	spuo.mutation.RemoveUserIDs(ids...)
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
+func (spuo *SysPostUpdateOne) RemoveSysUserIDs(ids ...int64) *SysPostUpdateOne {
+	spuo.mutation.RemoveSysUserIDs(ids...)
 	return spuo
 }
 
-// RemoveUsers removes "users" edges to SysUser entities.
-func (spuo *SysPostUpdateOne) RemoveUsers(s ...*SysUser) *SysPostUpdateOne {
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (spuo *SysPostUpdateOne) RemoveSysUsers(s ...*SysUser) *SysPostUpdateOne {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return spuo.RemoveUserIDs(ids...)
+	return spuo.RemoveSysUserIDs(ids...)
 }
 
 // Where appends a list predicates to the SysPostUpdate builder.
@@ -832,12 +832,12 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 	if spuo.mutation.PostNameCleared() {
 		_spec.ClearField(syspost.FieldPostName, field.TypeString)
 	}
-	if spuo.mutation.UsersCleared() {
+	if spuo.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -845,12 +845,12 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := spuo.mutation.RemovedUsersIDs(); len(nodes) > 0 && !spuo.mutation.UsersCleared() {
+	if nodes := spuo.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !spuo.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
@@ -861,12 +861,12 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := spuo.mutation.UsersIDs(); len(nodes) > 0 {
+	if nodes := spuo.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),

@@ -47,6 +47,7 @@ func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.Sy
 		SetUserStatus(req.Status).
 		SetAddress(req.Address).
 		AddPostIDs(req.PostIds...).
+		AddSysRoles().
 		SetDeptID(req.DeptId).
 		Save(c)
 	if err != nil {

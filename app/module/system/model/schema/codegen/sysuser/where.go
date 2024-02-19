@@ -1450,21 +1450,21 @@ func LastLoginTimeContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldLastLoginTime, v))
 }
 
-// HasDept applies the HasEdge predicate on the "dept" edge.
-func HasDept() predicate.SysUser {
+// HasSysDept applies the HasEdge predicate on the "sysDept" edge.
+func HasSysDept() predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, DeptTable, DeptColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, SysDeptTable, SysDeptColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasDeptWith applies the HasEdge predicate on the "dept" edge with a given conditions (other predicates).
-func HasDeptWith(preds ...predicate.SysDept) predicate.SysUser {
+// HasSysDeptWith applies the HasEdge predicate on the "sysDept" edge with a given conditions (other predicates).
+func HasSysDeptWith(preds ...predicate.SysDept) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
-		step := newDeptStep()
+		step := newSysDeptStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
@@ -1473,21 +1473,21 @@ func HasDeptWith(preds ...predicate.SysDept) predicate.SysUser {
 	})
 }
 
-// HasPosts applies the HasEdge predicate on the "posts" edge.
-func HasPosts() predicate.SysUser {
+// HasSysPosts applies the HasEdge predicate on the "sysPosts" edge.
+func HasSysPosts() predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, PostsTable, PostsPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, SysPostsTable, SysPostsPrimaryKey...),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasPostsWith applies the HasEdge predicate on the "posts" edge with a given conditions (other predicates).
-func HasPostsWith(preds ...predicate.SysPost) predicate.SysUser {
+// HasSysPostsWith applies the HasEdge predicate on the "sysPosts" edge with a given conditions (other predicates).
+func HasSysPostsWith(preds ...predicate.SysPost) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
-		step := newPostsStep()
+		step := newSysPostsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

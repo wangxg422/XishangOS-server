@@ -148,19 +148,19 @@ func (src *SysRoleCreate) SetNillableID(i *int64) *SysRoleCreate {
 	return src
 }
 
-// AddDeptIDs adds the "depts" edge to the SysDept entity by IDs.
-func (src *SysRoleCreate) AddDeptIDs(ids ...int64) *SysRoleCreate {
-	src.mutation.AddDeptIDs(ids...)
+// AddSysDeptIDs adds the "sysDepts" edge to the SysDept entity by IDs.
+func (src *SysRoleCreate) AddSysDeptIDs(ids ...int64) *SysRoleCreate {
+	src.mutation.AddSysDeptIDs(ids...)
 	return src
 }
 
-// AddDepts adds the "depts" edges to the SysDept entity.
-func (src *SysRoleCreate) AddDepts(s ...*SysDept) *SysRoleCreate {
+// AddSysDepts adds the "sysDepts" edges to the SysDept entity.
+func (src *SysRoleCreate) AddSysDepts(s ...*SysDept) *SysRoleCreate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return src.AddDeptIDs(ids...)
+	return src.AddSysDeptIDs(ids...)
 }
 
 // AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
@@ -316,12 +316,12 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)
 		_node.DataScope = value
 	}
-	if nodes := src.mutation.DeptsIDs(); len(nodes) > 0 {
+	if nodes := src.mutation.SysDeptsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: false,
-			Table:   sysrole.DeptsTable,
-			Columns: sysrole.DeptsPrimaryKey,
+			Table:   sysrole.SysDeptsTable,
+			Columns: sysrole.SysDeptsPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),

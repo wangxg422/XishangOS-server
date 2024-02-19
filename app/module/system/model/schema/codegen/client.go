@@ -544,15 +544,15 @@ func (c *SysDeptClient) QuerySysUsers(sd *SysDept) *SysUserQuery {
 	return query
 }
 
-// QueryRoles queries the roles edge of a SysDept.
-func (c *SysDeptClient) QueryRoles(sd *SysDept) *SysRoleQuery {
+// QuerySysRoles queries the sysRoles edge of a SysDept.
+func (c *SysDeptClient) QuerySysRoles(sd *SysDept) *SysRoleQuery {
 	query := (&SysRoleClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := sd.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdept.Table, sysdept.FieldID, id),
 			sqlgraph.To(sysrole.Table, sysrole.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, sysdept.RolesTable, sysdept.RolesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, sysdept.SysRolesTable, sysdept.SysRolesPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(sd.driver.Dialect(), step)
 		return fromV, nil
@@ -1406,15 +1406,15 @@ func (c *SysPostClient) GetX(ctx context.Context, id int64) *SysPost {
 	return obj
 }
 
-// QueryUsers queries the users edge of a SysPost.
-func (c *SysPostClient) QueryUsers(sp *SysPost) *SysUserQuery {
+// QuerySysUsers queries the sysUsers edge of a SysPost.
+func (c *SysPostClient) QuerySysUsers(sp *SysPost) *SysUserQuery {
 	query := (&SysUserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := sp.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(syspost.Table, syspost.FieldID, id),
 			sqlgraph.To(sysuser.Table, sysuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, syspost.UsersTable, syspost.UsersPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, syspost.SysUsersTable, syspost.SysUsersPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(sp.driver.Dialect(), step)
 		return fromV, nil
@@ -1555,15 +1555,15 @@ func (c *SysRoleClient) GetX(ctx context.Context, id int64) *SysRole {
 	return obj
 }
 
-// QueryDepts queries the depts edge of a SysRole.
-func (c *SysRoleClient) QueryDepts(sr *SysRole) *SysDeptQuery {
+// QuerySysDepts queries the sysDepts edge of a SysRole.
+func (c *SysRoleClient) QuerySysDepts(sr *SysRole) *SysDeptQuery {
 	query := (&SysDeptClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := sr.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysrole.Table, sysrole.FieldID, id),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, sysrole.DeptsTable, sysrole.DeptsPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysrole.SysDeptsTable, sysrole.SysDeptsPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(sr.driver.Dialect(), step)
 		return fromV, nil
@@ -1736,15 +1736,15 @@ func (c *SysUserClient) GetX(ctx context.Context, id int64) *SysUser {
 	return obj
 }
 
-// QueryDept queries the dept edge of a SysUser.
-func (c *SysUserClient) QueryDept(su *SysUser) *SysDeptQuery {
+// QuerySysDept queries the sysDept edge of a SysUser.
+func (c *SysUserClient) QuerySysDept(su *SysUser) *SysDeptQuery {
 	query := (&SysDeptClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := su.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.DeptTable, sysuser.DeptColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.SysDeptTable, sysuser.SysDeptColumn),
 		)
 		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
 		return fromV, nil
@@ -1752,15 +1752,15 @@ func (c *SysUserClient) QueryDept(su *SysUser) *SysDeptQuery {
 	return query
 }
 
-// QueryPosts queries the posts edge of a SysUser.
-func (c *SysUserClient) QueryPosts(su *SysUser) *SysPostQuery {
+// QuerySysPosts queries the sysPosts edge of a SysUser.
+func (c *SysUserClient) QuerySysPosts(su *SysUser) *SysPostQuery {
 	query := (&SysPostClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := su.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
 			sqlgraph.To(syspost.Table, syspost.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.PostsTable, sysuser.PostsPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.SysPostsTable, sysuser.SysPostsPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
 		return fromV, nil

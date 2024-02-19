@@ -59,8 +59,8 @@ type SysDept struct {
 type SysDeptEdges struct {
 	// SysUsers holds the value of the sysUsers edge.
 	SysUsers []*SysUser `json:"sysUsers,omitempty"`
-	// Roles holds the value of the roles edge.
-	Roles []*SysRole `json:"roles,omitempty"`
+	// SysRoles holds the value of the sysRoles edge.
+	SysRoles []*SysRole `json:"sysRoles,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
@@ -75,13 +75,13 @@ func (e SysDeptEdges) SysUsersOrErr() ([]*SysUser, error) {
 	return nil, &NotLoadedError{edge: "sysUsers"}
 }
 
-// RolesOrErr returns the Roles value or an error if the edge
+// SysRolesOrErr returns the SysRoles value or an error if the edge
 // was not loaded in eager-loading.
-func (e SysDeptEdges) RolesOrErr() ([]*SysRole, error) {
+func (e SysDeptEdges) SysRolesOrErr() ([]*SysRole, error) {
 	if e.loadedTypes[1] {
-		return e.Roles, nil
+		return e.SysRoles, nil
 	}
-	return nil, &NotLoadedError{edge: "roles"}
+	return nil, &NotLoadedError{edge: "sysRoles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -230,9 +230,9 @@ func (sd *SysDept) QuerySysUsers() *SysUserQuery {
 	return NewSysDeptClient(sd.config).QuerySysUsers(sd)
 }
 
-// QueryRoles queries the "roles" edge of the SysDept entity.
-func (sd *SysDept) QueryRoles() *SysRoleQuery {
-	return NewSysDeptClient(sd.config).QueryRoles(sd)
+// QuerySysRoles queries the "sysRoles" edge of the SysDept entity.
+func (sd *SysDept) QuerySysRoles() *SysRoleQuery {
+	return NewSysDeptClient(sd.config).QuerySysRoles(sd)
 }
 
 // Update returns a builder for updating this SysDept.

@@ -66,10 +66,10 @@ type SysUser struct {
 
 // SysUserEdges holds the relations/edges for other nodes in the graph.
 type SysUserEdges struct {
-	// Dept holds the value of the dept edge.
-	Dept *SysDept `json:"dept,omitempty"`
-	// Posts holds the value of the posts edge.
-	Posts []*SysPost `json:"posts,omitempty"`
+	// SysDept holds the value of the sysDept edge.
+	SysDept *SysDept `json:"sysDept,omitempty"`
+	// SysPosts holds the value of the sysPosts edge.
+	SysPosts []*SysPost `json:"sysPosts,omitempty"`
 	// SysRoles holds the value of the sysRoles edge.
 	SysRoles []*SysRole `json:"sysRoles,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -77,26 +77,26 @@ type SysUserEdges struct {
 	loadedTypes [3]bool
 }
 
-// DeptOrErr returns the Dept value or an error if the edge
+// SysDeptOrErr returns the SysDept value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e SysUserEdges) DeptOrErr() (*SysDept, error) {
+func (e SysUserEdges) SysDeptOrErr() (*SysDept, error) {
 	if e.loadedTypes[0] {
-		if e.Dept == nil {
+		if e.SysDept == nil {
 			// Edge was loaded but was not found.
 			return nil, &NotFoundError{label: sysdept.Label}
 		}
-		return e.Dept, nil
+		return e.SysDept, nil
 	}
-	return nil, &NotLoadedError{edge: "dept"}
+	return nil, &NotLoadedError{edge: "sysDept"}
 }
 
-// PostsOrErr returns the Posts value or an error if the edge
+// SysPostsOrErr returns the SysPosts value or an error if the edge
 // was not loaded in eager-loading.
-func (e SysUserEdges) PostsOrErr() ([]*SysPost, error) {
+func (e SysUserEdges) SysPostsOrErr() ([]*SysPost, error) {
 	if e.loadedTypes[1] {
-		return e.Posts, nil
+		return e.SysPosts, nil
 	}
-	return nil, &NotLoadedError{edge: "posts"}
+	return nil, &NotLoadedError{edge: "sysPosts"}
 }
 
 // SysRolesOrErr returns the SysRoles value or an error if the edge
@@ -273,14 +273,14 @@ func (su *SysUser) Value(name string) (ent.Value, error) {
 	return su.selectValues.Get(name)
 }
 
-// QueryDept queries the "dept" edge of the SysUser entity.
-func (su *SysUser) QueryDept() *SysDeptQuery {
-	return NewSysUserClient(su.config).QueryDept(su)
+// QuerySysDept queries the "sysDept" edge of the SysUser entity.
+func (su *SysUser) QuerySysDept() *SysDeptQuery {
+	return NewSysUserClient(su.config).QuerySysDept(su)
 }
 
-// QueryPosts queries the "posts" edge of the SysUser entity.
-func (su *SysUser) QueryPosts() *SysPostQuery {
-	return NewSysUserClient(su.config).QueryPosts(su)
+// QuerySysPosts queries the "sysPosts" edge of the SysUser entity.
+func (su *SysUser) QuerySysPosts() *SysPostQuery {
+	return NewSysUserClient(su.config).QuerySysPosts(su)
 }
 
 // QuerySysRoles queries the "sysRoles" edge of the SysUser entity.

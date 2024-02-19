@@ -188,19 +188,19 @@ func (spc *SysPostCreate) SetNillableID(i *int64) *SysPostCreate {
 	return spc
 }
 
-// AddUserIDs adds the "users" edge to the SysUser entity by IDs.
-func (spc *SysPostCreate) AddUserIDs(ids ...int64) *SysPostCreate {
-	spc.mutation.AddUserIDs(ids...)
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (spc *SysPostCreate) AddSysUserIDs(ids ...int64) *SysPostCreate {
+	spc.mutation.AddSysUserIDs(ids...)
 	return spc
 }
 
-// AddUsers adds the "users" edges to the SysUser entity.
-func (spc *SysPostCreate) AddUsers(s ...*SysUser) *SysPostCreate {
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (spc *SysPostCreate) AddSysUsers(s ...*SysUser) *SysPostCreate {
 	ids := make([]int64, len(s))
 	for i := range s {
 		ids[i] = s[i].ID
 	}
-	return spc.AddUserIDs(ids...)
+	return spc.AddSysUserIDs(ids...)
 }
 
 // Mutation returns the SysPostMutation object of the builder.
@@ -338,12 +338,12 @@ func (spc *SysPostCreate) createSpec() (*SysPost, *sqlgraph.CreateSpec) {
 		_spec.SetField(syspost.FieldPostName, field.TypeString, value)
 		_node.PostName = value
 	}
-	if nodes := spc.mutation.UsersIDs(); len(nodes) > 0 {
+	if nodes := spc.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   syspost.UsersTable,
-			Columns: syspost.UsersPrimaryKey,
+			Table:   syspost.SysUsersTable,
+			Columns: syspost.SysUsersPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),

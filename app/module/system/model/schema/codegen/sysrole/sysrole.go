@@ -30,19 +30,19 @@ const (
 	FieldName = "name"
 	// FieldDataScope holds the string denoting the data_scope field in the database.
 	FieldDataScope = "data_scope"
-	// EdgeDepts holds the string denoting the depts edge name in mutations.
-	EdgeDepts = "depts"
+	// EdgeSysDepts holds the string denoting the sysdepts edge name in mutations.
+	EdgeSysDepts = "sysDepts"
 	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
 	EdgeSysUsers = "sysUsers"
 	// EdgeSysMenus holds the string denoting the sysmenus edge name in mutations.
 	EdgeSysMenus = "sysMenus"
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_role"
-	// DeptsTable is the table that holds the depts relation/edge. The primary key declared below.
-	DeptsTable = "sys_role_dept"
-	// DeptsInverseTable is the table name for the SysDept entity.
+	// SysDeptsTable is the table that holds the sysDepts relation/edge. The primary key declared below.
+	SysDeptsTable = "sys_role_dept"
+	// SysDeptsInverseTable is the table name for the SysDept entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
-	DeptsInverseTable = "sys_dept"
+	SysDeptsInverseTable = "sys_dept"
 	// SysUsersTable is the table that holds the sysUsers relation/edge. The primary key declared below.
 	SysUsersTable = "sys_user_role"
 	// SysUsersInverseTable is the table name for the SysUser entity.
@@ -69,9 +69,9 @@ var Columns = []string{
 }
 
 var (
-	// DeptsPrimaryKey and DeptsColumn2 are the table columns denoting the
-	// primary key for the depts relation (M2M).
-	DeptsPrimaryKey = []string{"role_id", "dept_id"}
+	// SysDeptsPrimaryKey and SysDeptsColumn2 are the table columns denoting the
+	// primary key for the sysDepts relation (M2M).
+	SysDeptsPrimaryKey = []string{"role_id", "dept_id"}
 	// SysUsersPrimaryKey and SysUsersColumn2 are the table columns denoting the
 	// primary key for the sysUsers relation (M2M).
 	SysUsersPrimaryKey = []string{"user_id", "role_id"}
@@ -155,17 +155,17 @@ func ByDataScope(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDataScope, opts...).ToFunc()
 }
 
-// ByDeptsCount orders the results by depts count.
-func ByDeptsCount(opts ...sql.OrderTermOption) OrderOption {
+// BySysDeptsCount orders the results by sysDepts count.
+func BySysDeptsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newDeptsStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSysDeptsStep(), opts...)
 	}
 }
 
-// ByDepts orders the results by depts terms.
-func ByDepts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySysDepts orders the results by sysDepts terms.
+func BySysDepts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newDeptsStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSysDeptsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -196,11 +196,11 @@ func BySysMenus(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newSysMenusStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newDeptsStep() *sqlgraph.Step {
+func newSysDeptsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(DeptsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, DeptsTable, DeptsPrimaryKey...),
+		sqlgraph.To(SysDeptsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, SysDeptsTable, SysDeptsPrimaryKey...),
 	)
 }
 func newSysUsersStep() *sqlgraph.Step {

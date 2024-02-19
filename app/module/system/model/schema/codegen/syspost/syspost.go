@@ -36,15 +36,15 @@ const (
 	FieldPostCode = "post_code"
 	// FieldPostName holds the string denoting the post_name field in the database.
 	FieldPostName = "post_name"
-	// EdgeUsers holds the string denoting the users edge name in mutations.
-	EdgeUsers = "users"
+	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
+	EdgeSysUsers = "sysUsers"
 	// Table holds the table name of the syspost in the database.
 	Table = "sys_post"
-	// UsersTable is the table that holds the users relation/edge. The primary key declared below.
-	UsersTable = "sys_user_post"
-	// UsersInverseTable is the table name for the SysUser entity.
+	// SysUsersTable is the table that holds the sysUsers relation/edge. The primary key declared below.
+	SysUsersTable = "sys_user_post"
+	// SysUsersInverseTable is the table name for the SysUser entity.
 	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
-	UsersInverseTable = "sys_user"
+	SysUsersInverseTable = "sys_user"
 )
 
 // Columns holds all SQL columns for syspost fields.
@@ -64,9 +64,9 @@ var Columns = []string{
 }
 
 var (
-	// UsersPrimaryKey and UsersColumn2 are the table columns denoting the
-	// primary key for the users relation (M2M).
-	UsersPrimaryKey = []string{"user_id", "post_id"}
+	// SysUsersPrimaryKey and SysUsersColumn2 are the table columns denoting the
+	// primary key for the sysUsers relation (M2M).
+	SysUsersPrimaryKey = []string{"user_id", "post_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -159,23 +159,23 @@ func ByPostName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPostName, opts...).ToFunc()
 }
 
-// ByUsersCount orders the results by users count.
-func ByUsersCount(opts ...sql.OrderTermOption) OrderOption {
+// BySysUsersCount orders the results by sysUsers count.
+func BySysUsersCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newUsersStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSysUsersStep(), opts...)
 	}
 }
 
-// ByUsers orders the results by users terms.
-func ByUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySysUsers orders the results by sysUsers terms.
+func BySysUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSysUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newUsersStep() *sqlgraph.Step {
+func newSysUsersStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(UsersInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, true, UsersTable, UsersPrimaryKey...),
+		sqlgraph.To(SysUsersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, SysUsersTable, SysUsersPrimaryKey...),
 	)
 }

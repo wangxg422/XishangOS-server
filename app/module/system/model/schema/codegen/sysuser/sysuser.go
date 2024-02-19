@@ -54,26 +54,26 @@ const (
 	FieldLastLoginIP = "last_login_ip"
 	// FieldLastLoginTime holds the string denoting the last_login_time field in the database.
 	FieldLastLoginTime = "last_login_time"
-	// EdgeDept holds the string denoting the dept edge name in mutations.
-	EdgeDept = "dept"
-	// EdgePosts holds the string denoting the posts edge name in mutations.
-	EdgePosts = "posts"
+	// EdgeSysDept holds the string denoting the sysdept edge name in mutations.
+	EdgeSysDept = "sysDept"
+	// EdgeSysPosts holds the string denoting the sysposts edge name in mutations.
+	EdgeSysPosts = "sysPosts"
 	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
 	EdgeSysRoles = "sysRoles"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_user"
-	// DeptTable is the table that holds the dept relation/edge.
-	DeptTable = "sys_user"
-	// DeptInverseTable is the table name for the SysDept entity.
+	// SysDeptTable is the table that holds the sysDept relation/edge.
+	SysDeptTable = "sys_user"
+	// SysDeptInverseTable is the table name for the SysDept entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
-	DeptInverseTable = "sys_dept"
-	// DeptColumn is the table column denoting the dept relation/edge.
-	DeptColumn = "dept_id"
-	// PostsTable is the table that holds the posts relation/edge. The primary key declared below.
-	PostsTable = "sys_user_post"
-	// PostsInverseTable is the table name for the SysPost entity.
+	SysDeptInverseTable = "sys_dept"
+	// SysDeptColumn is the table column denoting the sysDept relation/edge.
+	SysDeptColumn = "dept_id"
+	// SysPostsTable is the table that holds the sysPosts relation/edge. The primary key declared below.
+	SysPostsTable = "sys_user_post"
+	// SysPostsInverseTable is the table name for the SysPost entity.
 	// It exists in this package in order to avoid circular dependency with the "syspost" package.
-	PostsInverseTable = "sys_post"
+	SysPostsInverseTable = "sys_post"
 	// SysRolesTable is the table that holds the sysRoles relation/edge. The primary key declared below.
 	SysRolesTable = "sys_user_role"
 	// SysRolesInverseTable is the table name for the SysRole entity.
@@ -107,9 +107,9 @@ var Columns = []string{
 }
 
 var (
-	// PostsPrimaryKey and PostsColumn2 are the table columns denoting the
-	// primary key for the posts relation (M2M).
-	PostsPrimaryKey = []string{"user_id", "post_id"}
+	// SysPostsPrimaryKey and SysPostsColumn2 are the table columns denoting the
+	// primary key for the sysPosts relation (M2M).
+	SysPostsPrimaryKey = []string{"user_id", "post_id"}
 	// SysRolesPrimaryKey and SysRolesColumn2 are the table columns denoting the
 	// primary key for the sysRoles relation (M2M).
 	SysRolesPrimaryKey = []string{"user_id", "role_id"}
@@ -248,24 +248,24 @@ func ByLastLoginTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastLoginTime, opts...).ToFunc()
 }
 
-// ByDeptField orders the results by dept field.
-func ByDeptField(field string, opts ...sql.OrderTermOption) OrderOption {
+// BySysDeptField orders the results by sysDept field.
+func BySysDeptField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newDeptStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newSysDeptStep(), sql.OrderByField(field, opts...))
 	}
 }
 
-// ByPostsCount orders the results by posts count.
-func ByPostsCount(opts ...sql.OrderTermOption) OrderOption {
+// BySysPostsCount orders the results by sysPosts count.
+func BySysPostsCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newPostsStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newSysPostsStep(), opts...)
 	}
 }
 
-// ByPosts orders the results by posts terms.
-func ByPosts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// BySysPosts orders the results by sysPosts terms.
+func BySysPosts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newPostsStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newSysPostsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -282,18 +282,18 @@ func BySysRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newSysRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newDeptStep() *sqlgraph.Step {
+func newSysDeptStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(DeptInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, DeptTable, DeptColumn),
+		sqlgraph.To(SysDeptInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SysDeptTable, SysDeptColumn),
 	)
 }
-func newPostsStep() *sqlgraph.Step {
+func newSysPostsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(PostsInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2M, false, PostsTable, PostsPrimaryKey...),
+		sqlgraph.To(SysPostsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, SysPostsTable, SysPostsPrimaryKey...),
 	)
 }
 func newSysRolesStep() *sqlgraph.Step {

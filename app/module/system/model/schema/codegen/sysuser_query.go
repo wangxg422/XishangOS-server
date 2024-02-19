@@ -25,8 +25,8 @@ type SysUserQuery struct {
 	order        []sysuser.OrderOption
 	inters       []Interceptor
 	predicates   []predicate.SysUser
-	withDept     *SysDeptQuery
-	withPosts    *SysPostQuery
+	withSysDept  *SysDeptQuery
+	withSysPosts *SysPostQuery
 	withSysRoles *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -64,8 +64,8 @@ func (suq *SysUserQuery) Order(o ...sysuser.OrderOption) *SysUserQuery {
 	return suq
 }
 
-// QueryDept chains the current query on the "dept" edge.
-func (suq *SysUserQuery) QueryDept() *SysDeptQuery {
+// QuerySysDept chains the current query on the "sysDept" edge.
+func (suq *SysUserQuery) QuerySysDept() *SysDeptQuery {
 	query := (&SysDeptClient{config: suq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := suq.prepareQuery(ctx); err != nil {
@@ -78,7 +78,7 @@ func (suq *SysUserQuery) QueryDept() *SysDeptQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.DeptTable, sysuser.DeptColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.SysDeptTable, sysuser.SysDeptColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
 		return fromU, nil
@@ -86,8 +86,8 @@ func (suq *SysUserQuery) QueryDept() *SysDeptQuery {
 	return query
 }
 
-// QueryPosts chains the current query on the "posts" edge.
-func (suq *SysUserQuery) QueryPosts() *SysPostQuery {
+// QuerySysPosts chains the current query on the "sysPosts" edge.
+func (suq *SysUserQuery) QuerySysPosts() *SysPostQuery {
 	query := (&SysPostClient{config: suq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := suq.prepareQuery(ctx); err != nil {
@@ -100,7 +100,7 @@ func (suq *SysUserQuery) QueryPosts() *SysPostQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
 			sqlgraph.To(syspost.Table, syspost.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.PostsTable, sysuser.PostsPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.SysPostsTable, sysuser.SysPostsPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
 		return fromU, nil
@@ -322,8 +322,8 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 		order:        append([]sysuser.OrderOption{}, suq.order...),
 		inters:       append([]Interceptor{}, suq.inters...),
 		predicates:   append([]predicate.SysUser{}, suq.predicates...),
-		withDept:     suq.withDept.Clone(),
-		withPosts:    suq.withPosts.Clone(),
+		withSysDept:  suq.withSysDept.Clone(),
+		withSysPosts: suq.withSysPosts.Clone(),
 		withSysRoles: suq.withSysRoles.Clone(),
 		// clone intermediate query.
 		sql:  suq.sql.Clone(),
@@ -331,25 +331,25 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 	}
 }
 
-// WithDept tells the query-builder to eager-load the nodes that are connected to
-// the "dept" edge. The optional arguments are used to configure the query builder of the edge.
-func (suq *SysUserQuery) WithDept(opts ...func(*SysDeptQuery)) *SysUserQuery {
+// WithSysDept tells the query-builder to eager-load the nodes that are connected to
+// the "sysDept" edge. The optional arguments are used to configure the query builder of the edge.
+func (suq *SysUserQuery) WithSysDept(opts ...func(*SysDeptQuery)) *SysUserQuery {
 	query := (&SysDeptClient{config: suq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	suq.withDept = query
+	suq.withSysDept = query
 	return suq
 }
 
-// WithPosts tells the query-builder to eager-load the nodes that are connected to
-// the "posts" edge. The optional arguments are used to configure the query builder of the edge.
-func (suq *SysUserQuery) WithPosts(opts ...func(*SysPostQuery)) *SysUserQuery {
+// WithSysPosts tells the query-builder to eager-load the nodes that are connected to
+// the "sysPosts" edge. The optional arguments are used to configure the query builder of the edge.
+func (suq *SysUserQuery) WithSysPosts(opts ...func(*SysPostQuery)) *SysUserQuery {
 	query := (&SysPostClient{config: suq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	suq.withPosts = query
+	suq.withSysPosts = query
 	return suq
 }
 
@@ -443,8 +443,8 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		nodes       = []*SysUser{}
 		_spec       = suq.querySpec()
 		loadedTypes = [3]bool{
-			suq.withDept != nil,
-			suq.withPosts != nil,
+			suq.withSysDept != nil,
+			suq.withSysPosts != nil,
 			suq.withSysRoles != nil,
 		}
 	)
@@ -466,16 +466,16 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := suq.withDept; query != nil {
-		if err := suq.loadDept(ctx, query, nodes, nil,
-			func(n *SysUser, e *SysDept) { n.Edges.Dept = e }); err != nil {
+	if query := suq.withSysDept; query != nil {
+		if err := suq.loadSysDept(ctx, query, nodes, nil,
+			func(n *SysUser, e *SysDept) { n.Edges.SysDept = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := suq.withPosts; query != nil {
-		if err := suq.loadPosts(ctx, query, nodes,
-			func(n *SysUser) { n.Edges.Posts = []*SysPost{} },
-			func(n *SysUser, e *SysPost) { n.Edges.Posts = append(n.Edges.Posts, e) }); err != nil {
+	if query := suq.withSysPosts; query != nil {
+		if err := suq.loadSysPosts(ctx, query, nodes,
+			func(n *SysUser) { n.Edges.SysPosts = []*SysPost{} },
+			func(n *SysUser, e *SysPost) { n.Edges.SysPosts = append(n.Edges.SysPosts, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -489,7 +489,7 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	return nodes, nil
 }
 
-func (suq *SysUserQuery) loadDept(ctx context.Context, query *SysDeptQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysDept)) error {
+func (suq *SysUserQuery) loadSysDept(ctx context.Context, query *SysDeptQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysDept)) error {
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SysUser)
 	for i := range nodes {
@@ -518,7 +518,7 @@ func (suq *SysUserQuery) loadDept(ctx context.Context, query *SysDeptQuery, node
 	}
 	return nil
 }
-func (suq *SysUserQuery) loadPosts(ctx context.Context, query *SysPostQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysPost)) error {
+func (suq *SysUserQuery) loadSysPosts(ctx context.Context, query *SysPostQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysPost)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[int64]*SysUser)
 	nids := make(map[int64]map[*SysUser]struct{})
@@ -530,11 +530,11 @@ func (suq *SysUserQuery) loadPosts(ctx context.Context, query *SysPostQuery, nod
 		}
 	}
 	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(sysuser.PostsTable)
-		s.Join(joinT).On(s.C(syspost.FieldID), joinT.C(sysuser.PostsPrimaryKey[1]))
-		s.Where(sql.InValues(joinT.C(sysuser.PostsPrimaryKey[0]), edgeIDs...))
+		joinT := sql.Table(sysuser.SysPostsTable)
+		s.Join(joinT).On(s.C(syspost.FieldID), joinT.C(sysuser.SysPostsPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(sysuser.SysPostsPrimaryKey[0]), edgeIDs...))
 		columns := s.SelectedColumns()
-		s.Select(joinT.C(sysuser.PostsPrimaryKey[0]))
+		s.Select(joinT.C(sysuser.SysPostsPrimaryKey[0]))
 		s.AppendSelect(columns...)
 		s.SetDistinct(false)
 	})
@@ -571,7 +571,7 @@ func (suq *SysUserQuery) loadPosts(ctx context.Context, query *SysPostQuery, nod
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "posts" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "sysPosts" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)
@@ -666,7 +666,7 @@ func (suq *SysUserQuery) querySpec() *sqlgraph.QuerySpec {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
-		if suq.withDept != nil {
+		if suq.withSysDept != nil {
 			_spec.Node.AddColumnOnce(sysuser.FieldDeptID)
 		}
 	}

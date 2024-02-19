@@ -25,7 +25,7 @@ type SysDeptQuery struct {
 	inters       []Interceptor
 	predicates   []predicate.SysDept
 	withSysUsers *SysUserQuery
-	withRoles    *SysRoleQuery
+	withSysRoles *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -84,8 +84,8 @@ func (sdq *SysDeptQuery) QuerySysUsers() *SysUserQuery {
 	return query
 }
 
-// QueryRoles chains the current query on the "roles" edge.
-func (sdq *SysDeptQuery) QueryRoles() *SysRoleQuery {
+// QuerySysRoles chains the current query on the "sysRoles" edge.
+func (sdq *SysDeptQuery) QuerySysRoles() *SysRoleQuery {
 	query := (&SysRoleClient{config: sdq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := sdq.prepareQuery(ctx); err != nil {
@@ -98,7 +98,7 @@ func (sdq *SysDeptQuery) QueryRoles() *SysRoleQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdept.Table, sysdept.FieldID, selector),
 			sqlgraph.To(sysrole.Table, sysrole.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, sysdept.RolesTable, sysdept.RolesPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, sysdept.SysRolesTable, sysdept.SysRolesPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(sdq.driver.Dialect(), step)
 		return fromU, nil
@@ -299,7 +299,7 @@ func (sdq *SysDeptQuery) Clone() *SysDeptQuery {
 		inters:       append([]Interceptor{}, sdq.inters...),
 		predicates:   append([]predicate.SysDept{}, sdq.predicates...),
 		withSysUsers: sdq.withSysUsers.Clone(),
-		withRoles:    sdq.withRoles.Clone(),
+		withSysRoles: sdq.withSysRoles.Clone(),
 		// clone intermediate query.
 		sql:  sdq.sql.Clone(),
 		path: sdq.path,
@@ -317,14 +317,14 @@ func (sdq *SysDeptQuery) WithSysUsers(opts ...func(*SysUserQuery)) *SysDeptQuery
 	return sdq
 }
 
-// WithRoles tells the query-builder to eager-load the nodes that are connected to
-// the "roles" edge. The optional arguments are used to configure the query builder of the edge.
-func (sdq *SysDeptQuery) WithRoles(opts ...func(*SysRoleQuery)) *SysDeptQuery {
+// WithSysRoles tells the query-builder to eager-load the nodes that are connected to
+// the "sysRoles" edge. The optional arguments are used to configure the query builder of the edge.
+func (sdq *SysDeptQuery) WithSysRoles(opts ...func(*SysRoleQuery)) *SysDeptQuery {
 	query := (&SysRoleClient{config: sdq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	sdq.withRoles = query
+	sdq.withSysRoles = query
 	return sdq
 }
 
@@ -408,7 +408,7 @@ func (sdq *SysDeptQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		_spec       = sdq.querySpec()
 		loadedTypes = [2]bool{
 			sdq.withSysUsers != nil,
-			sdq.withRoles != nil,
+			sdq.withSysRoles != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -436,10 +436,10 @@ func (sdq *SysDeptQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 			return nil, err
 		}
 	}
-	if query := sdq.withRoles; query != nil {
-		if err := sdq.loadRoles(ctx, query, nodes,
-			func(n *SysDept) { n.Edges.Roles = []*SysRole{} },
-			func(n *SysDept, e *SysRole) { n.Edges.Roles = append(n.Edges.Roles, e) }); err != nil {
+	if query := sdq.withSysRoles; query != nil {
+		if err := sdq.loadSysRoles(ctx, query, nodes,
+			func(n *SysDept) { n.Edges.SysRoles = []*SysRole{} },
+			func(n *SysDept, e *SysRole) { n.Edges.SysRoles = append(n.Edges.SysRoles, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -476,7 +476,7 @@ func (sdq *SysDeptQuery) loadSysUsers(ctx context.Context, query *SysUserQuery, 
 	}
 	return nil
 }
-func (sdq *SysDeptQuery) loadRoles(ctx context.Context, query *SysRoleQuery, nodes []*SysDept, init func(*SysDept), assign func(*SysDept, *SysRole)) error {
+func (sdq *SysDeptQuery) loadSysRoles(ctx context.Context, query *SysRoleQuery, nodes []*SysDept, init func(*SysDept), assign func(*SysDept, *SysRole)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[int64]*SysDept)
 	nids := make(map[int64]map[*SysDept]struct{})
@@ -488,11 +488,11 @@ func (sdq *SysDeptQuery) loadRoles(ctx context.Context, query *SysRoleQuery, nod
 		}
 	}
 	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(sysdept.RolesTable)
-		s.Join(joinT).On(s.C(sysrole.FieldID), joinT.C(sysdept.RolesPrimaryKey[0]))
-		s.Where(sql.InValues(joinT.C(sysdept.RolesPrimaryKey[1]), edgeIDs...))
+		joinT := sql.Table(sysdept.SysRolesTable)
+		s.Join(joinT).On(s.C(sysrole.FieldID), joinT.C(sysdept.SysRolesPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(sysdept.SysRolesPrimaryKey[1]), edgeIDs...))
 		columns := s.SelectedColumns()
-		s.Select(joinT.C(sysdept.RolesPrimaryKey[1]))
+		s.Select(joinT.C(sysdept.SysRolesPrimaryKey[1]))
 		s.AppendSelect(columns...)
 		s.SetDistinct(false)
 	})
@@ -529,7 +529,7 @@ func (sdq *SysDeptQuery) loadRoles(ctx context.Context, query *SysRoleQuery, nod
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "roles" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "sysRoles" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)

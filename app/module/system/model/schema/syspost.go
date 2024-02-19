@@ -46,7 +46,7 @@ func (SysPost) Fields() []ent.Field {
 // Edges of the SysPost.
 func (SysPost) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("users", SysUser.Type).
-			Ref("posts"),
+		edge.From("sysUsers", SysUser.Type).
+			Ref("sysPosts"),
 	}
 }
