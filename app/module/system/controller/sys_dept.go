@@ -11,7 +11,19 @@ type SysDeptController struct {
 }
 
 func (m *SysDeptController) List(c *gin.Context) {
+	req := new(request.SysDeptListReq)
+	err := c.ShouldBind(req)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
 
+	list, err := service.AppSysDeptService.List(req, c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.OkWithData(list, c)
 }
 
 func (m *SysDeptController) Add(c *gin.Context) {

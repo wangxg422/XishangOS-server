@@ -1,11 +1,8 @@
 package request
 
 type SysDeptListReq struct {
-	DeptName string `json:"deptName"`
-	DeptCode string `json:"deptCode"`
-	Leader   string `json:"leader"`
-	Status   int8   `json:"status"`
-	Address  string `json:"address"`
+	Keyword string `json:"keyword" form:"keyword"`
+	Status  int8   `json:"status" form:"status"`
 }
 
 type SysDeptCreateReq struct {

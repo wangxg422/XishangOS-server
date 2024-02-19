@@ -66,3 +66,15 @@ func (m *SysDeptService) Update(req *request.SysDeptUpdateReq, c *gin.Context) e
 		SetRemark(req.Remark).
 		SetLeader(req.Leader).Exec(c)
 }
+
+func (m *SysDeptService) List(req *request.SysDeptListReq, c *gin.Context) ([]*codegen.SysDept, error) {
+	query := initial.SysDbClient.SysDept.Query()
+
+	if req.Status != 0 {
+		query.Where(sysdept.Status(req.Status))
+	}
+	if req.Keyword != "" {
+		query.Where(sysdept.Or(sysdept.DeptCodeContains(req.Keyword)), sysdept.DeptName(req.Keyword), sysdept.LeaderContains(req.Keyword))
+	}
+	return query.Order(codegen.Asc(sysdept.FieldParentID, sysdept.FieldID, sysdept.FieldCreatedAt)).All(c)
+}
