@@ -20,7 +20,7 @@ func (m *SysUserController) List(c *gin.Context) {
 }
 
 func (m *SysUserController) Add(c *gin.Context) {
-	req := new(request.SysUserCreateUpdateReq)
+	req := new(request.SysUserCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
@@ -33,4 +33,28 @@ func (m *SysUserController) Add(c *gin.Context) {
 		return
 	}
 	result.Ok(c)
+}
+
+func (m *SysUserController) Update(c *gin.Context) {
+	req := new(request.SysUserUpdateReq)
+	err := c.ShouldBind(req)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = service.AppSysUserService.Update(c, req)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.Ok(c)
+}
+
+func (m *SysUserController) Delete(context *gin.Context) {
+
+}
+
+func (m *SysUserController) GetUserInfo(context *gin.Context) {
+
 }
