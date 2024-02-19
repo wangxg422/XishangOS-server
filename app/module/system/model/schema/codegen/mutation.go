@@ -3051,36 +3051,35 @@ func (m *SysDeptMutation) ResetEdge(name string) error {
 // SysDictDataMutation represents an operation that mutates the SysDictData nodes in the graph.
 type SysDictDataMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int64
-	created_at    *time.Time
-	updated_at    *time.Time
-	delete_at     *time.Time
-	created_by    *int64
-	addcreated_by *int64
-	updated_by    *int64
-	addupdated_by *int64
-	delete_by     *int64
-	adddelete_by  *int64
-	remark        *string
-	status        *int8
-	addstatus     *int8
-	sort          *int
-	addsort       *int
-	dict_label    *string
-	dict_value    *string
-	dict_type     *string
-	css_class     *string
-	list_class    *string
-	is_default    *int8
-	addis_default *int8
-	clearedFields map[string]struct{}
-	owner         *int64
-	clearedowner  bool
-	done          bool
-	oldValue      func(context.Context) (*SysDictData, error)
-	predicates    []predicate.SysDictData
+	op                 Op
+	typ                string
+	id                 *int64
+	created_at         *time.Time
+	updated_at         *time.Time
+	delete_at          *time.Time
+	created_by         *int64
+	addcreated_by      *int64
+	updated_by         *int64
+	addupdated_by      *int64
+	delete_by          *int64
+	adddelete_by       *int64
+	remark             *string
+	status             *int8
+	addstatus          *int8
+	sort               *int
+	addsort            *int
+	dict_label         *string
+	dict_value         *string
+	css_class          *string
+	list_class         *string
+	is_default         *int8
+	addis_default      *int8
+	clearedFields      map[string]struct{}
+	sysDictType        *int64
+	clearedsysDictType bool
+	done               bool
+	oldValue           func(context.Context) (*SysDictData, error)
+	predicates         []predicate.SysDictData
 }
 
 var _ ent.Mutation = (*SysDictDataMutation)(nil)
@@ -3831,53 +3830,53 @@ func (m *SysDictDataMutation) ResetDictValue() {
 	delete(m.clearedFields, sysdictdata.FieldDictValue)
 }
 
-// SetDictType sets the "dict_type" field.
-func (m *SysDictDataMutation) SetDictType(s string) {
-	m.dict_type = &s
+// SetDictTypeID sets the "dict_type_id" field.
+func (m *SysDictDataMutation) SetDictTypeID(i int64) {
+	m.sysDictType = &i
 }
 
-// DictType returns the value of the "dict_type" field in the mutation.
-func (m *SysDictDataMutation) DictType() (r string, exists bool) {
-	v := m.dict_type
+// DictTypeID returns the value of the "dict_type_id" field in the mutation.
+func (m *SysDictDataMutation) DictTypeID() (r int64, exists bool) {
+	v := m.sysDictType
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDictType returns the old "dict_type" field's value of the SysDictData entity.
+// OldDictTypeID returns the old "dict_type_id" field's value of the SysDictData entity.
 // If the SysDictData object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysDictDataMutation) OldDictType(ctx context.Context) (v string, err error) {
+func (m *SysDictDataMutation) OldDictTypeID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDictType is only allowed on UpdateOne operations")
+		return v, errors.New("OldDictTypeID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDictType requires an ID field in the mutation")
+		return v, errors.New("OldDictTypeID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDictType: %w", err)
+		return v, fmt.Errorf("querying old value for OldDictTypeID: %w", err)
 	}
-	return oldValue.DictType, nil
+	return oldValue.DictTypeID, nil
 }
 
-// ClearDictType clears the value of the "dict_type" field.
-func (m *SysDictDataMutation) ClearDictType() {
-	m.dict_type = nil
-	m.clearedFields[sysdictdata.FieldDictType] = struct{}{}
+// ClearDictTypeID clears the value of the "dict_type_id" field.
+func (m *SysDictDataMutation) ClearDictTypeID() {
+	m.sysDictType = nil
+	m.clearedFields[sysdictdata.FieldDictTypeID] = struct{}{}
 }
 
-// DictTypeCleared returns if the "dict_type" field was cleared in this mutation.
-func (m *SysDictDataMutation) DictTypeCleared() bool {
-	_, ok := m.clearedFields[sysdictdata.FieldDictType]
+// DictTypeIDCleared returns if the "dict_type_id" field was cleared in this mutation.
+func (m *SysDictDataMutation) DictTypeIDCleared() bool {
+	_, ok := m.clearedFields[sysdictdata.FieldDictTypeID]
 	return ok
 }
 
-// ResetDictType resets all changes to the "dict_type" field.
-func (m *SysDictDataMutation) ResetDictType() {
-	m.dict_type = nil
-	delete(m.clearedFields, sysdictdata.FieldDictType)
+// ResetDictTypeID resets all changes to the "dict_type_id" field.
+func (m *SysDictDataMutation) ResetDictTypeID() {
+	m.sysDictType = nil
+	delete(m.clearedFields, sysdictdata.FieldDictTypeID)
 }
 
 // SetCSSClass sets the "css_class" field.
@@ -4048,43 +4047,44 @@ func (m *SysDictDataMutation) ResetIsDefault() {
 	delete(m.clearedFields, sysdictdata.FieldIsDefault)
 }
 
-// SetOwnerID sets the "owner" edge to the SysDictType entity by id.
-func (m *SysDictDataMutation) SetOwnerID(id int64) {
-	m.owner = &id
+// SetSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by id.
+func (m *SysDictDataMutation) SetSysDictTypeID(id int64) {
+	m.sysDictType = &id
 }
 
-// ClearOwner clears the "owner" edge to the SysDictType entity.
-func (m *SysDictDataMutation) ClearOwner() {
-	m.clearedowner = true
+// ClearSysDictType clears the "sysDictType" edge to the SysDictType entity.
+func (m *SysDictDataMutation) ClearSysDictType() {
+	m.clearedsysDictType = true
+	m.clearedFields[sysdictdata.FieldDictTypeID] = struct{}{}
 }
 
-// OwnerCleared reports if the "owner" edge to the SysDictType entity was cleared.
-func (m *SysDictDataMutation) OwnerCleared() bool {
-	return m.clearedowner
+// SysDictTypeCleared reports if the "sysDictType" edge to the SysDictType entity was cleared.
+func (m *SysDictDataMutation) SysDictTypeCleared() bool {
+	return m.DictTypeIDCleared() || m.clearedsysDictType
 }
 
-// OwnerID returns the "owner" edge ID in the mutation.
-func (m *SysDictDataMutation) OwnerID() (id int64, exists bool) {
-	if m.owner != nil {
-		return *m.owner, true
+// SysDictTypeID returns the "sysDictType" edge ID in the mutation.
+func (m *SysDictDataMutation) SysDictTypeID() (id int64, exists bool) {
+	if m.sysDictType != nil {
+		return *m.sysDictType, true
 	}
 	return
 }
 
-// OwnerIDs returns the "owner" edge IDs in the mutation.
+// SysDictTypeIDs returns the "sysDictType" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// OwnerID instead. It exists only for internal usage by the builders.
-func (m *SysDictDataMutation) OwnerIDs() (ids []int64) {
-	if id := m.owner; id != nil {
+// SysDictTypeID instead. It exists only for internal usage by the builders.
+func (m *SysDictDataMutation) SysDictTypeIDs() (ids []int64) {
+	if id := m.sysDictType; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetOwner resets all changes to the "owner" edge.
-func (m *SysDictDataMutation) ResetOwner() {
-	m.owner = nil
-	m.clearedowner = false
+// ResetSysDictType resets all changes to the "sysDictType" edge.
+func (m *SysDictDataMutation) ResetSysDictType() {
+	m.sysDictType = nil
+	m.clearedsysDictType = false
 }
 
 // Where appends a list predicates to the SysDictDataMutation builder.
@@ -4155,8 +4155,8 @@ func (m *SysDictDataMutation) Fields() []string {
 	if m.dict_value != nil {
 		fields = append(fields, sysdictdata.FieldDictValue)
 	}
-	if m.dict_type != nil {
-		fields = append(fields, sysdictdata.FieldDictType)
+	if m.sysDictType != nil {
+		fields = append(fields, sysdictdata.FieldDictTypeID)
 	}
 	if m.css_class != nil {
 		fields = append(fields, sysdictdata.FieldCSSClass)
@@ -4197,8 +4197,8 @@ func (m *SysDictDataMutation) Field(name string) (ent.Value, bool) {
 		return m.DictLabel()
 	case sysdictdata.FieldDictValue:
 		return m.DictValue()
-	case sysdictdata.FieldDictType:
-		return m.DictType()
+	case sysdictdata.FieldDictTypeID:
+		return m.DictTypeID()
 	case sysdictdata.FieldCSSClass:
 		return m.CSSClass()
 	case sysdictdata.FieldListClass:
@@ -4236,8 +4236,8 @@ func (m *SysDictDataMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldDictLabel(ctx)
 	case sysdictdata.FieldDictValue:
 		return m.OldDictValue(ctx)
-	case sysdictdata.FieldDictType:
-		return m.OldDictType(ctx)
+	case sysdictdata.FieldDictTypeID:
+		return m.OldDictTypeID(ctx)
 	case sysdictdata.FieldCSSClass:
 		return m.OldCSSClass(ctx)
 	case sysdictdata.FieldListClass:
@@ -4330,12 +4330,12 @@ func (m *SysDictDataMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDictValue(v)
 		return nil
-	case sysdictdata.FieldDictType:
-		v, ok := value.(string)
+	case sysdictdata.FieldDictTypeID:
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDictType(v)
+		m.SetDictTypeID(v)
 		return nil
 	case sysdictdata.FieldCSSClass:
 		v, ok := value.(string)
@@ -4496,8 +4496,8 @@ func (m *SysDictDataMutation) ClearedFields() []string {
 	if m.FieldCleared(sysdictdata.FieldDictValue) {
 		fields = append(fields, sysdictdata.FieldDictValue)
 	}
-	if m.FieldCleared(sysdictdata.FieldDictType) {
-		fields = append(fields, sysdictdata.FieldDictType)
+	if m.FieldCleared(sysdictdata.FieldDictTypeID) {
+		fields = append(fields, sysdictdata.FieldDictTypeID)
 	}
 	if m.FieldCleared(sysdictdata.FieldCSSClass) {
 		fields = append(fields, sysdictdata.FieldCSSClass)
@@ -4555,8 +4555,8 @@ func (m *SysDictDataMutation) ClearField(name string) error {
 	case sysdictdata.FieldDictValue:
 		m.ClearDictValue()
 		return nil
-	case sysdictdata.FieldDictType:
-		m.ClearDictType()
+	case sysdictdata.FieldDictTypeID:
+		m.ClearDictTypeID()
 		return nil
 	case sysdictdata.FieldCSSClass:
 		m.ClearCSSClass()
@@ -4608,8 +4608,8 @@ func (m *SysDictDataMutation) ResetField(name string) error {
 	case sysdictdata.FieldDictValue:
 		m.ResetDictValue()
 		return nil
-	case sysdictdata.FieldDictType:
-		m.ResetDictType()
+	case sysdictdata.FieldDictTypeID:
+		m.ResetDictTypeID()
 		return nil
 	case sysdictdata.FieldCSSClass:
 		m.ResetCSSClass()
@@ -4627,8 +4627,8 @@ func (m *SysDictDataMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *SysDictDataMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.owner != nil {
-		edges = append(edges, sysdictdata.EdgeOwner)
+	if m.sysDictType != nil {
+		edges = append(edges, sysdictdata.EdgeSysDictType)
 	}
 	return edges
 }
@@ -4637,8 +4637,8 @@ func (m *SysDictDataMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *SysDictDataMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case sysdictdata.EdgeOwner:
-		if id := m.owner; id != nil {
+	case sysdictdata.EdgeSysDictType:
+		if id := m.sysDictType; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -4660,8 +4660,8 @@ func (m *SysDictDataMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *SysDictDataMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.clearedowner {
-		edges = append(edges, sysdictdata.EdgeOwner)
+	if m.clearedsysDictType {
+		edges = append(edges, sysdictdata.EdgeSysDictType)
 	}
 	return edges
 }
@@ -4670,8 +4670,8 @@ func (m *SysDictDataMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *SysDictDataMutation) EdgeCleared(name string) bool {
 	switch name {
-	case sysdictdata.EdgeOwner:
-		return m.clearedowner
+	case sysdictdata.EdgeSysDictType:
+		return m.clearedsysDictType
 	}
 	return false
 }
@@ -4680,8 +4680,8 @@ func (m *SysDictDataMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *SysDictDataMutation) ClearEdge(name string) error {
 	switch name {
-	case sysdictdata.EdgeOwner:
-		m.ClearOwner()
+	case sysdictdata.EdgeSysDictType:
+		m.ClearSysDictType()
 		return nil
 	}
 	return fmt.Errorf("unknown SysDictData unique edge %s", name)
@@ -4691,8 +4691,8 @@ func (m *SysDictDataMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SysDictDataMutation) ResetEdge(name string) error {
 	switch name {
-	case sysdictdata.EdgeOwner:
-		m.ResetOwner()
+	case sysdictdata.EdgeSysDictType:
+		m.ResetSysDictType()
 		return nil
 	}
 	return fmt.Errorf("unknown SysDictData edge %s", name)

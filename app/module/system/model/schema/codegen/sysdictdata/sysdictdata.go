@@ -36,25 +36,25 @@ const (
 	FieldDictLabel = "dict_label"
 	// FieldDictValue holds the string denoting the dict_value field in the database.
 	FieldDictValue = "dict_value"
-	// FieldDictType holds the string denoting the dict_type field in the database.
-	FieldDictType = "dict_type"
+	// FieldDictTypeID holds the string denoting the dict_type_id field in the database.
+	FieldDictTypeID = "dict_type_id"
 	// FieldCSSClass holds the string denoting the css_class field in the database.
 	FieldCSSClass = "css_class"
 	// FieldListClass holds the string denoting the list_class field in the database.
 	FieldListClass = "list_class"
 	// FieldIsDefault holds the string denoting the is_default field in the database.
 	FieldIsDefault = "is_default"
-	// EdgeOwner holds the string denoting the owner edge name in mutations.
-	EdgeOwner = "owner"
+	// EdgeSysDictType holds the string denoting the sysdicttype edge name in mutations.
+	EdgeSysDictType = "sysDictType"
 	// Table holds the table name of the sysdictdata in the database.
 	Table = "sys_dict_data"
-	// OwnerTable is the table that holds the owner relation/edge.
-	OwnerTable = "sys_dict_data"
-	// OwnerInverseTable is the table name for the SysDictType entity.
+	// SysDictTypeTable is the table that holds the sysDictType relation/edge.
+	SysDictTypeTable = "sys_dict_data"
+	// SysDictTypeInverseTable is the table name for the SysDictType entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdicttype" package.
-	OwnerInverseTable = "sys_dict_type"
-	// OwnerColumn is the table column denoting the owner relation/edge.
-	OwnerColumn = "sys_dict_type_sys_dict_datas"
+	SysDictTypeInverseTable = "sys_dict_type"
+	// SysDictTypeColumn is the table column denoting the sysDictType relation/edge.
+	SysDictTypeColumn = "dict_type_id"
 )
 
 // Columns holds all SQL columns for sysdictdata fields.
@@ -71,27 +71,16 @@ var Columns = []string{
 	FieldSort,
 	FieldDictLabel,
 	FieldDictValue,
-	FieldDictType,
+	FieldDictTypeID,
 	FieldCSSClass,
 	FieldListClass,
 	FieldIsDefault,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "sys_dict_data"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"sys_dict_type_sys_dict_datas",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -178,9 +167,9 @@ func ByDictValue(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDictValue, opts...).ToFunc()
 }
 
-// ByDictType orders the results by the dict_type field.
-func ByDictType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDictType, opts...).ToFunc()
+// ByDictTypeID orders the results by the dict_type_id field.
+func ByDictTypeID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDictTypeID, opts...).ToFunc()
 }
 
 // ByCSSClass orders the results by the css_class field.
@@ -198,16 +187,16 @@ func ByIsDefault(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsDefault, opts...).ToFunc()
 }
 
-// ByOwnerField orders the results by owner field.
-func ByOwnerField(field string, opts ...sql.OrderTermOption) OrderOption {
+// BySysDictTypeField orders the results by sysDictType field.
+func BySysDictTypeField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newOwnerStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newSysDictTypeStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newOwnerStep() *sqlgraph.Step {
+func newSysDictTypeStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(OwnerInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, OwnerTable, OwnerColumn),
+		sqlgraph.To(SysDictTypeInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, SysDictTypeTable, SysDictTypeColumn),
 	)
 }

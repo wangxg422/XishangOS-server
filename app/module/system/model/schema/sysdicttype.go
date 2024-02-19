@@ -38,13 +38,13 @@ func (SysDictType) Mixin() []ent.Mixin {
 func (SysDictType) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("dict_name").Optional().Comment("字典类型名称"),
-		field.String("dict_type").Optional().Comment("字典类型"),
+		field.String("dict_type").Optional().Comment("字典类型").Unique(),
 	}
 }
 
 // Edges of the SysDictType.
 func (SysDictType) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("sysDictDatas", SysDictData.Type).StorageKey(edge.Column("dict_type")),
+		edge.To("sysDictDatas", SysDictData.Type),
 	}
 }

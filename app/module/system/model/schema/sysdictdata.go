@@ -40,7 +40,7 @@ func (SysDictData) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("dict_label").Optional().Comment("字典标签"),
 		field.String("dict_value").Optional().Comment("字典值"),
-		field.String("dict_type").Optional().Comment("字典类型"),
+		field.Int64("dict_type_id").Optional().Comment("字典类型ID"),
 		field.String("css_class").Optional().Comment("样式属性"),
 		field.String("list_class").Optional().Comment("表格回显样式"),
 		field.Int8("is_default").Optional().Comment("是否默认(1是0否)"),
@@ -50,8 +50,8 @@ func (SysDictData) Fields() []ent.Field {
 // Edges of the SysDictData.
 func (SysDictData) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("owner", SysDictType.Type).
+		edge.From("sysDictType", SysDictType.Type).
 			Ref("sysDictDatas").
-			Unique().Field("dict_type"),
+			Unique().Field("dict_type_id"),
 	}
 }

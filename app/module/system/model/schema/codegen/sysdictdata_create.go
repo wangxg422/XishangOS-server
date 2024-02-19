@@ -174,16 +174,16 @@ func (sddc *SysDictDataCreate) SetNillableDictValue(s *string) *SysDictDataCreat
 	return sddc
 }
 
-// SetDictType sets the "dict_type" field.
-func (sddc *SysDictDataCreate) SetDictType(s string) *SysDictDataCreate {
-	sddc.mutation.SetDictType(s)
+// SetDictTypeID sets the "dict_type_id" field.
+func (sddc *SysDictDataCreate) SetDictTypeID(i int64) *SysDictDataCreate {
+	sddc.mutation.SetDictTypeID(i)
 	return sddc
 }
 
-// SetNillableDictType sets the "dict_type" field if the given value is not nil.
-func (sddc *SysDictDataCreate) SetNillableDictType(s *string) *SysDictDataCreate {
-	if s != nil {
-		sddc.SetDictType(*s)
+// SetNillableDictTypeID sets the "dict_type_id" field if the given value is not nil.
+func (sddc *SysDictDataCreate) SetNillableDictTypeID(i *int64) *SysDictDataCreate {
+	if i != nil {
+		sddc.SetDictTypeID(*i)
 	}
 	return sddc
 }
@@ -244,23 +244,23 @@ func (sddc *SysDictDataCreate) SetNillableID(i *int64) *SysDictDataCreate {
 	return sddc
 }
 
-// SetOwnerID sets the "owner" edge to the SysDictType entity by ID.
-func (sddc *SysDictDataCreate) SetOwnerID(id int64) *SysDictDataCreate {
-	sddc.mutation.SetOwnerID(id)
+// SetSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID.
+func (sddc *SysDictDataCreate) SetSysDictTypeID(id int64) *SysDictDataCreate {
+	sddc.mutation.SetSysDictTypeID(id)
 	return sddc
 }
 
-// SetNillableOwnerID sets the "owner" edge to the SysDictType entity by ID if the given value is not nil.
-func (sddc *SysDictDataCreate) SetNillableOwnerID(id *int64) *SysDictDataCreate {
+// SetNillableSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID if the given value is not nil.
+func (sddc *SysDictDataCreate) SetNillableSysDictTypeID(id *int64) *SysDictDataCreate {
 	if id != nil {
-		sddc = sddc.SetOwnerID(*id)
+		sddc = sddc.SetSysDictTypeID(*id)
 	}
 	return sddc
 }
 
-// SetOwner sets the "owner" edge to the SysDictType entity.
-func (sddc *SysDictDataCreate) SetOwner(s *SysDictType) *SysDictDataCreate {
-	return sddc.SetOwnerID(s.ID)
+// SetSysDictType sets the "sysDictType" edge to the SysDictType entity.
+func (sddc *SysDictDataCreate) SetSysDictType(s *SysDictType) *SysDictDataCreate {
+	return sddc.SetSysDictTypeID(s.ID)
 }
 
 // Mutation returns the SysDictDataMutation object of the builder.
@@ -398,10 +398,6 @@ func (sddc *SysDictDataCreate) createSpec() (*SysDictData, *sqlgraph.CreateSpec)
 		_spec.SetField(sysdictdata.FieldDictValue, field.TypeString, value)
 		_node.DictValue = value
 	}
-	if value, ok := sddc.mutation.DictType(); ok {
-		_spec.SetField(sysdictdata.FieldDictType, field.TypeString, value)
-		_node.DictType = value
-	}
 	if value, ok := sddc.mutation.CSSClass(); ok {
 		_spec.SetField(sysdictdata.FieldCSSClass, field.TypeString, value)
 		_node.CSSClass = value
@@ -414,12 +410,12 @@ func (sddc *SysDictDataCreate) createSpec() (*SysDictData, *sqlgraph.CreateSpec)
 		_spec.SetField(sysdictdata.FieldIsDefault, field.TypeInt8, value)
 		_node.IsDefault = value
 	}
-	if nodes := sddc.mutation.OwnerIDs(); len(nodes) > 0 {
+	if nodes := sddc.mutation.SysDictTypeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysdictdata.OwnerTable,
-			Columns: []string{sysdictdata.OwnerColumn},
+			Table:   sysdictdata.SysDictTypeTable,
+			Columns: []string{sysdictdata.SysDictTypeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdicttype.FieldID, field.TypeInt64),
@@ -428,7 +424,7 @@ func (sddc *SysDictDataCreate) createSpec() (*SysDictData, *sqlgraph.CreateSpec)
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.sys_dict_type_sys_dict_datas = &nodes[0]
+		_node.DictTypeID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

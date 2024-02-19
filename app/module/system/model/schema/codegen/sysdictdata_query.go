@@ -18,12 +18,11 @@ import (
 // SysDictDataQuery is the builder for querying SysDictData entities.
 type SysDictDataQuery struct {
 	config
-	ctx        *QueryContext
-	order      []sysdictdata.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SysDictData
-	withOwner  *SysDictTypeQuery
-	withFKs    bool
+	ctx             *QueryContext
+	order           []sysdictdata.OrderOption
+	inters          []Interceptor
+	predicates      []predicate.SysDictData
+	withSysDictType *SysDictTypeQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -60,8 +59,8 @@ func (sddq *SysDictDataQuery) Order(o ...sysdictdata.OrderOption) *SysDictDataQu
 	return sddq
 }
 
-// QueryOwner chains the current query on the "owner" edge.
-func (sddq *SysDictDataQuery) QueryOwner() *SysDictTypeQuery {
+// QuerySysDictType chains the current query on the "sysDictType" edge.
+func (sddq *SysDictDataQuery) QuerySysDictType() *SysDictTypeQuery {
 	query := (&SysDictTypeClient{config: sddq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := sddq.prepareQuery(ctx); err != nil {
@@ -74,7 +73,7 @@ func (sddq *SysDictDataQuery) QueryOwner() *SysDictTypeQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdictdata.Table, sysdictdata.FieldID, selector),
 			sqlgraph.To(sysdicttype.Table, sysdicttype.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysdictdata.OwnerTable, sysdictdata.OwnerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysdictdata.SysDictTypeTable, sysdictdata.SysDictTypeColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(sddq.driver.Dialect(), step)
 		return fromU, nil
@@ -269,26 +268,26 @@ func (sddq *SysDictDataQuery) Clone() *SysDictDataQuery {
 		return nil
 	}
 	return &SysDictDataQuery{
-		config:     sddq.config,
-		ctx:        sddq.ctx.Clone(),
-		order:      append([]sysdictdata.OrderOption{}, sddq.order...),
-		inters:     append([]Interceptor{}, sddq.inters...),
-		predicates: append([]predicate.SysDictData{}, sddq.predicates...),
-		withOwner:  sddq.withOwner.Clone(),
+		config:          sddq.config,
+		ctx:             sddq.ctx.Clone(),
+		order:           append([]sysdictdata.OrderOption{}, sddq.order...),
+		inters:          append([]Interceptor{}, sddq.inters...),
+		predicates:      append([]predicate.SysDictData{}, sddq.predicates...),
+		withSysDictType: sddq.withSysDictType.Clone(),
 		// clone intermediate query.
 		sql:  sddq.sql.Clone(),
 		path: sddq.path,
 	}
 }
 
-// WithOwner tells the query-builder to eager-load the nodes that are connected to
-// the "owner" edge. The optional arguments are used to configure the query builder of the edge.
-func (sddq *SysDictDataQuery) WithOwner(opts ...func(*SysDictTypeQuery)) *SysDictDataQuery {
+// WithSysDictType tells the query-builder to eager-load the nodes that are connected to
+// the "sysDictType" edge. The optional arguments are used to configure the query builder of the edge.
+func (sddq *SysDictDataQuery) WithSysDictType(opts ...func(*SysDictTypeQuery)) *SysDictDataQuery {
 	query := (&SysDictTypeClient{config: sddq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	sddq.withOwner = query
+	sddq.withSysDictType = query
 	return sddq
 }
 
@@ -369,18 +368,11 @@ func (sddq *SysDictDataQuery) prepareQuery(ctx context.Context) error {
 func (sddq *SysDictDataQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SysDictData, error) {
 	var (
 		nodes       = []*SysDictData{}
-		withFKs     = sddq.withFKs
 		_spec       = sddq.querySpec()
 		loadedTypes = [1]bool{
-			sddq.withOwner != nil,
+			sddq.withSysDictType != nil,
 		}
 	)
-	if sddq.withOwner != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, sysdictdata.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SysDictData).scanValues(nil, columns)
 	}
@@ -399,23 +391,20 @@ func (sddq *SysDictDataQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := sddq.withOwner; query != nil {
-		if err := sddq.loadOwner(ctx, query, nodes, nil,
-			func(n *SysDictData, e *SysDictType) { n.Edges.Owner = e }); err != nil {
+	if query := sddq.withSysDictType; query != nil {
+		if err := sddq.loadSysDictType(ctx, query, nodes, nil,
+			func(n *SysDictData, e *SysDictType) { n.Edges.SysDictType = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (sddq *SysDictDataQuery) loadOwner(ctx context.Context, query *SysDictTypeQuery, nodes []*SysDictData, init func(*SysDictData), assign func(*SysDictData, *SysDictType)) error {
+func (sddq *SysDictDataQuery) loadSysDictType(ctx context.Context, query *SysDictTypeQuery, nodes []*SysDictData, init func(*SysDictData), assign func(*SysDictData, *SysDictType)) error {
 	ids := make([]int64, 0, len(nodes))
 	nodeids := make(map[int64][]*SysDictData)
 	for i := range nodes {
-		if nodes[i].sys_dict_type_sys_dict_datas == nil {
-			continue
-		}
-		fk := *nodes[i].sys_dict_type_sys_dict_datas
+		fk := nodes[i].DictTypeID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -432,7 +421,7 @@ func (sddq *SysDictDataQuery) loadOwner(ctx context.Context, query *SysDictTypeQ
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "sys_dict_type_sys_dict_datas" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "dict_type_id" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -465,6 +454,9 @@ func (sddq *SysDictDataQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != sysdictdata.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if sddq.withSysDictType != nil {
+			_spec.Node.AddColumnOnce(sysdictdata.FieldDictTypeID)
 		}
 	}
 	if ps := sddq.predicates; len(ps) > 0 {

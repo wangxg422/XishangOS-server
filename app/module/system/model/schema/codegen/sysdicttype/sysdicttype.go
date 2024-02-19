@@ -44,7 +44,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "sysdictdata" package.
 	SysDictDatasInverseTable = "sys_dict_data"
 	// SysDictDatasColumn is the table column denoting the sysDictDatas relation/edge.
-	SysDictDatasColumn = "sys_dict_type_sys_dict_datas"
+	SysDictDatasColumn = "dict_type_id"
 )
 
 // Columns holds all SQL columns for sysdicttype fields.

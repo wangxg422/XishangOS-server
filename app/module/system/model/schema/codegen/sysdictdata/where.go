@@ -110,9 +110,9 @@ func DictValue(v string) predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldEQ(FieldDictValue, v))
 }
 
-// DictType applies equality check predicate on the "dict_type" field. It's identical to DictTypeEQ.
-func DictType(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldEQ(FieldDictType, v))
+// DictTypeID applies equality check predicate on the "dict_type_id" field. It's identical to DictTypeIDEQ.
+func DictTypeID(v int64) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldEQ(FieldDictTypeID, v))
 }
 
 // CSSClass applies equality check predicate on the "css_class" field. It's identical to CSSClassEQ.
@@ -755,79 +755,34 @@ func DictValueContainsFold(v string) predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldContainsFold(FieldDictValue, v))
 }
 
-// DictTypeEQ applies the EQ predicate on the "dict_type" field.
-func DictTypeEQ(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldEQ(FieldDictType, v))
+// DictTypeIDEQ applies the EQ predicate on the "dict_type_id" field.
+func DictTypeIDEQ(v int64) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldEQ(FieldDictTypeID, v))
 }
 
-// DictTypeNEQ applies the NEQ predicate on the "dict_type" field.
-func DictTypeNEQ(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldNEQ(FieldDictType, v))
+// DictTypeIDNEQ applies the NEQ predicate on the "dict_type_id" field.
+func DictTypeIDNEQ(v int64) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNEQ(FieldDictTypeID, v))
 }
 
-// DictTypeIn applies the In predicate on the "dict_type" field.
-func DictTypeIn(vs ...string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldIn(FieldDictType, vs...))
+// DictTypeIDIn applies the In predicate on the "dict_type_id" field.
+func DictTypeIDIn(vs ...int64) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldIn(FieldDictTypeID, vs...))
 }
 
-// DictTypeNotIn applies the NotIn predicate on the "dict_type" field.
-func DictTypeNotIn(vs ...string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldNotIn(FieldDictType, vs...))
+// DictTypeIDNotIn applies the NotIn predicate on the "dict_type_id" field.
+func DictTypeIDNotIn(vs ...int64) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNotIn(FieldDictTypeID, vs...))
 }
 
-// DictTypeGT applies the GT predicate on the "dict_type" field.
-func DictTypeGT(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldGT(FieldDictType, v))
+// DictTypeIDIsNil applies the IsNil predicate on the "dict_type_id" field.
+func DictTypeIDIsNil() predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldIsNull(FieldDictTypeID))
 }
 
-// DictTypeGTE applies the GTE predicate on the "dict_type" field.
-func DictTypeGTE(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldGTE(FieldDictType, v))
-}
-
-// DictTypeLT applies the LT predicate on the "dict_type" field.
-func DictTypeLT(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldLT(FieldDictType, v))
-}
-
-// DictTypeLTE applies the LTE predicate on the "dict_type" field.
-func DictTypeLTE(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldLTE(FieldDictType, v))
-}
-
-// DictTypeContains applies the Contains predicate on the "dict_type" field.
-func DictTypeContains(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldContains(FieldDictType, v))
-}
-
-// DictTypeHasPrefix applies the HasPrefix predicate on the "dict_type" field.
-func DictTypeHasPrefix(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldHasPrefix(FieldDictType, v))
-}
-
-// DictTypeHasSuffix applies the HasSuffix predicate on the "dict_type" field.
-func DictTypeHasSuffix(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldHasSuffix(FieldDictType, v))
-}
-
-// DictTypeIsNil applies the IsNil predicate on the "dict_type" field.
-func DictTypeIsNil() predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldIsNull(FieldDictType))
-}
-
-// DictTypeNotNil applies the NotNil predicate on the "dict_type" field.
-func DictTypeNotNil() predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldNotNull(FieldDictType))
-}
-
-// DictTypeEqualFold applies the EqualFold predicate on the "dict_type" field.
-func DictTypeEqualFold(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldEqualFold(FieldDictType, v))
-}
-
-// DictTypeContainsFold applies the ContainsFold predicate on the "dict_type" field.
-func DictTypeContainsFold(v string) predicate.SysDictData {
-	return predicate.SysDictData(sql.FieldContainsFold(FieldDictType, v))
+// DictTypeIDNotNil applies the NotNil predicate on the "dict_type_id" field.
+func DictTypeIDNotNil() predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNotNull(FieldDictTypeID))
 }
 
 // CSSClassEQ applies the EQ predicate on the "css_class" field.
@@ -1030,21 +985,21 @@ func IsDefaultNotNil() predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldNotNull(FieldIsDefault))
 }
 
-// HasOwner applies the HasEdge predicate on the "owner" edge.
-func HasOwner() predicate.SysDictData {
+// HasSysDictType applies the HasEdge predicate on the "sysDictType" edge.
+func HasSysDictType() predicate.SysDictData {
 	return predicate.SysDictData(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, OwnerTable, OwnerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, SysDictTypeTable, SysDictTypeColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasOwnerWith applies the HasEdge predicate on the "owner" edge with a given conditions (other predicates).
-func HasOwnerWith(preds ...predicate.SysDictType) predicate.SysDictData {
+// HasSysDictTypeWith applies the HasEdge predicate on the "sysDictType" edge with a given conditions (other predicates).
+func HasSysDictTypeWith(preds ...predicate.SysDictType) predicate.SysDictData {
 	return predicate.SysDictData(func(s *sql.Selector) {
-		step := newOwnerStep()
+		step := newSysDictTypeStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

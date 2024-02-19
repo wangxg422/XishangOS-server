@@ -40,8 +40,8 @@ type SysDictData struct {
 	DictLabel string `json:"dict_label,omitempty"`
 	// 字典值
 	DictValue string `json:"dict_value,omitempty"`
-	// 字典类型
-	DictType string `json:"dict_type,omitempty"`
+	// 字典类型ID
+	DictTypeID int64 `json:"dict_type_id,omitempty"`
 	// 样式属性
 	CSSClass string `json:"css_class,omitempty"`
 	// 表格回显样式
@@ -50,31 +50,30 @@ type SysDictData struct {
 	IsDefault int8 `json:"is_default,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDictDataQuery when eager-loading is set.
-	Edges                        SysDictDataEdges `json:"edges"`
-	sys_dict_type_sys_dict_datas *int64
-	selectValues                 sql.SelectValues
+	Edges        SysDictDataEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // SysDictDataEdges holds the relations/edges for other nodes in the graph.
 type SysDictDataEdges struct {
-	// Owner holds the value of the owner edge.
-	Owner *SysDictType `json:"owner,omitempty"`
+	// SysDictType holds the value of the sysDictType edge.
+	SysDictType *SysDictType `json:"sysDictType,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// OwnerOrErr returns the Owner value or an error if the edge
+// SysDictTypeOrErr returns the SysDictType value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e SysDictDataEdges) OwnerOrErr() (*SysDictType, error) {
+func (e SysDictDataEdges) SysDictTypeOrErr() (*SysDictType, error) {
 	if e.loadedTypes[0] {
-		if e.Owner == nil {
+		if e.SysDictType == nil {
 			// Edge was loaded but was not found.
 			return nil, &NotFoundError{label: sysdicttype.Label}
 		}
-		return e.Owner, nil
+		return e.SysDictType, nil
 	}
-	return nil, &NotLoadedError{edge: "owner"}
+	return nil, &NotLoadedError{edge: "sysDictType"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -82,14 +81,12 @@ func (*SysDictData) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdictdata.FieldID, sysdictdata.FieldCreatedBy, sysdictdata.FieldUpdatedBy, sysdictdata.FieldDeleteBy, sysdictdata.FieldStatus, sysdictdata.FieldSort, sysdictdata.FieldIsDefault:
+		case sysdictdata.FieldID, sysdictdata.FieldCreatedBy, sysdictdata.FieldUpdatedBy, sysdictdata.FieldDeleteBy, sysdictdata.FieldStatus, sysdictdata.FieldSort, sysdictdata.FieldDictTypeID, sysdictdata.FieldIsDefault:
 			values[i] = new(sql.NullInt64)
-		case sysdictdata.FieldRemark, sysdictdata.FieldDictLabel, sysdictdata.FieldDictValue, sysdictdata.FieldDictType, sysdictdata.FieldCSSClass, sysdictdata.FieldListClass:
+		case sysdictdata.FieldRemark, sysdictdata.FieldDictLabel, sysdictdata.FieldDictValue, sysdictdata.FieldCSSClass, sysdictdata.FieldListClass:
 			values[i] = new(sql.NullString)
 		case sysdictdata.FieldCreatedAt, sysdictdata.FieldUpdatedAt, sysdictdata.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
-		case sysdictdata.ForeignKeys[0]: // sys_dict_type_sys_dict_datas
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -177,11 +174,11 @@ func (sdd *SysDictData) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sdd.DictValue = value.String
 			}
-		case sysdictdata.FieldDictType:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field dict_type", values[i])
+		case sysdictdata.FieldDictTypeID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field dict_type_id", values[i])
 			} else if value.Valid {
-				sdd.DictType = value.String
+				sdd.DictTypeID = value.Int64
 			}
 		case sysdictdata.FieldCSSClass:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -201,13 +198,6 @@ func (sdd *SysDictData) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sdd.IsDefault = int8(value.Int64)
 			}
-		case sysdictdata.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field sys_dict_type_sys_dict_datas", value)
-			} else if value.Valid {
-				sdd.sys_dict_type_sys_dict_datas = new(int64)
-				*sdd.sys_dict_type_sys_dict_datas = int64(value.Int64)
-			}
 		default:
 			sdd.selectValues.Set(columns[i], values[i])
 		}
@@ -221,9 +211,9 @@ func (sdd *SysDictData) Value(name string) (ent.Value, error) {
 	return sdd.selectValues.Get(name)
 }
 
-// QueryOwner queries the "owner" edge of the SysDictData entity.
-func (sdd *SysDictData) QueryOwner() *SysDictTypeQuery {
-	return NewSysDictDataClient(sdd.config).QueryOwner(sdd)
+// QuerySysDictType queries the "sysDictType" edge of the SysDictData entity.
+func (sdd *SysDictData) QuerySysDictType() *SysDictTypeQuery {
+	return NewSysDictDataClient(sdd.config).QuerySysDictType(sdd)
 }
 
 // Update returns a builder for updating this SysDictData.
@@ -282,8 +272,8 @@ func (sdd *SysDictData) String() string {
 	builder.WriteString("dict_value=")
 	builder.WriteString(sdd.DictValue)
 	builder.WriteString(", ")
-	builder.WriteString("dict_type=")
-	builder.WriteString(sdd.DictType)
+	builder.WriteString("dict_type_id=")
+	builder.WriteString(fmt.Sprintf("%v", sdd.DictTypeID))
 	builder.WriteString(", ")
 	builder.WriteString("css_class=")
 	builder.WriteString(sdd.CSSClass)

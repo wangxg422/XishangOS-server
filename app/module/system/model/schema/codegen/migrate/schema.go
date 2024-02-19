@@ -72,11 +72,10 @@ var (
 		{Name: "sort", Type: field.TypeInt, Nullable: true},
 		{Name: "dict_label", Type: field.TypeString, Nullable: true, Comment: "字典标签"},
 		{Name: "dict_value", Type: field.TypeString, Nullable: true, Comment: "字典值"},
-		{Name: "dict_type", Type: field.TypeString, Nullable: true, Comment: "字典类型"},
 		{Name: "css_class", Type: field.TypeString, Nullable: true, Comment: "样式属性"},
 		{Name: "list_class", Type: field.TypeString, Nullable: true, Comment: "表格回显样式"},
 		{Name: "is_default", Type: field.TypeInt8, Nullable: true, Comment: "是否默认(1是0否)"},
-		{Name: "sys_dict_type_sys_dict_datas", Type: field.TypeInt64, Nullable: true},
+		{Name: "dict_type_id", Type: field.TypeInt64, Nullable: true, Comment: "字典类型ID"},
 	}
 	// SysDictDataTable holds the schema information for the "sys_dict_data" table.
 	SysDictDataTable = &schema.Table{
@@ -87,7 +86,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_dict_data_sys_dict_type_sysDictDatas",
-				Columns:    []*schema.Column{SysDictDataColumns[16]},
+				Columns:    []*schema.Column{SysDictDataColumns[15]},
 				RefColumns: []*schema.Column{SysDictTypeColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -105,7 +104,7 @@ var (
 		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
 		{Name: "dict_name", Type: field.TypeString, Nullable: true, Comment: "字典类型名称"},
-		{Name: "dict_type", Type: field.TypeString, Nullable: true, Comment: "字典类型"},
+		{Name: "dict_type", Type: field.TypeString, Unique: true, Nullable: true, Comment: "字典类型"},
 	}
 	// SysDictTypeTable holds the schema information for the "sys_dict_type" table.
 	SysDictTypeTable = &schema.Table{

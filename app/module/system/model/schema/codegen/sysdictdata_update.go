@@ -221,23 +221,23 @@ func (sddu *SysDictDataUpdate) ClearDictValue() *SysDictDataUpdate {
 	return sddu
 }
 
-// SetDictType sets the "dict_type" field.
-func (sddu *SysDictDataUpdate) SetDictType(s string) *SysDictDataUpdate {
-	sddu.mutation.SetDictType(s)
+// SetDictTypeID sets the "dict_type_id" field.
+func (sddu *SysDictDataUpdate) SetDictTypeID(i int64) *SysDictDataUpdate {
+	sddu.mutation.SetDictTypeID(i)
 	return sddu
 }
 
-// SetNillableDictType sets the "dict_type" field if the given value is not nil.
-func (sddu *SysDictDataUpdate) SetNillableDictType(s *string) *SysDictDataUpdate {
-	if s != nil {
-		sddu.SetDictType(*s)
+// SetNillableDictTypeID sets the "dict_type_id" field if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableDictTypeID(i *int64) *SysDictDataUpdate {
+	if i != nil {
+		sddu.SetDictTypeID(*i)
 	}
 	return sddu
 }
 
-// ClearDictType clears the value of the "dict_type" field.
-func (sddu *SysDictDataUpdate) ClearDictType() *SysDictDataUpdate {
-	sddu.mutation.ClearDictType()
+// ClearDictTypeID clears the value of the "dict_type_id" field.
+func (sddu *SysDictDataUpdate) ClearDictTypeID() *SysDictDataUpdate {
+	sddu.mutation.ClearDictTypeID()
 	return sddu
 }
 
@@ -308,23 +308,23 @@ func (sddu *SysDictDataUpdate) ClearIsDefault() *SysDictDataUpdate {
 	return sddu
 }
 
-// SetOwnerID sets the "owner" edge to the SysDictType entity by ID.
-func (sddu *SysDictDataUpdate) SetOwnerID(id int64) *SysDictDataUpdate {
-	sddu.mutation.SetOwnerID(id)
+// SetSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID.
+func (sddu *SysDictDataUpdate) SetSysDictTypeID(id int64) *SysDictDataUpdate {
+	sddu.mutation.SetSysDictTypeID(id)
 	return sddu
 }
 
-// SetNillableOwnerID sets the "owner" edge to the SysDictType entity by ID if the given value is not nil.
-func (sddu *SysDictDataUpdate) SetNillableOwnerID(id *int64) *SysDictDataUpdate {
+// SetNillableSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableSysDictTypeID(id *int64) *SysDictDataUpdate {
 	if id != nil {
-		sddu = sddu.SetOwnerID(*id)
+		sddu = sddu.SetSysDictTypeID(*id)
 	}
 	return sddu
 }
 
-// SetOwner sets the "owner" edge to the SysDictType entity.
-func (sddu *SysDictDataUpdate) SetOwner(s *SysDictType) *SysDictDataUpdate {
-	return sddu.SetOwnerID(s.ID)
+// SetSysDictType sets the "sysDictType" edge to the SysDictType entity.
+func (sddu *SysDictDataUpdate) SetSysDictType(s *SysDictType) *SysDictDataUpdate {
+	return sddu.SetSysDictTypeID(s.ID)
 }
 
 // Mutation returns the SysDictDataMutation object of the builder.
@@ -332,9 +332,9 @@ func (sddu *SysDictDataUpdate) Mutation() *SysDictDataMutation {
 	return sddu.mutation
 }
 
-// ClearOwner clears the "owner" edge to the SysDictType entity.
-func (sddu *SysDictDataUpdate) ClearOwner() *SysDictDataUpdate {
-	sddu.mutation.ClearOwner()
+// ClearSysDictType clears the "sysDictType" edge to the SysDictType entity.
+func (sddu *SysDictDataUpdate) ClearSysDictType() *SysDictDataUpdate {
+	sddu.mutation.ClearSysDictType()
 	return sddu
 }
 
@@ -459,12 +459,6 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sddu.mutation.DictValueCleared() {
 		_spec.ClearField(sysdictdata.FieldDictValue, field.TypeString)
 	}
-	if value, ok := sddu.mutation.DictType(); ok {
-		_spec.SetField(sysdictdata.FieldDictType, field.TypeString, value)
-	}
-	if sddu.mutation.DictTypeCleared() {
-		_spec.ClearField(sysdictdata.FieldDictType, field.TypeString)
-	}
 	if value, ok := sddu.mutation.CSSClass(); ok {
 		_spec.SetField(sysdictdata.FieldCSSClass, field.TypeString, value)
 	}
@@ -486,12 +480,12 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sddu.mutation.IsDefaultCleared() {
 		_spec.ClearField(sysdictdata.FieldIsDefault, field.TypeInt8)
 	}
-	if sddu.mutation.OwnerCleared() {
+	if sddu.mutation.SysDictTypeCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysdictdata.OwnerTable,
-			Columns: []string{sysdictdata.OwnerColumn},
+			Table:   sysdictdata.SysDictTypeTable,
+			Columns: []string{sysdictdata.SysDictTypeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdicttype.FieldID, field.TypeInt64),
@@ -499,12 +493,12 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sddu.mutation.OwnerIDs(); len(nodes) > 0 {
+	if nodes := sddu.mutation.SysDictTypeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysdictdata.OwnerTable,
-			Columns: []string{sysdictdata.OwnerColumn},
+			Table:   sysdictdata.SysDictTypeTable,
+			Columns: []string{sysdictdata.SysDictTypeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdicttype.FieldID, field.TypeInt64),
@@ -727,23 +721,23 @@ func (sdduo *SysDictDataUpdateOne) ClearDictValue() *SysDictDataUpdateOne {
 	return sdduo
 }
 
-// SetDictType sets the "dict_type" field.
-func (sdduo *SysDictDataUpdateOne) SetDictType(s string) *SysDictDataUpdateOne {
-	sdduo.mutation.SetDictType(s)
+// SetDictTypeID sets the "dict_type_id" field.
+func (sdduo *SysDictDataUpdateOne) SetDictTypeID(i int64) *SysDictDataUpdateOne {
+	sdduo.mutation.SetDictTypeID(i)
 	return sdduo
 }
 
-// SetNillableDictType sets the "dict_type" field if the given value is not nil.
-func (sdduo *SysDictDataUpdateOne) SetNillableDictType(s *string) *SysDictDataUpdateOne {
-	if s != nil {
-		sdduo.SetDictType(*s)
+// SetNillableDictTypeID sets the "dict_type_id" field if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableDictTypeID(i *int64) *SysDictDataUpdateOne {
+	if i != nil {
+		sdduo.SetDictTypeID(*i)
 	}
 	return sdduo
 }
 
-// ClearDictType clears the value of the "dict_type" field.
-func (sdduo *SysDictDataUpdateOne) ClearDictType() *SysDictDataUpdateOne {
-	sdduo.mutation.ClearDictType()
+// ClearDictTypeID clears the value of the "dict_type_id" field.
+func (sdduo *SysDictDataUpdateOne) ClearDictTypeID() *SysDictDataUpdateOne {
+	sdduo.mutation.ClearDictTypeID()
 	return sdduo
 }
 
@@ -814,23 +808,23 @@ func (sdduo *SysDictDataUpdateOne) ClearIsDefault() *SysDictDataUpdateOne {
 	return sdduo
 }
 
-// SetOwnerID sets the "owner" edge to the SysDictType entity by ID.
-func (sdduo *SysDictDataUpdateOne) SetOwnerID(id int64) *SysDictDataUpdateOne {
-	sdduo.mutation.SetOwnerID(id)
+// SetSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID.
+func (sdduo *SysDictDataUpdateOne) SetSysDictTypeID(id int64) *SysDictDataUpdateOne {
+	sdduo.mutation.SetSysDictTypeID(id)
 	return sdduo
 }
 
-// SetNillableOwnerID sets the "owner" edge to the SysDictType entity by ID if the given value is not nil.
-func (sdduo *SysDictDataUpdateOne) SetNillableOwnerID(id *int64) *SysDictDataUpdateOne {
+// SetNillableSysDictTypeID sets the "sysDictType" edge to the SysDictType entity by ID if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableSysDictTypeID(id *int64) *SysDictDataUpdateOne {
 	if id != nil {
-		sdduo = sdduo.SetOwnerID(*id)
+		sdduo = sdduo.SetSysDictTypeID(*id)
 	}
 	return sdduo
 }
 
-// SetOwner sets the "owner" edge to the SysDictType entity.
-func (sdduo *SysDictDataUpdateOne) SetOwner(s *SysDictType) *SysDictDataUpdateOne {
-	return sdduo.SetOwnerID(s.ID)
+// SetSysDictType sets the "sysDictType" edge to the SysDictType entity.
+func (sdduo *SysDictDataUpdateOne) SetSysDictType(s *SysDictType) *SysDictDataUpdateOne {
+	return sdduo.SetSysDictTypeID(s.ID)
 }
 
 // Mutation returns the SysDictDataMutation object of the builder.
@@ -838,9 +832,9 @@ func (sdduo *SysDictDataUpdateOne) Mutation() *SysDictDataMutation {
 	return sdduo.mutation
 }
 
-// ClearOwner clears the "owner" edge to the SysDictType entity.
-func (sdduo *SysDictDataUpdateOne) ClearOwner() *SysDictDataUpdateOne {
-	sdduo.mutation.ClearOwner()
+// ClearSysDictType clears the "sysDictType" edge to the SysDictType entity.
+func (sdduo *SysDictDataUpdateOne) ClearSysDictType() *SysDictDataUpdateOne {
+	sdduo.mutation.ClearSysDictType()
 	return sdduo
 }
 
@@ -995,12 +989,6 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 	if sdduo.mutation.DictValueCleared() {
 		_spec.ClearField(sysdictdata.FieldDictValue, field.TypeString)
 	}
-	if value, ok := sdduo.mutation.DictType(); ok {
-		_spec.SetField(sysdictdata.FieldDictType, field.TypeString, value)
-	}
-	if sdduo.mutation.DictTypeCleared() {
-		_spec.ClearField(sysdictdata.FieldDictType, field.TypeString)
-	}
 	if value, ok := sdduo.mutation.CSSClass(); ok {
 		_spec.SetField(sysdictdata.FieldCSSClass, field.TypeString, value)
 	}
@@ -1022,12 +1010,12 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 	if sdduo.mutation.IsDefaultCleared() {
 		_spec.ClearField(sysdictdata.FieldIsDefault, field.TypeInt8)
 	}
-	if sdduo.mutation.OwnerCleared() {
+	if sdduo.mutation.SysDictTypeCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysdictdata.OwnerTable,
-			Columns: []string{sysdictdata.OwnerColumn},
+			Table:   sysdictdata.SysDictTypeTable,
+			Columns: []string{sysdictdata.SysDictTypeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdicttype.FieldID, field.TypeInt64),
@@ -1035,12 +1023,12 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := sdduo.mutation.OwnerIDs(); len(nodes) > 0 {
+	if nodes := sdduo.mutation.SysDictTypeIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysdictdata.OwnerTable,
-			Columns: []string{sysdictdata.OwnerColumn},
+			Table:   sysdictdata.SysDictTypeTable,
+			Columns: []string{sysdictdata.SysDictTypeColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdicttype.FieldID, field.TypeInt64),

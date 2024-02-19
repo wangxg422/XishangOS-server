@@ -693,15 +693,15 @@ func (c *SysDictDataClient) GetX(ctx context.Context, id int64) *SysDictData {
 	return obj
 }
 
-// QueryOwner queries the owner edge of a SysDictData.
-func (c *SysDictDataClient) QueryOwner(sdd *SysDictData) *SysDictTypeQuery {
+// QuerySysDictType queries the sysDictType edge of a SysDictData.
+func (c *SysDictDataClient) QuerySysDictType(sdd *SysDictData) *SysDictTypeQuery {
 	query := (&SysDictTypeClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := sdd.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysdictdata.Table, sysdictdata.FieldID, id),
 			sqlgraph.To(sysdicttype.Table, sysdicttype.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysdictdata.OwnerTable, sysdictdata.OwnerColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysdictdata.SysDictTypeTable, sysdictdata.SysDictTypeColumn),
 		)
 		fromV = sqlgraph.Neighbors(sdd.driver.Dialect(), step)
 		return fromV, nil
