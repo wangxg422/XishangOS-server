@@ -2,14 +2,11 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gogf/gf/v2/util/gconv"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/dao"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
-	"github.com/wangxg422/XishangOS-backend/middleware/casbin"
 )
 
 type SysUserService struct {
@@ -20,22 +17,19 @@ func (m *SysUserService) List() ([]*codegen.SysUser, error) {
 	return dao.SysUserDao.List()
 }
 
-func (m *SysUserService) GetUserByUsername(username string) (*codegen.SysUser, error) {
+func (m *SysUserService) GetUserByUsername(username string) *codegen.SysUser {
 	return dao.SysUserDao.GetUserByUsername(username)
 }
 
 func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateUpdateReq) error {
 	// 检查用户是否已经存在,保证用户名唯一
-	existUser, err := dao.SysUserDao.GetUserByUsername(req.UserName)
+	existUser := dao.SysUserDao.GetUserByUsername(req.UserName)
 	if existUser != nil {
 		return errors.New("用户已存在")
 	}
-	if err != nil {
-		return err
-	}
 
 	// 创建用户
-	user, err := tx.SysUser.Create().
+	return tx.SysUser.Create().
 		SetUserName(req.UserName).
 		SetUserPassword(req.Password).
 		SetDeptID(req.DeptId).
@@ -46,21 +40,16 @@ func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.Sy
 		SetSex(req.Sex).
 		SetUserStatus(req.Status).
 		SetAddress(req.Address).
-		AddPostIDs(req.PostIds...).
-		AddSysRoles().
+		AddSysPostIDs(req.PostIds...).
+		AddSysRoleIDs(req.RoleIds...).
 		SetDeptID(req.DeptId).
-		Save(c)
-	if err != nil {
-		return err
-	}
+		Exec(c)
 
-	// 关联角色
-	enforcer := casbin.AppCasbinService.GetCasbinEnforcer()
-	for _, v := range req.RoleIds {
-		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", "u_", user.ID), gconv.String(v))
-	}
-
-	return nil
+	// 关联角色 TODO 向权限数据库中添加权限数据
+	//enforcer := casbin.AppCasbinService.GetCasbinEnforcer()
+	//for _, v := range req.RoleIds {
+	//	_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", "u_", user.ID), gconv.String(v))
+	//}
 }
 func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq) error {
 	return m.WithTx(c, initial.SysDbClient, func(tx *codegen.Tx) error {

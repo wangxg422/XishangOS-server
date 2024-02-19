@@ -31,7 +31,7 @@ func (m *SysLoginController) Login(c *gin.Context) {
 	}
 
 	// 按用户名查询用户
-	user, err := userService.AppSysUserService.GetUserByUsername(req.Username)
+	user := userService.AppSysUserService.GetUserByUsername(req.Username)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

@@ -7,7 +7,7 @@ app:
 
 database:
   type: mysql
-  enable-foreign-key: true # 是否启用数据库外键
+  enable-foreign-key: false # 是否启用数据库外键
   mysql:
     address: 82.156.146.136
     port: 13307
