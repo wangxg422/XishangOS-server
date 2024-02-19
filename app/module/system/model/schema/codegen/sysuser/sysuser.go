@@ -54,19 +54,19 @@ const (
 	FieldLastLoginIP = "last_login_ip"
 	// FieldLastLoginTime holds the string denoting the last_login_time field in the database.
 	FieldLastLoginTime = "last_login_time"
-	// EdgeBelongToDept holds the string denoting the belongtodept edge name in mutations.
-	EdgeBelongToDept = "belongToDept"
+	// EdgeDept holds the string denoting the dept edge name in mutations.
+	EdgeDept = "dept"
 	// EdgePosts holds the string denoting the posts edge name in mutations.
 	EdgePosts = "posts"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_user"
-	// BelongToDeptTable is the table that holds the belongToDept relation/edge.
-	BelongToDeptTable = "sys_user"
-	// BelongToDeptInverseTable is the table name for the SysDept entity.
+	// DeptTable is the table that holds the dept relation/edge.
+	DeptTable = "sys_user"
+	// DeptInverseTable is the table name for the SysDept entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
-	BelongToDeptInverseTable = "sys_dept"
-	// BelongToDeptColumn is the table column denoting the belongToDept relation/edge.
-	BelongToDeptColumn = "dept_id"
+	DeptInverseTable = "sys_dept"
+	// DeptColumn is the table column denoting the dept relation/edge.
+	DeptColumn = "dept_id"
 	// PostsTable is the table that holds the posts relation/edge. The primary key declared below.
 	PostsTable = "sys_user_post"
 	// PostsInverseTable is the table name for the SysPost entity.
@@ -238,10 +238,10 @@ func ByLastLoginTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLastLoginTime, opts...).ToFunc()
 }
 
-// ByBelongToDeptField orders the results by belongToDept field.
-func ByBelongToDeptField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByDeptField orders the results by dept field.
+func ByDeptField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newBelongToDeptStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newDeptStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -258,11 +258,11 @@ func ByPosts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newPostsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
-func newBelongToDeptStep() *sqlgraph.Step {
+func newDeptStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(BelongToDeptInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, BelongToDeptTable, BelongToDeptColumn),
+		sqlgraph.To(DeptInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, DeptTable, DeptColumn),
 	)
 }
 func newPostsStep() *sqlgraph.Step {

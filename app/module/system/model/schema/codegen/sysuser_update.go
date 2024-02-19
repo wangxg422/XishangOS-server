@@ -409,23 +409,9 @@ func (suu *SysUserUpdate) ClearLastLoginTime() *SysUserUpdate {
 	return suu
 }
 
-// SetBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID.
-func (suu *SysUserUpdate) SetBelongToDeptID(id int64) *SysUserUpdate {
-	suu.mutation.SetBelongToDeptID(id)
-	return suu
-}
-
-// SetNillableBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableBelongToDeptID(id *int64) *SysUserUpdate {
-	if id != nil {
-		suu = suu.SetBelongToDeptID(*id)
-	}
-	return suu
-}
-
-// SetBelongToDept sets the "belongToDept" edge to the SysDept entity.
-func (suu *SysUserUpdate) SetBelongToDept(s *SysDept) *SysUserUpdate {
-	return suu.SetBelongToDeptID(s.ID)
+// SetDept sets the "dept" edge to the SysDept entity.
+func (suu *SysUserUpdate) SetDept(s *SysDept) *SysUserUpdate {
+	return suu.SetDeptID(s.ID)
 }
 
 // AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
@@ -448,9 +434,9 @@ func (suu *SysUserUpdate) Mutation() *SysUserMutation {
 	return suu.mutation
 }
 
-// ClearBelongToDept clears the "belongToDept" edge to the SysDept entity.
-func (suu *SysUserUpdate) ClearBelongToDept() *SysUserUpdate {
-	suu.mutation.ClearBelongToDept()
+// ClearDept clears the "dept" edge to the SysDept entity.
+func (suu *SysUserUpdate) ClearDept() *SysUserUpdate {
+	suu.mutation.ClearDept()
 	return suu
 }
 
@@ -641,12 +627,12 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if suu.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
 	}
-	if suu.mutation.BelongToDeptCleared() {
+	if suu.mutation.DeptCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.BelongToDeptTable,
-			Columns: []string{sysuser.BelongToDeptColumn},
+			Table:   sysuser.DeptTable,
+			Columns: []string{sysuser.DeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
@@ -654,12 +640,12 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suu.mutation.BelongToDeptIDs(); len(nodes) > 0 {
+	if nodes := suu.mutation.DeptIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.BelongToDeptTable,
-			Columns: []string{sysuser.BelongToDeptColumn},
+			Table:   sysuser.DeptTable,
+			Columns: []string{sysuser.DeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
@@ -1114,23 +1100,9 @@ func (suuo *SysUserUpdateOne) ClearLastLoginTime() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID.
-func (suuo *SysUserUpdateOne) SetBelongToDeptID(id int64) *SysUserUpdateOne {
-	suuo.mutation.SetBelongToDeptID(id)
-	return suuo
-}
-
-// SetNillableBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableBelongToDeptID(id *int64) *SysUserUpdateOne {
-	if id != nil {
-		suuo = suuo.SetBelongToDeptID(*id)
-	}
-	return suuo
-}
-
-// SetBelongToDept sets the "belongToDept" edge to the SysDept entity.
-func (suuo *SysUserUpdateOne) SetBelongToDept(s *SysDept) *SysUserUpdateOne {
-	return suuo.SetBelongToDeptID(s.ID)
+// SetDept sets the "dept" edge to the SysDept entity.
+func (suuo *SysUserUpdateOne) SetDept(s *SysDept) *SysUserUpdateOne {
+	return suuo.SetDeptID(s.ID)
 }
 
 // AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
@@ -1153,9 +1125,9 @@ func (suuo *SysUserUpdateOne) Mutation() *SysUserMutation {
 	return suuo.mutation
 }
 
-// ClearBelongToDept clears the "belongToDept" edge to the SysDept entity.
-func (suuo *SysUserUpdateOne) ClearBelongToDept() *SysUserUpdateOne {
-	suuo.mutation.ClearBelongToDept()
+// ClearDept clears the "dept" edge to the SysDept entity.
+func (suuo *SysUserUpdateOne) ClearDept() *SysUserUpdateOne {
+	suuo.mutation.ClearDept()
 	return suuo
 }
 
@@ -1376,12 +1348,12 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	if suuo.mutation.LastLoginTimeCleared() {
 		_spec.ClearField(sysuser.FieldLastLoginTime, field.TypeString)
 	}
-	if suuo.mutation.BelongToDeptCleared() {
+	if suuo.mutation.DeptCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.BelongToDeptTable,
-			Columns: []string{sysuser.BelongToDeptColumn},
+			Table:   sysuser.DeptTable,
+			Columns: []string{sysuser.DeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
@@ -1389,12 +1361,12 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := suuo.mutation.BelongToDeptIDs(); len(nodes) > 0 {
+	if nodes := suuo.mutation.DeptIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.BelongToDeptTable,
-			Columns: []string{sysuser.BelongToDeptColumn},
+			Table:   sysuser.DeptTable,
+			Columns: []string{sysuser.DeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),

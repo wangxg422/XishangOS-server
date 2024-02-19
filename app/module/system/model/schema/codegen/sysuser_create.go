@@ -308,23 +308,9 @@ func (suc *SysUserCreate) SetNillableID(i *int64) *SysUserCreate {
 	return suc
 }
 
-// SetBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID.
-func (suc *SysUserCreate) SetBelongToDeptID(id int64) *SysUserCreate {
-	suc.mutation.SetBelongToDeptID(id)
-	return suc
-}
-
-// SetNillableBelongToDeptID sets the "belongToDept" edge to the SysDept entity by ID if the given value is not nil.
-func (suc *SysUserCreate) SetNillableBelongToDeptID(id *int64) *SysUserCreate {
-	if id != nil {
-		suc = suc.SetBelongToDeptID(*id)
-	}
-	return suc
-}
-
-// SetBelongToDept sets the "belongToDept" edge to the SysDept entity.
-func (suc *SysUserCreate) SetBelongToDept(s *SysDept) *SysUserCreate {
-	return suc.SetBelongToDeptID(s.ID)
+// SetDept sets the "dept" edge to the SysDept entity.
+func (suc *SysUserCreate) SetDept(s *SysDept) *SysUserCreate {
+	return suc.SetDeptID(s.ID)
 }
 
 // AddPostIDs adds the "posts" edge to the SysPost entity by IDs.
@@ -508,12 +494,12 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldLastLoginTime, field.TypeString, value)
 		_node.LastLoginTime = value
 	}
-	if nodes := suc.mutation.BelongToDeptIDs(); len(nodes) > 0 {
+	if nodes := suc.mutation.DeptIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   sysuser.BelongToDeptTable,
-			Columns: []string{sysuser.BelongToDeptColumn},
+			Table:   sysuser.DeptTable,
+			Columns: []string{sysuser.DeptColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),

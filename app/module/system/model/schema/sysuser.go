@@ -57,7 +57,7 @@ func (SysUser) Fields() []ent.Field {
 // Edges of the SysUser.
 func (SysUser) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("belongToDept", SysDept.Type).
+		edge.From("dept", SysDept.Type).
 			Ref("sysUsers").Field("dept_id").
 			Unique(),
 		edge.To("posts", SysPost.Type).

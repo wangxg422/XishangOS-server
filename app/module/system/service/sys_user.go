@@ -9,12 +9,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
-	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
-	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 	"github.com/wangxg422/XishangOS-backend/middleware/casbin"
 )
 
 type SysUserService struct {
+	BaseService
 }
 
 func (m *SysUserService) List() ([]*codegen.SysUser, error) {
@@ -25,18 +24,12 @@ func (m *SysUserService) GetUserByUsername(username string) (*codegen.SysUser, e
 	return dao.SysUserDao.GetUserByUsername(username)
 }
 
-func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq) error {
+func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateUpdateReq) error {
 	// 检查用户是否已经存在,保证用户名唯一
 	existUser, err := dao.SysUserDao.GetUserByUsername(req.UserName)
 	if existUser != nil {
 		return errors.New("用户已存在")
 	}
-	if err != nil {
-		return err
-	}
-
-	// 使用事务添加用户
-	tx, err := initial.SysDbClient.Tx(c)
 	if err != nil {
 		return err
 	}
@@ -52,9 +45,12 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 		SetRemark(req.Remark).
 		SetSex(req.Sex).
 		SetUserStatus(req.Status).
-		SetAddress(req.Address).Save(c)
+		SetAddress(req.Address).
+		AddPostIDs(req.PostIds...).
+		SetDeptID(req.DeptId).
+		Save(c)
 	if err != nil {
-		return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
+		return err
 	}
 
 	// 关联角色
@@ -63,16 +59,10 @@ func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq
 		_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", "u_", user.ID), gconv.String(v))
 	}
 
-	// 添加用户岗位
-	if len(req.PostIds) != 0 {
-		// 先删除原先岗位
-		_, err := tx.SysPost.Delete().Where(syspost.IDIn(req.PostIds...)).Exec(c)
-		if err != nil {
-			return exception.Rollback(tx, fmt.Errorf("failed creating the group: %w", err))
-		}
-		// 添加新的岗位
-
-	}
-
-	return tx.Commit()
+	return nil
+}
+func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateUpdateReq) error {
+	return m.WithTx(c, initial.SysDbClient, func(tx *codegen.Tx) error {
+		return m.addUser(tx, c, req)
+	})
 }

@@ -1450,21 +1450,21 @@ func LastLoginTimeContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldLastLoginTime, v))
 }
 
-// HasBelongToDept applies the HasEdge predicate on the "belongToDept" edge.
-func HasBelongToDept() predicate.SysUser {
+// HasDept applies the HasEdge predicate on the "dept" edge.
+func HasDept() predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, BelongToDeptTable, BelongToDeptColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, DeptTable, DeptColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasBelongToDeptWith applies the HasEdge predicate on the "belongToDept" edge with a given conditions (other predicates).
-func HasBelongToDeptWith(preds ...predicate.SysDept) predicate.SysUser {
+// HasDeptWith applies the HasEdge predicate on the "dept" edge with a given conditions (other predicates).
+func HasDeptWith(preds ...predicate.SysDept) predicate.SysUser {
 	return predicate.SysUser(func(s *sql.Selector) {
-		step := newBelongToDeptStep()
+		step := newDeptStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

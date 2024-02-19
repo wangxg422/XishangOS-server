@@ -1688,15 +1688,15 @@ func (c *SysUserClient) GetX(ctx context.Context, id int64) *SysUser {
 	return obj
 }
 
-// QueryBelongToDept queries the belongToDept edge of a SysUser.
-func (c *SysUserClient) QueryBelongToDept(su *SysUser) *SysDeptQuery {
+// QueryDept queries the dept edge of a SysUser.
+func (c *SysUserClient) QueryDept(su *SysUser) *SysDeptQuery {
 	query := (&SysDeptClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := su.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, id),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.BelongToDeptTable, sysuser.BelongToDeptColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, sysuser.DeptTable, sysuser.DeptColumn),
 		)
 		fromV = sqlgraph.Neighbors(su.driver.Dialect(), step)
 		return fromV, nil
