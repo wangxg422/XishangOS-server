@@ -13,17 +13,21 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
 // SysRoleQuery is the builder for querying SysRole entities.
 type SysRoleQuery struct {
 	config
-	ctx        *QueryContext
-	order      []sysrole.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SysRole
-	withDepts  *SysDeptQuery
+	ctx          *QueryContext
+	order        []sysrole.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.SysRole
+	withDepts    *SysDeptQuery
+	withSysUsers *SysUserQuery
+	withSysMenus *SysMenuQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -75,6 +79,50 @@ func (srq *SysRoleQuery) QueryDepts() *SysDeptQuery {
 			sqlgraph.From(sysrole.Table, sysrole.FieldID, selector),
 			sqlgraph.To(sysdept.Table, sysdept.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, sysrole.DeptsTable, sysrole.DeptsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySysUsers chains the current query on the "sysUsers" edge.
+func (srq *SysRoleQuery) QuerySysUsers() *SysUserQuery {
+	query := (&SysUserClient{config: srq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := srq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := srq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysrole.Table, sysrole.FieldID, selector),
+			sqlgraph.To(sysuser.Table, sysuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, sysrole.SysUsersTable, sysrole.SysUsersPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySysMenus chains the current query on the "sysMenus" edge.
+func (srq *SysRoleQuery) QuerySysMenus() *SysMenuQuery {
+	query := (&SysMenuClient{config: srq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := srq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := srq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysrole.Table, sysrole.FieldID, selector),
+			sqlgraph.To(sysmenu.Table, sysmenu.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysrole.SysMenusTable, sysrole.SysMenusPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(srq.driver.Dialect(), step)
 		return fromU, nil
@@ -269,12 +317,14 @@ func (srq *SysRoleQuery) Clone() *SysRoleQuery {
 		return nil
 	}
 	return &SysRoleQuery{
-		config:     srq.config,
-		ctx:        srq.ctx.Clone(),
-		order:      append([]sysrole.OrderOption{}, srq.order...),
-		inters:     append([]Interceptor{}, srq.inters...),
-		predicates: append([]predicate.SysRole{}, srq.predicates...),
-		withDepts:  srq.withDepts.Clone(),
+		config:       srq.config,
+		ctx:          srq.ctx.Clone(),
+		order:        append([]sysrole.OrderOption{}, srq.order...),
+		inters:       append([]Interceptor{}, srq.inters...),
+		predicates:   append([]predicate.SysRole{}, srq.predicates...),
+		withDepts:    srq.withDepts.Clone(),
+		withSysUsers: srq.withSysUsers.Clone(),
+		withSysMenus: srq.withSysMenus.Clone(),
 		// clone intermediate query.
 		sql:  srq.sql.Clone(),
 		path: srq.path,
@@ -289,6 +339,28 @@ func (srq *SysRoleQuery) WithDepts(opts ...func(*SysDeptQuery)) *SysRoleQuery {
 		opt(query)
 	}
 	srq.withDepts = query
+	return srq
+}
+
+// WithSysUsers tells the query-builder to eager-load the nodes that are connected to
+// the "sysUsers" edge. The optional arguments are used to configure the query builder of the edge.
+func (srq *SysRoleQuery) WithSysUsers(opts ...func(*SysUserQuery)) *SysRoleQuery {
+	query := (&SysUserClient{config: srq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	srq.withSysUsers = query
+	return srq
+}
+
+// WithSysMenus tells the query-builder to eager-load the nodes that are connected to
+// the "sysMenus" edge. The optional arguments are used to configure the query builder of the edge.
+func (srq *SysRoleQuery) WithSysMenus(opts ...func(*SysMenuQuery)) *SysRoleQuery {
+	query := (&SysMenuClient{config: srq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	srq.withSysMenus = query
 	return srq
 }
 
@@ -370,8 +442,10 @@ func (srq *SysRoleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	var (
 		nodes       = []*SysRole{}
 		_spec       = srq.querySpec()
-		loadedTypes = [1]bool{
+		loadedTypes = [3]bool{
 			srq.withDepts != nil,
+			srq.withSysUsers != nil,
+			srq.withSysMenus != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -396,6 +470,20 @@ func (srq *SysRoleQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		if err := srq.loadDepts(ctx, query, nodes,
 			func(n *SysRole) { n.Edges.Depts = []*SysDept{} },
 			func(n *SysRole, e *SysDept) { n.Edges.Depts = append(n.Edges.Depts, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := srq.withSysUsers; query != nil {
+		if err := srq.loadSysUsers(ctx, query, nodes,
+			func(n *SysRole) { n.Edges.SysUsers = []*SysUser{} },
+			func(n *SysRole, e *SysUser) { n.Edges.SysUsers = append(n.Edges.SysUsers, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := srq.withSysMenus; query != nil {
+		if err := srq.loadSysMenus(ctx, query, nodes,
+			func(n *SysRole) { n.Edges.SysMenus = []*SysMenu{} },
+			func(n *SysRole, e *SysMenu) { n.Edges.SysMenus = append(n.Edges.SysMenus, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -456,6 +544,128 @@ func (srq *SysRoleQuery) loadDepts(ctx context.Context, query *SysDeptQuery, nod
 		nodes, ok := nids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected "depts" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
+func (srq *SysRoleQuery) loadSysUsers(ctx context.Context, query *SysUserQuery, nodes []*SysRole, init func(*SysRole), assign func(*SysRole, *SysUser)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int64]*SysRole)
+	nids := make(map[int64]map[*SysRole]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(sysrole.SysUsersTable)
+		s.Join(joinT).On(s.C(sysuser.FieldID), joinT.C(sysrole.SysUsersPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(sysrole.SysUsersPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(sysrole.SysUsersPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := values[0].(*sql.NullInt64).Int64
+				inValue := values[1].(*sql.NullInt64).Int64
+				if nids[inValue] == nil {
+					nids[inValue] = map[*SysRole]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*SysUser](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "sysUsers" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
+func (srq *SysRoleQuery) loadSysMenus(ctx context.Context, query *SysMenuQuery, nodes []*SysRole, init func(*SysRole), assign func(*SysRole, *SysMenu)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int64]*SysRole)
+	nids := make(map[int64]map[*SysRole]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(sysrole.SysMenusTable)
+		s.Join(joinT).On(s.C(sysmenu.FieldID), joinT.C(sysrole.SysMenusPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(sysrole.SysMenusPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(sysrole.SysMenusPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := values[0].(*sql.NullInt64).Int64
+				inValue := values[1].(*sql.NullInt64).Int64
+				if nids[inValue] == nil {
+					nids[inValue] = map[*SysRole]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*SysMenu](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "sysMenus" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)

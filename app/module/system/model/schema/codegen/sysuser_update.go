@@ -14,6 +14,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -429,6 +430,21 @@ func (suu *SysUserUpdate) AddPosts(s ...*SysPost) *SysUserUpdate {
 	return suu.AddPostIDs(ids...)
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (suu *SysUserUpdate) AddSysRoleIDs(ids ...int64) *SysUserUpdate {
+	suu.mutation.AddSysRoleIDs(ids...)
+	return suu
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (suu *SysUserUpdate) AddSysRoles(s ...*SysRole) *SysUserUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suu.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suu *SysUserUpdate) Mutation() *SysUserMutation {
 	return suu.mutation
@@ -459,6 +475,27 @@ func (suu *SysUserUpdate) RemovePosts(s ...*SysPost) *SysUserUpdate {
 		ids[i] = s[i].ID
 	}
 	return suu.RemovePostIDs(ids...)
+}
+
+// ClearSysRoles clears all "sysRoles" edges to the SysRole entity.
+func (suu *SysUserUpdate) ClearSysRoles() *SysUserUpdate {
+	suu.mutation.ClearSysRoles()
+	return suu
+}
+
+// RemoveSysRoleIDs removes the "sysRoles" edge to SysRole entities by IDs.
+func (suu *SysUserUpdate) RemoveSysRoleIDs(ids ...int64) *SysUserUpdate {
+	suu.mutation.RemoveSysRoleIDs(ids...)
+	return suu
+}
+
+// RemoveSysRoles removes "sysRoles" edges to SysRole entities.
+func (suu *SysUserUpdate) RemoveSysRoles(s ...*SysRole) *SysUserUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suu.RemoveSysRoleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -694,6 +731,51 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suu.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suu.mutation.RemovedSysRolesIDs(); len(nodes) > 0 && !suu.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suu.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {
@@ -1120,6 +1202,21 @@ func (suuo *SysUserUpdateOne) AddPosts(s ...*SysPost) *SysUserUpdateOne {
 	return suuo.AddPostIDs(ids...)
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (suuo *SysUserUpdateOne) AddSysRoleIDs(ids ...int64) *SysUserUpdateOne {
+	suuo.mutation.AddSysRoleIDs(ids...)
+	return suuo
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (suuo *SysUserUpdateOne) AddSysRoles(s ...*SysRole) *SysUserUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suuo.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suuo *SysUserUpdateOne) Mutation() *SysUserMutation {
 	return suuo.mutation
@@ -1150,6 +1247,27 @@ func (suuo *SysUserUpdateOne) RemovePosts(s ...*SysPost) *SysUserUpdateOne {
 		ids[i] = s[i].ID
 	}
 	return suuo.RemovePostIDs(ids...)
+}
+
+// ClearSysRoles clears all "sysRoles" edges to the SysRole entity.
+func (suuo *SysUserUpdateOne) ClearSysRoles() *SysUserUpdateOne {
+	suuo.mutation.ClearSysRoles()
+	return suuo
+}
+
+// RemoveSysRoleIDs removes the "sysRoles" edge to SysRole entities by IDs.
+func (suuo *SysUserUpdateOne) RemoveSysRoleIDs(ids ...int64) *SysUserUpdateOne {
+	suuo.mutation.RemoveSysRoleIDs(ids...)
+	return suuo
+}
+
+// RemoveSysRoles removes "sysRoles" edges to SysRole entities.
+func (suuo *SysUserUpdateOne) RemoveSysRoles(s ...*SysRole) *SysUserUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suuo.RemoveSysRoleIDs(ids...)
 }
 
 // Where appends a list predicates to the SysUserUpdate builder.
@@ -1415,6 +1533,51 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if suuo.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suuo.mutation.RemovedSysRolesIDs(); len(nodes) > 0 && !suuo.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := suuo.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

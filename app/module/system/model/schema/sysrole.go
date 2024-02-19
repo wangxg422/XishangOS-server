@@ -47,5 +47,9 @@ func (SysRole) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("depts", SysDept.Type).
 			StorageKey(edge.Table("sys_role_dept"), edge.Columns("role_id", "dept_id")),
+		edge.From("sysUsers", SysUser.Type).
+			Ref("sysRoles"),
+		edge.To("sysMenus", SysMenu.Type).
+			StorageKey(edge.Table("sys_role_menu"), edge.Columns("role_id", "menu_id")),
 	}
 }

@@ -13,7 +13,9 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
 // SysRoleUpdate is the builder for updating SysRole entities.
@@ -162,6 +164,36 @@ func (sru *SysRoleUpdate) AddDepts(s ...*SysDept) *SysRoleUpdate {
 	return sru.AddDeptIDs(ids...)
 }
 
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (sru *SysRoleUpdate) AddSysUserIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.AddSysUserIDs(ids...)
+	return sru
+}
+
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (sru *SysRoleUpdate) AddSysUsers(s ...*SysUser) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.AddSysUserIDs(ids...)
+}
+
+// AddSysMenuIDs adds the "sysMenus" edge to the SysMenu entity by IDs.
+func (sru *SysRoleUpdate) AddSysMenuIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.AddSysMenuIDs(ids...)
+	return sru
+}
+
+// AddSysMenus adds the "sysMenus" edges to the SysMenu entity.
+func (sru *SysRoleUpdate) AddSysMenus(s ...*SysMenu) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.AddSysMenuIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sru *SysRoleUpdate) Mutation() *SysRoleMutation {
 	return sru.mutation
@@ -186,6 +218,48 @@ func (sru *SysRoleUpdate) RemoveDepts(s ...*SysDept) *SysRoleUpdate {
 		ids[i] = s[i].ID
 	}
 	return sru.RemoveDeptIDs(ids...)
+}
+
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (sru *SysRoleUpdate) ClearSysUsers() *SysRoleUpdate {
+	sru.mutation.ClearSysUsers()
+	return sru
+}
+
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
+func (sru *SysRoleUpdate) RemoveSysUserIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.RemoveSysUserIDs(ids...)
+	return sru
+}
+
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (sru *SysRoleUpdate) RemoveSysUsers(s ...*SysUser) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.RemoveSysUserIDs(ids...)
+}
+
+// ClearSysMenus clears all "sysMenus" edges to the SysMenu entity.
+func (sru *SysRoleUpdate) ClearSysMenus() *SysRoleUpdate {
+	sru.mutation.ClearSysMenus()
+	return sru
+}
+
+// RemoveSysMenuIDs removes the "sysMenus" edge to SysMenu entities by IDs.
+func (sru *SysRoleUpdate) RemoveSysMenuIDs(ids ...int64) *SysRoleUpdate {
+	sru.mutation.RemoveSysMenuIDs(ids...)
+	return sru
+}
+
+// RemoveSysMenus removes "sysMenus" edges to SysMenu entities.
+func (sru *SysRoleUpdate) RemoveSysMenus(s ...*SysMenu) *SysRoleUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sru.RemoveSysMenuIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -323,6 +397,96 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sru.mutation.SysUsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !sru.mutation.SysUsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.SysUsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sru.mutation.SysMenusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.RemovedSysMenusIDs(); len(nodes) > 0 && !sru.mutation.SysMenusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sru.mutation.SysMenusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {
@@ -483,6 +647,36 @@ func (sruo *SysRoleUpdateOne) AddDepts(s ...*SysDept) *SysRoleUpdateOne {
 	return sruo.AddDeptIDs(ids...)
 }
 
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (sruo *SysRoleUpdateOne) AddSysUserIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.AddSysUserIDs(ids...)
+	return sruo
+}
+
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (sruo *SysRoleUpdateOne) AddSysUsers(s ...*SysUser) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.AddSysUserIDs(ids...)
+}
+
+// AddSysMenuIDs adds the "sysMenus" edge to the SysMenu entity by IDs.
+func (sruo *SysRoleUpdateOne) AddSysMenuIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.AddSysMenuIDs(ids...)
+	return sruo
+}
+
+// AddSysMenus adds the "sysMenus" edges to the SysMenu entity.
+func (sruo *SysRoleUpdateOne) AddSysMenus(s ...*SysMenu) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.AddSysMenuIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (sruo *SysRoleUpdateOne) Mutation() *SysRoleMutation {
 	return sruo.mutation
@@ -507,6 +701,48 @@ func (sruo *SysRoleUpdateOne) RemoveDepts(s ...*SysDept) *SysRoleUpdateOne {
 		ids[i] = s[i].ID
 	}
 	return sruo.RemoveDeptIDs(ids...)
+}
+
+// ClearSysUsers clears all "sysUsers" edges to the SysUser entity.
+func (sruo *SysRoleUpdateOne) ClearSysUsers() *SysRoleUpdateOne {
+	sruo.mutation.ClearSysUsers()
+	return sruo
+}
+
+// RemoveSysUserIDs removes the "sysUsers" edge to SysUser entities by IDs.
+func (sruo *SysRoleUpdateOne) RemoveSysUserIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.RemoveSysUserIDs(ids...)
+	return sruo
+}
+
+// RemoveSysUsers removes "sysUsers" edges to SysUser entities.
+func (sruo *SysRoleUpdateOne) RemoveSysUsers(s ...*SysUser) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.RemoveSysUserIDs(ids...)
+}
+
+// ClearSysMenus clears all "sysMenus" edges to the SysMenu entity.
+func (sruo *SysRoleUpdateOne) ClearSysMenus() *SysRoleUpdateOne {
+	sruo.mutation.ClearSysMenus()
+	return sruo
+}
+
+// RemoveSysMenuIDs removes the "sysMenus" edge to SysMenu entities by IDs.
+func (sruo *SysRoleUpdateOne) RemoveSysMenuIDs(ids ...int64) *SysRoleUpdateOne {
+	sruo.mutation.RemoveSysMenuIDs(ids...)
+	return sruo
+}
+
+// RemoveSysMenus removes "sysMenus" edges to SysMenu entities.
+func (sruo *SysRoleUpdateOne) RemoveSysMenus(s ...*SysMenu) *SysRoleUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return sruo.RemoveSysMenuIDs(ids...)
 }
 
 // Where appends a list predicates to the SysRoleUpdate builder.
@@ -674,6 +910,96 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sruo.mutation.SysUsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.RemovedSysUsersIDs(); len(nodes) > 0 && !sruo.mutation.SysUsersCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.SysUsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if sruo.mutation.SysMenusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.RemovedSysMenusIDs(); len(nodes) > 0 && !sruo.mutation.SysMenusCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := sruo.mutation.SysMenusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

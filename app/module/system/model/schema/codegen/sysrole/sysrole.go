@@ -32,6 +32,10 @@ const (
 	FieldDataScope = "data_scope"
 	// EdgeDepts holds the string denoting the depts edge name in mutations.
 	EdgeDepts = "depts"
+	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
+	EdgeSysUsers = "sysUsers"
+	// EdgeSysMenus holds the string denoting the sysmenus edge name in mutations.
+	EdgeSysMenus = "sysMenus"
 	// Table holds the table name of the sysrole in the database.
 	Table = "sys_role"
 	// DeptsTable is the table that holds the depts relation/edge. The primary key declared below.
@@ -39,6 +43,16 @@ const (
 	// DeptsInverseTable is the table name for the SysDept entity.
 	// It exists in this package in order to avoid circular dependency with the "sysdept" package.
 	DeptsInverseTable = "sys_dept"
+	// SysUsersTable is the table that holds the sysUsers relation/edge. The primary key declared below.
+	SysUsersTable = "sys_user_role"
+	// SysUsersInverseTable is the table name for the SysUser entity.
+	// It exists in this package in order to avoid circular dependency with the "sysuser" package.
+	SysUsersInverseTable = "sys_user"
+	// SysMenusTable is the table that holds the sysMenus relation/edge. The primary key declared below.
+	SysMenusTable = "sys_role_menu"
+	// SysMenusInverseTable is the table name for the SysMenu entity.
+	// It exists in this package in order to avoid circular dependency with the "sysmenu" package.
+	SysMenusInverseTable = "sys_menu"
 )
 
 // Columns holds all SQL columns for sysrole fields.
@@ -58,6 +72,12 @@ var (
 	// DeptsPrimaryKey and DeptsColumn2 are the table columns denoting the
 	// primary key for the depts relation (M2M).
 	DeptsPrimaryKey = []string{"role_id", "dept_id"}
+	// SysUsersPrimaryKey and SysUsersColumn2 are the table columns denoting the
+	// primary key for the sysUsers relation (M2M).
+	SysUsersPrimaryKey = []string{"user_id", "role_id"}
+	// SysMenusPrimaryKey and SysMenusColumn2 are the table columns denoting the
+	// primary key for the sysMenus relation (M2M).
+	SysMenusPrimaryKey = []string{"role_id", "menu_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -148,10 +168,52 @@ func ByDepts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newDeptsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// BySysUsersCount orders the results by sysUsers count.
+func BySysUsersCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newSysUsersStep(), opts...)
+	}
+}
+
+// BySysUsers orders the results by sysUsers terms.
+func BySysUsers(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSysUsersStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// BySysMenusCount orders the results by sysMenus count.
+func BySysMenusCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newSysMenusStep(), opts...)
+	}
+}
+
+// BySysMenus orders the results by sysMenus terms.
+func BySysMenus(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSysMenusStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newDeptsStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(DeptsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2M, false, DeptsTable, DeptsPrimaryKey...),
+	)
+}
+func newSysUsersStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SysUsersInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, SysUsersTable, SysUsersPrimaryKey...),
+	)
+}
+func newSysMenusStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SysMenusInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, SysMenusTable, SysMenusPrimaryKey...),
 	)
 }

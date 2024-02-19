@@ -14,18 +14,20 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
 // SysUserQuery is the builder for querying SysUser entities.
 type SysUserQuery struct {
 	config
-	ctx        *QueryContext
-	order      []sysuser.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SysUser
-	withDept   *SysDeptQuery
-	withPosts  *SysPostQuery
+	ctx          *QueryContext
+	order        []sysuser.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.SysUser
+	withDept     *SysDeptQuery
+	withPosts    *SysPostQuery
+	withSysRoles *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -99,6 +101,28 @@ func (suq *SysUserQuery) QueryPosts() *SysPostQuery {
 			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
 			sqlgraph.To(syspost.Table, syspost.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.PostsTable, sysuser.PostsPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QuerySysRoles chains the current query on the "sysRoles" edge.
+func (suq *SysUserQuery) QuerySysRoles() *SysRoleQuery {
+	query := (&SysRoleClient{config: suq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := suq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := suq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysuser.Table, sysuser.FieldID, selector),
+			sqlgraph.To(sysrole.Table, sysrole.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, sysuser.SysRolesTable, sysuser.SysRolesPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(suq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,13 +317,14 @@ func (suq *SysUserQuery) Clone() *SysUserQuery {
 		return nil
 	}
 	return &SysUserQuery{
-		config:     suq.config,
-		ctx:        suq.ctx.Clone(),
-		order:      append([]sysuser.OrderOption{}, suq.order...),
-		inters:     append([]Interceptor{}, suq.inters...),
-		predicates: append([]predicate.SysUser{}, suq.predicates...),
-		withDept:   suq.withDept.Clone(),
-		withPosts:  suq.withPosts.Clone(),
+		config:       suq.config,
+		ctx:          suq.ctx.Clone(),
+		order:        append([]sysuser.OrderOption{}, suq.order...),
+		inters:       append([]Interceptor{}, suq.inters...),
+		predicates:   append([]predicate.SysUser{}, suq.predicates...),
+		withDept:     suq.withDept.Clone(),
+		withPosts:    suq.withPosts.Clone(),
+		withSysRoles: suq.withSysRoles.Clone(),
 		// clone intermediate query.
 		sql:  suq.sql.Clone(),
 		path: suq.path,
@@ -325,6 +350,17 @@ func (suq *SysUserQuery) WithPosts(opts ...func(*SysPostQuery)) *SysUserQuery {
 		opt(query)
 	}
 	suq.withPosts = query
+	return suq
+}
+
+// WithSysRoles tells the query-builder to eager-load the nodes that are connected to
+// the "sysRoles" edge. The optional arguments are used to configure the query builder of the edge.
+func (suq *SysUserQuery) WithSysRoles(opts ...func(*SysRoleQuery)) *SysUserQuery {
+	query := (&SysRoleClient{config: suq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	suq.withSysRoles = query
 	return suq
 }
 
@@ -406,9 +442,10 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	var (
 		nodes       = []*SysUser{}
 		_spec       = suq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			suq.withDept != nil,
 			suq.withPosts != nil,
+			suq.withSysRoles != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -439,6 +476,13 @@ func (suq *SysUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 		if err := suq.loadPosts(ctx, query, nodes,
 			func(n *SysUser) { n.Edges.Posts = []*SysPost{} },
 			func(n *SysUser, e *SysPost) { n.Edges.Posts = append(n.Edges.Posts, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := suq.withSysRoles; query != nil {
+		if err := suq.loadSysRoles(ctx, query, nodes,
+			func(n *SysUser) { n.Edges.SysRoles = []*SysRole{} },
+			func(n *SysUser, e *SysRole) { n.Edges.SysRoles = append(n.Edges.SysRoles, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -528,6 +572,67 @@ func (suq *SysUserQuery) loadPosts(ctx context.Context, query *SysPostQuery, nod
 		nodes, ok := nids[n.ID]
 		if !ok {
 			return fmt.Errorf(`unexpected "posts" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
+}
+func (suq *SysUserQuery) loadSysRoles(ctx context.Context, query *SysRoleQuery, nodes []*SysUser, init func(*SysUser), assign func(*SysUser, *SysRole)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int64]*SysUser)
+	nids := make(map[int64]map[*SysUser]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(sysuser.SysRolesTable)
+		s.Join(joinT).On(s.C(sysrole.FieldID), joinT.C(sysuser.SysRolesPrimaryKey[1]))
+		s.Where(sql.InValues(joinT.C(sysuser.SysRolesPrimaryKey[0]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(sysuser.SysRolesPrimaryKey[0]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := values[0].(*sql.NullInt64).Int64
+				inValue := values[1].(*sql.NullInt64).Int64
+				if nids[inValue] == nil {
+					nids[inValue] = map[*SysUser]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*SysRole](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "sysRoles" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)

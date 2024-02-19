@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 )
 
@@ -1502,6 +1503,29 @@ func LinkURLEqualFold(v string) predicate.SysMenu {
 // LinkURLContainsFold applies the ContainsFold predicate on the "link_url" field.
 func LinkURLContainsFold(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldContainsFold(FieldLinkURL, v))
+}
+
+// HasSysRoles applies the HasEdge predicate on the "sysRoles" edge.
+func HasSysRoles() predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, SysRolesTable, SysRolesPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSysRolesWith applies the HasEdge predicate on the "sysRoles" edge with a given conditions (other predicates).
+func HasSysRolesWith(preds ...predicate.SysRole) predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := newSysRolesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

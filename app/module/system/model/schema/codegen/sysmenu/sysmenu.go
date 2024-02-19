@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -57,8 +58,15 @@ const (
 	FieldIsAffix = "is_affix"
 	// FieldLinkURL holds the string denoting the link_url field in the database.
 	FieldLinkURL = "link_url"
+	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
+	EdgeSysRoles = "sysRoles"
 	// Table holds the table name of the sysmenu in the database.
 	Table = "sys_menu"
+	// SysRolesTable is the table that holds the sysRoles relation/edge. The primary key declared below.
+	SysRolesTable = "sys_role_menu"
+	// SysRolesInverseTable is the table name for the SysRole entity.
+	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
+	SysRolesInverseTable = "sys_role"
 )
 
 // Columns holds all SQL columns for sysmenu fields.
@@ -87,6 +95,12 @@ var Columns = []string{
 	FieldIsAffix,
 	FieldLinkURL,
 }
+
+var (
+	// SysRolesPrimaryKey and SysRolesColumn2 are the table columns denoting the
+	// primary key for the sysRoles relation (M2M).
+	SysRolesPrimaryKey = []string{"role_id", "menu_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -229,4 +243,25 @@ func ByIsAffix(opts ...sql.OrderTermOption) OrderOption {
 // ByLinkURL orders the results by the link_url field.
 func ByLinkURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLinkURL, opts...).ToFunc()
+}
+
+// BySysRolesCount orders the results by sysRoles count.
+func BySysRolesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newSysRolesStep(), opts...)
+	}
+}
+
+// BySysRoles orders the results by sysRoles terms.
+func BySysRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSysRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newSysRolesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SysRolesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, true, SysRolesTable, SysRolesPrimaryKey...),
+	)
 }

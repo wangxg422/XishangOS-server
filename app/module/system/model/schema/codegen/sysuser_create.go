@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/syspost"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
@@ -328,6 +329,21 @@ func (suc *SysUserCreate) AddPosts(s ...*SysPost) *SysUserCreate {
 	return suc.AddPostIDs(ids...)
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (suc *SysUserCreate) AddSysRoleIDs(ids ...int64) *SysUserCreate {
+	suc.mutation.AddSysRoleIDs(ids...)
+	return suc
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (suc *SysUserCreate) AddSysRoles(s ...*SysRole) *SysUserCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return suc.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysUserMutation object of the builder.
 func (suc *SysUserCreate) Mutation() *SysUserMutation {
 	return suc.mutation
@@ -520,6 +536,22 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(syspost.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := suc.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysuser.SysRolesTable,
+			Columns: sysuser.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

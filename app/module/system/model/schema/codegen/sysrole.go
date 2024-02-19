@@ -43,9 +43,13 @@ type SysRole struct {
 type SysRoleEdges struct {
 	// Depts holds the value of the depts edge.
 	Depts []*SysDept `json:"depts,omitempty"`
+	// SysUsers holds the value of the sysUsers edge.
+	SysUsers []*SysUser `json:"sysUsers,omitempty"`
+	// SysMenus holds the value of the sysMenus edge.
+	SysMenus []*SysMenu `json:"sysMenus,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [3]bool
 }
 
 // DeptsOrErr returns the Depts value or an error if the edge
@@ -55,6 +59,24 @@ func (e SysRoleEdges) DeptsOrErr() ([]*SysDept, error) {
 		return e.Depts, nil
 	}
 	return nil, &NotLoadedError{edge: "depts"}
+}
+
+// SysUsersOrErr returns the SysUsers value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysRoleEdges) SysUsersOrErr() ([]*SysUser, error) {
+	if e.loadedTypes[1] {
+		return e.SysUsers, nil
+	}
+	return nil, &NotLoadedError{edge: "sysUsers"}
+}
+
+// SysMenusOrErr returns the SysMenus value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysRoleEdges) SysMenusOrErr() ([]*SysMenu, error) {
+	if e.loadedTypes[2] {
+		return e.SysMenus, nil
+	}
+	return nil, &NotLoadedError{edge: "sysMenus"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -153,6 +175,16 @@ func (sr *SysRole) Value(name string) (ent.Value, error) {
 // QueryDepts queries the "depts" edge of the SysRole entity.
 func (sr *SysRole) QueryDepts() *SysDeptQuery {
 	return NewSysRoleClient(sr.config).QueryDepts(sr)
+}
+
+// QuerySysUsers queries the "sysUsers" edge of the SysRole entity.
+func (sr *SysRole) QuerySysUsers() *SysUserQuery {
+	return NewSysRoleClient(sr.config).QuerySysUsers(sr)
+}
+
+// QuerySysMenus queries the "sysMenus" edge of the SysRole entity.
+func (sr *SysRole) QuerySysMenus() *SysMenuQuery {
+	return NewSysRoleClient(sr.config).QuerySysMenus(sr)
 }
 
 // Update returns a builder for updating this SysRole.

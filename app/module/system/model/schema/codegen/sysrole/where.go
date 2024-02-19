@@ -568,6 +568,52 @@ func HasDeptsWith(preds ...predicate.SysDept) predicate.SysRole {
 	})
 }
 
+// HasSysUsers applies the HasEdge predicate on the "sysUsers" edge.
+func HasSysUsers() predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, SysUsersTable, SysUsersPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSysUsersWith applies the HasEdge predicate on the "sysUsers" edge with a given conditions (other predicates).
+func HasSysUsersWith(preds ...predicate.SysUser) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := newSysUsersStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasSysMenus applies the HasEdge predicate on the "sysMenus" edge.
+func HasSysMenus() predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, SysMenusTable, SysMenusPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasSysMenusWith applies the HasEdge predicate on the "sysMenus" edge with a given conditions (other predicates).
+func HasSysMenusWith(preds ...predicate.SysMenu) predicate.SysRole {
+	return predicate.SysRole(func(s *sql.Selector) {
+		step := newSysMenusStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.SysRole) predicate.SysRole {
 	return predicate.SysRole(sql.AndPredicates(predicates...))

@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -12,15 +13,17 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
 // SysMenuQuery is the builder for querying SysMenu entities.
 type SysMenuQuery struct {
 	config
-	ctx        *QueryContext
-	order      []sysmenu.OrderOption
-	inters     []Interceptor
-	predicates []predicate.SysMenu
+	ctx          *QueryContext
+	order        []sysmenu.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.SysMenu
+	withSysRoles *SysRoleQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -55,6 +58,28 @@ func (smq *SysMenuQuery) Unique(unique bool) *SysMenuQuery {
 func (smq *SysMenuQuery) Order(o ...sysmenu.OrderOption) *SysMenuQuery {
 	smq.order = append(smq.order, o...)
 	return smq
+}
+
+// QuerySysRoles chains the current query on the "sysRoles" edge.
+func (smq *SysMenuQuery) QuerySysRoles() *SysRoleQuery {
+	query := (&SysRoleClient{config: smq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := smq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := smq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(sysmenu.Table, sysmenu.FieldID, selector),
+			sqlgraph.To(sysrole.Table, sysrole.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, sysmenu.SysRolesTable, sysmenu.SysRolesPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(smq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first SysMenu entity from the query.
@@ -244,15 +269,27 @@ func (smq *SysMenuQuery) Clone() *SysMenuQuery {
 		return nil
 	}
 	return &SysMenuQuery{
-		config:     smq.config,
-		ctx:        smq.ctx.Clone(),
-		order:      append([]sysmenu.OrderOption{}, smq.order...),
-		inters:     append([]Interceptor{}, smq.inters...),
-		predicates: append([]predicate.SysMenu{}, smq.predicates...),
+		config:       smq.config,
+		ctx:          smq.ctx.Clone(),
+		order:        append([]sysmenu.OrderOption{}, smq.order...),
+		inters:       append([]Interceptor{}, smq.inters...),
+		predicates:   append([]predicate.SysMenu{}, smq.predicates...),
+		withSysRoles: smq.withSysRoles.Clone(),
 		// clone intermediate query.
 		sql:  smq.sql.Clone(),
 		path: smq.path,
 	}
+}
+
+// WithSysRoles tells the query-builder to eager-load the nodes that are connected to
+// the "sysRoles" edge. The optional arguments are used to configure the query builder of the edge.
+func (smq *SysMenuQuery) WithSysRoles(opts ...func(*SysRoleQuery)) *SysMenuQuery {
+	query := (&SysRoleClient{config: smq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	smq.withSysRoles = query
+	return smq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -331,8 +368,11 @@ func (smq *SysMenuQuery) prepareQuery(ctx context.Context) error {
 
 func (smq *SysMenuQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*SysMenu, error) {
 	var (
-		nodes = []*SysMenu{}
-		_spec = smq.querySpec()
+		nodes       = []*SysMenu{}
+		_spec       = smq.querySpec()
+		loadedTypes = [1]bool{
+			smq.withSysRoles != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*SysMenu).scanValues(nil, columns)
@@ -340,6 +380,7 @@ func (smq *SysMenuQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &SysMenu{config: smq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -351,7 +392,76 @@ func (smq *SysMenuQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Sys
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := smq.withSysRoles; query != nil {
+		if err := smq.loadSysRoles(ctx, query, nodes,
+			func(n *SysMenu) { n.Edges.SysRoles = []*SysRole{} },
+			func(n *SysMenu, e *SysRole) { n.Edges.SysRoles = append(n.Edges.SysRoles, e) }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (smq *SysMenuQuery) loadSysRoles(ctx context.Context, query *SysRoleQuery, nodes []*SysMenu, init func(*SysMenu), assign func(*SysMenu, *SysRole)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[int64]*SysMenu)
+	nids := make(map[int64]map[*SysMenu]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(sysmenu.SysRolesTable)
+		s.Join(joinT).On(s.C(sysrole.FieldID), joinT.C(sysmenu.SysRolesPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(sysmenu.SysRolesPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(sysmenu.SysRolesPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(sql.NullInt64)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := values[0].(*sql.NullInt64).Int64
+				inValue := values[1].(*sql.NullInt64).Int64
+				if nids[inValue] == nil {
+					nids[inValue] = map[*SysMenu]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*SysRole](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "sysRoles" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
 }
 
 func (smq *SysMenuQuery) sqlCount(ctx context.Context) (int, error) {

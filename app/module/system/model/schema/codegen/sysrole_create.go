@@ -10,7 +10,9 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysdept"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 )
 
 // SysRoleCreate is the builder for creating a SysRole entity.
@@ -161,6 +163,36 @@ func (src *SysRoleCreate) AddDepts(s ...*SysDept) *SysRoleCreate {
 	return src.AddDeptIDs(ids...)
 }
 
+// AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
+func (src *SysRoleCreate) AddSysUserIDs(ids ...int64) *SysRoleCreate {
+	src.mutation.AddSysUserIDs(ids...)
+	return src
+}
+
+// AddSysUsers adds the "sysUsers" edges to the SysUser entity.
+func (src *SysRoleCreate) AddSysUsers(s ...*SysUser) *SysRoleCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return src.AddSysUserIDs(ids...)
+}
+
+// AddSysMenuIDs adds the "sysMenus" edge to the SysMenu entity by IDs.
+func (src *SysRoleCreate) AddSysMenuIDs(ids ...int64) *SysRoleCreate {
+	src.mutation.AddSysMenuIDs(ids...)
+	return src
+}
+
+// AddSysMenus adds the "sysMenus" edges to the SysMenu entity.
+func (src *SysRoleCreate) AddSysMenus(s ...*SysMenu) *SysRoleCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return src.AddSysMenuIDs(ids...)
+}
+
 // Mutation returns the SysRoleMutation object of the builder.
 func (src *SysRoleCreate) Mutation() *SysRoleMutation {
 	return src.mutation
@@ -293,6 +325,38 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysdept.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := src.mutation.SysUsersIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysrole.SysUsersTable,
+			Columns: sysrole.SysUsersPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysuser.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := src.mutation.SysMenusIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   sysrole.SysMenusTable,
+			Columns: sysrole.SysMenusPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

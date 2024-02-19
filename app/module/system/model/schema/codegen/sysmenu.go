@@ -60,8 +60,29 @@ type SysMenu struct {
 	// 是否固定(1是,0否)
 	IsAffix int8 `json:"is_affix,omitempty"`
 	// 链接地址
-	LinkURL      string `json:"link_url,omitempty"`
+	LinkURL string `json:"link_url,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the SysMenuQuery when eager-loading is set.
+	Edges        SysMenuEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// SysMenuEdges holds the relations/edges for other nodes in the graph.
+type SysMenuEdges struct {
+	// SysRoles holds the value of the sysRoles edge.
+	SysRoles []*SysRole `json:"sysRoles,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// SysRolesOrErr returns the SysRoles value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysMenuEdges) SysRolesOrErr() ([]*SysRole, error) {
+	if e.loadedTypes[0] {
+		return e.SysRoles, nil
+	}
+	return nil, &NotLoadedError{edge: "sysRoles"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -239,6 +260,11 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (sm *SysMenu) Value(name string) (ent.Value, error) {
 	return sm.selectValues.Get(name)
+}
+
+// QuerySysRoles queries the "sysRoles" edge of the SysMenu entity.
+func (sm *SysMenu) QuerySysRoles() *SysRoleQuery {
+	return NewSysMenuClient(sm.config).QuerySysRoles(sm)
 }
 
 // Update returns a builder for updating this SysMenu.

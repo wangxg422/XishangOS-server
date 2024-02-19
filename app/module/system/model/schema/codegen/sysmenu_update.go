@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/predicate"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
 // SysMenuUpdate is the builder for updating SysMenu entities.
@@ -489,9 +490,45 @@ func (smu *SysMenuUpdate) ClearLinkURL() *SysMenuUpdate {
 	return smu
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (smu *SysMenuUpdate) AddSysRoleIDs(ids ...int64) *SysMenuUpdate {
+	smu.mutation.AddSysRoleIDs(ids...)
+	return smu
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (smu *SysMenuUpdate) AddSysRoles(s ...*SysRole) *SysMenuUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smu.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysMenuMutation object of the builder.
 func (smu *SysMenuUpdate) Mutation() *SysMenuMutation {
 	return smu.mutation
+}
+
+// ClearSysRoles clears all "sysRoles" edges to the SysRole entity.
+func (smu *SysMenuUpdate) ClearSysRoles() *SysMenuUpdate {
+	smu.mutation.ClearSysRoles()
+	return smu
+}
+
+// RemoveSysRoleIDs removes the "sysRoles" edge to SysRole entities by IDs.
+func (smu *SysMenuUpdate) RemoveSysRoleIDs(ids ...int64) *SysMenuUpdate {
+	smu.mutation.RemoveSysRoleIDs(ids...)
+	return smu
+}
+
+// RemoveSysRoles removes "sysRoles" edges to SysRole entities.
+func (smu *SysMenuUpdate) RemoveSysRoles(s ...*SysRole) *SysMenuUpdate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smu.RemoveSysRoleIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -695,6 +732,51 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.LinkURLCleared() {
 		_spec.ClearField(sysmenu.FieldLinkURL, field.TypeString)
+	}
+	if smu.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smu.mutation.RemovedSysRolesIDs(); len(nodes) > 0 && !smu.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smu.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, smu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -1177,9 +1259,45 @@ func (smuo *SysMenuUpdateOne) ClearLinkURL() *SysMenuUpdateOne {
 	return smuo
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (smuo *SysMenuUpdateOne) AddSysRoleIDs(ids ...int64) *SysMenuUpdateOne {
+	smuo.mutation.AddSysRoleIDs(ids...)
+	return smuo
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (smuo *SysMenuUpdateOne) AddSysRoles(s ...*SysRole) *SysMenuUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smuo.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysMenuMutation object of the builder.
 func (smuo *SysMenuUpdateOne) Mutation() *SysMenuMutation {
 	return smuo.mutation
+}
+
+// ClearSysRoles clears all "sysRoles" edges to the SysRole entity.
+func (smuo *SysMenuUpdateOne) ClearSysRoles() *SysMenuUpdateOne {
+	smuo.mutation.ClearSysRoles()
+	return smuo
+}
+
+// RemoveSysRoleIDs removes the "sysRoles" edge to SysRole entities by IDs.
+func (smuo *SysMenuUpdateOne) RemoveSysRoleIDs(ids ...int64) *SysMenuUpdateOne {
+	smuo.mutation.RemoveSysRoleIDs(ids...)
+	return smuo
+}
+
+// RemoveSysRoles removes "sysRoles" edges to SysRole entities.
+func (smuo *SysMenuUpdateOne) RemoveSysRoles(s ...*SysRole) *SysMenuUpdateOne {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smuo.RemoveSysRoleIDs(ids...)
 }
 
 // Where appends a list predicates to the SysMenuUpdate builder.
@@ -1413,6 +1531,51 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.LinkURLCleared() {
 		_spec.ClearField(sysmenu.FieldLinkURL, field.TypeString)
+	}
+	if smuo.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smuo.mutation.RemovedSysRolesIDs(); len(nodes) > 0 && !smuo.mutation.SysRolesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := smuo.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &SysMenu{config: smuo.config}
 	_spec.Assign = _node.assignValues

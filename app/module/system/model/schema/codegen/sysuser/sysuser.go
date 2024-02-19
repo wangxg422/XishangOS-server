@@ -58,6 +58,8 @@ const (
 	EdgeDept = "dept"
 	// EdgePosts holds the string denoting the posts edge name in mutations.
 	EdgePosts = "posts"
+	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
+	EdgeSysRoles = "sysRoles"
 	// Table holds the table name of the sysuser in the database.
 	Table = "sys_user"
 	// DeptTable is the table that holds the dept relation/edge.
@@ -72,6 +74,11 @@ const (
 	// PostsInverseTable is the table name for the SysPost entity.
 	// It exists in this package in order to avoid circular dependency with the "syspost" package.
 	PostsInverseTable = "sys_post"
+	// SysRolesTable is the table that holds the sysRoles relation/edge. The primary key declared below.
+	SysRolesTable = "sys_user_role"
+	// SysRolesInverseTable is the table name for the SysRole entity.
+	// It exists in this package in order to avoid circular dependency with the "sysrole" package.
+	SysRolesInverseTable = "sys_role"
 )
 
 // Columns holds all SQL columns for sysuser fields.
@@ -103,6 +110,9 @@ var (
 	// PostsPrimaryKey and PostsColumn2 are the table columns denoting the
 	// primary key for the posts relation (M2M).
 	PostsPrimaryKey = []string{"user_id", "post_id"}
+	// SysRolesPrimaryKey and SysRolesColumn2 are the table columns denoting the
+	// primary key for the sysRoles relation (M2M).
+	SysRolesPrimaryKey = []string{"user_id", "role_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -258,6 +268,20 @@ func ByPosts(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newPostsStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// BySysRolesCount orders the results by sysRoles count.
+func BySysRolesCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newSysRolesStep(), opts...)
+	}
+}
+
+// BySysRoles orders the results by sysRoles terms.
+func BySysRoles(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newSysRolesStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newDeptStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -270,5 +294,12 @@ func newPostsStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(PostsInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2M, false, PostsTable, PostsPrimaryKey...),
+	)
+}
+func newSysRolesStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(SysRolesInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, SysRolesTable, SysRolesPrimaryKey...),
 	)
 }

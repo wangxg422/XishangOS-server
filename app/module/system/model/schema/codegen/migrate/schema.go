@@ -313,6 +313,31 @@ var (
 			},
 		},
 	}
+	// SysRoleMenuColumns holds the columns for the "sys_role_menu" table.
+	SysRoleMenuColumns = []*schema.Column{
+		{Name: "role_id", Type: field.TypeInt64},
+		{Name: "menu_id", Type: field.TypeInt64},
+	}
+	// SysRoleMenuTable holds the schema information for the "sys_role_menu" table.
+	SysRoleMenuTable = &schema.Table{
+		Name:       "sys_role_menu",
+		Columns:    SysRoleMenuColumns,
+		PrimaryKey: []*schema.Column{SysRoleMenuColumns[0], SysRoleMenuColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_role_menu_role_id",
+				Columns:    []*schema.Column{SysRoleMenuColumns[0]},
+				RefColumns: []*schema.Column{SysRoleColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "sys_role_menu_menu_id",
+				Columns:    []*schema.Column{SysRoleMenuColumns[1]},
+				RefColumns: []*schema.Column{SysMenuColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// SysUserPostColumns holds the columns for the "sys_user_post" table.
 	SysUserPostColumns = []*schema.Column{
 		{Name: "user_id", Type: field.TypeInt64},
@@ -338,6 +363,31 @@ var (
 			},
 		},
 	}
+	// SysUserRoleColumns holds the columns for the "sys_user_role" table.
+	SysUserRoleColumns = []*schema.Column{
+		{Name: "user_id", Type: field.TypeInt64},
+		{Name: "role_id", Type: field.TypeInt64},
+	}
+	// SysUserRoleTable holds the schema information for the "sys_user_role" table.
+	SysUserRoleTable = &schema.Table{
+		Name:       "sys_user_role",
+		Columns:    SysUserRoleColumns,
+		PrimaryKey: []*schema.Column{SysUserRoleColumns[0], SysUserRoleColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_user_role_user_id",
+				Columns:    []*schema.Column{SysUserRoleColumns[0]},
+				RefColumns: []*schema.Column{SysUserColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "sys_user_role_role_id",
+				Columns:    []*schema.Column{SysUserRoleColumns[1]},
+				RefColumns: []*schema.Column{SysRoleColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		SysConfigTable,
@@ -352,7 +402,9 @@ var (
 		SysUserTable,
 		SysUserOnlineTable,
 		SysRoleDeptTable,
+		SysRoleMenuTable,
 		SysUserPostTable,
+		SysUserRoleTable,
 	}
 )
 
@@ -394,6 +446,10 @@ func init() {
 	}
 	SysRoleDeptTable.ForeignKeys[0].RefTable = SysRoleTable
 	SysRoleDeptTable.ForeignKeys[1].RefTable = SysDeptTable
+	SysRoleMenuTable.ForeignKeys[0].RefTable = SysRoleTable
+	SysRoleMenuTable.ForeignKeys[1].RefTable = SysMenuTable
 	SysUserPostTable.ForeignKeys[0].RefTable = SysUserTable
 	SysUserPostTable.ForeignKeys[1].RefTable = SysPostTable
+	SysUserRoleTable.ForeignKeys[0].RefTable = SysUserTable
+	SysUserRoleTable.ForeignKeys[1].RefTable = SysRoleTable
 }

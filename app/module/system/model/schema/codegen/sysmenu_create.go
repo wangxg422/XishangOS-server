@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
 // SysMenuCreate is the builder for creating a SysMenu entity.
@@ -334,6 +335,21 @@ func (smc *SysMenuCreate) SetNillableID(i *int64) *SysMenuCreate {
 	return smc
 }
 
+// AddSysRoleIDs adds the "sysRoles" edge to the SysRole entity by IDs.
+func (smc *SysMenuCreate) AddSysRoleIDs(ids ...int64) *SysMenuCreate {
+	smc.mutation.AddSysRoleIDs(ids...)
+	return smc
+}
+
+// AddSysRoles adds the "sysRoles" edges to the SysRole entity.
+func (smc *SysMenuCreate) AddSysRoles(s ...*SysRole) *SysMenuCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smc.AddSysRoleIDs(ids...)
+}
+
 // Mutation returns the SysMenuMutation object of the builder.
 func (smc *SysMenuCreate) Mutation() *SysMenuMutation {
 	return smc.mutation
@@ -511,6 +527,22 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if value, ok := smc.mutation.LinkURL(); ok {
 		_spec.SetField(sysmenu.FieldLinkURL, field.TypeString, value)
 		_node.LinkURL = value
+	}
+	if nodes := smc.mutation.SysRolesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: true,
+			Table:   sysmenu.SysRolesTable,
+			Columns: sysmenu.SysRolesPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
