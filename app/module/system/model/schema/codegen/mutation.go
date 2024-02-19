@@ -50,27 +50,28 @@ const (
 // SysConfigMutation represents an operation that mutates the SysConfig nodes in the graph.
 type SysConfigMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int64
-	created_at    *time.Time
-	updated_at    *time.Time
-	delete_at     *time.Time
-	created_by    *int64
-	addcreated_by *int64
-	updated_by    *int64
-	addupdated_by *int64
-	delete_by     *int64
-	adddelete_by  *int64
-	remark        *string
-	config_name   *string
-	config_key    *string
-	config_value  *string
-	config_type   *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*SysConfig, error)
-	predicates    []predicate.SysConfig
+	op             Op
+	typ            string
+	id             *int64
+	created_at     *time.Time
+	updated_at     *time.Time
+	delete_at      *time.Time
+	created_by     *int64
+	addcreated_by  *int64
+	updated_by     *int64
+	addupdated_by  *int64
+	delete_by      *int64
+	adddelete_by   *int64
+	remark         *string
+	config_name    *string
+	config_key     *string
+	config_value   *string
+	config_type    *int8
+	addconfig_type *int8
+	clearedFields  map[string]struct{}
+	done           bool
+	oldValue       func(context.Context) (*SysConfig, error)
+	predicates     []predicate.SysConfig
 }
 
 var _ ent.Mutation = (*SysConfigMutation)(nil)
@@ -731,12 +732,13 @@ func (m *SysConfigMutation) ResetConfigValue() {
 }
 
 // SetConfigType sets the "config_type" field.
-func (m *SysConfigMutation) SetConfigType(s string) {
-	m.config_type = &s
+func (m *SysConfigMutation) SetConfigType(i int8) {
+	m.config_type = &i
+	m.addconfig_type = nil
 }
 
 // ConfigType returns the value of the "config_type" field in the mutation.
-func (m *SysConfigMutation) ConfigType() (r string, exists bool) {
+func (m *SysConfigMutation) ConfigType() (r int8, exists bool) {
 	v := m.config_type
 	if v == nil {
 		return
@@ -747,7 +749,7 @@ func (m *SysConfigMutation) ConfigType() (r string, exists bool) {
 // OldConfigType returns the old "config_type" field's value of the SysConfig entity.
 // If the SysConfig object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysConfigMutation) OldConfigType(ctx context.Context) (v string, err error) {
+func (m *SysConfigMutation) OldConfigType(ctx context.Context) (v int8, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldConfigType is only allowed on UpdateOne operations")
 	}
@@ -761,9 +763,28 @@ func (m *SysConfigMutation) OldConfigType(ctx context.Context) (v string, err er
 	return oldValue.ConfigType, nil
 }
 
+// AddConfigType adds i to the "config_type" field.
+func (m *SysConfigMutation) AddConfigType(i int8) {
+	if m.addconfig_type != nil {
+		*m.addconfig_type += i
+	} else {
+		m.addconfig_type = &i
+	}
+}
+
+// AddedConfigType returns the value that was added to the "config_type" field in this mutation.
+func (m *SysConfigMutation) AddedConfigType() (r int8, exists bool) {
+	v := m.addconfig_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
 // ClearConfigType clears the value of the "config_type" field.
 func (m *SysConfigMutation) ClearConfigType() {
 	m.config_type = nil
+	m.addconfig_type = nil
 	m.clearedFields[sysconfig.FieldConfigType] = struct{}{}
 }
 
@@ -776,6 +797,7 @@ func (m *SysConfigMutation) ConfigTypeCleared() bool {
 // ResetConfigType resets all changes to the "config_type" field.
 func (m *SysConfigMutation) ResetConfigType() {
 	m.config_type = nil
+	m.addconfig_type = nil
 	delete(m.clearedFields, sysconfig.FieldConfigType)
 }
 
@@ -988,7 +1010,7 @@ func (m *SysConfigMutation) SetField(name string, value ent.Value) error {
 		m.SetConfigValue(v)
 		return nil
 	case sysconfig.FieldConfigType:
-		v, ok := value.(string)
+		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1011,6 +1033,9 @@ func (m *SysConfigMutation) AddedFields() []string {
 	if m.adddelete_by != nil {
 		fields = append(fields, sysconfig.FieldDeleteBy)
 	}
+	if m.addconfig_type != nil {
+		fields = append(fields, sysconfig.FieldConfigType)
+	}
 	return fields
 }
 
@@ -1025,6 +1050,8 @@ func (m *SysConfigMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedBy()
 	case sysconfig.FieldDeleteBy:
 		return m.AddedDeleteBy()
+	case sysconfig.FieldConfigType:
+		return m.AddedConfigType()
 	}
 	return nil, false
 }
@@ -1054,6 +1081,13 @@ func (m *SysConfigMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeleteBy(v)
+		return nil
+	case sysconfig.FieldConfigType:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddConfigType(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SysConfig numeric field %s", name)

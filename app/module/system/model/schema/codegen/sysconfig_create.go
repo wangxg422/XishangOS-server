@@ -160,15 +160,15 @@ func (scc *SysConfigCreate) SetNillableConfigValue(s *string) *SysConfigCreate {
 }
 
 // SetConfigType sets the "config_type" field.
-func (scc *SysConfigCreate) SetConfigType(s string) *SysConfigCreate {
-	scc.mutation.SetConfigType(s)
+func (scc *SysConfigCreate) SetConfigType(i int8) *SysConfigCreate {
+	scc.mutation.SetConfigType(i)
 	return scc
 }
 
 // SetNillableConfigType sets the "config_type" field if the given value is not nil.
-func (scc *SysConfigCreate) SetNillableConfigType(s *string) *SysConfigCreate {
-	if s != nil {
-		scc.SetConfigType(*s)
+func (scc *SysConfigCreate) SetNillableConfigType(i *int8) *SysConfigCreate {
+	if i != nil {
+		scc.SetConfigType(*i)
 	}
 	return scc
 }
@@ -315,7 +315,7 @@ func (scc *SysConfigCreate) createSpec() (*SysConfig, *sqlgraph.CreateSpec) {
 		_node.ConfigValue = value
 	}
 	if value, ok := scc.mutation.ConfigType(); ok {
-		_spec.SetField(sysconfig.FieldConfigType, field.TypeString, value)
+		_spec.SetField(sysconfig.FieldConfigType, field.TypeInt8, value)
 		_node.ConfigType = value
 	}
 	return _node, _spec

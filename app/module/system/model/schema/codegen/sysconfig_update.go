@@ -214,16 +214,23 @@ func (scu *SysConfigUpdate) ClearConfigValue() *SysConfigUpdate {
 }
 
 // SetConfigType sets the "config_type" field.
-func (scu *SysConfigUpdate) SetConfigType(s string) *SysConfigUpdate {
-	scu.mutation.SetConfigType(s)
+func (scu *SysConfigUpdate) SetConfigType(i int8) *SysConfigUpdate {
+	scu.mutation.ResetConfigType()
+	scu.mutation.SetConfigType(i)
 	return scu
 }
 
 // SetNillableConfigType sets the "config_type" field if the given value is not nil.
-func (scu *SysConfigUpdate) SetNillableConfigType(s *string) *SysConfigUpdate {
-	if s != nil {
-		scu.SetConfigType(*s)
+func (scu *SysConfigUpdate) SetNillableConfigType(i *int8) *SysConfigUpdate {
+	if i != nil {
+		scu.SetConfigType(*i)
 	}
+	return scu
+}
+
+// AddConfigType adds i to the "config_type" field.
+func (scu *SysConfigUpdate) AddConfigType(i int8) *SysConfigUpdate {
+	scu.mutation.AddConfigType(i)
 	return scu
 }
 
@@ -354,10 +361,13 @@ func (scu *SysConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.ClearField(sysconfig.FieldConfigValue, field.TypeString)
 	}
 	if value, ok := scu.mutation.ConfigType(); ok {
-		_spec.SetField(sysconfig.FieldConfigType, field.TypeString, value)
+		_spec.SetField(sysconfig.FieldConfigType, field.TypeInt8, value)
+	}
+	if value, ok := scu.mutation.AddedConfigType(); ok {
+		_spec.AddField(sysconfig.FieldConfigType, field.TypeInt8, value)
 	}
 	if scu.mutation.ConfigTypeCleared() {
-		_spec.ClearField(sysconfig.FieldConfigType, field.TypeString)
+		_spec.ClearField(sysconfig.FieldConfigType, field.TypeInt8)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, scu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -565,16 +575,23 @@ func (scuo *SysConfigUpdateOne) ClearConfigValue() *SysConfigUpdateOne {
 }
 
 // SetConfigType sets the "config_type" field.
-func (scuo *SysConfigUpdateOne) SetConfigType(s string) *SysConfigUpdateOne {
-	scuo.mutation.SetConfigType(s)
+func (scuo *SysConfigUpdateOne) SetConfigType(i int8) *SysConfigUpdateOne {
+	scuo.mutation.ResetConfigType()
+	scuo.mutation.SetConfigType(i)
 	return scuo
 }
 
 // SetNillableConfigType sets the "config_type" field if the given value is not nil.
-func (scuo *SysConfigUpdateOne) SetNillableConfigType(s *string) *SysConfigUpdateOne {
-	if s != nil {
-		scuo.SetConfigType(*s)
+func (scuo *SysConfigUpdateOne) SetNillableConfigType(i *int8) *SysConfigUpdateOne {
+	if i != nil {
+		scuo.SetConfigType(*i)
 	}
+	return scuo
+}
+
+// AddConfigType adds i to the "config_type" field.
+func (scuo *SysConfigUpdateOne) AddConfigType(i int8) *SysConfigUpdateOne {
+	scuo.mutation.AddConfigType(i)
 	return scuo
 }
 
@@ -735,10 +752,13 @@ func (scuo *SysConfigUpdateOne) sqlSave(ctx context.Context) (_node *SysConfig, 
 		_spec.ClearField(sysconfig.FieldConfigValue, field.TypeString)
 	}
 	if value, ok := scuo.mutation.ConfigType(); ok {
-		_spec.SetField(sysconfig.FieldConfigType, field.TypeString, value)
+		_spec.SetField(sysconfig.FieldConfigType, field.TypeInt8, value)
+	}
+	if value, ok := scuo.mutation.AddedConfigType(); ok {
+		_spec.AddField(sysconfig.FieldConfigType, field.TypeInt8, value)
 	}
 	if scuo.mutation.ConfigTypeCleared() {
-		_spec.ClearField(sysconfig.FieldConfigType, field.TypeString)
+		_spec.ClearField(sysconfig.FieldConfigType, field.TypeInt8)
 	}
 	_node = &SysConfig{config: scuo.config}
 	_spec.Assign = _node.assignValues

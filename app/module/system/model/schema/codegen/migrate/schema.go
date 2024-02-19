@@ -22,7 +22,7 @@ var (
 		{Name: "config_name", Type: field.TypeString, Nullable: true, Comment: "配置名称"},
 		{Name: "config_key", Type: field.TypeString, Nullable: true, Comment: "配置项"},
 		{Name: "config_value", Type: field.TypeString, Nullable: true, Comment: "配置值"},
-		{Name: "config_type", Type: field.TypeString, Nullable: true, Comment: "系统内置配置(0是1否)"},
+		{Name: "config_type", Type: field.TypeInt8, Nullable: true, Comment: "系统内置配置(0是1否)"},
 	}
 	// SysConfigTable holds the schema information for the "sys_config" table.
 	SysConfigTable = &schema.Table{

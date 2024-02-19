@@ -105,7 +105,7 @@ func ConfigValue(v string) predicate.SysConfig {
 }
 
 // ConfigType applies equality check predicate on the "config_type" field. It's identical to ConfigTypeEQ.
-func ConfigType(v string) predicate.SysConfig {
+func ConfigType(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldEQ(FieldConfigType, v))
 }
 
@@ -710,58 +710,43 @@ func ConfigValueContainsFold(v string) predicate.SysConfig {
 }
 
 // ConfigTypeEQ applies the EQ predicate on the "config_type" field.
-func ConfigTypeEQ(v string) predicate.SysConfig {
+func ConfigTypeEQ(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldEQ(FieldConfigType, v))
 }
 
 // ConfigTypeNEQ applies the NEQ predicate on the "config_type" field.
-func ConfigTypeNEQ(v string) predicate.SysConfig {
+func ConfigTypeNEQ(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldNEQ(FieldConfigType, v))
 }
 
 // ConfigTypeIn applies the In predicate on the "config_type" field.
-func ConfigTypeIn(vs ...string) predicate.SysConfig {
+func ConfigTypeIn(vs ...int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldIn(FieldConfigType, vs...))
 }
 
 // ConfigTypeNotIn applies the NotIn predicate on the "config_type" field.
-func ConfigTypeNotIn(vs ...string) predicate.SysConfig {
+func ConfigTypeNotIn(vs ...int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldNotIn(FieldConfigType, vs...))
 }
 
 // ConfigTypeGT applies the GT predicate on the "config_type" field.
-func ConfigTypeGT(v string) predicate.SysConfig {
+func ConfigTypeGT(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldGT(FieldConfigType, v))
 }
 
 // ConfigTypeGTE applies the GTE predicate on the "config_type" field.
-func ConfigTypeGTE(v string) predicate.SysConfig {
+func ConfigTypeGTE(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldGTE(FieldConfigType, v))
 }
 
 // ConfigTypeLT applies the LT predicate on the "config_type" field.
-func ConfigTypeLT(v string) predicate.SysConfig {
+func ConfigTypeLT(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldLT(FieldConfigType, v))
 }
 
 // ConfigTypeLTE applies the LTE predicate on the "config_type" field.
-func ConfigTypeLTE(v string) predicate.SysConfig {
+func ConfigTypeLTE(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldLTE(FieldConfigType, v))
-}
-
-// ConfigTypeContains applies the Contains predicate on the "config_type" field.
-func ConfigTypeContains(v string) predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldContains(FieldConfigType, v))
-}
-
-// ConfigTypeHasPrefix applies the HasPrefix predicate on the "config_type" field.
-func ConfigTypeHasPrefix(v string) predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldHasPrefix(FieldConfigType, v))
-}
-
-// ConfigTypeHasSuffix applies the HasSuffix predicate on the "config_type" field.
-func ConfigTypeHasSuffix(v string) predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldHasSuffix(FieldConfigType, v))
 }
 
 // ConfigTypeIsNil applies the IsNil predicate on the "config_type" field.
@@ -772,16 +757,6 @@ func ConfigTypeIsNil() predicate.SysConfig {
 // ConfigTypeNotNil applies the NotNil predicate on the "config_type" field.
 func ConfigTypeNotNil() predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldNotNull(FieldConfigType))
-}
-
-// ConfigTypeEqualFold applies the EqualFold predicate on the "config_type" field.
-func ConfigTypeEqualFold(v string) predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldEqualFold(FieldConfigType, v))
-}
-
-// ConfigTypeContainsFold applies the ContainsFold predicate on the "config_type" field.
-func ConfigTypeContainsFold(v string) predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldContainsFold(FieldConfigType, v))
 }
 
 // And groups predicates with the AND operator between them.

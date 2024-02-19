@@ -18,7 +18,7 @@ func (m *SysDeptService) DeptExist(deptCode string, id int64, c *gin.Context) er
 	if err != nil {
 		return err
 	}
-	if count == 1 {
+	if count > 0 {
 		return errors.New("部门编码已存在")
 	}
 	return nil

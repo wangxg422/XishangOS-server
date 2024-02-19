@@ -38,7 +38,7 @@ type SysConfig struct {
 	// 配置值
 	ConfigValue string `json:"config_value,omitempty"`
 	// 系统内置配置(0是1否)
-	ConfigType   string `json:"config_type,omitempty"`
+	ConfigType   int8 `json:"config_type,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -47,9 +47,9 @@ func (*SysConfig) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysconfig.FieldID, sysconfig.FieldCreatedBy, sysconfig.FieldUpdatedBy, sysconfig.FieldDeleteBy:
+		case sysconfig.FieldID, sysconfig.FieldCreatedBy, sysconfig.FieldUpdatedBy, sysconfig.FieldDeleteBy, sysconfig.FieldConfigType:
 			values[i] = new(sql.NullInt64)
-		case sysconfig.FieldRemark, sysconfig.FieldConfigName, sysconfig.FieldConfigKey, sysconfig.FieldConfigValue, sysconfig.FieldConfigType:
+		case sysconfig.FieldRemark, sysconfig.FieldConfigName, sysconfig.FieldConfigKey, sysconfig.FieldConfigValue:
 			values[i] = new(sql.NullString)
 		case sysconfig.FieldCreatedAt, sysconfig.FieldUpdatedAt, sysconfig.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -135,10 +135,10 @@ func (sc *SysConfig) assignValues(columns []string, values []any) error {
 				sc.ConfigValue = value.String
 			}
 		case sysconfig.FieldConfigType:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field config_type", values[i])
 			} else if value.Valid {
-				sc.ConfigType = value.String
+				sc.ConfigType = int8(value.Int64)
 			}
 		default:
 			sc.selectValues.Set(columns[i], values[i])
@@ -207,7 +207,7 @@ func (sc *SysConfig) String() string {
 	builder.WriteString(sc.ConfigValue)
 	builder.WriteString(", ")
 	builder.WriteString("config_type=")
-	builder.WriteString(sc.ConfigType)
+	builder.WriteString(fmt.Sprintf("%v", sc.ConfigType))
 	builder.WriteByte(')')
 	return builder.String()
 }

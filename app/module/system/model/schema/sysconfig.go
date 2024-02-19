@@ -38,7 +38,7 @@ func (SysConfig) Fields() []ent.Field {
 		field.String("config_name").Optional().Comment("配置名称"),
 		field.String("config_key").Optional().Comment("配置项"),
 		field.String("config_value").Optional().Comment("配置值"),
-		field.String("config_type").Optional().Comment("系统内置配置(0是1否)"),
+		field.Int8("config_type").Optional().Comment("系统内置配置(0是1否)"),
 	}
 }
 
