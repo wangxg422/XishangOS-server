@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/base/schema/mixin"
+	mixin2 "github.com/wangxg422/XishangOS-backend/app/base/model/schema/mixin"
 )
 
 // SysConfig holds the schema definition for the SysConfig entity.
@@ -25,10 +25,10 @@ func (SysConfig) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (SysConfig) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IdMixin{},
-		mixin.TimeMixin{},
-		mixin.ByMixin{},
-		mixin.RemarkMixin{},
+		mixin2.IdMixin{},
+		mixin2.TimeMixin{},
+		mixin2.ByMixin{},
+		mixin2.RemarkMixin{},
 	}
 }
 

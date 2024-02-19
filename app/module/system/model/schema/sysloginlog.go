@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/base/schema/mixin"
+	mixin2 "github.com/wangxg422/XishangOS-backend/app/base/model/schema/mixin"
 )
 
 // SysLoginLog holds the schema definition for the SysLoginLog entity.
@@ -25,8 +25,8 @@ func (SysLoginLog) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (SysLoginLog) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IdMixin{},
-		mixin.StatusMixin{},
+		mixin2.IdMixin{},
+		mixin2.StatusMixin{},
 	}
 }
 

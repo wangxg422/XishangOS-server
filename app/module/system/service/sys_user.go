@@ -2,6 +2,8 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/wangxg422/XishangOS-backend/app/base/model/response"
+	"github.com/wangxg422/XishangOS-backend/app/base/util"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/dao"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
@@ -13,8 +15,47 @@ type SysUserService struct {
 	BaseService
 }
 
-func (m *SysUserService) List() ([]*codegen.SysUser, error) {
-	return dao.SysUserDao.List()
+func (m *SysUserService) List(req *request.SysUserListReq, c *gin.Context) (*response.PaginationRes, error) {
+	query := initial.SysDbClient.SysUser.Query()
+	if req.Keyword != "" {
+		query.Where(sysuser.Or(sysuser.UserNameContains(req.Keyword), sysuser.UserNicknameContains(req.Keyword)))
+	}
+	if req.Mobile != "" {
+		query.Where(sysuser.MobileContains(req.Mobile))
+	}
+	if req.Email != "" {
+		query.Where(sysuser.UserEmailContains(req.Email))
+	}
+	if req.Sex != 0 {
+		query.Where(sysuser.Sex(req.Sex))
+	}
+	if req.Status != 0 {
+		query.Where(sysuser.UserStatus(req.Status))
+	}
+	if req.DeptId != 0 {
+		query.Where(sysuser.DeptID(req.DeptId))
+	}
+	if req.OrderBy != "" {
+		query.Order(codegen.Asc(sysuser.FieldCreatedAt))
+	}
+
+	total, err := query.Count(c)
+	if err != nil {
+		return nil, err
+	}
+
+	limit, offset := util.PageLimitOffset(req.PageNo, req.PageSize)
+	users, err := query.WithSysDept().WithSysRoles().WithSysPosts().Offset(offset).Limit(limit).All(c)
+	if err != nil {
+		return nil, err
+	}
+
+	res := new(response.PaginationRes)
+	res.List = users
+	res.PageNo = req.PageNo
+	res.Total = total
+
+	return res, nil
 }
 
 func (m *SysUserService) GetUserByUsername(username string) *codegen.SysUser {

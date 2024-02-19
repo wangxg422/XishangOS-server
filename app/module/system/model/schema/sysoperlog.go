@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/base/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/base/model/schema/mixin"
 )
 
 // SysOperLog holds the schema definition for the SysOperLog entity.

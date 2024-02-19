@@ -27,6 +27,9 @@ const (
 	DelFlag = "del_flag"
 
 	TokenName = "X-ACCESS-TOKEN"
+
+	// DefaultPageLimit 默认查询分页每页大小
+	DefaultPageLimit = 10
 )
 
 var UpdateOmit = []string{"create_time", "create_by"}

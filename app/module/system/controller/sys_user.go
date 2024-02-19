@@ -12,12 +12,19 @@ type SysUserController struct {
 }
 
 func (m *SysUserController) List(c *gin.Context) {
-	list, err := service.AppSysUserService.List()
+	req := new(request.SysUserListReq)
+	err := c.ShouldBind(req)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
-	result.OkWithData(list, c)
+
+	res, err := service.AppSysUserService.List(req, c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.OkWithData(res, c)
 }
 
 func (m *SysUserController) Add(c *gin.Context) {
