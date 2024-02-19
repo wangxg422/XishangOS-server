@@ -323,6 +323,26 @@ func (sdu *SysDeptUpdate) ClearEmail() *SysDeptUpdate {
 	return sdu
 }
 
+// SetAddress sets the "address" field.
+func (sdu *SysDeptUpdate) SetAddress(s string) *SysDeptUpdate {
+	sdu.mutation.SetAddress(s)
+	return sdu
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sdu *SysDeptUpdate) SetNillableAddress(s *string) *SysDeptUpdate {
+	if s != nil {
+		sdu.SetAddress(*s)
+	}
+	return sdu
+}
+
+// ClearAddress clears the value of the "address" field.
+func (sdu *SysDeptUpdate) ClearAddress() *SysDeptUpdate {
+	sdu.mutation.ClearAddress()
+	return sdu
+}
+
 // AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
 func (sdu *SysDeptUpdate) AddSysUserIDs(ids ...int64) *SysDeptUpdate {
 	sdu.mutation.AddSysUserIDs(ids...)
@@ -550,6 +570,12 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if sdu.mutation.EmailCleared() {
 		_spec.ClearField(sysdept.FieldEmail, field.TypeString)
+	}
+	if value, ok := sdu.mutation.Address(); ok {
+		_spec.SetField(sysdept.FieldAddress, field.TypeString, value)
+	}
+	if sdu.mutation.AddressCleared() {
+		_spec.ClearField(sysdept.FieldAddress, field.TypeString)
 	}
 	if sdu.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -954,6 +980,26 @@ func (sduo *SysDeptUpdateOne) ClearEmail() *SysDeptUpdateOne {
 	return sduo
 }
 
+// SetAddress sets the "address" field.
+func (sduo *SysDeptUpdateOne) SetAddress(s string) *SysDeptUpdateOne {
+	sduo.mutation.SetAddress(s)
+	return sduo
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sduo *SysDeptUpdateOne) SetNillableAddress(s *string) *SysDeptUpdateOne {
+	if s != nil {
+		sduo.SetAddress(*s)
+	}
+	return sduo
+}
+
+// ClearAddress clears the value of the "address" field.
+func (sduo *SysDeptUpdateOne) ClearAddress() *SysDeptUpdateOne {
+	sduo.mutation.ClearAddress()
+	return sduo
+}
+
 // AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by IDs.
 func (sduo *SysDeptUpdateOne) AddSysUserIDs(ids ...int64) *SysDeptUpdateOne {
 	sduo.mutation.AddSysUserIDs(ids...)
@@ -1211,6 +1257,12 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 	}
 	if sduo.mutation.EmailCleared() {
 		_spec.ClearField(sysdept.FieldEmail, field.TypeString)
+	}
+	if value, ok := sduo.mutation.Address(); ok {
+		_spec.SetField(sysdept.FieldAddress, field.TypeString, value)
+	}
+	if sduo.mutation.AddressCleared() {
+		_spec.ClearField(sysdept.FieldAddress, field.TypeString)
 	}
 	if sduo.mutation.SysUsersCleared() {
 		edge := &sqlgraph.EdgeSpec{

@@ -1264,6 +1264,7 @@ type SysDeptMutation struct {
 	leader          *string
 	phone           *string
 	email           *string
+	address         *string
 	clearedFields   map[string]struct{}
 	sysUsers        map[int64]struct{}
 	removedsysUsers map[int64]struct{}
@@ -2276,6 +2277,55 @@ func (m *SysDeptMutation) ResetEmail() {
 	delete(m.clearedFields, sysdept.FieldEmail)
 }
 
+// SetAddress sets the "address" field.
+func (m *SysDeptMutation) SetAddress(s string) {
+	m.address = &s
+}
+
+// Address returns the value of the "address" field in the mutation.
+func (m *SysDeptMutation) Address() (r string, exists bool) {
+	v := m.address
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddress returns the old "address" field's value of the SysDept entity.
+// If the SysDept object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysDeptMutation) OldAddress(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAddress is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAddress requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddress: %w", err)
+	}
+	return oldValue.Address, nil
+}
+
+// ClearAddress clears the value of the "address" field.
+func (m *SysDeptMutation) ClearAddress() {
+	m.address = nil
+	m.clearedFields[sysdept.FieldAddress] = struct{}{}
+}
+
+// AddressCleared returns if the "address" field was cleared in this mutation.
+func (m *SysDeptMutation) AddressCleared() bool {
+	_, ok := m.clearedFields[sysdept.FieldAddress]
+	return ok
+}
+
+// ResetAddress resets all changes to the "address" field.
+func (m *SysDeptMutation) ResetAddress() {
+	m.address = nil
+	delete(m.clearedFields, sysdept.FieldAddress)
+}
+
 // AddSysUserIDs adds the "sysUsers" edge to the SysUser entity by ids.
 func (m *SysDeptMutation) AddSysUserIDs(ids ...int64) {
 	if m.sysUsers == nil {
@@ -2418,7 +2468,7 @@ func (m *SysDeptMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysDeptMutation) Fields() []string {
-	fields := make([]string, 0, 16)
+	fields := make([]string, 0, 17)
 	if m.created_at != nil {
 		fields = append(fields, sysdept.FieldCreatedAt)
 	}
@@ -2467,6 +2517,9 @@ func (m *SysDeptMutation) Fields() []string {
 	if m.email != nil {
 		fields = append(fields, sysdept.FieldEmail)
 	}
+	if m.address != nil {
+		fields = append(fields, sysdept.FieldAddress)
+	}
 	return fields
 }
 
@@ -2507,6 +2560,8 @@ func (m *SysDeptMutation) Field(name string) (ent.Value, bool) {
 		return m.Phone()
 	case sysdept.FieldEmail:
 		return m.Email()
+	case sysdept.FieldAddress:
+		return m.Address()
 	}
 	return nil, false
 }
@@ -2548,6 +2603,8 @@ func (m *SysDeptMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldPhone(ctx)
 	case sysdept.FieldEmail:
 		return m.OldEmail(ctx)
+	case sysdept.FieldAddress:
+		return m.OldAddress(ctx)
 	}
 	return nil, fmt.Errorf("unknown SysDept field %s", name)
 }
@@ -2668,6 +2725,13 @@ func (m *SysDeptMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEmail(v)
+		return nil
+	case sysdept.FieldAddress:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddress(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SysDept field %s", name)
@@ -2819,6 +2883,9 @@ func (m *SysDeptMutation) ClearedFields() []string {
 	if m.FieldCleared(sysdept.FieldEmail) {
 		fields = append(fields, sysdept.FieldEmail)
 	}
+	if m.FieldCleared(sysdept.FieldAddress) {
+		fields = append(fields, sysdept.FieldAddress)
+	}
 	return fields
 }
 
@@ -2878,6 +2945,9 @@ func (m *SysDeptMutation) ClearField(name string) error {
 	case sysdept.FieldEmail:
 		m.ClearEmail()
 		return nil
+	case sysdept.FieldAddress:
+		m.ClearAddress()
+		return nil
 	}
 	return fmt.Errorf("unknown SysDept nullable field %s", name)
 }
@@ -2933,6 +3003,9 @@ func (m *SysDeptMutation) ResetField(name string) error {
 		return nil
 	case sysdept.FieldEmail:
 		m.ResetEmail()
+		return nil
+	case sysdept.FieldAddress:
+		m.ResetAddress()
 		return nil
 	}
 	return fmt.Errorf("unknown SysDept field %s", name)

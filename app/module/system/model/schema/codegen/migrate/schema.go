@@ -50,6 +50,7 @@ var (
 		{Name: "leader", Type: field.TypeString, Nullable: true, Comment: "负责人"},
 		{Name: "phone", Type: field.TypeString, Nullable: true, Comment: "部门联系电话"},
 		{Name: "email", Type: field.TypeString, Nullable: true, Comment: "部门电子邮箱"},
+		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "部门地址"},
 	}
 	// SysDeptTable holds the schema information for the "sys_dept" table.
 	SysDeptTable = &schema.Table{

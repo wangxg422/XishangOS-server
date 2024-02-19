@@ -46,6 +46,8 @@ const (
 	FieldPhone = "phone"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// FieldAddress holds the string denoting the address field in the database.
+	FieldAddress = "address"
 	// EdgeSysUsers holds the string denoting the sysusers edge name in mutations.
 	EdgeSysUsers = "sysUsers"
 	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
@@ -85,6 +87,7 @@ var Columns = []string{
 	FieldLeader,
 	FieldPhone,
 	FieldEmail,
+	FieldAddress,
 }
 
 var (
@@ -206,6 +209,11 @@ func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 // ByEmail orders the results by the email field.
 func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByAddress orders the results by the address field.
+func ByAddress(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddress, opts...).ToFunc()
 }
 
 // BySysUsersCount orders the results by sysUsers count.

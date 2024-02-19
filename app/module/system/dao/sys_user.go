@@ -7,6 +7,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
 type SysUser struct {
@@ -31,9 +32,7 @@ func (m *SysUser) UserNameOrMobileExist(c *gin.Context, username string, mobile 
 		Where(sysuser.IDNEQ(id)).
 		First(c)
 
-	if err != nil && codegen.IsNotFound(err) {
-		return nil
-	} else if err != nil {
+	if exception.NotNoRecordError(err) {
 		return err
 	}
 

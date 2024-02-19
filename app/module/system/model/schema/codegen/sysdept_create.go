@@ -238,6 +238,20 @@ func (sdc *SysDeptCreate) SetNillableEmail(s *string) *SysDeptCreate {
 	return sdc
 }
 
+// SetAddress sets the "address" field.
+func (sdc *SysDeptCreate) SetAddress(s string) *SysDeptCreate {
+	sdc.mutation.SetAddress(s)
+	return sdc
+}
+
+// SetNillableAddress sets the "address" field if the given value is not nil.
+func (sdc *SysDeptCreate) SetNillableAddress(s *string) *SysDeptCreate {
+	if s != nil {
+		sdc.SetAddress(*s)
+	}
+	return sdc
+}
+
 // SetID sets the "id" field.
 func (sdc *SysDeptCreate) SetID(i int64) *SysDeptCreate {
 	sdc.mutation.SetID(i)
@@ -439,6 +453,10 @@ func (sdc *SysDeptCreate) createSpec() (*SysDept, *sqlgraph.CreateSpec) {
 	if value, ok := sdc.mutation.Email(); ok {
 		_spec.SetField(sysdept.FieldEmail, field.TypeString, value)
 		_node.Email = value
+	}
+	if value, ok := sdc.mutation.Address(); ok {
+		_spec.SetField(sysdept.FieldAddress, field.TypeString, value)
+		_node.Address = value
 	}
 	if nodes := sdc.mutation.SysUsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

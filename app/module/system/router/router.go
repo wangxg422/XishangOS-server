@@ -16,4 +16,10 @@ func AddSystemRouter(group *gin.RouterGroup) {
 		router.DELETE("/user/delete/id", controller.AppSysUserController.Delete)
 		router.GET("/user/details/:id", controller.AppSysUserController.GetUserInfo)
 	}
+	{
+		router.GET("/dept/list", controller.AppSysDeptController.List)
+		router.POST("/dept/add", controller.AppSysDeptController.Add)
+		router.PUT("/dept/update", controller.AppSysDeptController.Update)
+		router.DELETE("/dept/delete/id", controller.AppSysDeptController.Delete)
+	}
 }

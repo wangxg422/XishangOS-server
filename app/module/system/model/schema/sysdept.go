@@ -45,6 +45,7 @@ func (SysDept) Fields() []ent.Field {
 		field.String("leader").Optional().Comment("负责人"),
 		field.String("phone").Optional().Comment("部门联系电话"),
 		field.String("email").Optional().Comment("部门电子邮箱"),
+		field.String("address").Optional().Comment("部门地址"),
 	}
 }
 

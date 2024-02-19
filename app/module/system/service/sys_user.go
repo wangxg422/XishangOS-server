@@ -64,7 +64,7 @@ func (m *SysUserService) GetUserByUsername(username string) *codegen.SysUser {
 
 func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateReq) error {
 	// 检查用户名、手机号是否已经存在,保证用户名唯一、手机号唯一
-	if err := dao.SysUserDao.UserNameOrMobileExist(c, req.UserName, req.Mobile, req.Id); err != nil {
+	if err := dao.SysUserDao.UserNameOrMobileExist(c, req.UserName, req.Mobile, 0); err != nil {
 		return err
 	}
 

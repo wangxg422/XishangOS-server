@@ -135,6 +135,11 @@ func Email(v string) predicate.SysDept {
 	return predicate.SysDept(sql.FieldEQ(FieldEmail, v))
 }
 
+// Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
+func Address(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldEQ(FieldAddress, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.SysDept {
 	return predicate.SysDept(sql.FieldEQ(FieldCreatedAt, v))
@@ -1098,6 +1103,81 @@ func EmailEqualFold(v string) predicate.SysDept {
 // EmailContainsFold applies the ContainsFold predicate on the "email" field.
 func EmailContainsFold(v string) predicate.SysDept {
 	return predicate.SysDept(sql.FieldContainsFold(FieldEmail, v))
+}
+
+// AddressEQ applies the EQ predicate on the "address" field.
+func AddressEQ(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldEQ(FieldAddress, v))
+}
+
+// AddressNEQ applies the NEQ predicate on the "address" field.
+func AddressNEQ(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldNEQ(FieldAddress, v))
+}
+
+// AddressIn applies the In predicate on the "address" field.
+func AddressIn(vs ...string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldIn(FieldAddress, vs...))
+}
+
+// AddressNotIn applies the NotIn predicate on the "address" field.
+func AddressNotIn(vs ...string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldNotIn(FieldAddress, vs...))
+}
+
+// AddressGT applies the GT predicate on the "address" field.
+func AddressGT(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldGT(FieldAddress, v))
+}
+
+// AddressGTE applies the GTE predicate on the "address" field.
+func AddressGTE(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldGTE(FieldAddress, v))
+}
+
+// AddressLT applies the LT predicate on the "address" field.
+func AddressLT(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldLT(FieldAddress, v))
+}
+
+// AddressLTE applies the LTE predicate on the "address" field.
+func AddressLTE(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldLTE(FieldAddress, v))
+}
+
+// AddressContains applies the Contains predicate on the "address" field.
+func AddressContains(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldContains(FieldAddress, v))
+}
+
+// AddressHasPrefix applies the HasPrefix predicate on the "address" field.
+func AddressHasPrefix(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldHasPrefix(FieldAddress, v))
+}
+
+// AddressHasSuffix applies the HasSuffix predicate on the "address" field.
+func AddressHasSuffix(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldHasSuffix(FieldAddress, v))
+}
+
+// AddressIsNil applies the IsNil predicate on the "address" field.
+func AddressIsNil() predicate.SysDept {
+	return predicate.SysDept(sql.FieldIsNull(FieldAddress))
+}
+
+// AddressNotNil applies the NotNil predicate on the "address" field.
+func AddressNotNil() predicate.SysDept {
+	return predicate.SysDept(sql.FieldNotNull(FieldAddress))
+}
+
+// AddressEqualFold applies the EqualFold predicate on the "address" field.
+func AddressEqualFold(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldEqualFold(FieldAddress, v))
+}
+
+// AddressContainsFold applies the ContainsFold predicate on the "address" field.
+func AddressContainsFold(v string) predicate.SysDept {
+	return predicate.SysDept(sql.FieldContainsFold(FieldAddress, v))
 }
 
 // HasSysUsers applies the HasEdge predicate on the "sysUsers" edge.

@@ -49,6 +49,8 @@ type SysDept struct {
 	Phone string `json:"phone,omitempty"`
 	// 部门电子邮箱
 	Email string `json:"email,omitempty"`
+	// 部门地址
+	Address string `json:"address,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDeptQuery when eager-loading is set.
 	Edges        SysDeptEdges `json:"edges"`
@@ -91,7 +93,7 @@ func (*SysDept) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case sysdept.FieldID, sysdept.FieldCreatedBy, sysdept.FieldUpdatedBy, sysdept.FieldDeleteBy, sysdept.FieldStatus, sysdept.FieldSort, sysdept.FieldParentID:
 			values[i] = new(sql.NullInt64)
-		case sysdept.FieldRemark, sysdept.FieldAncestors, sysdept.FieldDeptName, sysdept.FieldDeptCode, sysdept.FieldLeader, sysdept.FieldPhone, sysdept.FieldEmail:
+		case sysdept.FieldRemark, sysdept.FieldAncestors, sysdept.FieldDeptName, sysdept.FieldDeptCode, sysdept.FieldLeader, sysdept.FieldPhone, sysdept.FieldEmail, sysdept.FieldAddress:
 			values[i] = new(sql.NullString)
 		case sysdept.FieldCreatedAt, sysdept.FieldUpdatedAt, sysdept.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -212,6 +214,12 @@ func (sd *SysDept) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sd.Email = value.String
 			}
+		case sysdept.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
+			} else if value.Valid {
+				sd.Address = value.String
+			}
 		default:
 			sd.selectValues.Set(columns[i], values[i])
 		}
@@ -305,6 +313,9 @@ func (sd *SysDept) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(sd.Email)
+	builder.WriteString(", ")
+	builder.WriteString("address=")
+	builder.WriteString(sd.Address)
 	builder.WriteByte(')')
 	return builder.String()
 }
