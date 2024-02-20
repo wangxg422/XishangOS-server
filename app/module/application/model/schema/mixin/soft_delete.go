@@ -10,6 +10,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/hook"
 	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/intercept"
+	"github.com/wangxg422/XishangOS-backend/common/constant"
 	"github.com/wangxg422/XishangOS-backend/common/enmu"
 )
 
@@ -21,7 +22,7 @@ type SoftDeleteMixin struct {
 // Fields of the SoftDeleteMixin.
 func (SoftDeleteMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8(enmu.DelFlagNormal.Name()).Default(enmu.DelFlagNormal.Value()),
+		field.Int8(constant.DelFlagField).Default(enmu.DelFlagNormal.Value()),
 	}
 }
 

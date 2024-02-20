@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"github.com/wangxg422/XishangOS-backend/app/module/system/dao"
+	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 )
@@ -10,8 +10,8 @@ import (
 type SysMenuService struct {
 }
 
-func (m *SysMenuService) List() ([]*codegen.SysUser, error) {
-	return dao.SysUserDao.List()
+func (m *SysMenuService) List(c *gin.Context) ([]*codegen.SysMenu, error) {
+	return initial.SysDbClient.SysMenu.Query().All(c)
 }
 
 func (m *SysMenuService) GetUserMenuAndPermissions(user *codegen.SysUser) (menuList []*codegen.SysMenu, permissions []string, err error) {

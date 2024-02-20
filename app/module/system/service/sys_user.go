@@ -1,14 +1,15 @@
 package service
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/base/model/response"
 	"github.com/wangxg422/XishangOS-backend/app/base/util"
-	"github.com/wangxg422/XishangOS-backend/app/module/system/dao"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
 type SysUserService struct {
@@ -58,13 +59,17 @@ func (m *SysUserService) List(req *request.SysUserListReq, c *gin.Context) (*res
 	return res, nil
 }
 
-func (m *SysUserService) GetUserByUsername(username string) *codegen.SysUser {
-	return dao.SysUserDao.GetUserByUsername(username)
+func (m *SysUserService) GetUserByUsername(username string, c *gin.Context) (*codegen.SysUser, error) {
+	u, err := initial.SysDbClient.SysUser.Query().Where(sysuser.UserNameEQ(username)).First(c)
+	if exception.NotNoRecordError(err) {
+		return nil, err
+	}
+	return u, err
 }
 
 func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateReq) error {
 	// 检查用户名、手机号是否已经存在,保证用户名唯一、手机号唯一
-	if err := dao.SysUserDao.UserNameOrMobileExist(c, req.UserName, req.Mobile, 0); err != nil {
+	if err := m.UserNameOrMobileExist(c, req.UserName, req.Mobile, 0); err != nil {
 		return err
 	}
 
@@ -105,7 +110,7 @@ func (m *SysUserService) Update(c *gin.Context, req *request.SysUserUpdateReq) e
 
 func (m *SysUserService) updateUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserUpdateReq) error {
 	// 检查用户名、手机号是否已经存在,保证用户名唯一、手机号唯一
-	if err := dao.SysUserDao.UserNameOrMobileExist(c, req.UserName, req.Mobile, req.Id); err != nil {
+	if err := m.UserNameOrMobileExist(c, req.UserName, req.Mobile, req.Id); err != nil {
 		return err
 	}
 
@@ -135,5 +140,32 @@ func (m *SysUserService) updateUser(tx *codegen.Tx, c *gin.Context, req *request
 
 // GetUserInfo 获取用户的详细信息，包含用户的角色，部门，职位
 func (m *SysUserService) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser, error) {
-	return dao.SysUserDao.GetUserInfo(c, id)
+	u, err := initial.SysDbClient.SysUser.Query().
+		Where(sysuser.IDEQ(id)).
+		WithSysPosts().WithSysRoles().WithSysDept().
+		First(c)
+	if exception.NotNoRecordError(err) {
+		return nil, err
+	}
+	return u, nil
+}
+
+// UserNameOrMobileExist 按照username和手机号查询用户是否已经存在
+func (m *SysUserService) UserNameOrMobileExist(c *gin.Context, username string, mobile string, id int64) error {
+	user, err := initial.SysDbClient.SysUser.Query().
+		Where(sysuser.Or(sysuser.UserNameEQ(username), sysuser.Mobile(mobile))).
+		Where(sysuser.IDNEQ(id)).
+		First(c)
+
+	if exception.NotNoRecordError(err) {
+		return err
+	}
+
+	if user != nil && user.UserName == username {
+		return errors.New("用户名已存在")
+	}
+	if user != nil && user.Mobile == mobile {
+		return errors.New("手机号已存在")
+	}
+	return nil
 }

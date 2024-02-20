@@ -21,7 +21,7 @@ const (
 
 	Comma = ","
 
-	DelFlag = "del_flag"
+	DelFlagField = "del_flag"
 
 	TokenName = "X-ACCESS-TOKEN"
 

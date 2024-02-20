@@ -30,6 +30,3 @@ func (m DelFlag) Size() int {
 func (m DelFlag) Equals(value int8) bool {
 	return int8(m) == value
 }
-func (m DelFlag) Name() string {
-	return "del_flag"
-}
