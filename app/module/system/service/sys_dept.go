@@ -78,3 +78,7 @@ func (m *SysDeptService) List(req *request.SysDeptListReq, c *gin.Context) ([]*c
 	}
 	return query.Order(codegen.Asc(sysdept.FieldParentID, sysdept.FieldID, sysdept.FieldCreatedAt)).All(c)
 }
+
+func (m *SysDeptService) Delete(id int64, c *gin.Context) (int, error) {
+	return initial.SysDbClient.SysDept.Delete().Where(sysdept.ID(id)).Exec(c)
+}

@@ -77,15 +77,11 @@ func (m *SysPostService) Update(req *request.SysPostUpdateReq, c *gin.Context) e
 		SetSort(req.Sort).Exec(c)
 }
 
-func (m *SysPostService) Delete(id int64, c *gin.Context) error {
+func (m *SysPostService) Delete(id int64, c *gin.Context) (int, error) {
 	// 校验是否能够删除
 	// 删除关联关系
 
-	_, err := initial.SysDbClient.SysPost.Delete().Where(syspost.ID(id)).Exec(c)
-	if err != nil {
-		return err
-	}
-	return nil
+	return initial.SysDbClient.SysPost.Delete().Where(syspost.ID(id)).Exec(c)
 }
 
 func (m *SysPostService) SysPostExist(postCode string, id int64, c *gin.Context) error {

@@ -5,6 +5,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/base/controller"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/service"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/param"
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
@@ -43,6 +44,7 @@ func (m *SysPostController) Add(c *gin.Context) {
 	}
 	result.Ok(c)
 }
+
 func (m *SysPostController) Update(c *gin.Context) {
 	req := new(request.SysPostUpdateReq)
 	err := c.ShouldBind(req)
@@ -58,6 +60,18 @@ func (m *SysPostController) Update(c *gin.Context) {
 	}
 	result.Ok(c)
 }
-func (m *SysPostController) Delete(c *gin.Context) {
 
+func (m *SysPostController) Delete(c *gin.Context) {
+	id, err := param.ParamInt64("id", c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	_, err = service.AppSysPostService.Delete(id, c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.Ok(c)
 }

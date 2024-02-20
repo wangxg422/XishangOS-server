@@ -60,7 +60,18 @@ func (m *SysUserController) Update(c *gin.Context) {
 }
 
 func (m *SysUserController) Delete(c *gin.Context) {
+	id, err := param.ParamInt64("id", c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
 
+	_, err = service.AppSysUserService.Delete(id, c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.Ok(c)
 }
 
 func (m *SysUserController) GetUserInfo(c *gin.Context) {

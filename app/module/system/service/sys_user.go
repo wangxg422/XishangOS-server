@@ -169,3 +169,7 @@ func (m *SysUserService) UserNameOrMobileExist(c *gin.Context, username string, 
 	}
 	return nil
 }
+
+func (m *SysUserService) Delete(id int64, c *gin.Context) (interface{}, error) {
+	return initial.SysDbClient.SysUser.Delete().Where(sysuser.ID(id)).Exec(c)
+}
