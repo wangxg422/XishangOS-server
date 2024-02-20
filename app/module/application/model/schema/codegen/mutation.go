@@ -41,6 +41,8 @@ type AppInstanceMutation struct {
 	status              *int8
 	addstatus           *int8
 	remark              *string
+	del_flag            *int8
+	adddel_flag         *int8
 	instance_name       *string
 	instance_code       *string
 	instance_package    *int64
@@ -428,6 +430,76 @@ func (m *AppInstanceMutation) RemarkCleared() bool {
 func (m *AppInstanceMutation) ResetRemark() {
 	m.remark = nil
 	delete(m.clearedFields, appinstance.FieldRemark)
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (m *AppInstanceMutation) SetDelFlag(i int8) {
+	m.del_flag = &i
+	m.adddel_flag = nil
+}
+
+// DelFlag returns the value of the "del_flag" field in the mutation.
+func (m *AppInstanceMutation) DelFlag() (r int8, exists bool) {
+	v := m.del_flag
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDelFlag returns the old "del_flag" field's value of the AppInstance entity.
+// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppInstanceMutation) OldDelFlag(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDelFlag is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDelFlag requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDelFlag: %w", err)
+	}
+	return oldValue.DelFlag, nil
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (m *AppInstanceMutation) AddDelFlag(i int8) {
+	if m.adddel_flag != nil {
+		*m.adddel_flag += i
+	} else {
+		m.adddel_flag = &i
+	}
+}
+
+// AddedDelFlag returns the value that was added to the "del_flag" field in this mutation.
+func (m *AppInstanceMutation) AddedDelFlag() (r int8, exists bool) {
+	v := m.adddel_flag
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (m *AppInstanceMutation) ClearDelFlag() {
+	m.del_flag = nil
+	m.adddel_flag = nil
+	m.clearedFields[appinstance.FieldDelFlag] = struct{}{}
+}
+
+// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
+func (m *AppInstanceMutation) DelFlagCleared() bool {
+	_, ok := m.clearedFields[appinstance.FieldDelFlag]
+	return ok
+}
+
+// ResetDelFlag resets all changes to the "del_flag" field.
+func (m *AppInstanceMutation) ResetDelFlag() {
+	m.del_flag = nil
+	m.adddel_flag = nil
+	delete(m.clearedFields, appinstance.FieldDelFlag)
 }
 
 // SetInstanceName sets the "instance_name" field.
@@ -918,7 +990,7 @@ func (m *AppInstanceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AppInstanceMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.created_at != nil {
 		fields = append(fields, appinstance.FieldCreatedAt)
 	}
@@ -933,6 +1005,9 @@ func (m *AppInstanceMutation) Fields() []string {
 	}
 	if m.remark != nil {
 		fields = append(fields, appinstance.FieldRemark)
+	}
+	if m.del_flag != nil {
+		fields = append(fields, appinstance.FieldDelFlag)
 	}
 	if m.instance_name != nil {
 		fields = append(fields, appinstance.FieldInstanceName)
@@ -976,6 +1051,8 @@ func (m *AppInstanceMutation) Field(name string) (ent.Value, bool) {
 		return m.Status()
 	case appinstance.FieldRemark:
 		return m.Remark()
+	case appinstance.FieldDelFlag:
+		return m.DelFlag()
 	case appinstance.FieldInstanceName:
 		return m.InstanceName()
 	case appinstance.FieldInstanceCode:
@@ -1011,6 +1088,8 @@ func (m *AppInstanceMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldStatus(ctx)
 	case appinstance.FieldRemark:
 		return m.OldRemark(ctx)
+	case appinstance.FieldDelFlag:
+		return m.OldDelFlag(ctx)
 	case appinstance.FieldInstanceName:
 		return m.OldInstanceName(ctx)
 	case appinstance.FieldInstanceCode:
@@ -1070,6 +1149,13 @@ func (m *AppInstanceMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRemark(v)
+		return nil
+	case appinstance.FieldDelFlag:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDelFlag(v)
 		return nil
 	case appinstance.FieldInstanceName:
 		v, ok := value.(string)
@@ -1138,6 +1224,9 @@ func (m *AppInstanceMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, appinstance.FieldStatus)
 	}
+	if m.adddel_flag != nil {
+		fields = append(fields, appinstance.FieldDelFlag)
+	}
 	if m.addinstance_package != nil {
 		fields = append(fields, appinstance.FieldInstancePackage)
 	}
@@ -1157,6 +1246,8 @@ func (m *AppInstanceMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case appinstance.FieldStatus:
 		return m.AddedStatus()
+	case appinstance.FieldDelFlag:
+		return m.AddedDelFlag()
 	case appinstance.FieldInstancePackage:
 		return m.AddedInstancePackage()
 	case appinstance.FieldInstanceType:
@@ -1178,6 +1269,13 @@ func (m *AppInstanceMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case appinstance.FieldDelFlag:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDelFlag(v)
 		return nil
 	case appinstance.FieldInstancePackage:
 		v, ok := value.(int64)
@@ -1223,6 +1321,9 @@ func (m *AppInstanceMutation) ClearedFields() []string {
 	if m.FieldCleared(appinstance.FieldRemark) {
 		fields = append(fields, appinstance.FieldRemark)
 	}
+	if m.FieldCleared(appinstance.FieldDelFlag) {
+		fields = append(fields, appinstance.FieldDelFlag)
+	}
 	if m.FieldCleared(appinstance.FieldInstanceIcon) {
 		fields = append(fields, appinstance.FieldInstanceIcon)
 	}
@@ -1267,6 +1368,9 @@ func (m *AppInstanceMutation) ClearField(name string) error {
 	case appinstance.FieldRemark:
 		m.ClearRemark()
 		return nil
+	case appinstance.FieldDelFlag:
+		m.ClearDelFlag()
+		return nil
 	case appinstance.FieldInstanceIcon:
 		m.ClearInstanceIcon()
 		return nil
@@ -1304,6 +1408,9 @@ func (m *AppInstanceMutation) ResetField(name string) error {
 		return nil
 	case appinstance.FieldRemark:
 		m.ResetRemark()
+		return nil
+	case appinstance.FieldDelFlag:
+		m.ResetDelFlag()
 		return nil
 	case appinstance.FieldInstanceName:
 		m.ResetInstanceName()

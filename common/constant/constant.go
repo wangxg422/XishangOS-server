@@ -21,9 +21,6 @@ const (
 
 	Comma = ","
 
-	PageNum  = "pageNum"
-	PageSize = "pageSize"
-
 	DelFlag = "del_flag"
 
 	TokenName = "X-ACCESS-TOKEN"

@@ -91,6 +91,20 @@ func (aic *AppInstanceCreate) SetNillableRemark(s *string) *AppInstanceCreate {
 	return aic
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (aic *AppInstanceCreate) SetDelFlag(i int8) *AppInstanceCreate {
+	aic.mutation.SetDelFlag(i)
+	return aic
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (aic *AppInstanceCreate) SetNillableDelFlag(i *int8) *AppInstanceCreate {
+	if i != nil {
+		aic.SetDelFlag(*i)
+	}
+	return aic
+}
+
 // SetInstanceName sets the "instance_name" field.
 func (aic *AppInstanceCreate) SetInstanceName(s string) *AppInstanceCreate {
 	aic.mutation.SetInstanceName(s)
@@ -219,7 +233,9 @@ func (aic *AppInstanceCreate) Mutation() *AppInstanceMutation {
 
 // Save creates the AppInstance in the database.
 func (aic *AppInstanceCreate) Save(ctx context.Context) (*AppInstance, error) {
-	aic.defaults()
+	if err := aic.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, aic.sqlSave, aic.mutation, aic.hooks)
 }
 
@@ -246,16 +262,25 @@ func (aic *AppInstanceCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (aic *AppInstanceCreate) defaults() {
+func (aic *AppInstanceCreate) defaults() error {
 	if _, ok := aic.mutation.CreatedAt(); !ok {
+		if appinstance.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.DefaultCreatedAt()
 		aic.mutation.SetCreatedAt(v)
 	}
 	if _, ok := aic.mutation.UpdatedAt(); !ok {
+		if appinstance.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.DefaultUpdatedAt()
 		aic.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := aic.mutation.DeleteAt(); !ok {
+		if appinstance.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.DefaultDeleteAt()
 		aic.mutation.SetDeleteAt(v)
 	}
@@ -264,9 +289,13 @@ func (aic *AppInstanceCreate) defaults() {
 		aic.mutation.SetStatus(v)
 	}
 	if _, ok := aic.mutation.ID(); !ok {
+		if appinstance.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.DefaultID()
 		aic.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -331,6 +360,10 @@ func (aic *AppInstanceCreate) createSpec() (*AppInstance, *sqlgraph.CreateSpec) 
 	if value, ok := aic.mutation.Remark(); ok {
 		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := aic.mutation.DelFlag(); ok {
+		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := aic.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)

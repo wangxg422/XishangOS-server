@@ -6,7 +6,8 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	mixin2 "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	mixin "github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/mixin"
+	baseMixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // AppInstance holds the schema definition for the AppInstance entity.
@@ -26,10 +27,11 @@ func (AppInstance) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (AppInstance) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin2.IdMixin{},
-		mixin2.TimeMixin{},
-		mixin2.StatusMixin{},
-		mixin2.RemarkMixin{},
+		baseMixin.IdMixin{},
+		baseMixin.TimeMixin{},
+		baseMixin.StatusMixin{},
+		baseMixin.RemarkMixin{},
+		mixin.SoftDeleteMixin{},
 	}
 }
 

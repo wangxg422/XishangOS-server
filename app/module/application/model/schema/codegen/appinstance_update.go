@@ -73,6 +73,33 @@ func (aiu *AppInstanceUpdate) ClearRemark() *AppInstanceUpdate {
 	return aiu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (aiu *AppInstanceUpdate) SetDelFlag(i int8) *AppInstanceUpdate {
+	aiu.mutation.ResetDelFlag()
+	aiu.mutation.SetDelFlag(i)
+	return aiu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableDelFlag(i *int8) *AppInstanceUpdate {
+	if i != nil {
+		aiu.SetDelFlag(*i)
+	}
+	return aiu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (aiu *AppInstanceUpdate) AddDelFlag(i int8) *AppInstanceUpdate {
+	aiu.mutation.AddDelFlag(i)
+	return aiu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (aiu *AppInstanceUpdate) ClearDelFlag() *AppInstanceUpdate {
+	aiu.mutation.ClearDelFlag()
+	return aiu
+}
+
 // SetInstanceName sets the "instance_name" field.
 func (aiu *AppInstanceUpdate) SetInstanceName(s string) *AppInstanceUpdate {
 	aiu.mutation.SetInstanceName(s)
@@ -268,7 +295,9 @@ func (aiu *AppInstanceUpdate) ClearInstallFrom() *AppInstanceUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (aiu *AppInstanceUpdate) Save(ctx context.Context) (int, error) {
-	aiu.defaults()
+	if err := aiu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, aiu.sqlSave, aiu.mutation, aiu.hooks)
 }
 
@@ -295,15 +324,22 @@ func (aiu *AppInstanceUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (aiu *AppInstanceUpdate) defaults() {
+func (aiu *AppInstanceUpdate) defaults() error {
 	if _, ok := aiu.mutation.UpdatedAt(); !ok && !aiu.mutation.UpdatedAtCleared() {
+		if appinstance.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.UpdateDefaultUpdatedAt()
 		aiu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := aiu.mutation.DeleteAt(); !ok && !aiu.mutation.DeleteAtCleared() {
+		if appinstance.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.UpdateDefaultDeleteAt()
 		aiu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -338,6 +374,15 @@ func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if aiu.mutation.RemarkCleared() {
 		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
+	}
+	if value, ok := aiu.mutation.DelFlag(); ok {
+		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := aiu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(appinstance.FieldDelFlag, field.TypeInt8, value)
+	}
+	if aiu.mutation.DelFlagCleared() {
+		_spec.ClearField(appinstance.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := aiu.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)
@@ -477,6 +522,33 @@ func (aiuo *AppInstanceUpdateOne) SetNillableRemark(s *string) *AppInstanceUpdat
 // ClearRemark clears the value of the "remark" field.
 func (aiuo *AppInstanceUpdateOne) ClearRemark() *AppInstanceUpdateOne {
 	aiuo.mutation.ClearRemark()
+	return aiuo
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (aiuo *AppInstanceUpdateOne) SetDelFlag(i int8) *AppInstanceUpdateOne {
+	aiuo.mutation.ResetDelFlag()
+	aiuo.mutation.SetDelFlag(i)
+	return aiuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableDelFlag(i *int8) *AppInstanceUpdateOne {
+	if i != nil {
+		aiuo.SetDelFlag(*i)
+	}
+	return aiuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (aiuo *AppInstanceUpdateOne) AddDelFlag(i int8) *AppInstanceUpdateOne {
+	aiuo.mutation.AddDelFlag(i)
+	return aiuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (aiuo *AppInstanceUpdateOne) ClearDelFlag() *AppInstanceUpdateOne {
+	aiuo.mutation.ClearDelFlag()
 	return aiuo
 }
 
@@ -688,7 +760,9 @@ func (aiuo *AppInstanceUpdateOne) Select(field string, fields ...string) *AppIns
 
 // Save executes the query and returns the updated AppInstance entity.
 func (aiuo *AppInstanceUpdateOne) Save(ctx context.Context) (*AppInstance, error) {
-	aiuo.defaults()
+	if err := aiuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, aiuo.sqlSave, aiuo.mutation, aiuo.hooks)
 }
 
@@ -715,15 +789,22 @@ func (aiuo *AppInstanceUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (aiuo *AppInstanceUpdateOne) defaults() {
+func (aiuo *AppInstanceUpdateOne) defaults() error {
 	if _, ok := aiuo.mutation.UpdatedAt(); !ok && !aiuo.mutation.UpdatedAtCleared() {
+		if appinstance.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.UpdateDefaultUpdatedAt()
 		aiuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := aiuo.mutation.DeleteAt(); !ok && !aiuo.mutation.DeleteAtCleared() {
+		if appinstance.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := appinstance.UpdateDefaultDeleteAt()
 		aiuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstance, err error) {
@@ -775,6 +856,15 @@ func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstan
 	}
 	if aiuo.mutation.RemarkCleared() {
 		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
+	}
+	if value, ok := aiuo.mutation.DelFlag(); ok {
+		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := aiuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(appinstance.FieldDelFlag, field.TypeInt8, value)
+	}
+	if aiuo.mutation.DelFlagCleared() {
+		_spec.ClearField(appinstance.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := aiuo.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)

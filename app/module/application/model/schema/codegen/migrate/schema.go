@@ -17,6 +17,7 @@ var (
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
 		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
 		{Name: "remark", Type: field.TypeString, Nullable: true},
+		{Name: "del_flag", Type: field.TypeInt8, Nullable: true},
 		{Name: "instance_name", Type: field.TypeString},
 		{Name: "instance_code", Type: field.TypeString},
 		{Name: "instance_package", Type: field.TypeInt64},
@@ -36,7 +37,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "app_instance_app_package_app_instance",
-				Columns:    []*schema.Column{AppInstanceColumns[14]},
+				Columns:    []*schema.Column{AppInstanceColumns[15]},
 				RefColumns: []*schema.Column{AppPackageColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

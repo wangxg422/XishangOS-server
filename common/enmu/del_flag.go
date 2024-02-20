@@ -3,16 +3,16 @@ package enmu
 type DelFlag int8
 
 const (
-	DelFlag_Normal  = 1
-	DelFlag_Deleted = 2
+	delFlagNormal  = 1
+	delFlagDeleted = 2
 )
 
 var delFlagMap map[int]string
 
 func init() {
 	delFlagMap = make(map[int]string)
-	delFlagMap[DelFlag_Normal] = "正常"
-	delFlagMap[DelFlag_Deleted] = "已删除"
+	delFlagMap[delFlagNormal] = "正常"
+	delFlagMap[delFlagDeleted] = "已删除"
 }
 
 func (m DelFlag) Desc() string {

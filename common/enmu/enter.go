@@ -1,8 +1,8 @@
 package enmu
 
 const (
-	DelFlagNormal  DelFlag = DelFlag(DelFlag_Normal)
-	DelFlagDeleted DelFlag = DelFlag(DelFlag_Deleted)
+	DelFlagNormal  DelFlag = DelFlag(delFlagNormal)
+	DelFlagDeleted DelFlag = DelFlag(delFlagDeleted)
 
 	StatusNormal   Status = Status(Status_Normal)
 	StatusDisabled Status = Status(Status_Disabled)

@@ -333,12 +333,14 @@ func (c *AppInstanceClient) QueryInstallFrom(ai *AppInstance) *AppPackageQuery {
 
 // Hooks returns the client hooks.
 func (c *AppInstanceClient) Hooks() []Hook {
-	return c.hooks.AppInstance
+	hooks := c.hooks.AppInstance
+	return append(hooks[:len(hooks):len(hooks)], appinstance.Hooks[:]...)
 }
 
 // Interceptors returns the client interceptors.
 func (c *AppInstanceClient) Interceptors() []Interceptor {
-	return c.inters.AppInstance
+	inters := c.inters.AppInstance
+	return append(inters[:len(inters):len(inters)], appinstance.Interceptors[:]...)
 }
 
 func (c *AppInstanceClient) mutate(ctx context.Context, m *AppInstanceMutation) (Value, error) {

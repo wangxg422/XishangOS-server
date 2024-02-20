@@ -28,6 +28,8 @@ type AppInstance struct {
 	Status int8 `json:"status,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// InstanceName holds the value of the "instance_name" field.
 	InstanceName string `json:"instance_name,omitempty"`
 	// InstanceCode holds the value of the "instance_code" field.
@@ -78,7 +80,7 @@ func (*AppInstance) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
+		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldDelFlag, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
 			values[i] = new(sql.NullInt64)
 		case appinstance.FieldRemark, appinstance.FieldInstanceName, appinstance.FieldInstanceCode, appinstance.FieldInstanceIcon, appinstance.FieldInstanceAddress, appinstance.FieldDesc:
 			values[i] = new(sql.NullString)
@@ -136,6 +138,12 @@ func (ai *AppInstance) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				ai.Remark = value.String
+			}
+		case appinstance.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				ai.DelFlag = int8(value.Int64)
 			}
 		case appinstance.FieldInstanceName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -247,6 +255,9 @@ func (ai *AppInstance) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(ai.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", ai.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("instance_name=")
 	builder.WriteString(ai.InstanceName)
