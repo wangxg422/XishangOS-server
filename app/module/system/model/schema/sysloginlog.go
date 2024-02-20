@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
+	mixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // SysLoginLog holds the schema definition for the SysLoginLog entity.

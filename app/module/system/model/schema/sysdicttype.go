@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
+	mixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // SysDictType holds the schema definition for the SysDictType entity.

@@ -5,7 +5,7 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // SysUserOnline holds the schema definition for the SysUserOnline entity.
