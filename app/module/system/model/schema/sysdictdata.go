@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	mixin2 "github.com/wangxg422/XishangOS-backend/app/base/model/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
 )
 
 // SysDictData holds the schema definition for the SysDictData entity.
@@ -26,12 +26,12 @@ func (SysDictData) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (SysDictData) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin2.IdMixin{},
-		mixin2.TimeMixin{},
-		mixin2.ByMixin{},
-		mixin2.RemarkMixin{},
-		mixin2.StatusMixin{},
-		mixin2.SortMixin{},
+		mixin.IdMixin{},
+		mixin.TimeMixin{},
+		mixin.ByMixin{},
+		mixin.RemarkMixin{},
+		mixin.StatusMixin{},
+		mixin.SortMixin{},
 	}
 }
 

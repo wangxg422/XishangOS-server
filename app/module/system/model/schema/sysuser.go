@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	mixin2 "github.com/wangxg422/XishangOS-backend/app/base/model/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
 )
 
 // SysUser holds the schema definition for the SysUser entity.
@@ -26,9 +26,9 @@ func (SysUser) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (SysUser) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin2.IdMixin{},
-		mixin2.TimeMixin{},
-		mixin2.RemarkMixin{},
+		mixin.IdMixin{},
+		mixin.TimeMixin{},
+		mixin.RemarkMixin{},
 	}
 }
 

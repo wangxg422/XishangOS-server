@@ -5,6 +5,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	appClient "github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen"
 	appMigrate "github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/migrate"
+	_ "github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/runtime"
 	"github.com/wangxg422/XishangOS-backend/common/constant"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/middleware/logger"
