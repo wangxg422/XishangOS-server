@@ -23,6 +23,12 @@ func AddSystemRouter(group *gin.RouterGroup) {
 		router.DELETE("/dept/delete/id", controller.AppSysDeptController.Delete)
 	}
 	{
+		router.GET("/post/list", controller.AppSysPostController.List)
+		router.POST("/post/add", controller.AppSysPostController.Add)
+		router.PUT("/post/update", controller.AppSysPostController.Update)
+		router.DELETE("/post/delete/id", controller.AppSysPostController.Delete)
+	}
+	{
 		router.GET("/config/list", controller.AppSysConfigController.List)
 		router.POST("/config/add", controller.AppSysConfigController.Add)
 		router.PUT("/config/update", controller.AppSysConfigController.Update)
