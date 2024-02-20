@@ -359,24 +359,10 @@ func (m *CommonConfigMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *CommonConfigMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[commonconfig.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *CommonConfigMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[commonconfig.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *CommonConfigMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, commonconfig.FieldStatus)
 }
 
 // SetCreatedBy sets the "created_by" field.
@@ -688,24 +674,10 @@ func (m *CommonConfigMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *CommonConfigMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[commonconfig.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *CommonConfigMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[commonconfig.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *CommonConfigMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, commonconfig.FieldDelFlag)
 }
 
 // SetConfigName sets the "config_name" field.
@@ -1282,9 +1254,6 @@ func (m *CommonConfigMutation) ClearedFields() []string {
 	if m.FieldCleared(commonconfig.FieldDeleteAt) {
 		fields = append(fields, commonconfig.FieldDeleteAt)
 	}
-	if m.FieldCleared(commonconfig.FieldStatus) {
-		fields = append(fields, commonconfig.FieldStatus)
-	}
 	if m.FieldCleared(commonconfig.FieldCreatedBy) {
 		fields = append(fields, commonconfig.FieldCreatedBy)
 	}
@@ -1296,9 +1265,6 @@ func (m *CommonConfigMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(commonconfig.FieldRemark) {
 		fields = append(fields, commonconfig.FieldRemark)
-	}
-	if m.FieldCleared(commonconfig.FieldDelFlag) {
-		fields = append(fields, commonconfig.FieldDelFlag)
 	}
 	if m.FieldCleared(commonconfig.FieldConfigName) {
 		fields = append(fields, commonconfig.FieldConfigName)
@@ -1335,9 +1301,6 @@ func (m *CommonConfigMutation) ClearField(name string) error {
 	case commonconfig.FieldDeleteAt:
 		m.ClearDeleteAt()
 		return nil
-	case commonconfig.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case commonconfig.FieldCreatedBy:
 		m.ClearCreatedBy()
 		return nil
@@ -1349,9 +1312,6 @@ func (m *CommonConfigMutation) ClearField(name string) error {
 		return nil
 	case commonconfig.FieldRemark:
 		m.ClearRemark()
-		return nil
-	case commonconfig.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case commonconfig.FieldConfigName:
 		m.ClearConfigName()

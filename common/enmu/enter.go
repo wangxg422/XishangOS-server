@@ -4,8 +4,8 @@ const (
 	DelFlagNormal  DelFlag = DelFlag(delFlagNormal)
 	DelFlagDeleted DelFlag = DelFlag(delFlagDeleted)
 
-	StatusNormal   Status = Status(Status_Normal)
-	StatusDisabled Status = Status(Status_Disabled)
+	StatusNormal   Status = Status(statusNormal)
+	StatusDisabled Status = Status(statusDisabled)
 
 	MenuTypeDir  MenuType = MenuType(MenuType_DIR)
 	MenuTypeMenu MenuType = MenuType(MenuType_MENU)

@@ -15,9 +15,12 @@ var (
 		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
-		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
+		{Name: "status", Type: field.TypeInt8, Default: 1},
 		{Name: "remark", Type: field.TypeString, Nullable: true},
-		{Name: "del_flag", Type: field.TypeInt8, Nullable: true},
+		{Name: "created_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "updated_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "delete_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "del_flag", Type: field.TypeInt8, Default: 1},
 		{Name: "instance_name", Type: field.TypeString},
 		{Name: "instance_code", Type: field.TypeString},
 		{Name: "instance_package", Type: field.TypeInt64},
@@ -37,7 +40,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "app_instance_app_package_app_instance",
-				Columns:    []*schema.Column{AppInstanceColumns[15]},
+				Columns:    []*schema.Column{AppInstanceColumns[18]},
 				RefColumns: []*schema.Column{AppPackageColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -49,7 +52,12 @@ var (
 		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "delete_at", Type: field.TypeTime, Nullable: true},
-		{Name: "status", Type: field.TypeInt8, Nullable: true, Default: 1},
+		{Name: "status", Type: field.TypeInt8, Default: 1},
+		{Name: "created_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "updated_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "delete_by", Type: field.TypeInt64, Nullable: true},
+		{Name: "remark", Type: field.TypeString, Nullable: true},
+		{Name: "del_flag", Type: field.TypeInt8, Default: 1},
 		{Name: "pkg_name", Type: field.TypeString},
 		{Name: "pkg_code", Type: field.TypeString},
 		{Name: "pkg_version", Type: field.TypeString, Nullable: true, Comment: "安装包版本"},
@@ -57,7 +65,6 @@ var (
 		{Name: "pkg_kind", Type: field.TypeInt8, Nullable: true},
 		{Name: "uploader", Type: field.TypeInt64, Nullable: true, Comment: "上传应用的用户"},
 		{Name: "desc", Type: field.TypeString, Nullable: true},
-		{Name: "remark", Type: field.TypeString, Nullable: true},
 	}
 	// AppPackageTable holds the schema information for the "app_package" table.
 	AppPackageTable = &schema.Table{

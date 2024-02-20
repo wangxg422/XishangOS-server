@@ -70,9 +70,34 @@ func DeleteAt(v time.Time) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldDeleteAt, v))
 }
 
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// DeleteBy applies equality check predicate on the "delete_by" field. It's identical to DeleteByEQ.
+func DeleteBy(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldStatus, v))
+}
+
 // Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
 func Remark(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldRemark, v))
+}
+
+// Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
+func Sort(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldSort, v))
 }
 
 // DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
@@ -320,6 +345,196 @@ func DeleteAtNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldDeleteAt))
 }
 
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldCreatedBy, v))
+}
+
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldCreatedBy, v))
+}
+
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldCreatedBy, v))
+}
+
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldCreatedBy, v))
+}
+
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldCreatedBy, v))
+}
+
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldCreatedBy))
+}
+
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldCreatedBy))
+}
+
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldUpdatedBy, v))
+}
+
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldUpdatedBy, v))
+}
+
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldUpdatedBy))
+}
+
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldUpdatedBy))
+}
+
+// DeleteByEQ applies the EQ predicate on the "delete_by" field.
+func DeleteByEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// DeleteByNEQ applies the NEQ predicate on the "delete_by" field.
+func DeleteByNEQ(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldDeleteBy, v))
+}
+
+// DeleteByIn applies the In predicate on the "delete_by" field.
+func DeleteByIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByNotIn applies the NotIn predicate on the "delete_by" field.
+func DeleteByNotIn(vs ...int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByGT applies the GT predicate on the "delete_by" field.
+func DeleteByGT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldDeleteBy, v))
+}
+
+// DeleteByGTE applies the GTE predicate on the "delete_by" field.
+func DeleteByGTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldDeleteBy, v))
+}
+
+// DeleteByLT applies the LT predicate on the "delete_by" field.
+func DeleteByLT(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldDeleteBy, v))
+}
+
+// DeleteByLTE applies the LTE predicate on the "delete_by" field.
+func DeleteByLTE(v int64) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldDeleteBy, v))
+}
+
+// DeleteByIsNil applies the IsNil predicate on the "delete_by" field.
+func DeleteByIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldDeleteBy))
+}
+
+// DeleteByNotNil applies the NotNil predicate on the "delete_by" field.
+func DeleteByNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldDeleteBy))
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldStatus, v))
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldStatus, v))
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldStatus, v))
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldStatus, v))
+}
+
 // RemarkEQ applies the EQ predicate on the "remark" field.
 func RemarkEQ(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldRemark, v))
@@ -395,6 +610,56 @@ func RemarkContainsFold(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldContainsFold(FieldRemark, v))
 }
 
+// SortEQ applies the EQ predicate on the "sort" field.
+func SortEQ(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldSort, v))
+}
+
+// SortNEQ applies the NEQ predicate on the "sort" field.
+func SortNEQ(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldSort, v))
+}
+
+// SortIn applies the In predicate on the "sort" field.
+func SortIn(vs ...int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldSort, vs...))
+}
+
+// SortNotIn applies the NotIn predicate on the "sort" field.
+func SortNotIn(vs ...int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldSort, vs...))
+}
+
+// SortGT applies the GT predicate on the "sort" field.
+func SortGT(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldSort, v))
+}
+
+// SortGTE applies the GTE predicate on the "sort" field.
+func SortGTE(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldSort, v))
+}
+
+// SortLT applies the LT predicate on the "sort" field.
+func SortLT(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldSort, v))
+}
+
+// SortLTE applies the LTE predicate on the "sort" field.
+func SortLTE(v int) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldSort, v))
+}
+
+// SortIsNil applies the IsNil predicate on the "sort" field.
+func SortIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldSort))
+}
+
+// SortNotNil applies the NotNil predicate on the "sort" field.
+func SortNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldSort))
+}
+
 // DelFlagEQ applies the EQ predicate on the "del_flag" field.
 func DelFlagEQ(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldDelFlag, v))
@@ -433,16 +698,6 @@ func DelFlagLT(v int8) predicate.SysMenu {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldDelFlag))
 }
 
 // PidEQ applies the EQ predicate on the "pid" field.

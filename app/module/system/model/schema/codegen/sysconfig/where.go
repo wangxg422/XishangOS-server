@@ -534,16 +534,6 @@ func StatusLTE(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldNotNull(FieldStatus))
-}
-
 // DelFlagEQ applies the EQ predicate on the "del_flag" field.
 func DelFlagEQ(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldEQ(FieldDelFlag, v))
@@ -582,16 +572,6 @@ func DelFlagLT(v int8) predicate.SysConfig {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysConfig {
-	return predicate.SysConfig(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ConfigNameEQ applies the EQ predicate on the "config_name" field.

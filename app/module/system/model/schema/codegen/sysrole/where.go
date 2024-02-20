@@ -455,16 +455,6 @@ func StatusLTE(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotNull(FieldStatus))
-}
-
 // RemarkEQ applies the EQ predicate on the "remark" field.
 func RemarkEQ(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldRemark, v))
@@ -578,16 +568,6 @@ func DelFlagLT(v int8) predicate.SysRole {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ListOrderEQ applies the EQ predicate on the "list_order" field.

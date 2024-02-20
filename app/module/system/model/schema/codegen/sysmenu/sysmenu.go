@@ -21,8 +21,18 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeleteAt holds the string denoting the delete_at field in the database.
 	FieldDeleteAt = "delete_at"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
+	FieldUpdatedBy = "updated_by"
+	// FieldDeleteBy holds the string denoting the delete_by field in the database.
+	FieldDeleteBy = "delete_by"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
 	// FieldDelFlag holds the string denoting the del_flag field in the database.
 	FieldDelFlag = "del_flag"
 	// FieldPid holds the string denoting the pid field in the database.
@@ -78,7 +88,12 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeleteAt,
+	FieldCreatedBy,
+	FieldUpdatedBy,
+	FieldDeleteBy,
+	FieldStatus,
 	FieldRemark,
+	FieldSort,
 	FieldDelFlag,
 	FieldPid,
 	FieldName,
@@ -130,10 +145,12 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() time.Time
-	// UpdateDefaultDeleteAt holds the default value on update for the "delete_at" field.
-	UpdateDefaultDeleteAt func() time.Time
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus int8
+	// DefaultSort holds the default value on creation for the "sort" field.
+	DefaultSort int
+	// DefaultDelFlag holds the default value on creation for the "del_flag" field.
+	DefaultDelFlag int8
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -161,9 +178,34 @@ func ByDeleteAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeleteAt, opts...).ToFunc()
 }
 
+// ByCreatedBy orders the results by the created_by field.
+func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+}
+
+// ByUpdatedBy orders the results by the updated_by field.
+func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
+}
+
+// ByDeleteBy orders the results by the delete_by field.
+func ByDeleteBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeleteBy, opts...).ToFunc()
+}
+
+// ByStatus orders the results by the status field.
+func ByStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// BySort orders the results by the sort field.
+func BySort(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSort, opts...).ToFunc()
 }
 
 // ByDelFlag orders the results by the del_flag field.

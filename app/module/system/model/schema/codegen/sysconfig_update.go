@@ -28,6 +28,26 @@ func (scu *SysConfigUpdate) Where(ps ...predicate.SysConfig) *SysConfigUpdate {
 	return scu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (scu *SysConfigUpdate) SetCreatedAt(t time.Time) *SysConfigUpdate {
+	scu.mutation.SetCreatedAt(t)
+	return scu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (scu *SysConfigUpdate) SetNillableCreatedAt(t *time.Time) *SysConfigUpdate {
+	if t != nil {
+		scu.SetCreatedAt(*t)
+	}
+	return scu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (scu *SysConfigUpdate) ClearCreatedAt() *SysConfigUpdate {
+	scu.mutation.ClearCreatedAt()
+	return scu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (scu *SysConfigUpdate) SetUpdatedAt(t time.Time) *SysConfigUpdate {
 	scu.mutation.SetUpdatedAt(t)
@@ -43,6 +63,14 @@ func (scu *SysConfigUpdate) ClearUpdatedAt() *SysConfigUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (scu *SysConfigUpdate) SetDeleteAt(t time.Time) *SysConfigUpdate {
 	scu.mutation.SetDeleteAt(t)
+	return scu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (scu *SysConfigUpdate) SetNillableDeleteAt(t *time.Time) *SysConfigUpdate {
+	if t != nil {
+		scu.SetDeleteAt(*t)
+	}
 	return scu
 }
 
@@ -153,6 +181,27 @@ func (scu *SysConfigUpdate) ClearRemark() *SysConfigUpdate {
 	return scu
 }
 
+// SetStatus sets the "status" field.
+func (scu *SysConfigUpdate) SetStatus(i int8) *SysConfigUpdate {
+	scu.mutation.ResetStatus()
+	scu.mutation.SetStatus(i)
+	return scu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (scu *SysConfigUpdate) SetNillableStatus(i *int8) *SysConfigUpdate {
+	if i != nil {
+		scu.SetStatus(*i)
+	}
+	return scu
+}
+
+// AddStatus adds i to the "status" field.
+func (scu *SysConfigUpdate) AddStatus(i int8) *SysConfigUpdate {
+	scu.mutation.AddStatus(i)
+	return scu
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (scu *SysConfigUpdate) SetDelFlag(i int8) *SysConfigUpdate {
 	scu.mutation.ResetDelFlag()
@@ -171,12 +220,6 @@ func (scu *SysConfigUpdate) SetNillableDelFlag(i *int8) *SysConfigUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (scu *SysConfigUpdate) AddDelFlag(i int8) *SysConfigUpdate {
 	scu.mutation.AddDelFlag(i)
-	return scu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (scu *SysConfigUpdate) ClearDelFlag() *SysConfigUpdate {
-	scu.mutation.ClearDelFlag()
 	return scu
 }
 
@@ -311,13 +354,6 @@ func (scu *SysConfigUpdate) defaults() error {
 		v := sysconfig.UpdateDefaultUpdatedAt()
 		scu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := scu.mutation.DeleteAt(); !ok && !scu.mutation.DeleteAtCleared() {
-		if sysconfig.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysconfig.UpdateDefaultDeleteAt()
-		scu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -329,6 +365,9 @@ func (scu *SysConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := scu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysconfig.FieldCreatedAt, field.TypeTime, value)
 	}
 	if scu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysconfig.FieldCreatedAt, field.TypeTime)
@@ -378,17 +417,17 @@ func (scu *SysConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if scu.mutation.RemarkCleared() {
 		_spec.ClearField(sysconfig.FieldRemark, field.TypeString)
 	}
-	if scu.mutation.StatusCleared() {
-		_spec.ClearField(sysconfig.FieldStatus, field.TypeInt8)
+	if value, ok := scu.mutation.Status(); ok {
+		_spec.SetField(sysconfig.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := scu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysconfig.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := scu.mutation.DelFlag(); ok {
 		_spec.SetField(sysconfig.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := scu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysconfig.FieldDelFlag, field.TypeInt8, value)
-	}
-	if scu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := scu.mutation.ConfigName(); ok {
 		_spec.SetField(sysconfig.FieldConfigName, field.TypeString, value)
@@ -437,6 +476,26 @@ type SysConfigUpdateOne struct {
 	mutation *SysConfigMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (scuo *SysConfigUpdateOne) SetCreatedAt(t time.Time) *SysConfigUpdateOne {
+	scuo.mutation.SetCreatedAt(t)
+	return scuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (scuo *SysConfigUpdateOne) SetNillableCreatedAt(t *time.Time) *SysConfigUpdateOne {
+	if t != nil {
+		scuo.SetCreatedAt(*t)
+	}
+	return scuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (scuo *SysConfigUpdateOne) ClearCreatedAt() *SysConfigUpdateOne {
+	scuo.mutation.ClearCreatedAt()
+	return scuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (scuo *SysConfigUpdateOne) SetUpdatedAt(t time.Time) *SysConfigUpdateOne {
 	scuo.mutation.SetUpdatedAt(t)
@@ -452,6 +511,14 @@ func (scuo *SysConfigUpdateOne) ClearUpdatedAt() *SysConfigUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (scuo *SysConfigUpdateOne) SetDeleteAt(t time.Time) *SysConfigUpdateOne {
 	scuo.mutation.SetDeleteAt(t)
+	return scuo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (scuo *SysConfigUpdateOne) SetNillableDeleteAt(t *time.Time) *SysConfigUpdateOne {
+	if t != nil {
+		scuo.SetDeleteAt(*t)
+	}
 	return scuo
 }
 
@@ -562,6 +629,27 @@ func (scuo *SysConfigUpdateOne) ClearRemark() *SysConfigUpdateOne {
 	return scuo
 }
 
+// SetStatus sets the "status" field.
+func (scuo *SysConfigUpdateOne) SetStatus(i int8) *SysConfigUpdateOne {
+	scuo.mutation.ResetStatus()
+	scuo.mutation.SetStatus(i)
+	return scuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (scuo *SysConfigUpdateOne) SetNillableStatus(i *int8) *SysConfigUpdateOne {
+	if i != nil {
+		scuo.SetStatus(*i)
+	}
+	return scuo
+}
+
+// AddStatus adds i to the "status" field.
+func (scuo *SysConfigUpdateOne) AddStatus(i int8) *SysConfigUpdateOne {
+	scuo.mutation.AddStatus(i)
+	return scuo
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (scuo *SysConfigUpdateOne) SetDelFlag(i int8) *SysConfigUpdateOne {
 	scuo.mutation.ResetDelFlag()
@@ -580,12 +668,6 @@ func (scuo *SysConfigUpdateOne) SetNillableDelFlag(i *int8) *SysConfigUpdateOne 
 // AddDelFlag adds i to the "del_flag" field.
 func (scuo *SysConfigUpdateOne) AddDelFlag(i int8) *SysConfigUpdateOne {
 	scuo.mutation.AddDelFlag(i)
-	return scuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (scuo *SysConfigUpdateOne) ClearDelFlag() *SysConfigUpdateOne {
-	scuo.mutation.ClearDelFlag()
 	return scuo
 }
 
@@ -733,13 +815,6 @@ func (scuo *SysConfigUpdateOne) defaults() error {
 		v := sysconfig.UpdateDefaultUpdatedAt()
 		scuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := scuo.mutation.DeleteAt(); !ok && !scuo.mutation.DeleteAtCleared() {
-		if sysconfig.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysconfig.UpdateDefaultDeleteAt()
-		scuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -768,6 +843,9 @@ func (scuo *SysConfigUpdateOne) sqlSave(ctx context.Context) (_node *SysConfig, 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := scuo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysconfig.FieldCreatedAt, field.TypeTime, value)
 	}
 	if scuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysconfig.FieldCreatedAt, field.TypeTime)
@@ -817,17 +895,17 @@ func (scuo *SysConfigUpdateOne) sqlSave(ctx context.Context) (_node *SysConfig, 
 	if scuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysconfig.FieldRemark, field.TypeString)
 	}
-	if scuo.mutation.StatusCleared() {
-		_spec.ClearField(sysconfig.FieldStatus, field.TypeInt8)
+	if value, ok := scuo.mutation.Status(); ok {
+		_spec.SetField(sysconfig.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := scuo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysconfig.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := scuo.mutation.DelFlag(); ok {
 		_spec.SetField(sysconfig.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := scuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysconfig.FieldDelFlag, field.TypeInt8, value)
-	}
-	if scuo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := scuo.mutation.ConfigName(); ok {
 		_spec.SetField(sysconfig.FieldConfigName, field.TypeString, value)

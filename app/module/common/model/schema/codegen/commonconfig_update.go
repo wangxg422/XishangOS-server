@@ -28,6 +28,26 @@ func (ccu *CommonConfigUpdate) Where(ps ...predicate.CommonConfig) *CommonConfig
 	return ccu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (ccu *CommonConfigUpdate) SetCreatedAt(t time.Time) *CommonConfigUpdate {
+	ccu.mutation.SetCreatedAt(t)
+	return ccu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (ccu *CommonConfigUpdate) SetNillableCreatedAt(t *time.Time) *CommonConfigUpdate {
+	if t != nil {
+		ccu.SetCreatedAt(*t)
+	}
+	return ccu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (ccu *CommonConfigUpdate) ClearCreatedAt() *CommonConfigUpdate {
+	ccu.mutation.ClearCreatedAt()
+	return ccu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (ccu *CommonConfigUpdate) SetUpdatedAt(t time.Time) *CommonConfigUpdate {
 	ccu.mutation.SetUpdatedAt(t)
@@ -46,9 +66,38 @@ func (ccu *CommonConfigUpdate) SetDeleteAt(t time.Time) *CommonConfigUpdate {
 	return ccu
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (ccu *CommonConfigUpdate) SetNillableDeleteAt(t *time.Time) *CommonConfigUpdate {
+	if t != nil {
+		ccu.SetDeleteAt(*t)
+	}
+	return ccu
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (ccu *CommonConfigUpdate) ClearDeleteAt() *CommonConfigUpdate {
 	ccu.mutation.ClearDeleteAt()
+	return ccu
+}
+
+// SetStatus sets the "status" field.
+func (ccu *CommonConfigUpdate) SetStatus(i int8) *CommonConfigUpdate {
+	ccu.mutation.ResetStatus()
+	ccu.mutation.SetStatus(i)
+	return ccu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ccu *CommonConfigUpdate) SetNillableStatus(i *int8) *CommonConfigUpdate {
+	if i != nil {
+		ccu.SetStatus(*i)
+	}
+	return ccu
+}
+
+// AddStatus adds i to the "status" field.
+func (ccu *CommonConfigUpdate) AddStatus(i int8) *CommonConfigUpdate {
+	ccu.mutation.AddStatus(i)
 	return ccu
 }
 
@@ -171,12 +220,6 @@ func (ccu *CommonConfigUpdate) SetNillableDelFlag(i *int8) *CommonConfigUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (ccu *CommonConfigUpdate) AddDelFlag(i int8) *CommonConfigUpdate {
 	ccu.mutation.AddDelFlag(i)
-	return ccu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (ccu *CommonConfigUpdate) ClearDelFlag() *CommonConfigUpdate {
-	ccu.mutation.ClearDelFlag()
 	return ccu
 }
 
@@ -311,13 +354,6 @@ func (ccu *CommonConfigUpdate) defaults() error {
 		v := commonconfig.UpdateDefaultUpdatedAt()
 		ccu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := ccu.mutation.DeleteAt(); !ok && !ccu.mutation.DeleteAtCleared() {
-		if commonconfig.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := commonconfig.UpdateDefaultDeleteAt()
-		ccu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -329,6 +365,9 @@ func (ccu *CommonConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ccu.mutation.CreatedAt(); ok {
+		_spec.SetField(commonconfig.FieldCreatedAt, field.TypeTime, value)
 	}
 	if ccu.mutation.CreatedAtCleared() {
 		_spec.ClearField(commonconfig.FieldCreatedAt, field.TypeTime)
@@ -345,8 +384,11 @@ func (ccu *CommonConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if ccu.mutation.DeleteAtCleared() {
 		_spec.ClearField(commonconfig.FieldDeleteAt, field.TypeTime)
 	}
-	if ccu.mutation.StatusCleared() {
-		_spec.ClearField(commonconfig.FieldStatus, field.TypeInt8)
+	if value, ok := ccu.mutation.Status(); ok {
+		_spec.SetField(commonconfig.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := ccu.mutation.AddedStatus(); ok {
+		_spec.AddField(commonconfig.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := ccu.mutation.CreatedBy(); ok {
 		_spec.SetField(commonconfig.FieldCreatedBy, field.TypeInt64, value)
@@ -386,9 +428,6 @@ func (ccu *CommonConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ccu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(commonconfig.FieldDelFlag, field.TypeInt8, value)
-	}
-	if ccu.mutation.DelFlagCleared() {
-		_spec.ClearField(commonconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := ccu.mutation.ConfigName(); ok {
 		_spec.SetField(commonconfig.FieldConfigName, field.TypeString, value)
@@ -437,6 +476,26 @@ type CommonConfigUpdateOne struct {
 	mutation *CommonConfigMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (ccuo *CommonConfigUpdateOne) SetCreatedAt(t time.Time) *CommonConfigUpdateOne {
+	ccuo.mutation.SetCreatedAt(t)
+	return ccuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (ccuo *CommonConfigUpdateOne) SetNillableCreatedAt(t *time.Time) *CommonConfigUpdateOne {
+	if t != nil {
+		ccuo.SetCreatedAt(*t)
+	}
+	return ccuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (ccuo *CommonConfigUpdateOne) ClearCreatedAt() *CommonConfigUpdateOne {
+	ccuo.mutation.ClearCreatedAt()
+	return ccuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (ccuo *CommonConfigUpdateOne) SetUpdatedAt(t time.Time) *CommonConfigUpdateOne {
 	ccuo.mutation.SetUpdatedAt(t)
@@ -455,9 +514,38 @@ func (ccuo *CommonConfigUpdateOne) SetDeleteAt(t time.Time) *CommonConfigUpdateO
 	return ccuo
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (ccuo *CommonConfigUpdateOne) SetNillableDeleteAt(t *time.Time) *CommonConfigUpdateOne {
+	if t != nil {
+		ccuo.SetDeleteAt(*t)
+	}
+	return ccuo
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (ccuo *CommonConfigUpdateOne) ClearDeleteAt() *CommonConfigUpdateOne {
 	ccuo.mutation.ClearDeleteAt()
+	return ccuo
+}
+
+// SetStatus sets the "status" field.
+func (ccuo *CommonConfigUpdateOne) SetStatus(i int8) *CommonConfigUpdateOne {
+	ccuo.mutation.ResetStatus()
+	ccuo.mutation.SetStatus(i)
+	return ccuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (ccuo *CommonConfigUpdateOne) SetNillableStatus(i *int8) *CommonConfigUpdateOne {
+	if i != nil {
+		ccuo.SetStatus(*i)
+	}
+	return ccuo
+}
+
+// AddStatus adds i to the "status" field.
+func (ccuo *CommonConfigUpdateOne) AddStatus(i int8) *CommonConfigUpdateOne {
+	ccuo.mutation.AddStatus(i)
 	return ccuo
 }
 
@@ -580,12 +668,6 @@ func (ccuo *CommonConfigUpdateOne) SetNillableDelFlag(i *int8) *CommonConfigUpda
 // AddDelFlag adds i to the "del_flag" field.
 func (ccuo *CommonConfigUpdateOne) AddDelFlag(i int8) *CommonConfigUpdateOne {
 	ccuo.mutation.AddDelFlag(i)
-	return ccuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (ccuo *CommonConfigUpdateOne) ClearDelFlag() *CommonConfigUpdateOne {
-	ccuo.mutation.ClearDelFlag()
 	return ccuo
 }
 
@@ -733,13 +815,6 @@ func (ccuo *CommonConfigUpdateOne) defaults() error {
 		v := commonconfig.UpdateDefaultUpdatedAt()
 		ccuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := ccuo.mutation.DeleteAt(); !ok && !ccuo.mutation.DeleteAtCleared() {
-		if commonconfig.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := commonconfig.UpdateDefaultDeleteAt()
-		ccuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -769,6 +844,9 @@ func (ccuo *CommonConfigUpdateOne) sqlSave(ctx context.Context) (_node *CommonCo
 			}
 		}
 	}
+	if value, ok := ccuo.mutation.CreatedAt(); ok {
+		_spec.SetField(commonconfig.FieldCreatedAt, field.TypeTime, value)
+	}
 	if ccuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(commonconfig.FieldCreatedAt, field.TypeTime)
 	}
@@ -784,8 +862,11 @@ func (ccuo *CommonConfigUpdateOne) sqlSave(ctx context.Context) (_node *CommonCo
 	if ccuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(commonconfig.FieldDeleteAt, field.TypeTime)
 	}
-	if ccuo.mutation.StatusCleared() {
-		_spec.ClearField(commonconfig.FieldStatus, field.TypeInt8)
+	if value, ok := ccuo.mutation.Status(); ok {
+		_spec.SetField(commonconfig.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := ccuo.mutation.AddedStatus(); ok {
+		_spec.AddField(commonconfig.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := ccuo.mutation.CreatedBy(); ok {
 		_spec.SetField(commonconfig.FieldCreatedBy, field.TypeInt64, value)
@@ -825,9 +906,6 @@ func (ccuo *CommonConfigUpdateOne) sqlSave(ctx context.Context) (_node *CommonCo
 	}
 	if value, ok := ccuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(commonconfig.FieldDelFlag, field.TypeInt8, value)
-	}
-	if ccuo.mutation.DelFlagCleared() {
-		_spec.ClearField(commonconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := ccuo.mutation.ConfigName(); ok {
 		_spec.SetField(commonconfig.FieldConfigName, field.TypeString, value)

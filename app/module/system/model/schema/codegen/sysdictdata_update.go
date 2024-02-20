@@ -29,6 +29,26 @@ func (sddu *SysDictDataUpdate) Where(ps ...predicate.SysDictData) *SysDictDataUp
 	return sddu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sddu *SysDictDataUpdate) SetCreatedAt(t time.Time) *SysDictDataUpdate {
+	sddu.mutation.SetCreatedAt(t)
+	return sddu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableCreatedAt(t *time.Time) *SysDictDataUpdate {
+	if t != nil {
+		sddu.SetCreatedAt(*t)
+	}
+	return sddu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sddu *SysDictDataUpdate) ClearCreatedAt() *SysDictDataUpdate {
+	sddu.mutation.ClearCreatedAt()
+	return sddu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sddu *SysDictDataUpdate) SetUpdatedAt(t time.Time) *SysDictDataUpdate {
 	sddu.mutation.SetUpdatedAt(t)
@@ -44,6 +64,14 @@ func (sddu *SysDictDataUpdate) ClearUpdatedAt() *SysDictDataUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (sddu *SysDictDataUpdate) SetDeleteAt(t time.Time) *SysDictDataUpdate {
 	sddu.mutation.SetDeleteAt(t)
+	return sddu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableDeleteAt(t *time.Time) *SysDictDataUpdate {
+	if t != nil {
+		sddu.SetDeleteAt(*t)
+	}
 	return sddu
 }
 
@@ -154,6 +182,27 @@ func (sddu *SysDictDataUpdate) ClearRemark() *SysDictDataUpdate {
 	return sddu
 }
 
+// SetStatus sets the "status" field.
+func (sddu *SysDictDataUpdate) SetStatus(i int8) *SysDictDataUpdate {
+	sddu.mutation.ResetStatus()
+	sddu.mutation.SetStatus(i)
+	return sddu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableStatus(i *int8) *SysDictDataUpdate {
+	if i != nil {
+		sddu.SetStatus(*i)
+	}
+	return sddu
+}
+
+// AddStatus adds i to the "status" field.
+func (sddu *SysDictDataUpdate) AddStatus(i int8) *SysDictDataUpdate {
+	sddu.mutation.AddStatus(i)
+	return sddu
+}
+
 // SetSort sets the "sort" field.
 func (sddu *SysDictDataUpdate) SetSort(i int) *SysDictDataUpdate {
 	sddu.mutation.ResetSort()
@@ -199,12 +248,6 @@ func (sddu *SysDictDataUpdate) SetNillableDelFlag(i *int8) *SysDictDataUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (sddu *SysDictDataUpdate) AddDelFlag(i int8) *SysDictDataUpdate {
 	sddu.mutation.AddDelFlag(i)
-	return sddu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sddu *SysDictDataUpdate) ClearDelFlag() *SysDictDataUpdate {
-	sddu.mutation.ClearDelFlag()
 	return sddu
 }
 
@@ -404,13 +447,6 @@ func (sddu *SysDictDataUpdate) defaults() error {
 		v := sysdictdata.UpdateDefaultUpdatedAt()
 		sddu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sddu.mutation.DeleteAt(); !ok && !sddu.mutation.DeleteAtCleared() {
-		if sysdictdata.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdictdata.UpdateDefaultDeleteAt()
-		sddu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -422,6 +458,9 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sddu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdictdata.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sddu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdictdata.FieldCreatedAt, field.TypeTime)
@@ -471,8 +510,11 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sddu.mutation.RemarkCleared() {
 		_spec.ClearField(sysdictdata.FieldRemark, field.TypeString)
 	}
-	if sddu.mutation.StatusCleared() {
-		_spec.ClearField(sysdictdata.FieldStatus, field.TypeInt8)
+	if value, ok := sddu.mutation.Status(); ok {
+		_spec.SetField(sysdictdata.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sddu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdictdata.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sddu.mutation.Sort(); ok {
 		_spec.SetField(sysdictdata.FieldSort, field.TypeInt, value)
@@ -488,9 +530,6 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sddu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sddu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdictdata.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sddu.mutation.DictLabel(); ok {
 		_spec.SetField(sysdictdata.FieldDictLabel, field.TypeString, value)
@@ -574,6 +613,26 @@ type SysDictDataUpdateOne struct {
 	mutation *SysDictDataMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sdduo *SysDictDataUpdateOne) SetCreatedAt(t time.Time) *SysDictDataUpdateOne {
+	sdduo.mutation.SetCreatedAt(t)
+	return sdduo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableCreatedAt(t *time.Time) *SysDictDataUpdateOne {
+	if t != nil {
+		sdduo.SetCreatedAt(*t)
+	}
+	return sdduo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sdduo *SysDictDataUpdateOne) ClearCreatedAt() *SysDictDataUpdateOne {
+	sdduo.mutation.ClearCreatedAt()
+	return sdduo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sdduo *SysDictDataUpdateOne) SetUpdatedAt(t time.Time) *SysDictDataUpdateOne {
 	sdduo.mutation.SetUpdatedAt(t)
@@ -589,6 +648,14 @@ func (sdduo *SysDictDataUpdateOne) ClearUpdatedAt() *SysDictDataUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (sdduo *SysDictDataUpdateOne) SetDeleteAt(t time.Time) *SysDictDataUpdateOne {
 	sdduo.mutation.SetDeleteAt(t)
+	return sdduo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableDeleteAt(t *time.Time) *SysDictDataUpdateOne {
+	if t != nil {
+		sdduo.SetDeleteAt(*t)
+	}
 	return sdduo
 }
 
@@ -699,6 +766,27 @@ func (sdduo *SysDictDataUpdateOne) ClearRemark() *SysDictDataUpdateOne {
 	return sdduo
 }
 
+// SetStatus sets the "status" field.
+func (sdduo *SysDictDataUpdateOne) SetStatus(i int8) *SysDictDataUpdateOne {
+	sdduo.mutation.ResetStatus()
+	sdduo.mutation.SetStatus(i)
+	return sdduo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableStatus(i *int8) *SysDictDataUpdateOne {
+	if i != nil {
+		sdduo.SetStatus(*i)
+	}
+	return sdduo
+}
+
+// AddStatus adds i to the "status" field.
+func (sdduo *SysDictDataUpdateOne) AddStatus(i int8) *SysDictDataUpdateOne {
+	sdduo.mutation.AddStatus(i)
+	return sdduo
+}
+
 // SetSort sets the "sort" field.
 func (sdduo *SysDictDataUpdateOne) SetSort(i int) *SysDictDataUpdateOne {
 	sdduo.mutation.ResetSort()
@@ -744,12 +832,6 @@ func (sdduo *SysDictDataUpdateOne) SetNillableDelFlag(i *int8) *SysDictDataUpdat
 // AddDelFlag adds i to the "del_flag" field.
 func (sdduo *SysDictDataUpdateOne) AddDelFlag(i int8) *SysDictDataUpdateOne {
 	sdduo.mutation.AddDelFlag(i)
-	return sdduo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sdduo *SysDictDataUpdateOne) ClearDelFlag() *SysDictDataUpdateOne {
-	sdduo.mutation.ClearDelFlag()
 	return sdduo
 }
 
@@ -962,13 +1044,6 @@ func (sdduo *SysDictDataUpdateOne) defaults() error {
 		v := sysdictdata.UpdateDefaultUpdatedAt()
 		sdduo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdduo.mutation.DeleteAt(); !ok && !sdduo.mutation.DeleteAtCleared() {
-		if sysdictdata.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdictdata.UpdateDefaultDeleteAt()
-		sdduo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -997,6 +1072,9 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sdduo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdictdata.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sdduo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdictdata.FieldCreatedAt, field.TypeTime)
@@ -1046,8 +1124,11 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 	if sdduo.mutation.RemarkCleared() {
 		_spec.ClearField(sysdictdata.FieldRemark, field.TypeString)
 	}
-	if sdduo.mutation.StatusCleared() {
-		_spec.ClearField(sysdictdata.FieldStatus, field.TypeInt8)
+	if value, ok := sdduo.mutation.Status(); ok {
+		_spec.SetField(sysdictdata.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sdduo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdictdata.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sdduo.mutation.Sort(); ok {
 		_spec.SetField(sysdictdata.FieldSort, field.TypeInt, value)
@@ -1063,9 +1144,6 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 	}
 	if value, ok := sdduo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sdduo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdictdata.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdduo.mutation.DictLabel(); ok {
 		_spec.SetField(sysdictdata.FieldDictLabel, field.TypeString, value)

@@ -24,16 +24,18 @@ import (
 // to their package variables.
 func init() {
 	sysconfigMixin := schema.SysConfig{}.Mixin()
-	sysconfigMixinHooks5 := sysconfigMixin[5].Hooks()
-	sysconfig.Hooks[0] = sysconfigMixinHooks5[0]
-	sysconfigMixinInters5 := sysconfigMixin[5].Interceptors()
-	sysconfig.Interceptors[0] = sysconfigMixinInters5[0]
+	sysconfigMixinHooks6 := sysconfigMixin[6].Hooks()
+	sysconfig.Hooks[0] = sysconfigMixinHooks6[0]
+	sysconfigMixinInters6 := sysconfigMixin[6].Interceptors()
+	sysconfig.Interceptors[0] = sysconfigMixinInters6[0]
 	sysconfigMixinFields0 := sysconfigMixin[0].Fields()
 	_ = sysconfigMixinFields0
 	sysconfigMixinFields1 := sysconfigMixin[1].Fields()
 	_ = sysconfigMixinFields1
-	sysconfigMixinFields4 := sysconfigMixin[4].Fields()
-	_ = sysconfigMixinFields4
+	sysconfigMixinFields5 := sysconfigMixin[5].Fields()
+	_ = sysconfigMixinFields5
+	sysconfigMixinFields6 := sysconfigMixin[6].Fields()
+	_ = sysconfigMixinFields6
 	sysconfigFields := schema.SysConfig{}.Fields()
 	_ = sysconfigFields
 	// sysconfigDescCreatedAt is the schema descriptor for created_at field.
@@ -46,31 +48,33 @@ func init() {
 	sysconfig.DefaultUpdatedAt = sysconfigDescUpdatedAt.Default.(func() time.Time)
 	// sysconfig.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysconfig.UpdateDefaultUpdatedAt = sysconfigDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysconfigDescDeleteAt is the schema descriptor for delete_at field.
-	sysconfigDescDeleteAt := sysconfigMixinFields1[2].Descriptor()
-	// sysconfig.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysconfig.DefaultDeleteAt = sysconfigDescDeleteAt.Default.(func() time.Time)
-	// sysconfig.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysconfig.UpdateDefaultDeleteAt = sysconfigDescDeleteAt.UpdateDefault.(func() time.Time)
 	// sysconfigDescStatus is the schema descriptor for status field.
-	sysconfigDescStatus := sysconfigMixinFields4[0].Descriptor()
+	sysconfigDescStatus := sysconfigMixinFields5[0].Descriptor()
 	// sysconfig.DefaultStatus holds the default value on creation for the status field.
 	sysconfig.DefaultStatus = sysconfigDescStatus.Default.(int8)
+	// sysconfigDescDelFlag is the schema descriptor for del_flag field.
+	sysconfigDescDelFlag := sysconfigMixinFields6[0].Descriptor()
+	// sysconfig.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysconfig.DefaultDelFlag = sysconfigDescDelFlag.Default.(int8)
 	// sysconfigDescID is the schema descriptor for id field.
 	sysconfigDescID := sysconfigMixinFields0[0].Descriptor()
 	// sysconfig.DefaultID holds the default value on creation for the id field.
 	sysconfig.DefaultID = sysconfigDescID.Default.(func() int64)
 	sysdeptMixin := schema.SysDept{}.Mixin()
-	sysdeptMixinHooks6 := sysdeptMixin[6].Hooks()
-	sysdept.Hooks[0] = sysdeptMixinHooks6[0]
-	sysdeptMixinInters6 := sysdeptMixin[6].Interceptors()
-	sysdept.Interceptors[0] = sysdeptMixinInters6[0]
+	sysdeptMixinHooks7 := sysdeptMixin[7].Hooks()
+	sysdept.Hooks[0] = sysdeptMixinHooks7[0]
+	sysdeptMixinInters7 := sysdeptMixin[7].Interceptors()
+	sysdept.Interceptors[0] = sysdeptMixinInters7[0]
 	sysdeptMixinFields0 := sysdeptMixin[0].Fields()
 	_ = sysdeptMixinFields0
 	sysdeptMixinFields1 := sysdeptMixin[1].Fields()
 	_ = sysdeptMixinFields1
-	sysdeptMixinFields4 := sysdeptMixin[4].Fields()
-	_ = sysdeptMixinFields4
+	sysdeptMixinFields5 := sysdeptMixin[5].Fields()
+	_ = sysdeptMixinFields5
+	sysdeptMixinFields6 := sysdeptMixin[6].Fields()
+	_ = sysdeptMixinFields6
+	sysdeptMixinFields7 := sysdeptMixin[7].Fields()
+	_ = sysdeptMixinFields7
 	sysdeptFields := schema.SysDept{}.Fields()
 	_ = sysdeptFields
 	// sysdeptDescCreatedAt is the schema descriptor for created_at field.
@@ -83,31 +87,37 @@ func init() {
 	sysdept.DefaultUpdatedAt = sysdeptDescUpdatedAt.Default.(func() time.Time)
 	// sysdept.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysdept.UpdateDefaultUpdatedAt = sysdeptDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysdeptDescDeleteAt is the schema descriptor for delete_at field.
-	sysdeptDescDeleteAt := sysdeptMixinFields1[2].Descriptor()
-	// sysdept.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysdept.DefaultDeleteAt = sysdeptDescDeleteAt.Default.(func() time.Time)
-	// sysdept.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysdept.UpdateDefaultDeleteAt = sysdeptDescDeleteAt.UpdateDefault.(func() time.Time)
 	// sysdeptDescStatus is the schema descriptor for status field.
-	sysdeptDescStatus := sysdeptMixinFields4[0].Descriptor()
+	sysdeptDescStatus := sysdeptMixinFields5[0].Descriptor()
 	// sysdept.DefaultStatus holds the default value on creation for the status field.
 	sysdept.DefaultStatus = sysdeptDescStatus.Default.(int8)
+	// sysdeptDescSort is the schema descriptor for sort field.
+	sysdeptDescSort := sysdeptMixinFields6[0].Descriptor()
+	// sysdept.DefaultSort holds the default value on creation for the sort field.
+	sysdept.DefaultSort = sysdeptDescSort.Default.(int)
+	// sysdeptDescDelFlag is the schema descriptor for del_flag field.
+	sysdeptDescDelFlag := sysdeptMixinFields7[0].Descriptor()
+	// sysdept.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysdept.DefaultDelFlag = sysdeptDescDelFlag.Default.(int8)
 	// sysdeptDescID is the schema descriptor for id field.
 	sysdeptDescID := sysdeptMixinFields0[0].Descriptor()
 	// sysdept.DefaultID holds the default value on creation for the id field.
 	sysdept.DefaultID = sysdeptDescID.Default.(func() int64)
 	sysdictdataMixin := schema.SysDictData{}.Mixin()
-	sysdictdataMixinHooks6 := sysdictdataMixin[6].Hooks()
-	sysdictdata.Hooks[0] = sysdictdataMixinHooks6[0]
-	sysdictdataMixinInters6 := sysdictdataMixin[6].Interceptors()
-	sysdictdata.Interceptors[0] = sysdictdataMixinInters6[0]
+	sysdictdataMixinHooks7 := sysdictdataMixin[7].Hooks()
+	sysdictdata.Hooks[0] = sysdictdataMixinHooks7[0]
+	sysdictdataMixinInters7 := sysdictdataMixin[7].Interceptors()
+	sysdictdata.Interceptors[0] = sysdictdataMixinInters7[0]
 	sysdictdataMixinFields0 := sysdictdataMixin[0].Fields()
 	_ = sysdictdataMixinFields0
 	sysdictdataMixinFields1 := sysdictdataMixin[1].Fields()
 	_ = sysdictdataMixinFields1
-	sysdictdataMixinFields4 := sysdictdataMixin[4].Fields()
-	_ = sysdictdataMixinFields4
+	sysdictdataMixinFields5 := sysdictdataMixin[5].Fields()
+	_ = sysdictdataMixinFields5
+	sysdictdataMixinFields6 := sysdictdataMixin[6].Fields()
+	_ = sysdictdataMixinFields6
+	sysdictdataMixinFields7 := sysdictdataMixin[7].Fields()
+	_ = sysdictdataMixinFields7
 	sysdictdataFields := schema.SysDictData{}.Fields()
 	_ = sysdictdataFields
 	// sysdictdataDescCreatedAt is the schema descriptor for created_at field.
@@ -120,31 +130,35 @@ func init() {
 	sysdictdata.DefaultUpdatedAt = sysdictdataDescUpdatedAt.Default.(func() time.Time)
 	// sysdictdata.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysdictdata.UpdateDefaultUpdatedAt = sysdictdataDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysdictdataDescDeleteAt is the schema descriptor for delete_at field.
-	sysdictdataDescDeleteAt := sysdictdataMixinFields1[2].Descriptor()
-	// sysdictdata.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysdictdata.DefaultDeleteAt = sysdictdataDescDeleteAt.Default.(func() time.Time)
-	// sysdictdata.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysdictdata.UpdateDefaultDeleteAt = sysdictdataDescDeleteAt.UpdateDefault.(func() time.Time)
 	// sysdictdataDescStatus is the schema descriptor for status field.
-	sysdictdataDescStatus := sysdictdataMixinFields4[0].Descriptor()
+	sysdictdataDescStatus := sysdictdataMixinFields5[0].Descriptor()
 	// sysdictdata.DefaultStatus holds the default value on creation for the status field.
 	sysdictdata.DefaultStatus = sysdictdataDescStatus.Default.(int8)
+	// sysdictdataDescSort is the schema descriptor for sort field.
+	sysdictdataDescSort := sysdictdataMixinFields6[0].Descriptor()
+	// sysdictdata.DefaultSort holds the default value on creation for the sort field.
+	sysdictdata.DefaultSort = sysdictdataDescSort.Default.(int)
+	// sysdictdataDescDelFlag is the schema descriptor for del_flag field.
+	sysdictdataDescDelFlag := sysdictdataMixinFields7[0].Descriptor()
+	// sysdictdata.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysdictdata.DefaultDelFlag = sysdictdataDescDelFlag.Default.(int8)
 	// sysdictdataDescID is the schema descriptor for id field.
 	sysdictdataDescID := sysdictdataMixinFields0[0].Descriptor()
 	// sysdictdata.DefaultID holds the default value on creation for the id field.
 	sysdictdata.DefaultID = sysdictdataDescID.Default.(func() int64)
 	sysdicttypeMixin := schema.SysDictType{}.Mixin()
-	sysdicttypeMixinHooks5 := sysdicttypeMixin[5].Hooks()
-	sysdicttype.Hooks[0] = sysdicttypeMixinHooks5[0]
-	sysdicttypeMixinInters5 := sysdicttypeMixin[5].Interceptors()
-	sysdicttype.Interceptors[0] = sysdicttypeMixinInters5[0]
+	sysdicttypeMixinHooks6 := sysdicttypeMixin[6].Hooks()
+	sysdicttype.Hooks[0] = sysdicttypeMixinHooks6[0]
+	sysdicttypeMixinInters6 := sysdicttypeMixin[6].Interceptors()
+	sysdicttype.Interceptors[0] = sysdicttypeMixinInters6[0]
 	sysdicttypeMixinFields0 := sysdicttypeMixin[0].Fields()
 	_ = sysdicttypeMixinFields0
 	sysdicttypeMixinFields1 := sysdicttypeMixin[1].Fields()
 	_ = sysdicttypeMixinFields1
-	sysdicttypeMixinFields4 := sysdicttypeMixin[4].Fields()
-	_ = sysdicttypeMixinFields4
+	sysdicttypeMixinFields5 := sysdicttypeMixin[5].Fields()
+	_ = sysdicttypeMixinFields5
+	sysdicttypeMixinFields6 := sysdicttypeMixin[6].Fields()
+	_ = sysdicttypeMixinFields6
 	sysdicttypeFields := schema.SysDictType{}.Fields()
 	_ = sysdicttypeFields
 	// sysdicttypeDescCreatedAt is the schema descriptor for created_at field.
@@ -157,16 +171,14 @@ func init() {
 	sysdicttype.DefaultUpdatedAt = sysdicttypeDescUpdatedAt.Default.(func() time.Time)
 	// sysdicttype.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysdicttype.UpdateDefaultUpdatedAt = sysdicttypeDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysdicttypeDescDeleteAt is the schema descriptor for delete_at field.
-	sysdicttypeDescDeleteAt := sysdicttypeMixinFields1[2].Descriptor()
-	// sysdicttype.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysdicttype.DefaultDeleteAt = sysdicttypeDescDeleteAt.Default.(func() time.Time)
-	// sysdicttype.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysdicttype.UpdateDefaultDeleteAt = sysdicttypeDescDeleteAt.UpdateDefault.(func() time.Time)
 	// sysdicttypeDescStatus is the schema descriptor for status field.
-	sysdicttypeDescStatus := sysdicttypeMixinFields4[0].Descriptor()
+	sysdicttypeDescStatus := sysdicttypeMixinFields5[0].Descriptor()
 	// sysdicttype.DefaultStatus holds the default value on creation for the status field.
 	sysdicttype.DefaultStatus = sysdicttypeDescStatus.Default.(int8)
+	// sysdicttypeDescDelFlag is the schema descriptor for del_flag field.
+	sysdicttypeDescDelFlag := sysdicttypeMixinFields6[0].Descriptor()
+	// sysdicttype.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysdicttype.DefaultDelFlag = sysdicttypeDescDelFlag.Default.(int8)
 	// sysdicttypeDescID is the schema descriptor for id field.
 	sysdicttypeDescID := sysdicttypeMixinFields0[0].Descriptor()
 	// sysdicttype.DefaultID holds the default value on creation for the id field.
@@ -187,14 +199,20 @@ func init() {
 	// sysloginlog.DefaultID holds the default value on creation for the id field.
 	sysloginlog.DefaultID = sysloginlogDescID.Default.(func() int64)
 	sysmenuMixin := schema.SysMenu{}.Mixin()
-	sysmenuMixinHooks3 := sysmenuMixin[3].Hooks()
-	sysmenu.Hooks[0] = sysmenuMixinHooks3[0]
-	sysmenuMixinInters3 := sysmenuMixin[3].Interceptors()
-	sysmenu.Interceptors[0] = sysmenuMixinInters3[0]
+	sysmenuMixinHooks7 := sysmenuMixin[7].Hooks()
+	sysmenu.Hooks[0] = sysmenuMixinHooks7[0]
+	sysmenuMixinInters7 := sysmenuMixin[7].Interceptors()
+	sysmenu.Interceptors[0] = sysmenuMixinInters7[0]
 	sysmenuMixinFields0 := sysmenuMixin[0].Fields()
 	_ = sysmenuMixinFields0
 	sysmenuMixinFields1 := sysmenuMixin[1].Fields()
 	_ = sysmenuMixinFields1
+	sysmenuMixinFields4 := sysmenuMixin[4].Fields()
+	_ = sysmenuMixinFields4
+	sysmenuMixinFields6 := sysmenuMixin[6].Fields()
+	_ = sysmenuMixinFields6
+	sysmenuMixinFields7 := sysmenuMixin[7].Fields()
+	_ = sysmenuMixinFields7
 	sysmenuFields := schema.SysMenu{}.Fields()
 	_ = sysmenuFields
 	// sysmenuDescCreatedAt is the schema descriptor for created_at field.
@@ -207,12 +225,18 @@ func init() {
 	sysmenu.DefaultUpdatedAt = sysmenuDescUpdatedAt.Default.(func() time.Time)
 	// sysmenu.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysmenu.UpdateDefaultUpdatedAt = sysmenuDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysmenuDescDeleteAt is the schema descriptor for delete_at field.
-	sysmenuDescDeleteAt := sysmenuMixinFields1[2].Descriptor()
-	// sysmenu.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysmenu.DefaultDeleteAt = sysmenuDescDeleteAt.Default.(func() time.Time)
-	// sysmenu.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysmenu.UpdateDefaultDeleteAt = sysmenuDescDeleteAt.UpdateDefault.(func() time.Time)
+	// sysmenuDescStatus is the schema descriptor for status field.
+	sysmenuDescStatus := sysmenuMixinFields4[0].Descriptor()
+	// sysmenu.DefaultStatus holds the default value on creation for the status field.
+	sysmenu.DefaultStatus = sysmenuDescStatus.Default.(int8)
+	// sysmenuDescSort is the schema descriptor for sort field.
+	sysmenuDescSort := sysmenuMixinFields6[0].Descriptor()
+	// sysmenu.DefaultSort holds the default value on creation for the sort field.
+	sysmenu.DefaultSort = sysmenuDescSort.Default.(int)
+	// sysmenuDescDelFlag is the schema descriptor for del_flag field.
+	sysmenuDescDelFlag := sysmenuMixinFields7[0].Descriptor()
+	// sysmenu.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysmenu.DefaultDelFlag = sysmenuDescDelFlag.Default.(int8)
 	// sysmenuDescID is the schema descriptor for id field.
 	sysmenuDescID := sysmenuMixinFields0[0].Descriptor()
 	// sysmenu.DefaultID holds the default value on creation for the id field.
@@ -227,16 +251,20 @@ func init() {
 	// sysoperlog.DefaultID holds the default value on creation for the id field.
 	sysoperlog.DefaultID = sysoperlogDescID.Default.(func() int64)
 	syspostMixin := schema.SysPost{}.Mixin()
-	syspostMixinHooks6 := syspostMixin[6].Hooks()
-	syspost.Hooks[0] = syspostMixinHooks6[0]
-	syspostMixinInters6 := syspostMixin[6].Interceptors()
-	syspost.Interceptors[0] = syspostMixinInters6[0]
+	syspostMixinHooks7 := syspostMixin[7].Hooks()
+	syspost.Hooks[0] = syspostMixinHooks7[0]
+	syspostMixinInters7 := syspostMixin[7].Interceptors()
+	syspost.Interceptors[0] = syspostMixinInters7[0]
 	syspostMixinFields0 := syspostMixin[0].Fields()
 	_ = syspostMixinFields0
 	syspostMixinFields1 := syspostMixin[1].Fields()
 	_ = syspostMixinFields1
-	syspostMixinFields4 := syspostMixin[4].Fields()
-	_ = syspostMixinFields4
+	syspostMixinFields5 := syspostMixin[5].Fields()
+	_ = syspostMixinFields5
+	syspostMixinFields6 := syspostMixin[6].Fields()
+	_ = syspostMixinFields6
+	syspostMixinFields7 := syspostMixin[7].Fields()
+	_ = syspostMixinFields7
 	syspostFields := schema.SysPost{}.Fields()
 	_ = syspostFields
 	// syspostDescCreatedAt is the schema descriptor for created_at field.
@@ -249,31 +277,35 @@ func init() {
 	syspost.DefaultUpdatedAt = syspostDescUpdatedAt.Default.(func() time.Time)
 	// syspost.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	syspost.UpdateDefaultUpdatedAt = syspostDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// syspostDescDeleteAt is the schema descriptor for delete_at field.
-	syspostDescDeleteAt := syspostMixinFields1[2].Descriptor()
-	// syspost.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	syspost.DefaultDeleteAt = syspostDescDeleteAt.Default.(func() time.Time)
-	// syspost.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	syspost.UpdateDefaultDeleteAt = syspostDescDeleteAt.UpdateDefault.(func() time.Time)
 	// syspostDescStatus is the schema descriptor for status field.
-	syspostDescStatus := syspostMixinFields4[0].Descriptor()
+	syspostDescStatus := syspostMixinFields5[0].Descriptor()
 	// syspost.DefaultStatus holds the default value on creation for the status field.
 	syspost.DefaultStatus = syspostDescStatus.Default.(int8)
+	// syspostDescSort is the schema descriptor for sort field.
+	syspostDescSort := syspostMixinFields6[0].Descriptor()
+	// syspost.DefaultSort holds the default value on creation for the sort field.
+	syspost.DefaultSort = syspostDescSort.Default.(int)
+	// syspostDescDelFlag is the schema descriptor for del_flag field.
+	syspostDescDelFlag := syspostMixinFields7[0].Descriptor()
+	// syspost.DefaultDelFlag holds the default value on creation for the del_flag field.
+	syspost.DefaultDelFlag = syspostDescDelFlag.Default.(int8)
 	// syspostDescID is the schema descriptor for id field.
 	syspostDescID := syspostMixinFields0[0].Descriptor()
 	// syspost.DefaultID holds the default value on creation for the id field.
 	syspost.DefaultID = syspostDescID.Default.(func() int64)
 	sysroleMixin := schema.SysRole{}.Mixin()
-	sysroleMixinHooks5 := sysroleMixin[5].Hooks()
-	sysrole.Hooks[0] = sysroleMixinHooks5[0]
-	sysroleMixinInters5 := sysroleMixin[5].Interceptors()
-	sysrole.Interceptors[0] = sysroleMixinInters5[0]
+	sysroleMixinHooks6 := sysroleMixin[6].Hooks()
+	sysrole.Hooks[0] = sysroleMixinHooks6[0]
+	sysroleMixinInters6 := sysroleMixin[6].Interceptors()
+	sysrole.Interceptors[0] = sysroleMixinInters6[0]
 	sysroleMixinFields0 := sysroleMixin[0].Fields()
 	_ = sysroleMixinFields0
 	sysroleMixinFields1 := sysroleMixin[1].Fields()
 	_ = sysroleMixinFields1
-	sysroleMixinFields3 := sysroleMixin[3].Fields()
-	_ = sysroleMixinFields3
+	sysroleMixinFields4 := sysroleMixin[4].Fields()
+	_ = sysroleMixinFields4
+	sysroleMixinFields6 := sysroleMixin[6].Fields()
+	_ = sysroleMixinFields6
 	sysroleFields := schema.SysRole{}.Fields()
 	_ = sysroleFields
 	// sysroleDescCreatedAt is the schema descriptor for created_at field.
@@ -286,29 +318,29 @@ func init() {
 	sysrole.DefaultUpdatedAt = sysroleDescUpdatedAt.Default.(func() time.Time)
 	// sysrole.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysrole.UpdateDefaultUpdatedAt = sysroleDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysroleDescDeleteAt is the schema descriptor for delete_at field.
-	sysroleDescDeleteAt := sysroleMixinFields1[2].Descriptor()
-	// sysrole.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysrole.DefaultDeleteAt = sysroleDescDeleteAt.Default.(func() time.Time)
-	// sysrole.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysrole.UpdateDefaultDeleteAt = sysroleDescDeleteAt.UpdateDefault.(func() time.Time)
 	// sysroleDescStatus is the schema descriptor for status field.
-	sysroleDescStatus := sysroleMixinFields3[0].Descriptor()
+	sysroleDescStatus := sysroleMixinFields4[0].Descriptor()
 	// sysrole.DefaultStatus holds the default value on creation for the status field.
 	sysrole.DefaultStatus = sysroleDescStatus.Default.(int8)
+	// sysroleDescDelFlag is the schema descriptor for del_flag field.
+	sysroleDescDelFlag := sysroleMixinFields6[0].Descriptor()
+	// sysrole.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysrole.DefaultDelFlag = sysroleDescDelFlag.Default.(int8)
 	// sysroleDescID is the schema descriptor for id field.
 	sysroleDescID := sysroleMixinFields0[0].Descriptor()
 	// sysrole.DefaultID holds the default value on creation for the id field.
 	sysrole.DefaultID = sysroleDescID.Default.(func() int64)
 	sysuserMixin := schema.SysUser{}.Mixin()
-	sysuserMixinHooks4 := sysuserMixin[4].Hooks()
-	sysuser.Hooks[0] = sysuserMixinHooks4[0]
-	sysuserMixinInters4 := sysuserMixin[4].Interceptors()
-	sysuser.Interceptors[0] = sysuserMixinInters4[0]
+	sysuserMixinHooks5 := sysuserMixin[5].Hooks()
+	sysuser.Hooks[0] = sysuserMixinHooks5[0]
+	sysuserMixinInters5 := sysuserMixin[5].Interceptors()
+	sysuser.Interceptors[0] = sysuserMixinInters5[0]
 	sysuserMixinFields0 := sysuserMixin[0].Fields()
 	_ = sysuserMixinFields0
 	sysuserMixinFields1 := sysuserMixin[1].Fields()
 	_ = sysuserMixinFields1
+	sysuserMixinFields5 := sysuserMixin[5].Fields()
+	_ = sysuserMixinFields5
 	sysuserFields := schema.SysUser{}.Fields()
 	_ = sysuserFields
 	// sysuserDescCreatedAt is the schema descriptor for created_at field.
@@ -321,12 +353,10 @@ func init() {
 	sysuser.DefaultUpdatedAt = sysuserDescUpdatedAt.Default.(func() time.Time)
 	// sysuser.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	sysuser.UpdateDefaultUpdatedAt = sysuserDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// sysuserDescDeleteAt is the schema descriptor for delete_at field.
-	sysuserDescDeleteAt := sysuserMixinFields1[2].Descriptor()
-	// sysuser.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	sysuser.DefaultDeleteAt = sysuserDescDeleteAt.Default.(func() time.Time)
-	// sysuser.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	sysuser.UpdateDefaultDeleteAt = sysuserDescDeleteAt.UpdateDefault.(func() time.Time)
+	// sysuserDescDelFlag is the schema descriptor for del_flag field.
+	sysuserDescDelFlag := sysuserMixinFields5[0].Descriptor()
+	// sysuser.DefaultDelFlag holds the default value on creation for the del_flag field.
+	sysuser.DefaultDelFlag = sysuserDescDelFlag.Default.(int8)
 	// sysuserDescID is the schema descriptor for id field.
 	sysuserDescID := sysuserMixinFields0[0].Descriptor()
 	// sysuser.DefaultID holds the default value on creation for the id field.

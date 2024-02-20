@@ -29,6 +29,26 @@ func (apu *AppPackageUpdate) Where(ps ...predicate.AppPackage) *AppPackageUpdate
 	return apu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (apu *AppPackageUpdate) SetCreatedAt(t time.Time) *AppPackageUpdate {
+	apu.mutation.SetCreatedAt(t)
+	return apu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableCreatedAt(t *time.Time) *AppPackageUpdate {
+	if t != nil {
+		apu.SetCreatedAt(*t)
+	}
+	return apu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (apu *AppPackageUpdate) ClearCreatedAt() *AppPackageUpdate {
+	apu.mutation.ClearCreatedAt()
+	return apu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (apu *AppPackageUpdate) SetUpdatedAt(t time.Time) *AppPackageUpdate {
 	apu.mutation.SetUpdatedAt(t)
@@ -47,9 +67,160 @@ func (apu *AppPackageUpdate) SetDeleteAt(t time.Time) *AppPackageUpdate {
 	return apu
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableDeleteAt(t *time.Time) *AppPackageUpdate {
+	if t != nil {
+		apu.SetDeleteAt(*t)
+	}
+	return apu
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (apu *AppPackageUpdate) ClearDeleteAt() *AppPackageUpdate {
 	apu.mutation.ClearDeleteAt()
+	return apu
+}
+
+// SetStatus sets the "status" field.
+func (apu *AppPackageUpdate) SetStatus(i int8) *AppPackageUpdate {
+	apu.mutation.ResetStatus()
+	apu.mutation.SetStatus(i)
+	return apu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableStatus(i *int8) *AppPackageUpdate {
+	if i != nil {
+		apu.SetStatus(*i)
+	}
+	return apu
+}
+
+// AddStatus adds i to the "status" field.
+func (apu *AppPackageUpdate) AddStatus(i int8) *AppPackageUpdate {
+	apu.mutation.AddStatus(i)
+	return apu
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (apu *AppPackageUpdate) SetCreatedBy(i int64) *AppPackageUpdate {
+	apu.mutation.ResetCreatedBy()
+	apu.mutation.SetCreatedBy(i)
+	return apu
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableCreatedBy(i *int64) *AppPackageUpdate {
+	if i != nil {
+		apu.SetCreatedBy(*i)
+	}
+	return apu
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (apu *AppPackageUpdate) AddCreatedBy(i int64) *AppPackageUpdate {
+	apu.mutation.AddCreatedBy(i)
+	return apu
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (apu *AppPackageUpdate) ClearCreatedBy() *AppPackageUpdate {
+	apu.mutation.ClearCreatedBy()
+	return apu
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (apu *AppPackageUpdate) SetUpdatedBy(i int64) *AppPackageUpdate {
+	apu.mutation.ResetUpdatedBy()
+	apu.mutation.SetUpdatedBy(i)
+	return apu
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableUpdatedBy(i *int64) *AppPackageUpdate {
+	if i != nil {
+		apu.SetUpdatedBy(*i)
+	}
+	return apu
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (apu *AppPackageUpdate) AddUpdatedBy(i int64) *AppPackageUpdate {
+	apu.mutation.AddUpdatedBy(i)
+	return apu
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (apu *AppPackageUpdate) ClearUpdatedBy() *AppPackageUpdate {
+	apu.mutation.ClearUpdatedBy()
+	return apu
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (apu *AppPackageUpdate) SetDeleteBy(i int64) *AppPackageUpdate {
+	apu.mutation.ResetDeleteBy()
+	apu.mutation.SetDeleteBy(i)
+	return apu
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableDeleteBy(i *int64) *AppPackageUpdate {
+	if i != nil {
+		apu.SetDeleteBy(*i)
+	}
+	return apu
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (apu *AppPackageUpdate) AddDeleteBy(i int64) *AppPackageUpdate {
+	apu.mutation.AddDeleteBy(i)
+	return apu
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (apu *AppPackageUpdate) ClearDeleteBy() *AppPackageUpdate {
+	apu.mutation.ClearDeleteBy()
+	return apu
+}
+
+// SetRemark sets the "remark" field.
+func (apu *AppPackageUpdate) SetRemark(s string) *AppPackageUpdate {
+	apu.mutation.SetRemark(s)
+	return apu
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableRemark(s *string) *AppPackageUpdate {
+	if s != nil {
+		apu.SetRemark(*s)
+	}
+	return apu
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (apu *AppPackageUpdate) ClearRemark() *AppPackageUpdate {
+	apu.mutation.ClearRemark()
+	return apu
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (apu *AppPackageUpdate) SetDelFlag(i int8) *AppPackageUpdate {
+	apu.mutation.ResetDelFlag()
+	apu.mutation.SetDelFlag(i)
+	return apu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (apu *AppPackageUpdate) SetNillableDelFlag(i *int8) *AppPackageUpdate {
+	if i != nil {
+		apu.SetDelFlag(*i)
+	}
+	return apu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (apu *AppPackageUpdate) AddDelFlag(i int8) *AppPackageUpdate {
+	apu.mutation.AddDelFlag(i)
 	return apu
 }
 
@@ -202,26 +373,6 @@ func (apu *AppPackageUpdate) ClearDesc() *AppPackageUpdate {
 	return apu
 }
 
-// SetRemark sets the "remark" field.
-func (apu *AppPackageUpdate) SetRemark(s string) *AppPackageUpdate {
-	apu.mutation.SetRemark(s)
-	return apu
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (apu *AppPackageUpdate) SetNillableRemark(s *string) *AppPackageUpdate {
-	if s != nil {
-		apu.SetRemark(*s)
-	}
-	return apu
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (apu *AppPackageUpdate) ClearRemark() *AppPackageUpdate {
-	apu.mutation.ClearRemark()
-	return apu
-}
-
 // AddAppInstanceIDs adds the "app_instance" edge to the AppInstance entity by IDs.
 func (apu *AppPackageUpdate) AddAppInstanceIDs(ids ...int64) *AppPackageUpdate {
 	apu.mutation.AddAppInstanceIDs(ids...)
@@ -265,7 +416,9 @@ func (apu *AppPackageUpdate) RemoveAppInstance(a ...*AppInstance) *AppPackageUpd
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (apu *AppPackageUpdate) Save(ctx context.Context) (int, error) {
-	apu.defaults()
+	if err := apu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, apu.sqlSave, apu.mutation, apu.hooks)
 }
 
@@ -292,15 +445,15 @@ func (apu *AppPackageUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (apu *AppPackageUpdate) defaults() {
+func (apu *AppPackageUpdate) defaults() error {
 	if _, ok := apu.mutation.UpdatedAt(); !ok && !apu.mutation.UpdatedAtCleared() {
+		if apppackage.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized apppackage.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := apppackage.UpdateDefaultUpdatedAt()
 		apu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := apu.mutation.DeleteAt(); !ok && !apu.mutation.DeleteAtCleared() {
-		v := apppackage.UpdateDefaultDeleteAt()
-		apu.mutation.SetDeleteAt(v)
-	}
+	return nil
 }
 
 func (apu *AppPackageUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -311,6 +464,9 @@ func (apu *AppPackageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := apu.mutation.CreatedAt(); ok {
+		_spec.SetField(apppackage.FieldCreatedAt, field.TypeTime, value)
 	}
 	if apu.mutation.CreatedAtCleared() {
 		_spec.ClearField(apppackage.FieldCreatedAt, field.TypeTime)
@@ -327,8 +483,50 @@ func (apu *AppPackageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if apu.mutation.DeleteAtCleared() {
 		_spec.ClearField(apppackage.FieldDeleteAt, field.TypeTime)
 	}
-	if apu.mutation.StatusCleared() {
-		_spec.ClearField(apppackage.FieldStatus, field.TypeInt8)
+	if value, ok := apu.mutation.Status(); ok {
+		_spec.SetField(apppackage.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := apu.mutation.AddedStatus(); ok {
+		_spec.AddField(apppackage.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := apu.mutation.CreatedBy(); ok {
+		_spec.SetField(apppackage.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := apu.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(apppackage.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if apu.mutation.CreatedByCleared() {
+		_spec.ClearField(apppackage.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := apu.mutation.UpdatedBy(); ok {
+		_spec.SetField(apppackage.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := apu.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(apppackage.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if apu.mutation.UpdatedByCleared() {
+		_spec.ClearField(apppackage.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := apu.mutation.DeleteBy(); ok {
+		_spec.SetField(apppackage.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := apu.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(apppackage.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if apu.mutation.DeleteByCleared() {
+		_spec.ClearField(apppackage.FieldDeleteBy, field.TypeInt64)
+	}
+	if value, ok := apu.mutation.Remark(); ok {
+		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
+	}
+	if apu.mutation.RemarkCleared() {
+		_spec.ClearField(apppackage.FieldRemark, field.TypeString)
+	}
+	if value, ok := apu.mutation.DelFlag(); ok {
+		_spec.SetField(apppackage.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := apu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(apppackage.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := apu.mutation.PkgName(); ok {
 		_spec.SetField(apppackage.FieldPkgName, field.TypeString, value)
@@ -374,12 +572,6 @@ func (apu *AppPackageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if apu.mutation.DescCleared() {
 		_spec.ClearField(apppackage.FieldDesc, field.TypeString)
-	}
-	if value, ok := apu.mutation.Remark(); ok {
-		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
-	}
-	if apu.mutation.RemarkCleared() {
-		_spec.ClearField(apppackage.FieldRemark, field.TypeString)
 	}
 	if apu.mutation.AppInstanceCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -446,6 +638,26 @@ type AppPackageUpdateOne struct {
 	mutation *AppPackageMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (apuo *AppPackageUpdateOne) SetCreatedAt(t time.Time) *AppPackageUpdateOne {
+	apuo.mutation.SetCreatedAt(t)
+	return apuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableCreatedAt(t *time.Time) *AppPackageUpdateOne {
+	if t != nil {
+		apuo.SetCreatedAt(*t)
+	}
+	return apuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (apuo *AppPackageUpdateOne) ClearCreatedAt() *AppPackageUpdateOne {
+	apuo.mutation.ClearCreatedAt()
+	return apuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (apuo *AppPackageUpdateOne) SetUpdatedAt(t time.Time) *AppPackageUpdateOne {
 	apuo.mutation.SetUpdatedAt(t)
@@ -464,9 +676,160 @@ func (apuo *AppPackageUpdateOne) SetDeleteAt(t time.Time) *AppPackageUpdateOne {
 	return apuo
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableDeleteAt(t *time.Time) *AppPackageUpdateOne {
+	if t != nil {
+		apuo.SetDeleteAt(*t)
+	}
+	return apuo
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (apuo *AppPackageUpdateOne) ClearDeleteAt() *AppPackageUpdateOne {
 	apuo.mutation.ClearDeleteAt()
+	return apuo
+}
+
+// SetStatus sets the "status" field.
+func (apuo *AppPackageUpdateOne) SetStatus(i int8) *AppPackageUpdateOne {
+	apuo.mutation.ResetStatus()
+	apuo.mutation.SetStatus(i)
+	return apuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableStatus(i *int8) *AppPackageUpdateOne {
+	if i != nil {
+		apuo.SetStatus(*i)
+	}
+	return apuo
+}
+
+// AddStatus adds i to the "status" field.
+func (apuo *AppPackageUpdateOne) AddStatus(i int8) *AppPackageUpdateOne {
+	apuo.mutation.AddStatus(i)
+	return apuo
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (apuo *AppPackageUpdateOne) SetCreatedBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.ResetCreatedBy()
+	apuo.mutation.SetCreatedBy(i)
+	return apuo
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableCreatedBy(i *int64) *AppPackageUpdateOne {
+	if i != nil {
+		apuo.SetCreatedBy(*i)
+	}
+	return apuo
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (apuo *AppPackageUpdateOne) AddCreatedBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.AddCreatedBy(i)
+	return apuo
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (apuo *AppPackageUpdateOne) ClearCreatedBy() *AppPackageUpdateOne {
+	apuo.mutation.ClearCreatedBy()
+	return apuo
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (apuo *AppPackageUpdateOne) SetUpdatedBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.ResetUpdatedBy()
+	apuo.mutation.SetUpdatedBy(i)
+	return apuo
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableUpdatedBy(i *int64) *AppPackageUpdateOne {
+	if i != nil {
+		apuo.SetUpdatedBy(*i)
+	}
+	return apuo
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (apuo *AppPackageUpdateOne) AddUpdatedBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.AddUpdatedBy(i)
+	return apuo
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (apuo *AppPackageUpdateOne) ClearUpdatedBy() *AppPackageUpdateOne {
+	apuo.mutation.ClearUpdatedBy()
+	return apuo
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (apuo *AppPackageUpdateOne) SetDeleteBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.ResetDeleteBy()
+	apuo.mutation.SetDeleteBy(i)
+	return apuo
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableDeleteBy(i *int64) *AppPackageUpdateOne {
+	if i != nil {
+		apuo.SetDeleteBy(*i)
+	}
+	return apuo
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (apuo *AppPackageUpdateOne) AddDeleteBy(i int64) *AppPackageUpdateOne {
+	apuo.mutation.AddDeleteBy(i)
+	return apuo
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (apuo *AppPackageUpdateOne) ClearDeleteBy() *AppPackageUpdateOne {
+	apuo.mutation.ClearDeleteBy()
+	return apuo
+}
+
+// SetRemark sets the "remark" field.
+func (apuo *AppPackageUpdateOne) SetRemark(s string) *AppPackageUpdateOne {
+	apuo.mutation.SetRemark(s)
+	return apuo
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableRemark(s *string) *AppPackageUpdateOne {
+	if s != nil {
+		apuo.SetRemark(*s)
+	}
+	return apuo
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (apuo *AppPackageUpdateOne) ClearRemark() *AppPackageUpdateOne {
+	apuo.mutation.ClearRemark()
+	return apuo
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (apuo *AppPackageUpdateOne) SetDelFlag(i int8) *AppPackageUpdateOne {
+	apuo.mutation.ResetDelFlag()
+	apuo.mutation.SetDelFlag(i)
+	return apuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (apuo *AppPackageUpdateOne) SetNillableDelFlag(i *int8) *AppPackageUpdateOne {
+	if i != nil {
+		apuo.SetDelFlag(*i)
+	}
+	return apuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (apuo *AppPackageUpdateOne) AddDelFlag(i int8) *AppPackageUpdateOne {
+	apuo.mutation.AddDelFlag(i)
 	return apuo
 }
 
@@ -619,26 +982,6 @@ func (apuo *AppPackageUpdateOne) ClearDesc() *AppPackageUpdateOne {
 	return apuo
 }
 
-// SetRemark sets the "remark" field.
-func (apuo *AppPackageUpdateOne) SetRemark(s string) *AppPackageUpdateOne {
-	apuo.mutation.SetRemark(s)
-	return apuo
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (apuo *AppPackageUpdateOne) SetNillableRemark(s *string) *AppPackageUpdateOne {
-	if s != nil {
-		apuo.SetRemark(*s)
-	}
-	return apuo
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (apuo *AppPackageUpdateOne) ClearRemark() *AppPackageUpdateOne {
-	apuo.mutation.ClearRemark()
-	return apuo
-}
-
 // AddAppInstanceIDs adds the "app_instance" edge to the AppInstance entity by IDs.
 func (apuo *AppPackageUpdateOne) AddAppInstanceIDs(ids ...int64) *AppPackageUpdateOne {
 	apuo.mutation.AddAppInstanceIDs(ids...)
@@ -695,7 +1038,9 @@ func (apuo *AppPackageUpdateOne) Select(field string, fields ...string) *AppPack
 
 // Save executes the query and returns the updated AppPackage entity.
 func (apuo *AppPackageUpdateOne) Save(ctx context.Context) (*AppPackage, error) {
-	apuo.defaults()
+	if err := apuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, apuo.sqlSave, apuo.mutation, apuo.hooks)
 }
 
@@ -722,15 +1067,15 @@ func (apuo *AppPackageUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (apuo *AppPackageUpdateOne) defaults() {
+func (apuo *AppPackageUpdateOne) defaults() error {
 	if _, ok := apuo.mutation.UpdatedAt(); !ok && !apuo.mutation.UpdatedAtCleared() {
+		if apppackage.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized apppackage.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := apppackage.UpdateDefaultUpdatedAt()
 		apuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := apuo.mutation.DeleteAt(); !ok && !apuo.mutation.DeleteAtCleared() {
-		v := apppackage.UpdateDefaultDeleteAt()
-		apuo.mutation.SetDeleteAt(v)
-	}
+	return nil
 }
 
 func (apuo *AppPackageUpdateOne) sqlSave(ctx context.Context) (_node *AppPackage, err error) {
@@ -759,6 +1104,9 @@ func (apuo *AppPackageUpdateOne) sqlSave(ctx context.Context) (_node *AppPackage
 			}
 		}
 	}
+	if value, ok := apuo.mutation.CreatedAt(); ok {
+		_spec.SetField(apppackage.FieldCreatedAt, field.TypeTime, value)
+	}
 	if apuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(apppackage.FieldCreatedAt, field.TypeTime)
 	}
@@ -774,8 +1122,50 @@ func (apuo *AppPackageUpdateOne) sqlSave(ctx context.Context) (_node *AppPackage
 	if apuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(apppackage.FieldDeleteAt, field.TypeTime)
 	}
-	if apuo.mutation.StatusCleared() {
-		_spec.ClearField(apppackage.FieldStatus, field.TypeInt8)
+	if value, ok := apuo.mutation.Status(); ok {
+		_spec.SetField(apppackage.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := apuo.mutation.AddedStatus(); ok {
+		_spec.AddField(apppackage.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := apuo.mutation.CreatedBy(); ok {
+		_spec.SetField(apppackage.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := apuo.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(apppackage.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if apuo.mutation.CreatedByCleared() {
+		_spec.ClearField(apppackage.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := apuo.mutation.UpdatedBy(); ok {
+		_spec.SetField(apppackage.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := apuo.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(apppackage.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if apuo.mutation.UpdatedByCleared() {
+		_spec.ClearField(apppackage.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := apuo.mutation.DeleteBy(); ok {
+		_spec.SetField(apppackage.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := apuo.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(apppackage.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if apuo.mutation.DeleteByCleared() {
+		_spec.ClearField(apppackage.FieldDeleteBy, field.TypeInt64)
+	}
+	if value, ok := apuo.mutation.Remark(); ok {
+		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
+	}
+	if apuo.mutation.RemarkCleared() {
+		_spec.ClearField(apppackage.FieldRemark, field.TypeString)
+	}
+	if value, ok := apuo.mutation.DelFlag(); ok {
+		_spec.SetField(apppackage.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := apuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(apppackage.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := apuo.mutation.PkgName(); ok {
 		_spec.SetField(apppackage.FieldPkgName, field.TypeString, value)
@@ -821,12 +1211,6 @@ func (apuo *AppPackageUpdateOne) sqlSave(ctx context.Context) (_node *AppPackage
 	}
 	if apuo.mutation.DescCleared() {
 		_spec.ClearField(apppackage.FieldDesc, field.TypeString)
-	}
-	if value, ok := apuo.mutation.Remark(); ok {
-		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
-	}
-	if apuo.mutation.RemarkCleared() {
-		_spec.ClearField(apppackage.FieldRemark, field.TypeString)
 	}
 	if apuo.mutation.AppInstanceCleared() {
 		edge := &sqlgraph.EdgeSpec{

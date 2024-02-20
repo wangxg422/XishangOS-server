@@ -25,6 +25,12 @@ const (
 	FieldStatus = "status"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
+	FieldUpdatedBy = "updated_by"
+	// FieldDeleteBy holds the string denoting the delete_by field in the database.
+	FieldDeleteBy = "delete_by"
 	// FieldDelFlag holds the string denoting the del_flag field in the database.
 	FieldDelFlag = "del_flag"
 	// FieldInstanceName holds the string denoting the instance_name field in the database.
@@ -64,6 +70,9 @@ var Columns = []string{
 	FieldDeleteAt,
 	FieldStatus,
 	FieldRemark,
+	FieldCreatedBy,
+	FieldUpdatedBy,
+	FieldDeleteBy,
 	FieldDelFlag,
 	FieldInstanceName,
 	FieldInstanceCode,
@@ -110,12 +119,10 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() time.Time
-	// UpdateDefaultDeleteAt holds the default value on update for the "delete_at" field.
-	UpdateDefaultDeleteAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int8
+	// DefaultDelFlag holds the default value on creation for the "del_flag" field.
+	DefaultDelFlag int8
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -151,6 +158,21 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByCreatedBy orders the results by the created_by field.
+func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+}
+
+// ByUpdatedBy orders the results by the updated_by field.
+func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
+}
+
+// ByDeleteBy orders the results by the delete_by field.
+func ByDeleteBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeleteBy, opts...).ToFunc()
 }
 
 // ByDelFlag orders the results by the del_flag field.

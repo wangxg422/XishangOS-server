@@ -29,6 +29,26 @@ func (aiu *AppInstanceUpdate) Where(ps ...predicate.AppInstance) *AppInstanceUpd
 	return aiu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (aiu *AppInstanceUpdate) SetCreatedAt(t time.Time) *AppInstanceUpdate {
+	aiu.mutation.SetCreatedAt(t)
+	return aiu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableCreatedAt(t *time.Time) *AppInstanceUpdate {
+	if t != nil {
+		aiu.SetCreatedAt(*t)
+	}
+	return aiu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (aiu *AppInstanceUpdate) ClearCreatedAt() *AppInstanceUpdate {
+	aiu.mutation.ClearCreatedAt()
+	return aiu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (aiu *AppInstanceUpdate) SetUpdatedAt(t time.Time) *AppInstanceUpdate {
 	aiu.mutation.SetUpdatedAt(t)
@@ -47,9 +67,38 @@ func (aiu *AppInstanceUpdate) SetDeleteAt(t time.Time) *AppInstanceUpdate {
 	return aiu
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableDeleteAt(t *time.Time) *AppInstanceUpdate {
+	if t != nil {
+		aiu.SetDeleteAt(*t)
+	}
+	return aiu
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (aiu *AppInstanceUpdate) ClearDeleteAt() *AppInstanceUpdate {
 	aiu.mutation.ClearDeleteAt()
+	return aiu
+}
+
+// SetStatus sets the "status" field.
+func (aiu *AppInstanceUpdate) SetStatus(i int8) *AppInstanceUpdate {
+	aiu.mutation.ResetStatus()
+	aiu.mutation.SetStatus(i)
+	return aiu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableStatus(i *int8) *AppInstanceUpdate {
+	if i != nil {
+		aiu.SetStatus(*i)
+	}
+	return aiu
+}
+
+// AddStatus adds i to the "status" field.
+func (aiu *AppInstanceUpdate) AddStatus(i int8) *AppInstanceUpdate {
+	aiu.mutation.AddStatus(i)
 	return aiu
 }
 
@@ -73,6 +122,87 @@ func (aiu *AppInstanceUpdate) ClearRemark() *AppInstanceUpdate {
 	return aiu
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (aiu *AppInstanceUpdate) SetCreatedBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.ResetCreatedBy()
+	aiu.mutation.SetCreatedBy(i)
+	return aiu
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableCreatedBy(i *int64) *AppInstanceUpdate {
+	if i != nil {
+		aiu.SetCreatedBy(*i)
+	}
+	return aiu
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (aiu *AppInstanceUpdate) AddCreatedBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.AddCreatedBy(i)
+	return aiu
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (aiu *AppInstanceUpdate) ClearCreatedBy() *AppInstanceUpdate {
+	aiu.mutation.ClearCreatedBy()
+	return aiu
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (aiu *AppInstanceUpdate) SetUpdatedBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.ResetUpdatedBy()
+	aiu.mutation.SetUpdatedBy(i)
+	return aiu
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableUpdatedBy(i *int64) *AppInstanceUpdate {
+	if i != nil {
+		aiu.SetUpdatedBy(*i)
+	}
+	return aiu
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (aiu *AppInstanceUpdate) AddUpdatedBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.AddUpdatedBy(i)
+	return aiu
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (aiu *AppInstanceUpdate) ClearUpdatedBy() *AppInstanceUpdate {
+	aiu.mutation.ClearUpdatedBy()
+	return aiu
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (aiu *AppInstanceUpdate) SetDeleteBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.ResetDeleteBy()
+	aiu.mutation.SetDeleteBy(i)
+	return aiu
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (aiu *AppInstanceUpdate) SetNillableDeleteBy(i *int64) *AppInstanceUpdate {
+	if i != nil {
+		aiu.SetDeleteBy(*i)
+	}
+	return aiu
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (aiu *AppInstanceUpdate) AddDeleteBy(i int64) *AppInstanceUpdate {
+	aiu.mutation.AddDeleteBy(i)
+	return aiu
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (aiu *AppInstanceUpdate) ClearDeleteBy() *AppInstanceUpdate {
+	aiu.mutation.ClearDeleteBy()
+	return aiu
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (aiu *AppInstanceUpdate) SetDelFlag(i int8) *AppInstanceUpdate {
 	aiu.mutation.ResetDelFlag()
@@ -91,12 +221,6 @@ func (aiu *AppInstanceUpdate) SetNillableDelFlag(i *int8) *AppInstanceUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (aiu *AppInstanceUpdate) AddDelFlag(i int8) *AppInstanceUpdate {
 	aiu.mutation.AddDelFlag(i)
-	return aiu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (aiu *AppInstanceUpdate) ClearDelFlag() *AppInstanceUpdate {
-	aiu.mutation.ClearDelFlag()
 	return aiu
 }
 
@@ -332,13 +456,6 @@ func (aiu *AppInstanceUpdate) defaults() error {
 		v := appinstance.UpdateDefaultUpdatedAt()
 		aiu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := aiu.mutation.DeleteAt(); !ok && !aiu.mutation.DeleteAtCleared() {
-		if appinstance.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := appinstance.UpdateDefaultDeleteAt()
-		aiu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -350,6 +467,9 @@ func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := aiu.mutation.CreatedAt(); ok {
+		_spec.SetField(appinstance.FieldCreatedAt, field.TypeTime, value)
 	}
 	if aiu.mutation.CreatedAtCleared() {
 		_spec.ClearField(appinstance.FieldCreatedAt, field.TypeTime)
@@ -366,8 +486,11 @@ func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if aiu.mutation.DeleteAtCleared() {
 		_spec.ClearField(appinstance.FieldDeleteAt, field.TypeTime)
 	}
-	if aiu.mutation.StatusCleared() {
-		_spec.ClearField(appinstance.FieldStatus, field.TypeInt8)
+	if value, ok := aiu.mutation.Status(); ok {
+		_spec.SetField(appinstance.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := aiu.mutation.AddedStatus(); ok {
+		_spec.AddField(appinstance.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := aiu.mutation.Remark(); ok {
 		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
@@ -375,14 +498,38 @@ func (aiu *AppInstanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if aiu.mutation.RemarkCleared() {
 		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
 	}
+	if value, ok := aiu.mutation.CreatedBy(); ok {
+		_spec.SetField(appinstance.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := aiu.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(appinstance.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if aiu.mutation.CreatedByCleared() {
+		_spec.ClearField(appinstance.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := aiu.mutation.UpdatedBy(); ok {
+		_spec.SetField(appinstance.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := aiu.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(appinstance.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if aiu.mutation.UpdatedByCleared() {
+		_spec.ClearField(appinstance.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := aiu.mutation.DeleteBy(); ok {
+		_spec.SetField(appinstance.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := aiu.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(appinstance.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if aiu.mutation.DeleteByCleared() {
+		_spec.ClearField(appinstance.FieldDeleteBy, field.TypeInt64)
+	}
 	if value, ok := aiu.mutation.DelFlag(); ok {
 		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := aiu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(appinstance.FieldDelFlag, field.TypeInt8, value)
-	}
-	if aiu.mutation.DelFlagCleared() {
-		_spec.ClearField(appinstance.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := aiu.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)
@@ -481,6 +628,26 @@ type AppInstanceUpdateOne struct {
 	mutation *AppInstanceMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (aiuo *AppInstanceUpdateOne) SetCreatedAt(t time.Time) *AppInstanceUpdateOne {
+	aiuo.mutation.SetCreatedAt(t)
+	return aiuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableCreatedAt(t *time.Time) *AppInstanceUpdateOne {
+	if t != nil {
+		aiuo.SetCreatedAt(*t)
+	}
+	return aiuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (aiuo *AppInstanceUpdateOne) ClearCreatedAt() *AppInstanceUpdateOne {
+	aiuo.mutation.ClearCreatedAt()
+	return aiuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (aiuo *AppInstanceUpdateOne) SetUpdatedAt(t time.Time) *AppInstanceUpdateOne {
 	aiuo.mutation.SetUpdatedAt(t)
@@ -499,9 +666,38 @@ func (aiuo *AppInstanceUpdateOne) SetDeleteAt(t time.Time) *AppInstanceUpdateOne
 	return aiuo
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableDeleteAt(t *time.Time) *AppInstanceUpdateOne {
+	if t != nil {
+		aiuo.SetDeleteAt(*t)
+	}
+	return aiuo
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (aiuo *AppInstanceUpdateOne) ClearDeleteAt() *AppInstanceUpdateOne {
 	aiuo.mutation.ClearDeleteAt()
+	return aiuo
+}
+
+// SetStatus sets the "status" field.
+func (aiuo *AppInstanceUpdateOne) SetStatus(i int8) *AppInstanceUpdateOne {
+	aiuo.mutation.ResetStatus()
+	aiuo.mutation.SetStatus(i)
+	return aiuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableStatus(i *int8) *AppInstanceUpdateOne {
+	if i != nil {
+		aiuo.SetStatus(*i)
+	}
+	return aiuo
+}
+
+// AddStatus adds i to the "status" field.
+func (aiuo *AppInstanceUpdateOne) AddStatus(i int8) *AppInstanceUpdateOne {
+	aiuo.mutation.AddStatus(i)
 	return aiuo
 }
 
@@ -525,6 +721,87 @@ func (aiuo *AppInstanceUpdateOne) ClearRemark() *AppInstanceUpdateOne {
 	return aiuo
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (aiuo *AppInstanceUpdateOne) SetCreatedBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.ResetCreatedBy()
+	aiuo.mutation.SetCreatedBy(i)
+	return aiuo
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableCreatedBy(i *int64) *AppInstanceUpdateOne {
+	if i != nil {
+		aiuo.SetCreatedBy(*i)
+	}
+	return aiuo
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (aiuo *AppInstanceUpdateOne) AddCreatedBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.AddCreatedBy(i)
+	return aiuo
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (aiuo *AppInstanceUpdateOne) ClearCreatedBy() *AppInstanceUpdateOne {
+	aiuo.mutation.ClearCreatedBy()
+	return aiuo
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (aiuo *AppInstanceUpdateOne) SetUpdatedBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.ResetUpdatedBy()
+	aiuo.mutation.SetUpdatedBy(i)
+	return aiuo
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableUpdatedBy(i *int64) *AppInstanceUpdateOne {
+	if i != nil {
+		aiuo.SetUpdatedBy(*i)
+	}
+	return aiuo
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (aiuo *AppInstanceUpdateOne) AddUpdatedBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.AddUpdatedBy(i)
+	return aiuo
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (aiuo *AppInstanceUpdateOne) ClearUpdatedBy() *AppInstanceUpdateOne {
+	aiuo.mutation.ClearUpdatedBy()
+	return aiuo
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (aiuo *AppInstanceUpdateOne) SetDeleteBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.ResetDeleteBy()
+	aiuo.mutation.SetDeleteBy(i)
+	return aiuo
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (aiuo *AppInstanceUpdateOne) SetNillableDeleteBy(i *int64) *AppInstanceUpdateOne {
+	if i != nil {
+		aiuo.SetDeleteBy(*i)
+	}
+	return aiuo
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (aiuo *AppInstanceUpdateOne) AddDeleteBy(i int64) *AppInstanceUpdateOne {
+	aiuo.mutation.AddDeleteBy(i)
+	return aiuo
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (aiuo *AppInstanceUpdateOne) ClearDeleteBy() *AppInstanceUpdateOne {
+	aiuo.mutation.ClearDeleteBy()
+	return aiuo
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (aiuo *AppInstanceUpdateOne) SetDelFlag(i int8) *AppInstanceUpdateOne {
 	aiuo.mutation.ResetDelFlag()
@@ -543,12 +820,6 @@ func (aiuo *AppInstanceUpdateOne) SetNillableDelFlag(i *int8) *AppInstanceUpdate
 // AddDelFlag adds i to the "del_flag" field.
 func (aiuo *AppInstanceUpdateOne) AddDelFlag(i int8) *AppInstanceUpdateOne {
 	aiuo.mutation.AddDelFlag(i)
-	return aiuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (aiuo *AppInstanceUpdateOne) ClearDelFlag() *AppInstanceUpdateOne {
-	aiuo.mutation.ClearDelFlag()
 	return aiuo
 }
 
@@ -797,13 +1068,6 @@ func (aiuo *AppInstanceUpdateOne) defaults() error {
 		v := appinstance.UpdateDefaultUpdatedAt()
 		aiuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := aiuo.mutation.DeleteAt(); !ok && !aiuo.mutation.DeleteAtCleared() {
-		if appinstance.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized appinstance.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := appinstance.UpdateDefaultDeleteAt()
-		aiuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -833,6 +1097,9 @@ func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstan
 			}
 		}
 	}
+	if value, ok := aiuo.mutation.CreatedAt(); ok {
+		_spec.SetField(appinstance.FieldCreatedAt, field.TypeTime, value)
+	}
 	if aiuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(appinstance.FieldCreatedAt, field.TypeTime)
 	}
@@ -848,8 +1115,11 @@ func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstan
 	if aiuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(appinstance.FieldDeleteAt, field.TypeTime)
 	}
-	if aiuo.mutation.StatusCleared() {
-		_spec.ClearField(appinstance.FieldStatus, field.TypeInt8)
+	if value, ok := aiuo.mutation.Status(); ok {
+		_spec.SetField(appinstance.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := aiuo.mutation.AddedStatus(); ok {
+		_spec.AddField(appinstance.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := aiuo.mutation.Remark(); ok {
 		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
@@ -857,14 +1127,38 @@ func (aiuo *AppInstanceUpdateOne) sqlSave(ctx context.Context) (_node *AppInstan
 	if aiuo.mutation.RemarkCleared() {
 		_spec.ClearField(appinstance.FieldRemark, field.TypeString)
 	}
+	if value, ok := aiuo.mutation.CreatedBy(); ok {
+		_spec.SetField(appinstance.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := aiuo.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(appinstance.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if aiuo.mutation.CreatedByCleared() {
+		_spec.ClearField(appinstance.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := aiuo.mutation.UpdatedBy(); ok {
+		_spec.SetField(appinstance.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := aiuo.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(appinstance.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if aiuo.mutation.UpdatedByCleared() {
+		_spec.ClearField(appinstance.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := aiuo.mutation.DeleteBy(); ok {
+		_spec.SetField(appinstance.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := aiuo.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(appinstance.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if aiuo.mutation.DeleteByCleared() {
+		_spec.ClearField(appinstance.FieldDeleteBy, field.TypeInt64)
+	}
 	if value, ok := aiuo.mutation.DelFlag(); ok {
 		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := aiuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(appinstance.FieldDelFlag, field.TypeInt8, value)
-	}
-	if aiuo.mutation.DelFlagCleared() {
-		_spec.ClearField(appinstance.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := aiuo.mutation.InstanceName(); ok {
 		_spec.SetField(appinstance.FieldInstanceName, field.TypeString, value)

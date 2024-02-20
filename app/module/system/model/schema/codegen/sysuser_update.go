@@ -31,6 +31,26 @@ func (suu *SysUserUpdate) Where(ps ...predicate.SysUser) *SysUserUpdate {
 	return suu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (suu *SysUserUpdate) SetCreatedAt(t time.Time) *SysUserUpdate {
+	suu.mutation.SetCreatedAt(t)
+	return suu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableCreatedAt(t *time.Time) *SysUserUpdate {
+	if t != nil {
+		suu.SetCreatedAt(*t)
+	}
+	return suu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (suu *SysUserUpdate) ClearCreatedAt() *SysUserUpdate {
+	suu.mutation.ClearCreatedAt()
+	return suu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (suu *SysUserUpdate) SetUpdatedAt(t time.Time) *SysUserUpdate {
 	suu.mutation.SetUpdatedAt(t)
@@ -46,6 +66,14 @@ func (suu *SysUserUpdate) ClearUpdatedAt() *SysUserUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (suu *SysUserUpdate) SetDeleteAt(t time.Time) *SysUserUpdate {
 	suu.mutation.SetDeleteAt(t)
+	return suu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableDeleteAt(t *time.Time) *SysUserUpdate {
+	if t != nil {
+		suu.SetDeleteAt(*t)
+	}
 	return suu
 }
 
@@ -174,12 +202,6 @@ func (suu *SysUserUpdate) SetNillableDelFlag(i *int8) *SysUserUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (suu *SysUserUpdate) AddDelFlag(i int8) *SysUserUpdate {
 	suu.mutation.AddDelFlag(i)
-	return suu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (suu *SysUserUpdate) ClearDelFlag() *SysUserUpdate {
-	suu.mutation.ClearDelFlag()
 	return suu
 }
 
@@ -659,13 +681,6 @@ func (suu *SysUserUpdate) defaults() error {
 		v := sysuser.UpdateDefaultUpdatedAt()
 		suu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := suu.mutation.DeleteAt(); !ok && !suu.mutation.DeleteAtCleared() {
-		if sysuser.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysuser.UpdateDefaultDeleteAt()
-		suu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -677,6 +692,9 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysuser.FieldCreatedAt, field.TypeTime, value)
 	}
 	if suu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysuser.FieldCreatedAt, field.TypeTime)
@@ -731,9 +749,6 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := suu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysuser.FieldDelFlag, field.TypeInt8, value)
-	}
-	if suu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysuser.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := suu.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
@@ -970,6 +985,26 @@ type SysUserUpdateOne struct {
 	mutation *SysUserMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (suuo *SysUserUpdateOne) SetCreatedAt(t time.Time) *SysUserUpdateOne {
+	suuo.mutation.SetCreatedAt(t)
+	return suuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableCreatedAt(t *time.Time) *SysUserUpdateOne {
+	if t != nil {
+		suuo.SetCreatedAt(*t)
+	}
+	return suuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (suuo *SysUserUpdateOne) ClearCreatedAt() *SysUserUpdateOne {
+	suuo.mutation.ClearCreatedAt()
+	return suuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (suuo *SysUserUpdateOne) SetUpdatedAt(t time.Time) *SysUserUpdateOne {
 	suuo.mutation.SetUpdatedAt(t)
@@ -985,6 +1020,14 @@ func (suuo *SysUserUpdateOne) ClearUpdatedAt() *SysUserUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (suuo *SysUserUpdateOne) SetDeleteAt(t time.Time) *SysUserUpdateOne {
 	suuo.mutation.SetDeleteAt(t)
+	return suuo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableDeleteAt(t *time.Time) *SysUserUpdateOne {
+	if t != nil {
+		suuo.SetDeleteAt(*t)
+	}
 	return suuo
 }
 
@@ -1113,12 +1156,6 @@ func (suuo *SysUserUpdateOne) SetNillableDelFlag(i *int8) *SysUserUpdateOne {
 // AddDelFlag adds i to the "del_flag" field.
 func (suuo *SysUserUpdateOne) AddDelFlag(i int8) *SysUserUpdateOne {
 	suuo.mutation.AddDelFlag(i)
-	return suuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (suuo *SysUserUpdateOne) ClearDelFlag() *SysUserUpdateOne {
-	suuo.mutation.ClearDelFlag()
 	return suuo
 }
 
@@ -1611,13 +1648,6 @@ func (suuo *SysUserUpdateOne) defaults() error {
 		v := sysuser.UpdateDefaultUpdatedAt()
 		suuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := suuo.mutation.DeleteAt(); !ok && !suuo.mutation.DeleteAtCleared() {
-		if sysuser.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysuser.UpdateDefaultDeleteAt()
-		suuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -1646,6 +1676,9 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := suuo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysuser.FieldCreatedAt, field.TypeTime, value)
 	}
 	if suuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysuser.FieldCreatedAt, field.TypeTime)
@@ -1700,9 +1733,6 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if value, ok := suuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysuser.FieldDelFlag, field.TypeInt8, value)
-	}
-	if suuo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysuser.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := suuo.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)

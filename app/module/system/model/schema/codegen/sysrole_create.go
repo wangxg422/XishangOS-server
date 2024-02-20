@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -300,16 +301,13 @@ func (src *SysRoleCreate) defaults() error {
 		v := sysrole.DefaultUpdatedAt()
 		src.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := src.mutation.DeleteAt(); !ok {
-		if sysrole.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysrole.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysrole.DefaultDeleteAt()
-		src.mutation.SetDeleteAt(v)
-	}
 	if _, ok := src.mutation.Status(); !ok {
 		v := sysrole.DefaultStatus
 		src.mutation.SetStatus(v)
+	}
+	if _, ok := src.mutation.DelFlag(); !ok {
+		v := sysrole.DefaultDelFlag
+		src.mutation.SetDelFlag(v)
 	}
 	if _, ok := src.mutation.ID(); !ok {
 		if sysrole.DefaultID == nil {
@@ -323,6 +321,12 @@ func (src *SysRoleCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (src *SysRoleCreate) check() error {
+	if _, ok := src.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysRole.status"`)}
+	}
+	if _, ok := src.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysRole.del_flag"`)}
+	}
 	return nil
 }
 

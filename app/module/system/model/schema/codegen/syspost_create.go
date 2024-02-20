@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -268,16 +269,17 @@ func (spc *SysPostCreate) defaults() error {
 		v := syspost.DefaultUpdatedAt()
 		spc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := spc.mutation.DeleteAt(); !ok {
-		if syspost.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized syspost.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := syspost.DefaultDeleteAt()
-		spc.mutation.SetDeleteAt(v)
-	}
 	if _, ok := spc.mutation.Status(); !ok {
 		v := syspost.DefaultStatus
 		spc.mutation.SetStatus(v)
+	}
+	if _, ok := spc.mutation.Sort(); !ok {
+		v := syspost.DefaultSort
+		spc.mutation.SetSort(v)
+	}
+	if _, ok := spc.mutation.DelFlag(); !ok {
+		v := syspost.DefaultDelFlag
+		spc.mutation.SetDelFlag(v)
 	}
 	if _, ok := spc.mutation.ID(); !ok {
 		if syspost.DefaultID == nil {
@@ -291,6 +293,12 @@ func (spc *SysPostCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (spc *SysPostCreate) check() error {
+	if _, ok := spc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysPost.status"`)}
+	}
+	if _, ok := spc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysPost.del_flag"`)}
+	}
 	return nil
 }
 

@@ -29,8 +29,10 @@ func (AppInstance) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		baseMixin.IdMixin{},
 		baseMixin.TimeMixin{},
+		baseMixin.DeleteTimeMixin{},
 		baseMixin.StatusMixin{},
 		baseMixin.RemarkMixin{},
+		baseMixin.ByMixin{},
 		mixin.SoftDeleteMixin{},
 	}
 }

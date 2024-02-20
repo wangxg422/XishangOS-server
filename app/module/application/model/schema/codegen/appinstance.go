@@ -28,6 +28,12 @@ type AppInstance struct {
 	Status int8 `json:"status,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// CreatedBy holds the value of the "created_by" field.
+	CreatedBy int64 `json:"created_by,omitempty"`
+	// UpdatedBy holds the value of the "updated_by" field.
+	UpdatedBy int64 `json:"updated_by,omitempty"`
+	// DeleteBy holds the value of the "delete_by" field.
+	DeleteBy int64 `json:"delete_by,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"del_flag,omitempty"`
 	// InstanceName holds the value of the "instance_name" field.
@@ -80,7 +86,7 @@ func (*AppInstance) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldDelFlag, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
+		case appinstance.FieldID, appinstance.FieldStatus, appinstance.FieldCreatedBy, appinstance.FieldUpdatedBy, appinstance.FieldDeleteBy, appinstance.FieldDelFlag, appinstance.FieldInstancePackage, appinstance.FieldInstanceType, appinstance.FieldInstaller:
 			values[i] = new(sql.NullInt64)
 		case appinstance.FieldRemark, appinstance.FieldInstanceName, appinstance.FieldInstanceCode, appinstance.FieldInstanceIcon, appinstance.FieldInstanceAddress, appinstance.FieldDesc:
 			values[i] = new(sql.NullString)
@@ -138,6 +144,24 @@ func (ai *AppInstance) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				ai.Remark = value.String
+			}
+		case appinstance.FieldCreatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+			} else if value.Valid {
+				ai.CreatedBy = value.Int64
+			}
+		case appinstance.FieldUpdatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+			} else if value.Valid {
+				ai.UpdatedBy = value.Int64
+			}
+		case appinstance.FieldDeleteBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_by", values[i])
+			} else if value.Valid {
+				ai.DeleteBy = value.Int64
 			}
 		case appinstance.FieldDelFlag:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -255,6 +279,15 @@ func (ai *AppInstance) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(ai.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", ai.CreatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("updated_by=")
+	builder.WriteString(fmt.Sprintf("%v", ai.UpdatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("delete_by=")
+	builder.WriteString(fmt.Sprintf("%v", ai.DeleteBy))
 	builder.WriteString(", ")
 	builder.WriteString("del_flag=")
 	builder.WriteString(fmt.Sprintf("%v", ai.DelFlag))

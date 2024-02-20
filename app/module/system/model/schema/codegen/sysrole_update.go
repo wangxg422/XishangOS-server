@@ -31,6 +31,26 @@ func (sru *SysRoleUpdate) Where(ps ...predicate.SysRole) *SysRoleUpdate {
 	return sru
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sru *SysRoleUpdate) SetCreatedAt(t time.Time) *SysRoleUpdate {
+	sru.mutation.SetCreatedAt(t)
+	return sru
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableCreatedAt(t *time.Time) *SysRoleUpdate {
+	if t != nil {
+		sru.SetCreatedAt(*t)
+	}
+	return sru
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sru *SysRoleUpdate) ClearCreatedAt() *SysRoleUpdate {
+	sru.mutation.ClearCreatedAt()
+	return sru
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sru *SysRoleUpdate) SetUpdatedAt(t time.Time) *SysRoleUpdate {
 	sru.mutation.SetUpdatedAt(t)
@@ -46,6 +66,14 @@ func (sru *SysRoleUpdate) ClearUpdatedAt() *SysRoleUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (sru *SysRoleUpdate) SetDeleteAt(t time.Time) *SysRoleUpdate {
 	sru.mutation.SetDeleteAt(t)
+	return sru
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableDeleteAt(t *time.Time) *SysRoleUpdate {
+	if t != nil {
+		sru.SetDeleteAt(*t)
+	}
 	return sru
 }
 
@@ -136,6 +164,27 @@ func (sru *SysRoleUpdate) ClearDeleteBy() *SysRoleUpdate {
 	return sru
 }
 
+// SetStatus sets the "status" field.
+func (sru *SysRoleUpdate) SetStatus(i int8) *SysRoleUpdate {
+	sru.mutation.ResetStatus()
+	sru.mutation.SetStatus(i)
+	return sru
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableStatus(i *int8) *SysRoleUpdate {
+	if i != nil {
+		sru.SetStatus(*i)
+	}
+	return sru
+}
+
+// AddStatus adds i to the "status" field.
+func (sru *SysRoleUpdate) AddStatus(i int8) *SysRoleUpdate {
+	sru.mutation.AddStatus(i)
+	return sru
+}
+
 // SetRemark sets the "remark" field.
 func (sru *SysRoleUpdate) SetRemark(s string) *SysRoleUpdate {
 	sru.mutation.SetRemark(s)
@@ -174,12 +223,6 @@ func (sru *SysRoleUpdate) SetNillableDelFlag(i *int8) *SysRoleUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (sru *SysRoleUpdate) AddDelFlag(i int8) *SysRoleUpdate {
 	sru.mutation.AddDelFlag(i)
-	return sru
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sru *SysRoleUpdate) ClearDelFlag() *SysRoleUpdate {
-	sru.mutation.ClearDelFlag()
 	return sru
 }
 
@@ -409,13 +452,6 @@ func (sru *SysRoleUpdate) defaults() error {
 		v := sysrole.UpdateDefaultUpdatedAt()
 		sru.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sru.mutation.DeleteAt(); !ok && !sru.mutation.DeleteAtCleared() {
-		if sysrole.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysrole.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysrole.UpdateDefaultDeleteAt()
-		sru.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -427,6 +463,9 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sru.mutation.CreatedAt(); ok {
+		_spec.SetField(sysrole.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sru.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysrole.FieldCreatedAt, field.TypeTime)
@@ -470,8 +509,11 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sru.mutation.DeleteByCleared() {
 		_spec.ClearField(sysrole.FieldDeleteBy, field.TypeInt64)
 	}
-	if sru.mutation.StatusCleared() {
-		_spec.ClearField(sysrole.FieldStatus, field.TypeInt8)
+	if value, ok := sru.mutation.Status(); ok {
+		_spec.SetField(sysrole.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sru.mutation.AddedStatus(); ok {
+		_spec.AddField(sysrole.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sru.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
@@ -484,9 +526,6 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sru.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysrole.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sru.mutation.DelFlagCleared() {
-		_spec.ClearField(sysrole.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sru.mutation.ListOrder(); ok {
 		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)
@@ -667,6 +706,26 @@ type SysRoleUpdateOne struct {
 	mutation *SysRoleMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sruo *SysRoleUpdateOne) SetCreatedAt(t time.Time) *SysRoleUpdateOne {
+	sruo.mutation.SetCreatedAt(t)
+	return sruo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableCreatedAt(t *time.Time) *SysRoleUpdateOne {
+	if t != nil {
+		sruo.SetCreatedAt(*t)
+	}
+	return sruo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sruo *SysRoleUpdateOne) ClearCreatedAt() *SysRoleUpdateOne {
+	sruo.mutation.ClearCreatedAt()
+	return sruo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sruo *SysRoleUpdateOne) SetUpdatedAt(t time.Time) *SysRoleUpdateOne {
 	sruo.mutation.SetUpdatedAt(t)
@@ -682,6 +741,14 @@ func (sruo *SysRoleUpdateOne) ClearUpdatedAt() *SysRoleUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (sruo *SysRoleUpdateOne) SetDeleteAt(t time.Time) *SysRoleUpdateOne {
 	sruo.mutation.SetDeleteAt(t)
+	return sruo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableDeleteAt(t *time.Time) *SysRoleUpdateOne {
+	if t != nil {
+		sruo.SetDeleteAt(*t)
+	}
 	return sruo
 }
 
@@ -772,6 +839,27 @@ func (sruo *SysRoleUpdateOne) ClearDeleteBy() *SysRoleUpdateOne {
 	return sruo
 }
 
+// SetStatus sets the "status" field.
+func (sruo *SysRoleUpdateOne) SetStatus(i int8) *SysRoleUpdateOne {
+	sruo.mutation.ResetStatus()
+	sruo.mutation.SetStatus(i)
+	return sruo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableStatus(i *int8) *SysRoleUpdateOne {
+	if i != nil {
+		sruo.SetStatus(*i)
+	}
+	return sruo
+}
+
+// AddStatus adds i to the "status" field.
+func (sruo *SysRoleUpdateOne) AddStatus(i int8) *SysRoleUpdateOne {
+	sruo.mutation.AddStatus(i)
+	return sruo
+}
+
 // SetRemark sets the "remark" field.
 func (sruo *SysRoleUpdateOne) SetRemark(s string) *SysRoleUpdateOne {
 	sruo.mutation.SetRemark(s)
@@ -810,12 +898,6 @@ func (sruo *SysRoleUpdateOne) SetNillableDelFlag(i *int8) *SysRoleUpdateOne {
 // AddDelFlag adds i to the "del_flag" field.
 func (sruo *SysRoleUpdateOne) AddDelFlag(i int8) *SysRoleUpdateOne {
 	sruo.mutation.AddDelFlag(i)
-	return sruo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sruo *SysRoleUpdateOne) ClearDelFlag() *SysRoleUpdateOne {
-	sruo.mutation.ClearDelFlag()
 	return sruo
 }
 
@@ -1058,13 +1140,6 @@ func (sruo *SysRoleUpdateOne) defaults() error {
 		v := sysrole.UpdateDefaultUpdatedAt()
 		sruo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sruo.mutation.DeleteAt(); !ok && !sruo.mutation.DeleteAtCleared() {
-		if sysrole.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysrole.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysrole.UpdateDefaultDeleteAt()
-		sruo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -1093,6 +1168,9 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sruo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysrole.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sruo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysrole.FieldCreatedAt, field.TypeTime)
@@ -1136,8 +1214,11 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	if sruo.mutation.DeleteByCleared() {
 		_spec.ClearField(sysrole.FieldDeleteBy, field.TypeInt64)
 	}
-	if sruo.mutation.StatusCleared() {
-		_spec.ClearField(sysrole.FieldStatus, field.TypeInt8)
+	if value, ok := sruo.mutation.Status(); ok {
+		_spec.SetField(sysrole.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sruo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysrole.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sruo.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
@@ -1150,9 +1231,6 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	}
 	if value, ok := sruo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysrole.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sruo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysrole.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sruo.mutation.ListOrder(); ok {
 		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)

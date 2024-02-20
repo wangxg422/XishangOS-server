@@ -638,24 +638,10 @@ func (m *SysConfigMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysConfigMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysconfig.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysConfigMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysconfig.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysConfigMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysconfig.FieldStatus)
 }
 
 // SetDelFlag sets the "del_flag" field.
@@ -708,24 +694,10 @@ func (m *SysConfigMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysConfigMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysconfig.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysConfigMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysconfig.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysConfigMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysconfig.FieldDelFlag)
 }
 
 // SetConfigName sets the "config_name" field.
@@ -1314,12 +1286,6 @@ func (m *SysConfigMutation) ClearedFields() []string {
 	if m.FieldCleared(sysconfig.FieldRemark) {
 		fields = append(fields, sysconfig.FieldRemark)
 	}
-	if m.FieldCleared(sysconfig.FieldStatus) {
-		fields = append(fields, sysconfig.FieldStatus)
-	}
-	if m.FieldCleared(sysconfig.FieldDelFlag) {
-		fields = append(fields, sysconfig.FieldDelFlag)
-	}
 	if m.FieldCleared(sysconfig.FieldConfigName) {
 		fields = append(fields, sysconfig.FieldConfigName)
 	}
@@ -1366,12 +1332,6 @@ func (m *SysConfigMutation) ClearField(name string) error {
 		return nil
 	case sysconfig.FieldRemark:
 		m.ClearRemark()
-		return nil
-	case sysconfig.FieldStatus:
-		m.ClearStatus()
-		return nil
-	case sysconfig.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysconfig.FieldConfigName:
 		m.ClearConfigName()
@@ -2087,24 +2047,10 @@ func (m *SysDeptMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysDeptMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysdept.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysDeptMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysdept.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysDeptMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysdept.FieldStatus)
 }
 
 // SetSort sets the "sort" field.
@@ -2227,24 +2173,10 @@ func (m *SysDeptMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysDeptMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysdept.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysDeptMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysdept.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysDeptMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysdept.FieldDelFlag)
 }
 
 // SetParentID sets the "parent_id" field.
@@ -3205,14 +3137,8 @@ func (m *SysDeptMutation) ClearedFields() []string {
 	if m.FieldCleared(sysdept.FieldRemark) {
 		fields = append(fields, sysdept.FieldRemark)
 	}
-	if m.FieldCleared(sysdept.FieldStatus) {
-		fields = append(fields, sysdept.FieldStatus)
-	}
 	if m.FieldCleared(sysdept.FieldSort) {
 		fields = append(fields, sysdept.FieldSort)
-	}
-	if m.FieldCleared(sysdept.FieldDelFlag) {
-		fields = append(fields, sysdept.FieldDelFlag)
 	}
 	if m.FieldCleared(sysdept.FieldAncestors) {
 		fields = append(fields, sysdept.FieldAncestors)
@@ -3270,14 +3196,8 @@ func (m *SysDeptMutation) ClearField(name string) error {
 	case sysdept.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case sysdept.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case sysdept.FieldSort:
 		m.ClearSort()
-		return nil
-	case sysdept.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysdept.FieldAncestors:
 		m.ClearAncestors()
@@ -4072,24 +3992,10 @@ func (m *SysDictDataMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysDictDataMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysdictdata.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysDictDataMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysdictdata.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysDictDataMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysdictdata.FieldStatus)
 }
 
 // SetSort sets the "sort" field.
@@ -4212,24 +4118,10 @@ func (m *SysDictDataMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysDictDataMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysdictdata.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysDictDataMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysdictdata.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysDictDataMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysdictdata.FieldDelFlag)
 }
 
 // SetDictLabel sets the "dict_label" field.
@@ -5010,14 +4902,8 @@ func (m *SysDictDataMutation) ClearedFields() []string {
 	if m.FieldCleared(sysdictdata.FieldRemark) {
 		fields = append(fields, sysdictdata.FieldRemark)
 	}
-	if m.FieldCleared(sysdictdata.FieldStatus) {
-		fields = append(fields, sysdictdata.FieldStatus)
-	}
 	if m.FieldCleared(sysdictdata.FieldSort) {
 		fields = append(fields, sysdictdata.FieldSort)
-	}
-	if m.FieldCleared(sysdictdata.FieldDelFlag) {
-		fields = append(fields, sysdictdata.FieldDelFlag)
 	}
 	if m.FieldCleared(sysdictdata.FieldDictLabel) {
 		fields = append(fields, sysdictdata.FieldDictLabel)
@@ -5072,14 +4958,8 @@ func (m *SysDictDataMutation) ClearField(name string) error {
 	case sysdictdata.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case sysdictdata.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case sysdictdata.FieldSort:
 		m.ClearSort()
-		return nil
-	case sysdictdata.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysdictdata.FieldDictLabel:
 		m.ClearDictLabel()
@@ -5824,24 +5704,10 @@ func (m *SysDictTypeMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysDictTypeMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysdicttype.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysDictTypeMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysdicttype.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysDictTypeMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysdicttype.FieldStatus)
 }
 
 // SetDelFlag sets the "del_flag" field.
@@ -5894,24 +5760,10 @@ func (m *SysDictTypeMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysDictTypeMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysdicttype.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysDictTypeMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysdicttype.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysDictTypeMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysdicttype.FieldDelFlag)
 }
 
 // SetDictName sets the "dict_name" field.
@@ -6395,12 +6247,6 @@ func (m *SysDictTypeMutation) ClearedFields() []string {
 	if m.FieldCleared(sysdicttype.FieldRemark) {
 		fields = append(fields, sysdicttype.FieldRemark)
 	}
-	if m.FieldCleared(sysdicttype.FieldStatus) {
-		fields = append(fields, sysdicttype.FieldStatus)
-	}
-	if m.FieldCleared(sysdicttype.FieldDelFlag) {
-		fields = append(fields, sysdicttype.FieldDelFlag)
-	}
 	if m.FieldCleared(sysdicttype.FieldDictName) {
 		fields = append(fields, sysdicttype.FieldDictName)
 	}
@@ -6441,12 +6287,6 @@ func (m *SysDictTypeMutation) ClearField(name string) error {
 		return nil
 	case sysdicttype.FieldRemark:
 		m.ClearRemark()
-		return nil
-	case sysdicttype.FieldStatus:
-		m.ClearStatus()
-		return nil
-	case sysdicttype.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysdicttype.FieldDictName:
 		m.ClearDictName()
@@ -6759,24 +6599,10 @@ func (m *SysLoginLogMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysLoginLogMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysloginlog.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysLoginLogMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysloginlog.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysLoginLogMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysloginlog.FieldStatus)
 }
 
 // SetLoginName sets the "login_name" field.
@@ -7403,9 +7229,6 @@ func (m *SysLoginLogMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *SysLoginLogMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(sysloginlog.FieldStatus) {
-		fields = append(fields, sysloginlog.FieldStatus)
-	}
 	if m.FieldCleared(sysloginlog.FieldLoginName) {
 		fields = append(fields, sysloginlog.FieldLoginName)
 	}
@@ -7444,9 +7267,6 @@ func (m *SysLoginLogMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *SysLoginLogMutation) ClearField(name string) error {
 	switch name {
-	case sysloginlog.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case sysloginlog.FieldLoginName:
 		m.ClearLoginName()
 		return nil
@@ -7567,7 +7387,17 @@ type SysMenuMutation struct {
 	created_at      *time.Time
 	updated_at      *time.Time
 	delete_at       *time.Time
+	created_by      *int64
+	addcreated_by   *int64
+	updated_by      *int64
+	addupdated_by   *int64
+	delete_by       *int64
+	adddelete_by    *int64
+	status          *int8
+	addstatus       *int8
 	remark          *string
+	sort            *int
+	addsort         *int
 	del_flag        *int8
 	adddel_flag     *int8
 	pid             *int64
@@ -7857,6 +7687,272 @@ func (m *SysMenuMutation) ResetDeleteAt() {
 	delete(m.clearedFields, sysmenu.FieldDeleteAt)
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (m *SysMenuMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SysMenuMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SysMenuMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SysMenuMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *SysMenuMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[sysmenu.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *SysMenuMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SysMenuMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, sysmenu.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SysMenuMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SysMenuMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SysMenuMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SysMenuMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *SysMenuMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[sysmenu.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *SysMenuMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SysMenuMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, sysmenu.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *SysMenuMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *SysMenuMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *SysMenuMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *SysMenuMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *SysMenuMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[sysmenu.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *SysMenuMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *SysMenuMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, sysmenu.FieldDeleteBy)
+}
+
+// SetStatus sets the "status" field.
+func (m *SysMenuMutation) SetStatus(i int8) {
+	m.status = &i
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *SysMenuMutation) Status() (r int8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldStatus(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds i to the "status" field.
+func (m *SysMenuMutation) AddStatus(i int8) {
+	if m.addstatus != nil {
+		*m.addstatus += i
+	} else {
+		m.addstatus = &i
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *SysMenuMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *SysMenuMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
 // SetRemark sets the "remark" field.
 func (m *SysMenuMutation) SetRemark(s string) {
 	m.remark = &s
@@ -7904,6 +8000,76 @@ func (m *SysMenuMutation) RemarkCleared() bool {
 func (m *SysMenuMutation) ResetRemark() {
 	m.remark = nil
 	delete(m.clearedFields, sysmenu.FieldRemark)
+}
+
+// SetSort sets the "sort" field.
+func (m *SysMenuMutation) SetSort(i int) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysMenuMutation) Sort() (r int, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldSort(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysMenuMutation) AddSort(i int) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysMenuMutation) AddedSort() (r int, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSort clears the value of the "sort" field.
+func (m *SysMenuMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[sysmenu.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SysMenuMutation) SortCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldSort]
+	return ok
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysMenuMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+	delete(m.clearedFields, sysmenu.FieldSort)
 }
 
 // SetDelFlag sets the "del_flag" field.
@@ -7956,24 +8122,10 @@ func (m *SysMenuMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysMenuMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysmenu.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysMenuMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysMenuMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysmenu.FieldDelFlag)
 }
 
 // SetPid sets the "pid" field.
@@ -9121,7 +9273,7 @@ func (m *SysMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuMutation) Fields() []string {
-	fields := make([]string, 0, 23)
+	fields := make([]string, 0, 28)
 	if m.created_at != nil {
 		fields = append(fields, sysmenu.FieldCreatedAt)
 	}
@@ -9131,8 +9283,23 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.delete_at != nil {
 		fields = append(fields, sysmenu.FieldDeleteAt)
 	}
+	if m.created_by != nil {
+		fields = append(fields, sysmenu.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, sysmenu.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, sysmenu.FieldDeleteBy)
+	}
+	if m.status != nil {
+		fields = append(fields, sysmenu.FieldStatus)
+	}
 	if m.remark != nil {
 		fields = append(fields, sysmenu.FieldRemark)
+	}
+	if m.sort != nil {
+		fields = append(fields, sysmenu.FieldSort)
 	}
 	if m.del_flag != nil {
 		fields = append(fields, sysmenu.FieldDelFlag)
@@ -9205,8 +9372,18 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case sysmenu.FieldDeleteAt:
 		return m.DeleteAt()
+	case sysmenu.FieldCreatedBy:
+		return m.CreatedBy()
+	case sysmenu.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case sysmenu.FieldDeleteBy:
+		return m.DeleteBy()
+	case sysmenu.FieldStatus:
+		return m.Status()
 	case sysmenu.FieldRemark:
 		return m.Remark()
+	case sysmenu.FieldSort:
+		return m.Sort()
 	case sysmenu.FieldDelFlag:
 		return m.DelFlag()
 	case sysmenu.FieldPid:
@@ -9260,8 +9437,18 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldUpdatedAt(ctx)
 	case sysmenu.FieldDeleteAt:
 		return m.OldDeleteAt(ctx)
+	case sysmenu.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case sysmenu.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case sysmenu.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case sysmenu.FieldStatus:
+		return m.OldStatus(ctx)
 	case sysmenu.FieldRemark:
 		return m.OldRemark(ctx)
+	case sysmenu.FieldSort:
+		return m.OldSort(ctx)
 	case sysmenu.FieldDelFlag:
 		return m.OldDelFlag(ctx)
 	case sysmenu.FieldPid:
@@ -9330,12 +9517,47 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeleteAt(v)
 		return nil
+	case sysmenu.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case sysmenu.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case sysmenu.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case sysmenu.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
 	case sysmenu.FieldRemark:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRemark(v)
+		return nil
+	case sysmenu.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
 		return nil
 	case sysmenu.FieldDelFlag:
 		v, ok := value.(int8)
@@ -9478,6 +9700,21 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysMenuMutation) AddedFields() []string {
 	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, sysmenu.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, sysmenu.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, sysmenu.FieldDeleteBy)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, sysmenu.FieldStatus)
+	}
+	if m.addsort != nil {
+		fields = append(fields, sysmenu.FieldSort)
+	}
 	if m.adddel_flag != nil {
 		fields = append(fields, sysmenu.FieldDelFlag)
 	}
@@ -9516,6 +9753,16 @@ func (m *SysMenuMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case sysmenu.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case sysmenu.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case sysmenu.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case sysmenu.FieldStatus:
+		return m.AddedStatus()
+	case sysmenu.FieldSort:
+		return m.AddedSort()
 	case sysmenu.FieldDelFlag:
 		return m.AddedDelFlag()
 	case sysmenu.FieldPid:
@@ -9545,6 +9792,41 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case sysmenu.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case sysmenu.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case sysmenu.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case sysmenu.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	case sysmenu.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
 	case sysmenu.FieldDelFlag:
 		v, ok := value.(int8)
 		if !ok {
@@ -9632,11 +9914,20 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldDeleteAt) {
 		fields = append(fields, sysmenu.FieldDeleteAt)
 	}
+	if m.FieldCleared(sysmenu.FieldCreatedBy) {
+		fields = append(fields, sysmenu.FieldCreatedBy)
+	}
+	if m.FieldCleared(sysmenu.FieldUpdatedBy) {
+		fields = append(fields, sysmenu.FieldUpdatedBy)
+	}
+	if m.FieldCleared(sysmenu.FieldDeleteBy) {
+		fields = append(fields, sysmenu.FieldDeleteBy)
+	}
 	if m.FieldCleared(sysmenu.FieldRemark) {
 		fields = append(fields, sysmenu.FieldRemark)
 	}
-	if m.FieldCleared(sysmenu.FieldDelFlag) {
-		fields = append(fields, sysmenu.FieldDelFlag)
+	if m.FieldCleared(sysmenu.FieldSort) {
+		fields = append(fields, sysmenu.FieldSort)
 	}
 	if m.FieldCleared(sysmenu.FieldName) {
 		fields = append(fields, sysmenu.FieldName)
@@ -9712,11 +10003,20 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldDeleteAt:
 		m.ClearDeleteAt()
 		return nil
+	case sysmenu.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case sysmenu.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case sysmenu.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
 	case sysmenu.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case sysmenu.FieldDelFlag:
-		m.ClearDelFlag()
+	case sysmenu.FieldSort:
+		m.ClearSort()
 		return nil
 	case sysmenu.FieldName:
 		m.ClearName()
@@ -9786,8 +10086,23 @@ func (m *SysMenuMutation) ResetField(name string) error {
 	case sysmenu.FieldDeleteAt:
 		m.ResetDeleteAt()
 		return nil
+	case sysmenu.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case sysmenu.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case sysmenu.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case sysmenu.FieldStatus:
+		m.ResetStatus()
+		return nil
 	case sysmenu.FieldRemark:
 		m.ResetRemark()
+		return nil
+	case sysmenu.FieldSort:
+		m.ResetSort()
 		return nil
 	case sysmenu.FieldDelFlag:
 		m.ResetDelFlag()
@@ -11828,24 +12143,10 @@ func (m *SysPostMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysPostMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[syspost.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysPostMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[syspost.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysPostMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, syspost.FieldStatus)
 }
 
 // SetSort sets the "sort" field.
@@ -11968,24 +12269,10 @@ func (m *SysPostMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysPostMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[syspost.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysPostMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[syspost.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysPostMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, syspost.FieldDelFlag)
 }
 
 // SetPostCode sets the "post_code" field.
@@ -12495,14 +12782,8 @@ func (m *SysPostMutation) ClearedFields() []string {
 	if m.FieldCleared(syspost.FieldRemark) {
 		fields = append(fields, syspost.FieldRemark)
 	}
-	if m.FieldCleared(syspost.FieldStatus) {
-		fields = append(fields, syspost.FieldStatus)
-	}
 	if m.FieldCleared(syspost.FieldSort) {
 		fields = append(fields, syspost.FieldSort)
-	}
-	if m.FieldCleared(syspost.FieldDelFlag) {
-		fields = append(fields, syspost.FieldDelFlag)
 	}
 	if m.FieldCleared(syspost.FieldPostCode) {
 		fields = append(fields, syspost.FieldPostCode)
@@ -12545,14 +12826,8 @@ func (m *SysPostMutation) ClearField(name string) error {
 	case syspost.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case syspost.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case syspost.FieldSort:
 		m.ClearSort()
-		return nil
-	case syspost.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case syspost.FieldPostCode:
 		m.ClearPostCode()
@@ -13243,24 +13518,10 @@ func (m *SysRoleMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *SysRoleMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[sysrole.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *SysRoleMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[sysrole.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *SysRoleMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, sysrole.FieldStatus)
 }
 
 // SetRemark sets the "remark" field.
@@ -13362,24 +13623,10 @@ func (m *SysRoleMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysRoleMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysrole.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysRoleMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysrole.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysRoleMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysrole.FieldDelFlag)
 }
 
 // SetListOrder sets the "list_order" field.
@@ -14097,14 +14344,8 @@ func (m *SysRoleMutation) ClearedFields() []string {
 	if m.FieldCleared(sysrole.FieldDeleteBy) {
 		fields = append(fields, sysrole.FieldDeleteBy)
 	}
-	if m.FieldCleared(sysrole.FieldStatus) {
-		fields = append(fields, sysrole.FieldStatus)
-	}
 	if m.FieldCleared(sysrole.FieldRemark) {
 		fields = append(fields, sysrole.FieldRemark)
-	}
-	if m.FieldCleared(sysrole.FieldDelFlag) {
-		fields = append(fields, sysrole.FieldDelFlag)
 	}
 	if m.FieldCleared(sysrole.FieldListOrder) {
 		fields = append(fields, sysrole.FieldListOrder)
@@ -14147,14 +14388,8 @@ func (m *SysRoleMutation) ClearField(name string) error {
 	case sysrole.FieldDeleteBy:
 		m.ClearDeleteBy()
 		return nil
-	case sysrole.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case sysrole.FieldRemark:
 		m.ClearRemark()
-		return nil
-	case sysrole.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysrole.FieldListOrder:
 		m.ClearListOrder()
@@ -14959,24 +15194,10 @@ func (m *SysUserMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *SysUserMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[sysuser.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *SysUserMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *SysUserMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, sysuser.FieldDelFlag)
 }
 
 // SetUserName sets the "user_name" field.
@@ -16496,9 +16717,6 @@ func (m *SysUserMutation) ClearedFields() []string {
 	if m.FieldCleared(sysuser.FieldRemark) {
 		fields = append(fields, sysuser.FieldRemark)
 	}
-	if m.FieldCleared(sysuser.FieldDelFlag) {
-		fields = append(fields, sysuser.FieldDelFlag)
-	}
 	if m.FieldCleared(sysuser.FieldUserNickname) {
 		fields = append(fields, sysuser.FieldUserNickname)
 	}
@@ -16578,9 +16796,6 @@ func (m *SysUserMutation) ClearField(name string) error {
 		return nil
 	case sysuser.FieldRemark:
 		m.ClearRemark()
-		return nil
-	case sysuser.FieldDelFlag:
-		m.ClearDelFlag()
 		return nil
 	case sysuser.FieldUserNickname:
 		m.ClearUserNickname()

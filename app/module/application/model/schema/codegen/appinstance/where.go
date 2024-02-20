@@ -80,6 +80,21 @@ func Remark(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
 }
 
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// DeleteBy applies equality check predicate on the "delete_by" field. It's identical to DeleteByEQ.
+func DeleteBy(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldDeleteBy, v))
+}
+
 // DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
 func DelFlag(v int8) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldDelFlag, v))
@@ -315,16 +330,6 @@ func StatusLTE(v int8) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldNotNull(FieldStatus))
-}
-
 // RemarkEQ applies the EQ predicate on the "remark" field.
 func RemarkEQ(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldRemark, v))
@@ -400,6 +405,156 @@ func RemarkContainsFold(v string) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldContainsFold(FieldRemark, v))
 }
 
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNEQ(FieldCreatedBy, v))
+}
+
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGT(FieldCreatedBy, v))
+}
+
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGTE(FieldCreatedBy, v))
+}
+
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLT(FieldCreatedBy, v))
+}
+
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLTE(FieldCreatedBy, v))
+}
+
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIsNull(FieldCreatedBy))
+}
+
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotNull(FieldCreatedBy))
+}
+
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGT(FieldUpdatedBy, v))
+}
+
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLT(FieldUpdatedBy, v))
+}
+
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIsNull(FieldUpdatedBy))
+}
+
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotNull(FieldUpdatedBy))
+}
+
+// DeleteByEQ applies the EQ predicate on the "delete_by" field.
+func DeleteByEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// DeleteByNEQ applies the NEQ predicate on the "delete_by" field.
+func DeleteByNEQ(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNEQ(FieldDeleteBy, v))
+}
+
+// DeleteByIn applies the In predicate on the "delete_by" field.
+func DeleteByIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByNotIn applies the NotIn predicate on the "delete_by" field.
+func DeleteByNotIn(vs ...int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByGT applies the GT predicate on the "delete_by" field.
+func DeleteByGT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGT(FieldDeleteBy, v))
+}
+
+// DeleteByGTE applies the GTE predicate on the "delete_by" field.
+func DeleteByGTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldGTE(FieldDeleteBy, v))
+}
+
+// DeleteByLT applies the LT predicate on the "delete_by" field.
+func DeleteByLT(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLT(FieldDeleteBy, v))
+}
+
+// DeleteByLTE applies the LTE predicate on the "delete_by" field.
+func DeleteByLTE(v int64) predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldLTE(FieldDeleteBy, v))
+}
+
+// DeleteByIsNil applies the IsNil predicate on the "delete_by" field.
+func DeleteByIsNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldIsNull(FieldDeleteBy))
+}
+
+// DeleteByNotNil applies the NotNil predicate on the "delete_by" field.
+func DeleteByNotNil() predicate.AppInstance {
+	return predicate.AppInstance(sql.FieldNotNull(FieldDeleteBy))
+}
+
 // DelFlagEQ applies the EQ predicate on the "del_flag" field.
 func DelFlagEQ(v int8) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldEQ(FieldDelFlag, v))
@@ -438,16 +593,6 @@ func DelFlagLT(v int8) predicate.AppInstance {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.AppInstance {
 	return predicate.AppInstance(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.AppInstance {
-	return predicate.AppInstance(sql.FieldNotNull(FieldDelFlag))
 }
 
 // InstanceNameEQ applies the EQ predicate on the "instance_name" field.

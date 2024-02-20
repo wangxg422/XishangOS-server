@@ -29,6 +29,7 @@ func (SysPost) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		baseMixin.IdMixin{},
 		baseMixin.TimeMixin{},
+		baseMixin.DeleteTimeMixin{},
 		baseMixin.ByMixin{},
 		baseMixin.RemarkMixin{},
 		baseMixin.StatusMixin{},

@@ -41,6 +41,12 @@ type AppInstanceMutation struct {
 	status              *int8
 	addstatus           *int8
 	remark              *string
+	created_by          *int64
+	addcreated_by       *int64
+	updated_by          *int64
+	addupdated_by       *int64
+	delete_by           *int64
+	adddelete_by        *int64
 	del_flag            *int8
 	adddel_flag         *int8
 	instance_name       *string
@@ -363,24 +369,10 @@ func (m *AppInstanceMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *AppInstanceMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[appinstance.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *AppInstanceMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[appinstance.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *AppInstanceMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, appinstance.FieldStatus)
 }
 
 // SetRemark sets the "remark" field.
@@ -430,6 +422,216 @@ func (m *AppInstanceMutation) RemarkCleared() bool {
 func (m *AppInstanceMutation) ResetRemark() {
 	m.remark = nil
 	delete(m.clearedFields, appinstance.FieldRemark)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *AppInstanceMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *AppInstanceMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the AppInstance entity.
+// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppInstanceMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *AppInstanceMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *AppInstanceMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *AppInstanceMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[appinstance.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *AppInstanceMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[appinstance.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *AppInstanceMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, appinstance.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *AppInstanceMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *AppInstanceMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the AppInstance entity.
+// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppInstanceMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *AppInstanceMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *AppInstanceMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *AppInstanceMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[appinstance.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *AppInstanceMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[appinstance.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *AppInstanceMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, appinstance.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *AppInstanceMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *AppInstanceMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the AppInstance entity.
+// If the AppInstance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppInstanceMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *AppInstanceMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *AppInstanceMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *AppInstanceMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[appinstance.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *AppInstanceMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[appinstance.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *AppInstanceMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, appinstance.FieldDeleteBy)
 }
 
 // SetDelFlag sets the "del_flag" field.
@@ -482,24 +684,10 @@ func (m *AppInstanceMutation) AddedDelFlag() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearDelFlag clears the value of the "del_flag" field.
-func (m *AppInstanceMutation) ClearDelFlag() {
-	m.del_flag = nil
-	m.adddel_flag = nil
-	m.clearedFields[appinstance.FieldDelFlag] = struct{}{}
-}
-
-// DelFlagCleared returns if the "del_flag" field was cleared in this mutation.
-func (m *AppInstanceMutation) DelFlagCleared() bool {
-	_, ok := m.clearedFields[appinstance.FieldDelFlag]
-	return ok
-}
-
 // ResetDelFlag resets all changes to the "del_flag" field.
 func (m *AppInstanceMutation) ResetDelFlag() {
 	m.del_flag = nil
 	m.adddel_flag = nil
-	delete(m.clearedFields, appinstance.FieldDelFlag)
 }
 
 // SetInstanceName sets the "instance_name" field.
@@ -990,7 +1178,7 @@ func (m *AppInstanceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AppInstanceMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 17)
 	if m.created_at != nil {
 		fields = append(fields, appinstance.FieldCreatedAt)
 	}
@@ -1005,6 +1193,15 @@ func (m *AppInstanceMutation) Fields() []string {
 	}
 	if m.remark != nil {
 		fields = append(fields, appinstance.FieldRemark)
+	}
+	if m.created_by != nil {
+		fields = append(fields, appinstance.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, appinstance.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, appinstance.FieldDeleteBy)
 	}
 	if m.del_flag != nil {
 		fields = append(fields, appinstance.FieldDelFlag)
@@ -1051,6 +1248,12 @@ func (m *AppInstanceMutation) Field(name string) (ent.Value, bool) {
 		return m.Status()
 	case appinstance.FieldRemark:
 		return m.Remark()
+	case appinstance.FieldCreatedBy:
+		return m.CreatedBy()
+	case appinstance.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case appinstance.FieldDeleteBy:
+		return m.DeleteBy()
 	case appinstance.FieldDelFlag:
 		return m.DelFlag()
 	case appinstance.FieldInstanceName:
@@ -1088,6 +1291,12 @@ func (m *AppInstanceMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldStatus(ctx)
 	case appinstance.FieldRemark:
 		return m.OldRemark(ctx)
+	case appinstance.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case appinstance.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case appinstance.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
 	case appinstance.FieldDelFlag:
 		return m.OldDelFlag(ctx)
 	case appinstance.FieldInstanceName:
@@ -1149,6 +1358,27 @@ func (m *AppInstanceMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRemark(v)
+		return nil
+	case appinstance.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case appinstance.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case appinstance.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
 		return nil
 	case appinstance.FieldDelFlag:
 		v, ok := value.(int8)
@@ -1224,6 +1454,15 @@ func (m *AppInstanceMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, appinstance.FieldStatus)
 	}
+	if m.addcreated_by != nil {
+		fields = append(fields, appinstance.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, appinstance.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, appinstance.FieldDeleteBy)
+	}
 	if m.adddel_flag != nil {
 		fields = append(fields, appinstance.FieldDelFlag)
 	}
@@ -1246,6 +1485,12 @@ func (m *AppInstanceMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case appinstance.FieldStatus:
 		return m.AddedStatus()
+	case appinstance.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case appinstance.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case appinstance.FieldDeleteBy:
+		return m.AddedDeleteBy()
 	case appinstance.FieldDelFlag:
 		return m.AddedDelFlag()
 	case appinstance.FieldInstancePackage:
@@ -1269,6 +1514,27 @@ func (m *AppInstanceMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case appinstance.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case appinstance.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case appinstance.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
 		return nil
 	case appinstance.FieldDelFlag:
 		v, ok := value.(int8)
@@ -1315,14 +1581,17 @@ func (m *AppInstanceMutation) ClearedFields() []string {
 	if m.FieldCleared(appinstance.FieldDeleteAt) {
 		fields = append(fields, appinstance.FieldDeleteAt)
 	}
-	if m.FieldCleared(appinstance.FieldStatus) {
-		fields = append(fields, appinstance.FieldStatus)
-	}
 	if m.FieldCleared(appinstance.FieldRemark) {
 		fields = append(fields, appinstance.FieldRemark)
 	}
-	if m.FieldCleared(appinstance.FieldDelFlag) {
-		fields = append(fields, appinstance.FieldDelFlag)
+	if m.FieldCleared(appinstance.FieldCreatedBy) {
+		fields = append(fields, appinstance.FieldCreatedBy)
+	}
+	if m.FieldCleared(appinstance.FieldUpdatedBy) {
+		fields = append(fields, appinstance.FieldUpdatedBy)
+	}
+	if m.FieldCleared(appinstance.FieldDeleteBy) {
+		fields = append(fields, appinstance.FieldDeleteBy)
 	}
 	if m.FieldCleared(appinstance.FieldInstanceIcon) {
 		fields = append(fields, appinstance.FieldInstanceIcon)
@@ -1362,14 +1631,17 @@ func (m *AppInstanceMutation) ClearField(name string) error {
 	case appinstance.FieldDeleteAt:
 		m.ClearDeleteAt()
 		return nil
-	case appinstance.FieldStatus:
-		m.ClearStatus()
-		return nil
 	case appinstance.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case appinstance.FieldDelFlag:
-		m.ClearDelFlag()
+	case appinstance.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case appinstance.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case appinstance.FieldDeleteBy:
+		m.ClearDeleteBy()
 		return nil
 	case appinstance.FieldInstanceIcon:
 		m.ClearInstanceIcon()
@@ -1408,6 +1680,15 @@ func (m *AppInstanceMutation) ResetField(name string) error {
 		return nil
 	case appinstance.FieldRemark:
 		m.ResetRemark()
+		return nil
+	case appinstance.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case appinstance.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case appinstance.FieldDeleteBy:
+		m.ResetDeleteBy()
 		return nil
 	case appinstance.FieldDelFlag:
 		m.ResetDelFlag()
@@ -1525,6 +1806,15 @@ type AppPackageMutation struct {
 	delete_at           *time.Time
 	status              *int8
 	addstatus           *int8
+	created_by          *int64
+	addcreated_by       *int64
+	updated_by          *int64
+	addupdated_by       *int64
+	delete_by           *int64
+	adddelete_by        *int64
+	remark              *string
+	del_flag            *int8
+	adddel_flag         *int8
 	pkg_name            *string
 	pkg_code            *string
 	pkg_version         *string
@@ -1535,7 +1825,6 @@ type AppPackageMutation struct {
 	uploader            *int64
 	adduploader         *int64
 	desc                *string
-	remark              *string
 	clearedFields       map[string]struct{}
 	app_instance        map[int64]struct{}
 	removedapp_instance map[int64]struct{}
@@ -1846,24 +2135,325 @@ func (m *AppPackageMutation) AddedStatus() (r int8, exists bool) {
 	return *v, true
 }
 
-// ClearStatus clears the value of the "status" field.
-func (m *AppPackageMutation) ClearStatus() {
-	m.status = nil
-	m.addstatus = nil
-	m.clearedFields[apppackage.FieldStatus] = struct{}{}
-}
-
-// StatusCleared returns if the "status" field was cleared in this mutation.
-func (m *AppPackageMutation) StatusCleared() bool {
-	_, ok := m.clearedFields[apppackage.FieldStatus]
-	return ok
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *AppPackageMutation) ResetStatus() {
 	m.status = nil
 	m.addstatus = nil
-	delete(m.clearedFields, apppackage.FieldStatus)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *AppPackageMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *AppPackageMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the AppPackage entity.
+// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppPackageMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *AppPackageMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *AppPackageMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *AppPackageMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	m.clearedFields[apppackage.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *AppPackageMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[apppackage.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *AppPackageMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+	delete(m.clearedFields, apppackage.FieldCreatedBy)
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *AppPackageMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *AppPackageMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the AppPackage entity.
+// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppPackageMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *AppPackageMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *AppPackageMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *AppPackageMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	m.clearedFields[apppackage.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *AppPackageMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[apppackage.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *AppPackageMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+	delete(m.clearedFields, apppackage.FieldUpdatedBy)
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (m *AppPackageMutation) SetDeleteBy(i int64) {
+	m.delete_by = &i
+	m.adddelete_by = nil
+}
+
+// DeleteBy returns the value of the "delete_by" field in the mutation.
+func (m *AppPackageMutation) DeleteBy() (r int64, exists bool) {
+	v := m.delete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteBy returns the old "delete_by" field's value of the AppPackage entity.
+// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppPackageMutation) OldDeleteBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleteBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleteBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteBy: %w", err)
+	}
+	return oldValue.DeleteBy, nil
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (m *AppPackageMutation) AddDeleteBy(i int64) {
+	if m.adddelete_by != nil {
+		*m.adddelete_by += i
+	} else {
+		m.adddelete_by = &i
+	}
+}
+
+// AddedDeleteBy returns the value that was added to the "delete_by" field in this mutation.
+func (m *AppPackageMutation) AddedDeleteBy() (r int64, exists bool) {
+	v := m.adddelete_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (m *AppPackageMutation) ClearDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	m.clearedFields[apppackage.FieldDeleteBy] = struct{}{}
+}
+
+// DeleteByCleared returns if the "delete_by" field was cleared in this mutation.
+func (m *AppPackageMutation) DeleteByCleared() bool {
+	_, ok := m.clearedFields[apppackage.FieldDeleteBy]
+	return ok
+}
+
+// ResetDeleteBy resets all changes to the "delete_by" field.
+func (m *AppPackageMutation) ResetDeleteBy() {
+	m.delete_by = nil
+	m.adddelete_by = nil
+	delete(m.clearedFields, apppackage.FieldDeleteBy)
+}
+
+// SetRemark sets the "remark" field.
+func (m *AppPackageMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *AppPackageMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the AppPackage entity.
+// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppPackageMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *AppPackageMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[apppackage.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *AppPackageMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[apppackage.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *AppPackageMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, apppackage.FieldRemark)
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (m *AppPackageMutation) SetDelFlag(i int8) {
+	m.del_flag = &i
+	m.adddel_flag = nil
+}
+
+// DelFlag returns the value of the "del_flag" field in the mutation.
+func (m *AppPackageMutation) DelFlag() (r int8, exists bool) {
+	v := m.del_flag
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDelFlag returns the old "del_flag" field's value of the AppPackage entity.
+// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppPackageMutation) OldDelFlag(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDelFlag is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDelFlag requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDelFlag: %w", err)
+	}
+	return oldValue.DelFlag, nil
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (m *AppPackageMutation) AddDelFlag(i int8) {
+	if m.adddel_flag != nil {
+		*m.adddel_flag += i
+	} else {
+		m.adddel_flag = &i
+	}
+}
+
+// AddedDelFlag returns the value that was added to the "del_flag" field in this mutation.
+func (m *AppPackageMutation) AddedDelFlag() (r int8, exists bool) {
+	v := m.adddel_flag
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDelFlag resets all changes to the "del_flag" field.
+func (m *AppPackageMutation) ResetDelFlag() {
+	m.del_flag = nil
+	m.adddel_flag = nil
 }
 
 // SetPkgName sets the "pkg_name" field.
@@ -2246,55 +2836,6 @@ func (m *AppPackageMutation) ResetDesc() {
 	delete(m.clearedFields, apppackage.FieldDesc)
 }
 
-// SetRemark sets the "remark" field.
-func (m *AppPackageMutation) SetRemark(s string) {
-	m.remark = &s
-}
-
-// Remark returns the value of the "remark" field in the mutation.
-func (m *AppPackageMutation) Remark() (r string, exists bool) {
-	v := m.remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRemark returns the old "remark" field's value of the AppPackage entity.
-// If the AppPackage object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AppPackageMutation) OldRemark(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
-	}
-	return oldValue.Remark, nil
-}
-
-// ClearRemark clears the value of the "remark" field.
-func (m *AppPackageMutation) ClearRemark() {
-	m.remark = nil
-	m.clearedFields[apppackage.FieldRemark] = struct{}{}
-}
-
-// RemarkCleared returns if the "remark" field was cleared in this mutation.
-func (m *AppPackageMutation) RemarkCleared() bool {
-	_, ok := m.clearedFields[apppackage.FieldRemark]
-	return ok
-}
-
-// ResetRemark resets all changes to the "remark" field.
-func (m *AppPackageMutation) ResetRemark() {
-	m.remark = nil
-	delete(m.clearedFields, apppackage.FieldRemark)
-}
-
 // AddAppInstanceIDs adds the "app_instance" edge to the AppInstance entity by ids.
 func (m *AppPackageMutation) AddAppInstanceIDs(ids ...int64) {
 	if m.app_instance == nil {
@@ -2383,7 +2924,7 @@ func (m *AppPackageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AppPackageMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 16)
 	if m.created_at != nil {
 		fields = append(fields, apppackage.FieldCreatedAt)
 	}
@@ -2395,6 +2936,21 @@ func (m *AppPackageMutation) Fields() []string {
 	}
 	if m.status != nil {
 		fields = append(fields, apppackage.FieldStatus)
+	}
+	if m.created_by != nil {
+		fields = append(fields, apppackage.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, apppackage.FieldUpdatedBy)
+	}
+	if m.delete_by != nil {
+		fields = append(fields, apppackage.FieldDeleteBy)
+	}
+	if m.remark != nil {
+		fields = append(fields, apppackage.FieldRemark)
+	}
+	if m.del_flag != nil {
+		fields = append(fields, apppackage.FieldDelFlag)
 	}
 	if m.pkg_name != nil {
 		fields = append(fields, apppackage.FieldPkgName)
@@ -2417,9 +2973,6 @@ func (m *AppPackageMutation) Fields() []string {
 	if m.desc != nil {
 		fields = append(fields, apppackage.FieldDesc)
 	}
-	if m.remark != nil {
-		fields = append(fields, apppackage.FieldRemark)
-	}
 	return fields
 }
 
@@ -2436,6 +2989,16 @@ func (m *AppPackageMutation) Field(name string) (ent.Value, bool) {
 		return m.DeleteAt()
 	case apppackage.FieldStatus:
 		return m.Status()
+	case apppackage.FieldCreatedBy:
+		return m.CreatedBy()
+	case apppackage.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case apppackage.FieldDeleteBy:
+		return m.DeleteBy()
+	case apppackage.FieldRemark:
+		return m.Remark()
+	case apppackage.FieldDelFlag:
+		return m.DelFlag()
 	case apppackage.FieldPkgName:
 		return m.PkgName()
 	case apppackage.FieldPkgCode:
@@ -2450,8 +3013,6 @@ func (m *AppPackageMutation) Field(name string) (ent.Value, bool) {
 		return m.Uploader()
 	case apppackage.FieldDesc:
 		return m.Desc()
-	case apppackage.FieldRemark:
-		return m.Remark()
 	}
 	return nil, false
 }
@@ -2469,6 +3030,16 @@ func (m *AppPackageMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldDeleteAt(ctx)
 	case apppackage.FieldStatus:
 		return m.OldStatus(ctx)
+	case apppackage.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case apppackage.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case apppackage.FieldDeleteBy:
+		return m.OldDeleteBy(ctx)
+	case apppackage.FieldRemark:
+		return m.OldRemark(ctx)
+	case apppackage.FieldDelFlag:
+		return m.OldDelFlag(ctx)
 	case apppackage.FieldPkgName:
 		return m.OldPkgName(ctx)
 	case apppackage.FieldPkgCode:
@@ -2483,8 +3054,6 @@ func (m *AppPackageMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldUploader(ctx)
 	case apppackage.FieldDesc:
 		return m.OldDesc(ctx)
-	case apppackage.FieldRemark:
-		return m.OldRemark(ctx)
 	}
 	return nil, fmt.Errorf("unknown AppPackage field %s", name)
 }
@@ -2521,6 +3090,41 @@ func (m *AppPackageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
+		return nil
+	case apppackage.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case apppackage.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case apppackage.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteBy(v)
+		return nil
+	case apppackage.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case apppackage.FieldDelFlag:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDelFlag(v)
 		return nil
 	case apppackage.FieldPkgName:
 		v, ok := value.(string)
@@ -2571,13 +3175,6 @@ func (m *AppPackageMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDesc(v)
 		return nil
-	case apppackage.FieldRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRemark(v)
-		return nil
 	}
 	return fmt.Errorf("unknown AppPackage field %s", name)
 }
@@ -2588,6 +3185,18 @@ func (m *AppPackageMutation) AddedFields() []string {
 	var fields []string
 	if m.addstatus != nil {
 		fields = append(fields, apppackage.FieldStatus)
+	}
+	if m.addcreated_by != nil {
+		fields = append(fields, apppackage.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, apppackage.FieldUpdatedBy)
+	}
+	if m.adddelete_by != nil {
+		fields = append(fields, apppackage.FieldDeleteBy)
+	}
+	if m.adddel_flag != nil {
+		fields = append(fields, apppackage.FieldDelFlag)
 	}
 	if m.addpkg_type != nil {
 		fields = append(fields, apppackage.FieldPkgType)
@@ -2608,6 +3217,14 @@ func (m *AppPackageMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case apppackage.FieldStatus:
 		return m.AddedStatus()
+	case apppackage.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case apppackage.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case apppackage.FieldDeleteBy:
+		return m.AddedDeleteBy()
+	case apppackage.FieldDelFlag:
+		return m.AddedDelFlag()
 	case apppackage.FieldPkgType:
 		return m.AddedPkgType()
 	case apppackage.FieldPkgKind:
@@ -2629,6 +3246,34 @@ func (m *AppPackageMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
+		return nil
+	case apppackage.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case apppackage.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case apppackage.FieldDeleteBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteBy(v)
+		return nil
+	case apppackage.FieldDelFlag:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDelFlag(v)
 		return nil
 	case apppackage.FieldPkgType:
 		v, ok := value.(int8)
@@ -2668,8 +3313,17 @@ func (m *AppPackageMutation) ClearedFields() []string {
 	if m.FieldCleared(apppackage.FieldDeleteAt) {
 		fields = append(fields, apppackage.FieldDeleteAt)
 	}
-	if m.FieldCleared(apppackage.FieldStatus) {
-		fields = append(fields, apppackage.FieldStatus)
+	if m.FieldCleared(apppackage.FieldCreatedBy) {
+		fields = append(fields, apppackage.FieldCreatedBy)
+	}
+	if m.FieldCleared(apppackage.FieldUpdatedBy) {
+		fields = append(fields, apppackage.FieldUpdatedBy)
+	}
+	if m.FieldCleared(apppackage.FieldDeleteBy) {
+		fields = append(fields, apppackage.FieldDeleteBy)
+	}
+	if m.FieldCleared(apppackage.FieldRemark) {
+		fields = append(fields, apppackage.FieldRemark)
 	}
 	if m.FieldCleared(apppackage.FieldPkgVersion) {
 		fields = append(fields, apppackage.FieldPkgVersion)
@@ -2685,9 +3339,6 @@ func (m *AppPackageMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(apppackage.FieldDesc) {
 		fields = append(fields, apppackage.FieldDesc)
-	}
-	if m.FieldCleared(apppackage.FieldRemark) {
-		fields = append(fields, apppackage.FieldRemark)
 	}
 	return fields
 }
@@ -2712,8 +3363,17 @@ func (m *AppPackageMutation) ClearField(name string) error {
 	case apppackage.FieldDeleteAt:
 		m.ClearDeleteAt()
 		return nil
-	case apppackage.FieldStatus:
-		m.ClearStatus()
+	case apppackage.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case apppackage.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	case apppackage.FieldDeleteBy:
+		m.ClearDeleteBy()
+		return nil
+	case apppackage.FieldRemark:
+		m.ClearRemark()
 		return nil
 	case apppackage.FieldPkgVersion:
 		m.ClearPkgVersion()
@@ -2729,9 +3389,6 @@ func (m *AppPackageMutation) ClearField(name string) error {
 		return nil
 	case apppackage.FieldDesc:
 		m.ClearDesc()
-		return nil
-	case apppackage.FieldRemark:
-		m.ClearRemark()
 		return nil
 	}
 	return fmt.Errorf("unknown AppPackage nullable field %s", name)
@@ -2753,6 +3410,21 @@ func (m *AppPackageMutation) ResetField(name string) error {
 	case apppackage.FieldStatus:
 		m.ResetStatus()
 		return nil
+	case apppackage.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case apppackage.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case apppackage.FieldDeleteBy:
+		m.ResetDeleteBy()
+		return nil
+	case apppackage.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case apppackage.FieldDelFlag:
+		m.ResetDelFlag()
+		return nil
 	case apppackage.FieldPkgName:
 		m.ResetPkgName()
 		return nil
@@ -2773,9 +3445,6 @@ func (m *AppPackageMutation) ResetField(name string) error {
 		return nil
 	case apppackage.FieldDesc:
 		m.ResetDesc()
-		return nil
-	case apppackage.FieldRemark:
-		m.ResetRemark()
 		return nil
 	}
 	return fmt.Errorf("unknown AppPackage field %s", name)

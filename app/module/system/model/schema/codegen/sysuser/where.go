@@ -590,16 +590,6 @@ func DelFlagLTE(v int8) predicate.SysUser {
 	return predicate.SysUser(sql.FieldLTE(FieldDelFlag, v))
 }
 
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldDelFlag))
-}
-
 // UserNameEQ applies the EQ predicate on the "user_name" field.
 func UserNameEQ(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldUserName, v))

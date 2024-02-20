@@ -28,6 +28,7 @@ func (CommonConfig) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		baseMixin.IdMixin{},
 		baseMixin.TimeMixin{},
+		baseMixin.DeleteTimeMixin{},
 		baseMixin.StatusMixin{},
 		baseMixin.ByMixin{},
 		baseMixin.RemarkMixin{},

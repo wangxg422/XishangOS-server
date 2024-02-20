@@ -139,16 +139,6 @@ func StatusLTE(v int8) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldNotNull(FieldStatus))
-}
-
 // LoginNameEQ applies the EQ predicate on the "login_name" field.
 func LoginNameEQ(v string) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldEQ(FieldLoginName, v))

@@ -6,7 +6,8 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	mixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/mixin"
+	baseMixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // AppPackage holds the schema definition for the AppPackage entity.
@@ -26,9 +27,13 @@ func (AppPackage) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (AppPackage) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IdMixin{},
-		mixin.TimeMixin{},
-		mixin.StatusMixin{},
+		baseMixin.IdMixin{},
+		baseMixin.TimeMixin{},
+		baseMixin.DeleteTimeMixin{},
+		baseMixin.StatusMixin{},
+		baseMixin.ByMixin{},
+		baseMixin.RemarkMixin{},
+		mixin.SoftDeleteMixin{},
 	}
 }
 
@@ -42,7 +47,6 @@ func (AppPackage) Fields() []ent.Field {
 		field.Int8("pkg_kind").Optional(),
 		field.Int64("uploader").Optional().Comment("上传应用的用户"),
 		field.String("desc").Optional(),
-		field.String("remark").Optional(),
 	}
 }
 

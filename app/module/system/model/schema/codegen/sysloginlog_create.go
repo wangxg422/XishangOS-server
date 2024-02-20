@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -206,6 +207,9 @@ func (sllc *SysLoginLogCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (sllc *SysLoginLogCreate) check() error {
+	if _, ok := sllc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysLoginLog.status"`)}
+	}
 	return nil
 }
 

@@ -77,6 +77,76 @@ func (apc *AppPackageCreate) SetNillableStatus(i *int8) *AppPackageCreate {
 	return apc
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (apc *AppPackageCreate) SetCreatedBy(i int64) *AppPackageCreate {
+	apc.mutation.SetCreatedBy(i)
+	return apc
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (apc *AppPackageCreate) SetNillableCreatedBy(i *int64) *AppPackageCreate {
+	if i != nil {
+		apc.SetCreatedBy(*i)
+	}
+	return apc
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (apc *AppPackageCreate) SetUpdatedBy(i int64) *AppPackageCreate {
+	apc.mutation.SetUpdatedBy(i)
+	return apc
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (apc *AppPackageCreate) SetNillableUpdatedBy(i *int64) *AppPackageCreate {
+	if i != nil {
+		apc.SetUpdatedBy(*i)
+	}
+	return apc
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (apc *AppPackageCreate) SetDeleteBy(i int64) *AppPackageCreate {
+	apc.mutation.SetDeleteBy(i)
+	return apc
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (apc *AppPackageCreate) SetNillableDeleteBy(i *int64) *AppPackageCreate {
+	if i != nil {
+		apc.SetDeleteBy(*i)
+	}
+	return apc
+}
+
+// SetRemark sets the "remark" field.
+func (apc *AppPackageCreate) SetRemark(s string) *AppPackageCreate {
+	apc.mutation.SetRemark(s)
+	return apc
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (apc *AppPackageCreate) SetNillableRemark(s *string) *AppPackageCreate {
+	if s != nil {
+		apc.SetRemark(*s)
+	}
+	return apc
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (apc *AppPackageCreate) SetDelFlag(i int8) *AppPackageCreate {
+	apc.mutation.SetDelFlag(i)
+	return apc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (apc *AppPackageCreate) SetNillableDelFlag(i *int8) *AppPackageCreate {
+	if i != nil {
+		apc.SetDelFlag(*i)
+	}
+	return apc
+}
+
 // SetPkgName sets the "pkg_name" field.
 func (apc *AppPackageCreate) SetPkgName(s string) *AppPackageCreate {
 	apc.mutation.SetPkgName(s)
@@ -159,20 +229,6 @@ func (apc *AppPackageCreate) SetNillableDesc(s *string) *AppPackageCreate {
 	return apc
 }
 
-// SetRemark sets the "remark" field.
-func (apc *AppPackageCreate) SetRemark(s string) *AppPackageCreate {
-	apc.mutation.SetRemark(s)
-	return apc
-}
-
-// SetNillableRemark sets the "remark" field if the given value is not nil.
-func (apc *AppPackageCreate) SetNillableRemark(s *string) *AppPackageCreate {
-	if s != nil {
-		apc.SetRemark(*s)
-	}
-	return apc
-}
-
 // SetID sets the "id" field.
 func (apc *AppPackageCreate) SetID(i int64) *AppPackageCreate {
 	apc.mutation.SetID(i)
@@ -209,7 +265,9 @@ func (apc *AppPackageCreate) Mutation() *AppPackageMutation {
 
 // Save creates the AppPackage in the database.
 func (apc *AppPackageCreate) Save(ctx context.Context) (*AppPackage, error) {
-	apc.defaults()
+	if err := apc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, apc.sqlSave, apc.mutation, apc.hooks)
 }
 
@@ -236,31 +294,47 @@ func (apc *AppPackageCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (apc *AppPackageCreate) defaults() {
+func (apc *AppPackageCreate) defaults() error {
 	if _, ok := apc.mutation.CreatedAt(); !ok {
+		if apppackage.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized apppackage.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := apppackage.DefaultCreatedAt()
 		apc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := apc.mutation.UpdatedAt(); !ok {
+		if apppackage.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized apppackage.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := apppackage.DefaultUpdatedAt()
 		apc.mutation.SetUpdatedAt(v)
-	}
-	if _, ok := apc.mutation.DeleteAt(); !ok {
-		v := apppackage.DefaultDeleteAt()
-		apc.mutation.SetDeleteAt(v)
 	}
 	if _, ok := apc.mutation.Status(); !ok {
 		v := apppackage.DefaultStatus
 		apc.mutation.SetStatus(v)
 	}
+	if _, ok := apc.mutation.DelFlag(); !ok {
+		v := apppackage.DefaultDelFlag
+		apc.mutation.SetDelFlag(v)
+	}
 	if _, ok := apc.mutation.ID(); !ok {
+		if apppackage.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized apppackage.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := apppackage.DefaultID()
 		apc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (apc *AppPackageCreate) check() error {
+	if _, ok := apc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "AppPackage.status"`)}
+	}
+	if _, ok := apc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "AppPackage.del_flag"`)}
+	}
 	if _, ok := apc.mutation.PkgName(); !ok {
 		return &ValidationError{Name: "pkg_name", err: errors.New(`codegen: missing required field "AppPackage.pkg_name"`)}
 	}
@@ -315,6 +389,26 @@ func (apc *AppPackageCreate) createSpec() (*AppPackage, *sqlgraph.CreateSpec) {
 		_spec.SetField(apppackage.FieldStatus, field.TypeInt8, value)
 		_node.Status = value
 	}
+	if value, ok := apc.mutation.CreatedBy(); ok {
+		_spec.SetField(apppackage.FieldCreatedBy, field.TypeInt64, value)
+		_node.CreatedBy = value
+	}
+	if value, ok := apc.mutation.UpdatedBy(); ok {
+		_spec.SetField(apppackage.FieldUpdatedBy, field.TypeInt64, value)
+		_node.UpdatedBy = value
+	}
+	if value, ok := apc.mutation.DeleteBy(); ok {
+		_spec.SetField(apppackage.FieldDeleteBy, field.TypeInt64, value)
+		_node.DeleteBy = value
+	}
+	if value, ok := apc.mutation.Remark(); ok {
+		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
+		_node.Remark = value
+	}
+	if value, ok := apc.mutation.DelFlag(); ok {
+		_spec.SetField(apppackage.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
+	}
 	if value, ok := apc.mutation.PkgName(); ok {
 		_spec.SetField(apppackage.FieldPkgName, field.TypeString, value)
 		_node.PkgName = value
@@ -342,10 +436,6 @@ func (apc *AppPackageCreate) createSpec() (*AppPackage, *sqlgraph.CreateSpec) {
 	if value, ok := apc.mutation.Desc(); ok {
 		_spec.SetField(apppackage.FieldDesc, field.TypeString, value)
 		_node.Desc = value
-	}
-	if value, ok := apc.mutation.Remark(); ok {
-		_spec.SetField(apppackage.FieldRemark, field.TypeString, value)
-		_node.Remark = value
 	}
 	if nodes := apc.mutation.AppInstanceIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -14,16 +14,18 @@ import (
 // to their package variables.
 func init() {
 	commonconfigMixin := schema.CommonConfig{}.Mixin()
-	commonconfigMixinHooks5 := commonconfigMixin[5].Hooks()
-	commonconfig.Hooks[0] = commonconfigMixinHooks5[0]
-	commonconfigMixinInters5 := commonconfigMixin[5].Interceptors()
-	commonconfig.Interceptors[0] = commonconfigMixinInters5[0]
+	commonconfigMixinHooks6 := commonconfigMixin[6].Hooks()
+	commonconfig.Hooks[0] = commonconfigMixinHooks6[0]
+	commonconfigMixinInters6 := commonconfigMixin[6].Interceptors()
+	commonconfig.Interceptors[0] = commonconfigMixinInters6[0]
 	commonconfigMixinFields0 := commonconfigMixin[0].Fields()
 	_ = commonconfigMixinFields0
 	commonconfigMixinFields1 := commonconfigMixin[1].Fields()
 	_ = commonconfigMixinFields1
-	commonconfigMixinFields2 := commonconfigMixin[2].Fields()
-	_ = commonconfigMixinFields2
+	commonconfigMixinFields3 := commonconfigMixin[3].Fields()
+	_ = commonconfigMixinFields3
+	commonconfigMixinFields6 := commonconfigMixin[6].Fields()
+	_ = commonconfigMixinFields6
 	commonconfigFields := schema.CommonConfig{}.Fields()
 	_ = commonconfigFields
 	// commonconfigDescCreatedAt is the schema descriptor for created_at field.
@@ -36,16 +38,14 @@ func init() {
 	commonconfig.DefaultUpdatedAt = commonconfigDescUpdatedAt.Default.(func() time.Time)
 	// commonconfig.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	commonconfig.UpdateDefaultUpdatedAt = commonconfigDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// commonconfigDescDeleteAt is the schema descriptor for delete_at field.
-	commonconfigDescDeleteAt := commonconfigMixinFields1[2].Descriptor()
-	// commonconfig.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	commonconfig.DefaultDeleteAt = commonconfigDescDeleteAt.Default.(func() time.Time)
-	// commonconfig.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	commonconfig.UpdateDefaultDeleteAt = commonconfigDescDeleteAt.UpdateDefault.(func() time.Time)
 	// commonconfigDescStatus is the schema descriptor for status field.
-	commonconfigDescStatus := commonconfigMixinFields2[0].Descriptor()
+	commonconfigDescStatus := commonconfigMixinFields3[0].Descriptor()
 	// commonconfig.DefaultStatus holds the default value on creation for the status field.
 	commonconfig.DefaultStatus = commonconfigDescStatus.Default.(int8)
+	// commonconfigDescDelFlag is the schema descriptor for del_flag field.
+	commonconfigDescDelFlag := commonconfigMixinFields6[0].Descriptor()
+	// commonconfig.DefaultDelFlag holds the default value on creation for the del_flag field.
+	commonconfig.DefaultDelFlag = commonconfigDescDelFlag.Default.(int8)
 	// commonconfigDescID is the schema descriptor for id field.
 	commonconfigDescID := commonconfigMixinFields0[0].Descriptor()
 	// commonconfig.DefaultID holds the default value on creation for the id field.

@@ -530,16 +530,6 @@ func StatusLTE(v int8) predicate.SysPost {
 	return predicate.SysPost(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysPost {
-	return predicate.SysPost(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysPost {
-	return predicate.SysPost(sql.FieldNotNull(FieldStatus))
-}
-
 // SortEQ applies the EQ predicate on the "sort" field.
 func SortEQ(v int) predicate.SysPost {
 	return predicate.SysPost(sql.FieldEQ(FieldSort, v))
@@ -628,16 +618,6 @@ func DelFlagLT(v int8) predicate.SysPost {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysPost {
 	return predicate.SysPost(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysPost {
-	return predicate.SysPost(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysPost {
-	return predicate.SysPost(sql.FieldNotNull(FieldDelFlag))
 }
 
 // PostCodeEQ applies the EQ predicate on the "post_code" field.

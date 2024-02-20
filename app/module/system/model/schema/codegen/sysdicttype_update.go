@@ -29,6 +29,26 @@ func (sdtu *SysDictTypeUpdate) Where(ps ...predicate.SysDictType) *SysDictTypeUp
 	return sdtu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sdtu *SysDictTypeUpdate) SetCreatedAt(t time.Time) *SysDictTypeUpdate {
+	sdtu.mutation.SetCreatedAt(t)
+	return sdtu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sdtu *SysDictTypeUpdate) SetNillableCreatedAt(t *time.Time) *SysDictTypeUpdate {
+	if t != nil {
+		sdtu.SetCreatedAt(*t)
+	}
+	return sdtu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sdtu *SysDictTypeUpdate) ClearCreatedAt() *SysDictTypeUpdate {
+	sdtu.mutation.ClearCreatedAt()
+	return sdtu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sdtu *SysDictTypeUpdate) SetUpdatedAt(t time.Time) *SysDictTypeUpdate {
 	sdtu.mutation.SetUpdatedAt(t)
@@ -44,6 +64,14 @@ func (sdtu *SysDictTypeUpdate) ClearUpdatedAt() *SysDictTypeUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (sdtu *SysDictTypeUpdate) SetDeleteAt(t time.Time) *SysDictTypeUpdate {
 	sdtu.mutation.SetDeleteAt(t)
+	return sdtu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sdtu *SysDictTypeUpdate) SetNillableDeleteAt(t *time.Time) *SysDictTypeUpdate {
+	if t != nil {
+		sdtu.SetDeleteAt(*t)
+	}
 	return sdtu
 }
 
@@ -154,6 +182,27 @@ func (sdtu *SysDictTypeUpdate) ClearRemark() *SysDictTypeUpdate {
 	return sdtu
 }
 
+// SetStatus sets the "status" field.
+func (sdtu *SysDictTypeUpdate) SetStatus(i int8) *SysDictTypeUpdate {
+	sdtu.mutation.ResetStatus()
+	sdtu.mutation.SetStatus(i)
+	return sdtu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sdtu *SysDictTypeUpdate) SetNillableStatus(i *int8) *SysDictTypeUpdate {
+	if i != nil {
+		sdtu.SetStatus(*i)
+	}
+	return sdtu
+}
+
+// AddStatus adds i to the "status" field.
+func (sdtu *SysDictTypeUpdate) AddStatus(i int8) *SysDictTypeUpdate {
+	sdtu.mutation.AddStatus(i)
+	return sdtu
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (sdtu *SysDictTypeUpdate) SetDelFlag(i int8) *SysDictTypeUpdate {
 	sdtu.mutation.ResetDelFlag()
@@ -172,12 +221,6 @@ func (sdtu *SysDictTypeUpdate) SetNillableDelFlag(i *int8) *SysDictTypeUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (sdtu *SysDictTypeUpdate) AddDelFlag(i int8) *SysDictTypeUpdate {
 	sdtu.mutation.AddDelFlag(i)
-	return sdtu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sdtu *SysDictTypeUpdate) ClearDelFlag() *SysDictTypeUpdate {
-	sdtu.mutation.ClearDelFlag()
 	return sdtu
 }
 
@@ -301,13 +344,6 @@ func (sdtu *SysDictTypeUpdate) defaults() error {
 		v := sysdicttype.UpdateDefaultUpdatedAt()
 		sdtu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdtu.mutation.DeleteAt(); !ok && !sdtu.mutation.DeleteAtCleared() {
-		if sysdicttype.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdicttype.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdicttype.UpdateDefaultDeleteAt()
-		sdtu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -319,6 +355,9 @@ func (sdtu *SysDictTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sdtu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdicttype.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sdtu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdicttype.FieldCreatedAt, field.TypeTime)
@@ -368,17 +407,17 @@ func (sdtu *SysDictTypeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sdtu.mutation.RemarkCleared() {
 		_spec.ClearField(sysdicttype.FieldRemark, field.TypeString)
 	}
-	if sdtu.mutation.StatusCleared() {
-		_spec.ClearField(sysdicttype.FieldStatus, field.TypeInt8)
+	if value, ok := sdtu.mutation.Status(); ok {
+		_spec.SetField(sysdicttype.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sdtu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdicttype.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sdtu.mutation.DelFlag(); ok {
 		_spec.SetField(sysdicttype.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := sdtu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdicttype.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sdtu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdicttype.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdtu.mutation.DictName(); ok {
 		_spec.SetField(sysdicttype.FieldDictName, field.TypeString, value)
@@ -457,6 +496,26 @@ type SysDictTypeUpdateOne struct {
 	mutation *SysDictTypeMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sdtuo *SysDictTypeUpdateOne) SetCreatedAt(t time.Time) *SysDictTypeUpdateOne {
+	sdtuo.mutation.SetCreatedAt(t)
+	return sdtuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sdtuo *SysDictTypeUpdateOne) SetNillableCreatedAt(t *time.Time) *SysDictTypeUpdateOne {
+	if t != nil {
+		sdtuo.SetCreatedAt(*t)
+	}
+	return sdtuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sdtuo *SysDictTypeUpdateOne) ClearCreatedAt() *SysDictTypeUpdateOne {
+	sdtuo.mutation.ClearCreatedAt()
+	return sdtuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sdtuo *SysDictTypeUpdateOne) SetUpdatedAt(t time.Time) *SysDictTypeUpdateOne {
 	sdtuo.mutation.SetUpdatedAt(t)
@@ -472,6 +531,14 @@ func (sdtuo *SysDictTypeUpdateOne) ClearUpdatedAt() *SysDictTypeUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (sdtuo *SysDictTypeUpdateOne) SetDeleteAt(t time.Time) *SysDictTypeUpdateOne {
 	sdtuo.mutation.SetDeleteAt(t)
+	return sdtuo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sdtuo *SysDictTypeUpdateOne) SetNillableDeleteAt(t *time.Time) *SysDictTypeUpdateOne {
+	if t != nil {
+		sdtuo.SetDeleteAt(*t)
+	}
 	return sdtuo
 }
 
@@ -582,6 +649,27 @@ func (sdtuo *SysDictTypeUpdateOne) ClearRemark() *SysDictTypeUpdateOne {
 	return sdtuo
 }
 
+// SetStatus sets the "status" field.
+func (sdtuo *SysDictTypeUpdateOne) SetStatus(i int8) *SysDictTypeUpdateOne {
+	sdtuo.mutation.ResetStatus()
+	sdtuo.mutation.SetStatus(i)
+	return sdtuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sdtuo *SysDictTypeUpdateOne) SetNillableStatus(i *int8) *SysDictTypeUpdateOne {
+	if i != nil {
+		sdtuo.SetStatus(*i)
+	}
+	return sdtuo
+}
+
+// AddStatus adds i to the "status" field.
+func (sdtuo *SysDictTypeUpdateOne) AddStatus(i int8) *SysDictTypeUpdateOne {
+	sdtuo.mutation.AddStatus(i)
+	return sdtuo
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (sdtuo *SysDictTypeUpdateOne) SetDelFlag(i int8) *SysDictTypeUpdateOne {
 	sdtuo.mutation.ResetDelFlag()
@@ -600,12 +688,6 @@ func (sdtuo *SysDictTypeUpdateOne) SetNillableDelFlag(i *int8) *SysDictTypeUpdat
 // AddDelFlag adds i to the "del_flag" field.
 func (sdtuo *SysDictTypeUpdateOne) AddDelFlag(i int8) *SysDictTypeUpdateOne {
 	sdtuo.mutation.AddDelFlag(i)
-	return sdtuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sdtuo *SysDictTypeUpdateOne) ClearDelFlag() *SysDictTypeUpdateOne {
-	sdtuo.mutation.ClearDelFlag()
 	return sdtuo
 }
 
@@ -742,13 +824,6 @@ func (sdtuo *SysDictTypeUpdateOne) defaults() error {
 		v := sysdicttype.UpdateDefaultUpdatedAt()
 		sdtuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdtuo.mutation.DeleteAt(); !ok && !sdtuo.mutation.DeleteAtCleared() {
-		if sysdicttype.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdicttype.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdicttype.UpdateDefaultDeleteAt()
-		sdtuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -777,6 +852,9 @@ func (sdtuo *SysDictTypeUpdateOne) sqlSave(ctx context.Context) (_node *SysDictT
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sdtuo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdicttype.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sdtuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdicttype.FieldCreatedAt, field.TypeTime)
@@ -826,17 +904,17 @@ func (sdtuo *SysDictTypeUpdateOne) sqlSave(ctx context.Context) (_node *SysDictT
 	if sdtuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysdicttype.FieldRemark, field.TypeString)
 	}
-	if sdtuo.mutation.StatusCleared() {
-		_spec.ClearField(sysdicttype.FieldStatus, field.TypeInt8)
+	if value, ok := sdtuo.mutation.Status(); ok {
+		_spec.SetField(sysdicttype.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sdtuo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdicttype.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sdtuo.mutation.DelFlag(); ok {
 		_spec.SetField(sysdicttype.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := sdtuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdicttype.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sdtuo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdicttype.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdtuo.mutation.DictName(); ok {
 		_spec.SetField(sysdicttype.FieldDictName, field.TypeString, value)

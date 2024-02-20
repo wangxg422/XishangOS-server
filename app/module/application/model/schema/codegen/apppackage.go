@@ -25,6 +25,16 @@ type AppPackage struct {
 	DeleteAt time.Time `json:"delete_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
+	// CreatedBy holds the value of the "created_by" field.
+	CreatedBy int64 `json:"created_by,omitempty"`
+	// UpdatedBy holds the value of the "updated_by" field.
+	UpdatedBy int64 `json:"updated_by,omitempty"`
+	// DeleteBy holds the value of the "delete_by" field.
+	DeleteBy int64 `json:"delete_by,omitempty"`
+	// Remark holds the value of the "remark" field.
+	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// PkgName holds the value of the "pkg_name" field.
 	PkgName string `json:"pkg_name,omitempty"`
 	// PkgCode holds the value of the "pkg_code" field.
@@ -39,8 +49,6 @@ type AppPackage struct {
 	Uploader int64 `json:"uploader,omitempty"`
 	// Desc holds the value of the "desc" field.
 	Desc string `json:"desc,omitempty"`
-	// Remark holds the value of the "remark" field.
-	Remark string `json:"remark,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AppPackageQuery when eager-loading is set.
 	Edges        AppPackageEdges `json:"edges"`
@@ -70,9 +78,9 @@ func (*AppPackage) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case apppackage.FieldID, apppackage.FieldStatus, apppackage.FieldPkgType, apppackage.FieldPkgKind, apppackage.FieldUploader:
+		case apppackage.FieldID, apppackage.FieldStatus, apppackage.FieldCreatedBy, apppackage.FieldUpdatedBy, apppackage.FieldDeleteBy, apppackage.FieldDelFlag, apppackage.FieldPkgType, apppackage.FieldPkgKind, apppackage.FieldUploader:
 			values[i] = new(sql.NullInt64)
-		case apppackage.FieldPkgName, apppackage.FieldPkgCode, apppackage.FieldPkgVersion, apppackage.FieldDesc, apppackage.FieldRemark:
+		case apppackage.FieldRemark, apppackage.FieldPkgName, apppackage.FieldPkgCode, apppackage.FieldPkgVersion, apppackage.FieldDesc:
 			values[i] = new(sql.NullString)
 		case apppackage.FieldCreatedAt, apppackage.FieldUpdatedAt, apppackage.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -121,6 +129,36 @@ func (ap *AppPackage) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				ap.Status = int8(value.Int64)
 			}
+		case apppackage.FieldCreatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+			} else if value.Valid {
+				ap.CreatedBy = value.Int64
+			}
+		case apppackage.FieldUpdatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+			} else if value.Valid {
+				ap.UpdatedBy = value.Int64
+			}
+		case apppackage.FieldDeleteBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_by", values[i])
+			} else if value.Valid {
+				ap.DeleteBy = value.Int64
+			}
+		case apppackage.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				ap.Remark = value.String
+			}
+		case apppackage.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				ap.DelFlag = int8(value.Int64)
+			}
 		case apppackage.FieldPkgName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field pkg_name", values[i])
@@ -162,12 +200,6 @@ func (ap *AppPackage) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
 				ap.Desc = value.String
-			}
-		case apppackage.FieldRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field remark", values[i])
-			} else if value.Valid {
-				ap.Remark = value.String
 			}
 		default:
 			ap.selectValues.Set(columns[i], values[i])
@@ -222,6 +254,21 @@ func (ap *AppPackage) String() string {
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", ap.Status))
 	builder.WriteString(", ")
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", ap.CreatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("updated_by=")
+	builder.WriteString(fmt.Sprintf("%v", ap.UpdatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("delete_by=")
+	builder.WriteString(fmt.Sprintf("%v", ap.DeleteBy))
+	builder.WriteString(", ")
+	builder.WriteString("remark=")
+	builder.WriteString(ap.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", ap.DelFlag))
+	builder.WriteString(", ")
 	builder.WriteString("pkg_name=")
 	builder.WriteString(ap.PkgName)
 	builder.WriteString(", ")
@@ -242,9 +289,6 @@ func (ap *AppPackage) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("desc=")
 	builder.WriteString(ap.Desc)
-	builder.WriteString(", ")
-	builder.WriteString("remark=")
-	builder.WriteString(ap.Remark)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -91,6 +91,48 @@ func (aic *AppInstanceCreate) SetNillableRemark(s *string) *AppInstanceCreate {
 	return aic
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (aic *AppInstanceCreate) SetCreatedBy(i int64) *AppInstanceCreate {
+	aic.mutation.SetCreatedBy(i)
+	return aic
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (aic *AppInstanceCreate) SetNillableCreatedBy(i *int64) *AppInstanceCreate {
+	if i != nil {
+		aic.SetCreatedBy(*i)
+	}
+	return aic
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (aic *AppInstanceCreate) SetUpdatedBy(i int64) *AppInstanceCreate {
+	aic.mutation.SetUpdatedBy(i)
+	return aic
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (aic *AppInstanceCreate) SetNillableUpdatedBy(i *int64) *AppInstanceCreate {
+	if i != nil {
+		aic.SetUpdatedBy(*i)
+	}
+	return aic
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (aic *AppInstanceCreate) SetDeleteBy(i int64) *AppInstanceCreate {
+	aic.mutation.SetDeleteBy(i)
+	return aic
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (aic *AppInstanceCreate) SetNillableDeleteBy(i *int64) *AppInstanceCreate {
+	if i != nil {
+		aic.SetDeleteBy(*i)
+	}
+	return aic
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (aic *AppInstanceCreate) SetDelFlag(i int8) *AppInstanceCreate {
 	aic.mutation.SetDelFlag(i)
@@ -277,16 +319,13 @@ func (aic *AppInstanceCreate) defaults() error {
 		v := appinstance.DefaultUpdatedAt()
 		aic.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := aic.mutation.DeleteAt(); !ok {
-		if appinstance.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized appinstance.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := appinstance.DefaultDeleteAt()
-		aic.mutation.SetDeleteAt(v)
-	}
 	if _, ok := aic.mutation.Status(); !ok {
 		v := appinstance.DefaultStatus
 		aic.mutation.SetStatus(v)
+	}
+	if _, ok := aic.mutation.DelFlag(); !ok {
+		v := appinstance.DefaultDelFlag
+		aic.mutation.SetDelFlag(v)
 	}
 	if _, ok := aic.mutation.ID(); !ok {
 		if appinstance.DefaultID == nil {
@@ -300,6 +339,12 @@ func (aic *AppInstanceCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (aic *AppInstanceCreate) check() error {
+	if _, ok := aic.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "AppInstance.status"`)}
+	}
+	if _, ok := aic.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "AppInstance.del_flag"`)}
+	}
 	if _, ok := aic.mutation.InstanceName(); !ok {
 		return &ValidationError{Name: "instance_name", err: errors.New(`codegen: missing required field "AppInstance.instance_name"`)}
 	}
@@ -360,6 +405,18 @@ func (aic *AppInstanceCreate) createSpec() (*AppInstance, *sqlgraph.CreateSpec) 
 	if value, ok := aic.mutation.Remark(); ok {
 		_spec.SetField(appinstance.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := aic.mutation.CreatedBy(); ok {
+		_spec.SetField(appinstance.FieldCreatedBy, field.TypeInt64, value)
+		_node.CreatedBy = value
+	}
+	if value, ok := aic.mutation.UpdatedBy(); ok {
+		_spec.SetField(appinstance.FieldUpdatedBy, field.TypeInt64, value)
+		_node.UpdatedBy = value
+	}
+	if value, ok := aic.mutation.DeleteBy(); ok {
+		_spec.SetField(appinstance.FieldDeleteBy, field.TypeInt64, value)
+		_node.DeleteBy = value
 	}
 	if value, ok := aic.mutation.DelFlag(); ok {
 		_spec.SetField(appinstance.FieldDelFlag, field.TypeInt8, value)

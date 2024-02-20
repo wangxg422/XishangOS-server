@@ -63,6 +63,62 @@ func (smc *SysMenuCreate) SetNillableDeleteAt(t *time.Time) *SysMenuCreate {
 	return smc
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (smc *SysMenuCreate) SetCreatedBy(i int64) *SysMenuCreate {
+	smc.mutation.SetCreatedBy(i)
+	return smc
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableCreatedBy(i *int64) *SysMenuCreate {
+	if i != nil {
+		smc.SetCreatedBy(*i)
+	}
+	return smc
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (smc *SysMenuCreate) SetUpdatedBy(i int64) *SysMenuCreate {
+	smc.mutation.SetUpdatedBy(i)
+	return smc
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableUpdatedBy(i *int64) *SysMenuCreate {
+	if i != nil {
+		smc.SetUpdatedBy(*i)
+	}
+	return smc
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (smc *SysMenuCreate) SetDeleteBy(i int64) *SysMenuCreate {
+	smc.mutation.SetDeleteBy(i)
+	return smc
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableDeleteBy(i *int64) *SysMenuCreate {
+	if i != nil {
+		smc.SetDeleteBy(*i)
+	}
+	return smc
+}
+
+// SetStatus sets the "status" field.
+func (smc *SysMenuCreate) SetStatus(i int8) *SysMenuCreate {
+	smc.mutation.SetStatus(i)
+	return smc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableStatus(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetStatus(*i)
+	}
+	return smc
+}
+
 // SetRemark sets the "remark" field.
 func (smc *SysMenuCreate) SetRemark(s string) *SysMenuCreate {
 	smc.mutation.SetRemark(s)
@@ -73,6 +129,20 @@ func (smc *SysMenuCreate) SetRemark(s string) *SysMenuCreate {
 func (smc *SysMenuCreate) SetNillableRemark(s *string) *SysMenuCreate {
 	if s != nil {
 		smc.SetRemark(*s)
+	}
+	return smc
+}
+
+// SetSort sets the "sort" field.
+func (smc *SysMenuCreate) SetSort(i int) *SysMenuCreate {
+	smc.mutation.SetSort(i)
+	return smc
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableSort(i *int) *SysMenuCreate {
+	if i != nil {
+		smc.SetSort(*i)
 	}
 	return smc
 }
@@ -415,12 +485,17 @@ func (smc *SysMenuCreate) defaults() error {
 		v := sysmenu.DefaultUpdatedAt()
 		smc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := smc.mutation.DeleteAt(); !ok {
-		if sysmenu.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysmenu.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysmenu.DefaultDeleteAt()
-		smc.mutation.SetDeleteAt(v)
+	if _, ok := smc.mutation.Status(); !ok {
+		v := sysmenu.DefaultStatus
+		smc.mutation.SetStatus(v)
+	}
+	if _, ok := smc.mutation.Sort(); !ok {
+		v := sysmenu.DefaultSort
+		smc.mutation.SetSort(v)
+	}
+	if _, ok := smc.mutation.DelFlag(); !ok {
+		v := sysmenu.DefaultDelFlag
+		smc.mutation.SetDelFlag(v)
 	}
 	if _, ok := smc.mutation.ID(); !ok {
 		if sysmenu.DefaultID == nil {
@@ -434,6 +509,12 @@ func (smc *SysMenuCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (smc *SysMenuCreate) check() error {
+	if _, ok := smc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysMenu.status"`)}
+	}
+	if _, ok := smc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysMenu.del_flag"`)}
+	}
 	if _, ok := smc.mutation.Pid(); !ok {
 		return &ValidationError{Name: "pid", err: errors.New(`codegen: missing required field "SysMenu.pid"`)}
 	}
@@ -481,9 +562,29 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysmenu.FieldDeleteAt, field.TypeTime, value)
 		_node.DeleteAt = value
 	}
+	if value, ok := smc.mutation.CreatedBy(); ok {
+		_spec.SetField(sysmenu.FieldCreatedBy, field.TypeInt64, value)
+		_node.CreatedBy = value
+	}
+	if value, ok := smc.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysmenu.FieldUpdatedBy, field.TypeInt64, value)
+		_node.UpdatedBy = value
+	}
+	if value, ok := smc.mutation.DeleteBy(); ok {
+		_spec.SetField(sysmenu.FieldDeleteBy, field.TypeInt64, value)
+		_node.DeleteBy = value
+	}
+	if value, ok := smc.mutation.Status(); ok {
+		_spec.SetField(sysmenu.FieldStatus, field.TypeInt8, value)
+		_node.Status = value
+	}
 	if value, ok := smc.mutation.Remark(); ok {
 		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := smc.mutation.Sort(); ok {
+		_spec.SetField(sysmenu.FieldSort, field.TypeInt, value)
+		_node.Sort = value
 	}
 	if value, ok := smc.mutation.DelFlag(); ok {
 		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)

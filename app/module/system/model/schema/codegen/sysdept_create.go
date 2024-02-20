@@ -361,16 +361,17 @@ func (sdc *SysDeptCreate) defaults() error {
 		v := sysdept.DefaultUpdatedAt()
 		sdc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdc.mutation.DeleteAt(); !ok {
-		if sysdept.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdept.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdept.DefaultDeleteAt()
-		sdc.mutation.SetDeleteAt(v)
-	}
 	if _, ok := sdc.mutation.Status(); !ok {
 		v := sysdept.DefaultStatus
 		sdc.mutation.SetStatus(v)
+	}
+	if _, ok := sdc.mutation.Sort(); !ok {
+		v := sysdept.DefaultSort
+		sdc.mutation.SetSort(v)
+	}
+	if _, ok := sdc.mutation.DelFlag(); !ok {
+		v := sysdept.DefaultDelFlag
+		sdc.mutation.SetDelFlag(v)
 	}
 	if _, ok := sdc.mutation.ID(); !ok {
 		if sysdept.DefaultID == nil {
@@ -384,6 +385,12 @@ func (sdc *SysDeptCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (sdc *SysDeptCreate) check() error {
+	if _, ok := sdc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysDept.status"`)}
+	}
+	if _, ok := sdc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysDept.del_flag"`)}
+	}
 	if _, ok := sdc.mutation.ParentID(); !ok {
 		return &ValidationError{Name: "parent_id", err: errors.New(`codegen: missing required field "SysDept.parent_id"`)}
 	}

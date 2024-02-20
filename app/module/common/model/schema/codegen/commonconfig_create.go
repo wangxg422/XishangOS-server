@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -266,16 +267,13 @@ func (ccc *CommonConfigCreate) defaults() error {
 		v := commonconfig.DefaultUpdatedAt()
 		ccc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := ccc.mutation.DeleteAt(); !ok {
-		if commonconfig.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized commonconfig.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := commonconfig.DefaultDeleteAt()
-		ccc.mutation.SetDeleteAt(v)
-	}
 	if _, ok := ccc.mutation.Status(); !ok {
 		v := commonconfig.DefaultStatus
 		ccc.mutation.SetStatus(v)
+	}
+	if _, ok := ccc.mutation.DelFlag(); !ok {
+		v := commonconfig.DefaultDelFlag
+		ccc.mutation.SetDelFlag(v)
 	}
 	if _, ok := ccc.mutation.ID(); !ok {
 		if commonconfig.DefaultID == nil {
@@ -289,6 +287,12 @@ func (ccc *CommonConfigCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (ccc *CommonConfigCreate) check() error {
+	if _, ok := ccc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "CommonConfig.status"`)}
+	}
+	if _, ok := ccc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "CommonConfig.del_flag"`)}
+	}
 	return nil
 }
 

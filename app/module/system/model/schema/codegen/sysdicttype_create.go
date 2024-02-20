@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -254,16 +255,13 @@ func (sdtc *SysDictTypeCreate) defaults() error {
 		v := sysdicttype.DefaultUpdatedAt()
 		sdtc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdtc.mutation.DeleteAt(); !ok {
-		if sysdicttype.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdicttype.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdicttype.DefaultDeleteAt()
-		sdtc.mutation.SetDeleteAt(v)
-	}
 	if _, ok := sdtc.mutation.Status(); !ok {
 		v := sysdicttype.DefaultStatus
 		sdtc.mutation.SetStatus(v)
+	}
+	if _, ok := sdtc.mutation.DelFlag(); !ok {
+		v := sysdicttype.DefaultDelFlag
+		sdtc.mutation.SetDelFlag(v)
 	}
 	if _, ok := sdtc.mutation.ID(); !ok {
 		if sysdicttype.DefaultID == nil {
@@ -277,6 +275,12 @@ func (sdtc *SysDictTypeCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (sdtc *SysDictTypeCreate) check() error {
+	if _, ok := sdtc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysDictType.status"`)}
+	}
+	if _, ok := sdtc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysDictType.del_flag"`)}
+	}
 	return nil
 }
 

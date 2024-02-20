@@ -28,6 +28,27 @@ func (sllu *SysLoginLogUpdate) Where(ps ...predicate.SysLoginLog) *SysLoginLogUp
 	return sllu
 }
 
+// SetStatus sets the "status" field.
+func (sllu *SysLoginLogUpdate) SetStatus(i int8) *SysLoginLogUpdate {
+	sllu.mutation.ResetStatus()
+	sllu.mutation.SetStatus(i)
+	return sllu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sllu *SysLoginLogUpdate) SetNillableStatus(i *int8) *SysLoginLogUpdate {
+	if i != nil {
+		sllu.SetStatus(*i)
+	}
+	return sllu
+}
+
+// AddStatus adds i to the "status" field.
+func (sllu *SysLoginLogUpdate) AddStatus(i int8) *SysLoginLogUpdate {
+	sllu.mutation.AddStatus(i)
+	return sllu
+}
+
 // SetLoginName sets the "login_name" field.
 func (sllu *SysLoginLogUpdate) SetLoginName(s string) *SysLoginLogUpdate {
 	sllu.mutation.SetLoginName(s)
@@ -229,8 +250,11 @@ func (sllu *SysLoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if sllu.mutation.StatusCleared() {
-		_spec.ClearField(sysloginlog.FieldStatus, field.TypeInt8)
+	if value, ok := sllu.mutation.Status(); ok {
+		_spec.SetField(sysloginlog.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sllu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysloginlog.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sllu.mutation.LoginName(); ok {
 		_spec.SetField(sysloginlog.FieldLoginName, field.TypeString, value)
@@ -298,6 +322,27 @@ type SysLoginLogUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysLoginLogMutation
+}
+
+// SetStatus sets the "status" field.
+func (slluo *SysLoginLogUpdateOne) SetStatus(i int8) *SysLoginLogUpdateOne {
+	slluo.mutation.ResetStatus()
+	slluo.mutation.SetStatus(i)
+	return slluo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (slluo *SysLoginLogUpdateOne) SetNillableStatus(i *int8) *SysLoginLogUpdateOne {
+	if i != nil {
+		slluo.SetStatus(*i)
+	}
+	return slluo
+}
+
+// AddStatus adds i to the "status" field.
+func (slluo *SysLoginLogUpdateOne) AddStatus(i int8) *SysLoginLogUpdateOne {
+	slluo.mutation.AddStatus(i)
+	return slluo
 }
 
 // SetLoginName sets the "login_name" field.
@@ -531,8 +576,11 @@ func (slluo *SysLoginLogUpdateOne) sqlSave(ctx context.Context) (_node *SysLogin
 			}
 		}
 	}
-	if slluo.mutation.StatusCleared() {
-		_spec.ClearField(sysloginlog.FieldStatus, field.TypeInt8)
+	if value, ok := slluo.mutation.Status(); ok {
+		_spec.SetField(sysloginlog.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := slluo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysloginlog.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := slluo.mutation.LoginName(); ok {
 		_spec.SetField(sysloginlog.FieldLoginName, field.TypeString, value)

@@ -309,16 +309,6 @@ func StatusLTE(v int8) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.CommonConfig {
-	return predicate.CommonConfig(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.CommonConfig {
-	return predicate.CommonConfig(sql.FieldNotNull(FieldStatus))
-}
-
 // CreatedByEQ applies the EQ predicate on the "created_by" field.
 func CreatedByEQ(v int64) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldEQ(FieldCreatedBy, v))
@@ -582,16 +572,6 @@ func DelFlagLT(v int8) predicate.CommonConfig {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.CommonConfig {
-	return predicate.CommonConfig(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.CommonConfig {
-	return predicate.CommonConfig(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ConfigNameEQ applies the EQ predicate on the "config_name" field.

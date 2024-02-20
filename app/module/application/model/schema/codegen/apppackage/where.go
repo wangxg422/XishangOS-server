@@ -75,6 +75,31 @@ func Status(v int8) predicate.AppPackage {
 	return predicate.AppPackage(sql.FieldEQ(FieldStatus, v))
 }
 
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// DeleteBy applies equality check predicate on the "delete_by" field. It's identical to DeleteByEQ.
+func DeleteBy(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldRemark, v))
+}
+
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // PkgName applies equality check predicate on the "pkg_name" field. It's identical to PkgNameEQ.
 func PkgName(v string) predicate.AppPackage {
 	return predicate.AppPackage(sql.FieldEQ(FieldPkgName, v))
@@ -108,11 +133,6 @@ func Uploader(v int64) predicate.AppPackage {
 // Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
 func Desc(v string) predicate.AppPackage {
 	return predicate.AppPackage(sql.FieldEQ(FieldDesc, v))
-}
-
-// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
-func Remark(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldEQ(FieldRemark, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -305,14 +325,269 @@ func StatusLTE(v int8) predicate.AppPackage {
 	return predicate.AppPackage(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldIsNull(FieldStatus))
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldCreatedBy, v))
 }
 
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldNotNull(FieldStatus))
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNEQ(FieldCreatedBy, v))
+}
+
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGT(FieldCreatedBy, v))
+}
+
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGTE(FieldCreatedBy, v))
+}
+
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLT(FieldCreatedBy, v))
+}
+
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLTE(FieldCreatedBy, v))
+}
+
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIsNull(FieldCreatedBy))
+}
+
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotNull(FieldCreatedBy))
+}
+
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGT(FieldUpdatedBy, v))
+}
+
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLT(FieldUpdatedBy, v))
+}
+
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIsNull(FieldUpdatedBy))
+}
+
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotNull(FieldUpdatedBy))
+}
+
+// DeleteByEQ applies the EQ predicate on the "delete_by" field.
+func DeleteByEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// DeleteByNEQ applies the NEQ predicate on the "delete_by" field.
+func DeleteByNEQ(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNEQ(FieldDeleteBy, v))
+}
+
+// DeleteByIn applies the In predicate on the "delete_by" field.
+func DeleteByIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByNotIn applies the NotIn predicate on the "delete_by" field.
+func DeleteByNotIn(vs ...int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByGT applies the GT predicate on the "delete_by" field.
+func DeleteByGT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGT(FieldDeleteBy, v))
+}
+
+// DeleteByGTE applies the GTE predicate on the "delete_by" field.
+func DeleteByGTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGTE(FieldDeleteBy, v))
+}
+
+// DeleteByLT applies the LT predicate on the "delete_by" field.
+func DeleteByLT(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLT(FieldDeleteBy, v))
+}
+
+// DeleteByLTE applies the LTE predicate on the "delete_by" field.
+func DeleteByLTE(v int64) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLTE(FieldDeleteBy, v))
+}
+
+// DeleteByIsNil applies the IsNil predicate on the "delete_by" field.
+func DeleteByIsNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIsNull(FieldDeleteBy))
+}
+
+// DeleteByNotNil applies the NotNil predicate on the "delete_by" field.
+func DeleteByNotNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotNull(FieldDeleteBy))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldHasSuffix(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.AppPackage {
+	return predicate.AppPackage(sql.FieldLTE(FieldDelFlag, v))
 }
 
 // PkgNameEQ applies the EQ predicate on the "pkg_name" field.
@@ -743,81 +1018,6 @@ func DescEqualFold(v string) predicate.AppPackage {
 // DescContainsFold applies the ContainsFold predicate on the "desc" field.
 func DescContainsFold(v string) predicate.AppPackage {
 	return predicate.AppPackage(sql.FieldContainsFold(FieldDesc, v))
-}
-
-// RemarkEQ applies the EQ predicate on the "remark" field.
-func RemarkEQ(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldEQ(FieldRemark, v))
-}
-
-// RemarkNEQ applies the NEQ predicate on the "remark" field.
-func RemarkNEQ(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldNEQ(FieldRemark, v))
-}
-
-// RemarkIn applies the In predicate on the "remark" field.
-func RemarkIn(vs ...string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldIn(FieldRemark, vs...))
-}
-
-// RemarkNotIn applies the NotIn predicate on the "remark" field.
-func RemarkNotIn(vs ...string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldNotIn(FieldRemark, vs...))
-}
-
-// RemarkGT applies the GT predicate on the "remark" field.
-func RemarkGT(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldGT(FieldRemark, v))
-}
-
-// RemarkGTE applies the GTE predicate on the "remark" field.
-func RemarkGTE(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldGTE(FieldRemark, v))
-}
-
-// RemarkLT applies the LT predicate on the "remark" field.
-func RemarkLT(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldLT(FieldRemark, v))
-}
-
-// RemarkLTE applies the LTE predicate on the "remark" field.
-func RemarkLTE(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldLTE(FieldRemark, v))
-}
-
-// RemarkContains applies the Contains predicate on the "remark" field.
-func RemarkContains(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldContains(FieldRemark, v))
-}
-
-// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
-func RemarkHasPrefix(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldHasPrefix(FieldRemark, v))
-}
-
-// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
-func RemarkHasSuffix(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldHasSuffix(FieldRemark, v))
-}
-
-// RemarkIsNil applies the IsNil predicate on the "remark" field.
-func RemarkIsNil() predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldIsNull(FieldRemark))
-}
-
-// RemarkNotNil applies the NotNil predicate on the "remark" field.
-func RemarkNotNil() predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldNotNull(FieldRemark))
-}
-
-// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
-func RemarkEqualFold(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldEqualFold(FieldRemark, v))
-}
-
-// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
-func RemarkContainsFold(v string) predicate.AppPackage {
-	return predicate.AppPackage(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // HasAppInstance applies the HasEdge predicate on the "app_instance" edge.

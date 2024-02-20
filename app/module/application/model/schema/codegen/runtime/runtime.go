@@ -15,16 +15,18 @@ import (
 // to their package variables.
 func init() {
 	appinstanceMixin := schema.AppInstance{}.Mixin()
-	appinstanceMixinHooks4 := appinstanceMixin[4].Hooks()
-	appinstance.Hooks[0] = appinstanceMixinHooks4[0]
-	appinstanceMixinInters4 := appinstanceMixin[4].Interceptors()
-	appinstance.Interceptors[0] = appinstanceMixinInters4[0]
+	appinstanceMixinHooks6 := appinstanceMixin[6].Hooks()
+	appinstance.Hooks[0] = appinstanceMixinHooks6[0]
+	appinstanceMixinInters6 := appinstanceMixin[6].Interceptors()
+	appinstance.Interceptors[0] = appinstanceMixinInters6[0]
 	appinstanceMixinFields0 := appinstanceMixin[0].Fields()
 	_ = appinstanceMixinFields0
 	appinstanceMixinFields1 := appinstanceMixin[1].Fields()
 	_ = appinstanceMixinFields1
-	appinstanceMixinFields2 := appinstanceMixin[2].Fields()
-	_ = appinstanceMixinFields2
+	appinstanceMixinFields3 := appinstanceMixin[3].Fields()
+	_ = appinstanceMixinFields3
+	appinstanceMixinFields6 := appinstanceMixin[6].Fields()
+	_ = appinstanceMixinFields6
 	appinstanceFields := schema.AppInstance{}.Fields()
 	_ = appinstanceFields
 	// appinstanceDescCreatedAt is the schema descriptor for created_at field.
@@ -37,27 +39,31 @@ func init() {
 	appinstance.DefaultUpdatedAt = appinstanceDescUpdatedAt.Default.(func() time.Time)
 	// appinstance.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	appinstance.UpdateDefaultUpdatedAt = appinstanceDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// appinstanceDescDeleteAt is the schema descriptor for delete_at field.
-	appinstanceDescDeleteAt := appinstanceMixinFields1[2].Descriptor()
-	// appinstance.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	appinstance.DefaultDeleteAt = appinstanceDescDeleteAt.Default.(func() time.Time)
-	// appinstance.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	appinstance.UpdateDefaultDeleteAt = appinstanceDescDeleteAt.UpdateDefault.(func() time.Time)
 	// appinstanceDescStatus is the schema descriptor for status field.
-	appinstanceDescStatus := appinstanceMixinFields2[0].Descriptor()
+	appinstanceDescStatus := appinstanceMixinFields3[0].Descriptor()
 	// appinstance.DefaultStatus holds the default value on creation for the status field.
 	appinstance.DefaultStatus = appinstanceDescStatus.Default.(int8)
+	// appinstanceDescDelFlag is the schema descriptor for del_flag field.
+	appinstanceDescDelFlag := appinstanceMixinFields6[0].Descriptor()
+	// appinstance.DefaultDelFlag holds the default value on creation for the del_flag field.
+	appinstance.DefaultDelFlag = appinstanceDescDelFlag.Default.(int8)
 	// appinstanceDescID is the schema descriptor for id field.
 	appinstanceDescID := appinstanceMixinFields0[0].Descriptor()
 	// appinstance.DefaultID holds the default value on creation for the id field.
 	appinstance.DefaultID = appinstanceDescID.Default.(func() int64)
 	apppackageMixin := schema.AppPackage{}.Mixin()
+	apppackageMixinHooks6 := apppackageMixin[6].Hooks()
+	apppackage.Hooks[0] = apppackageMixinHooks6[0]
+	apppackageMixinInters6 := apppackageMixin[6].Interceptors()
+	apppackage.Interceptors[0] = apppackageMixinInters6[0]
 	apppackageMixinFields0 := apppackageMixin[0].Fields()
 	_ = apppackageMixinFields0
 	apppackageMixinFields1 := apppackageMixin[1].Fields()
 	_ = apppackageMixinFields1
-	apppackageMixinFields2 := apppackageMixin[2].Fields()
-	_ = apppackageMixinFields2
+	apppackageMixinFields3 := apppackageMixin[3].Fields()
+	_ = apppackageMixinFields3
+	apppackageMixinFields6 := apppackageMixin[6].Fields()
+	_ = apppackageMixinFields6
 	apppackageFields := schema.AppPackage{}.Fields()
 	_ = apppackageFields
 	// apppackageDescCreatedAt is the schema descriptor for created_at field.
@@ -70,16 +76,14 @@ func init() {
 	apppackage.DefaultUpdatedAt = apppackageDescUpdatedAt.Default.(func() time.Time)
 	// apppackage.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	apppackage.UpdateDefaultUpdatedAt = apppackageDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// apppackageDescDeleteAt is the schema descriptor for delete_at field.
-	apppackageDescDeleteAt := apppackageMixinFields1[2].Descriptor()
-	// apppackage.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	apppackage.DefaultDeleteAt = apppackageDescDeleteAt.Default.(func() time.Time)
-	// apppackage.UpdateDefaultDeleteAt holds the default value on update for the delete_at field.
-	apppackage.UpdateDefaultDeleteAt = apppackageDescDeleteAt.UpdateDefault.(func() time.Time)
 	// apppackageDescStatus is the schema descriptor for status field.
-	apppackageDescStatus := apppackageMixinFields2[0].Descriptor()
+	apppackageDescStatus := apppackageMixinFields3[0].Descriptor()
 	// apppackage.DefaultStatus holds the default value on creation for the status field.
 	apppackage.DefaultStatus = apppackageDescStatus.Default.(int8)
+	// apppackageDescDelFlag is the schema descriptor for del_flag field.
+	apppackageDescDelFlag := apppackageMixinFields6[0].Descriptor()
+	// apppackage.DefaultDelFlag holds the default value on creation for the del_flag field.
+	apppackage.DefaultDelFlag = apppackageDescDelFlag.Default.(int8)
 	// apppackageDescID is the schema descriptor for id field.
 	apppackageDescID := apppackageMixinFields0[0].Descriptor()
 	// apppackage.DefaultID holds the default value on creation for the id field.

@@ -29,6 +29,26 @@ func (spu *SysPostUpdate) Where(ps ...predicate.SysPost) *SysPostUpdate {
 	return spu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (spu *SysPostUpdate) SetCreatedAt(t time.Time) *SysPostUpdate {
+	spu.mutation.SetCreatedAt(t)
+	return spu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (spu *SysPostUpdate) SetNillableCreatedAt(t *time.Time) *SysPostUpdate {
+	if t != nil {
+		spu.SetCreatedAt(*t)
+	}
+	return spu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (spu *SysPostUpdate) ClearCreatedAt() *SysPostUpdate {
+	spu.mutation.ClearCreatedAt()
+	return spu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (spu *SysPostUpdate) SetUpdatedAt(t time.Time) *SysPostUpdate {
 	spu.mutation.SetUpdatedAt(t)
@@ -44,6 +64,14 @@ func (spu *SysPostUpdate) ClearUpdatedAt() *SysPostUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (spu *SysPostUpdate) SetDeleteAt(t time.Time) *SysPostUpdate {
 	spu.mutation.SetDeleteAt(t)
+	return spu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (spu *SysPostUpdate) SetNillableDeleteAt(t *time.Time) *SysPostUpdate {
+	if t != nil {
+		spu.SetDeleteAt(*t)
+	}
 	return spu
 }
 
@@ -154,6 +182,27 @@ func (spu *SysPostUpdate) ClearRemark() *SysPostUpdate {
 	return spu
 }
 
+// SetStatus sets the "status" field.
+func (spu *SysPostUpdate) SetStatus(i int8) *SysPostUpdate {
+	spu.mutation.ResetStatus()
+	spu.mutation.SetStatus(i)
+	return spu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (spu *SysPostUpdate) SetNillableStatus(i *int8) *SysPostUpdate {
+	if i != nil {
+		spu.SetStatus(*i)
+	}
+	return spu
+}
+
+// AddStatus adds i to the "status" field.
+func (spu *SysPostUpdate) AddStatus(i int8) *SysPostUpdate {
+	spu.mutation.AddStatus(i)
+	return spu
+}
+
 // SetSort sets the "sort" field.
 func (spu *SysPostUpdate) SetSort(i int) *SysPostUpdate {
 	spu.mutation.ResetSort()
@@ -199,12 +248,6 @@ func (spu *SysPostUpdate) SetNillableDelFlag(i *int8) *SysPostUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (spu *SysPostUpdate) AddDelFlag(i int8) *SysPostUpdate {
 	spu.mutation.AddDelFlag(i)
-	return spu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (spu *SysPostUpdate) ClearDelFlag() *SysPostUpdate {
-	spu.mutation.ClearDelFlag()
 	return spu
 }
 
@@ -328,13 +371,6 @@ func (spu *SysPostUpdate) defaults() error {
 		v := syspost.UpdateDefaultUpdatedAt()
 		spu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := spu.mutation.DeleteAt(); !ok && !spu.mutation.DeleteAtCleared() {
-		if syspost.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := syspost.UpdateDefaultDeleteAt()
-		spu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -346,6 +382,9 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := spu.mutation.CreatedAt(); ok {
+		_spec.SetField(syspost.FieldCreatedAt, field.TypeTime, value)
 	}
 	if spu.mutation.CreatedAtCleared() {
 		_spec.ClearField(syspost.FieldCreatedAt, field.TypeTime)
@@ -395,8 +434,11 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if spu.mutation.RemarkCleared() {
 		_spec.ClearField(syspost.FieldRemark, field.TypeString)
 	}
-	if spu.mutation.StatusCleared() {
-		_spec.ClearField(syspost.FieldStatus, field.TypeInt8)
+	if value, ok := spu.mutation.Status(); ok {
+		_spec.SetField(syspost.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := spu.mutation.AddedStatus(); ok {
+		_spec.AddField(syspost.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := spu.mutation.Sort(); ok {
 		_spec.SetField(syspost.FieldSort, field.TypeInt, value)
@@ -412,9 +454,6 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := spu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(syspost.FieldDelFlag, field.TypeInt8, value)
-	}
-	if spu.mutation.DelFlagCleared() {
-		_spec.ClearField(syspost.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := spu.mutation.PostCode(); ok {
 		_spec.SetField(syspost.FieldPostCode, field.TypeString, value)
@@ -493,6 +532,26 @@ type SysPostUpdateOne struct {
 	mutation *SysPostMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (spuo *SysPostUpdateOne) SetCreatedAt(t time.Time) *SysPostUpdateOne {
+	spuo.mutation.SetCreatedAt(t)
+	return spuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (spuo *SysPostUpdateOne) SetNillableCreatedAt(t *time.Time) *SysPostUpdateOne {
+	if t != nil {
+		spuo.SetCreatedAt(*t)
+	}
+	return spuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (spuo *SysPostUpdateOne) ClearCreatedAt() *SysPostUpdateOne {
+	spuo.mutation.ClearCreatedAt()
+	return spuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (spuo *SysPostUpdateOne) SetUpdatedAt(t time.Time) *SysPostUpdateOne {
 	spuo.mutation.SetUpdatedAt(t)
@@ -508,6 +567,14 @@ func (spuo *SysPostUpdateOne) ClearUpdatedAt() *SysPostUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (spuo *SysPostUpdateOne) SetDeleteAt(t time.Time) *SysPostUpdateOne {
 	spuo.mutation.SetDeleteAt(t)
+	return spuo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (spuo *SysPostUpdateOne) SetNillableDeleteAt(t *time.Time) *SysPostUpdateOne {
+	if t != nil {
+		spuo.SetDeleteAt(*t)
+	}
 	return spuo
 }
 
@@ -618,6 +685,27 @@ func (spuo *SysPostUpdateOne) ClearRemark() *SysPostUpdateOne {
 	return spuo
 }
 
+// SetStatus sets the "status" field.
+func (spuo *SysPostUpdateOne) SetStatus(i int8) *SysPostUpdateOne {
+	spuo.mutation.ResetStatus()
+	spuo.mutation.SetStatus(i)
+	return spuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (spuo *SysPostUpdateOne) SetNillableStatus(i *int8) *SysPostUpdateOne {
+	if i != nil {
+		spuo.SetStatus(*i)
+	}
+	return spuo
+}
+
+// AddStatus adds i to the "status" field.
+func (spuo *SysPostUpdateOne) AddStatus(i int8) *SysPostUpdateOne {
+	spuo.mutation.AddStatus(i)
+	return spuo
+}
+
 // SetSort sets the "sort" field.
 func (spuo *SysPostUpdateOne) SetSort(i int) *SysPostUpdateOne {
 	spuo.mutation.ResetSort()
@@ -663,12 +751,6 @@ func (spuo *SysPostUpdateOne) SetNillableDelFlag(i *int8) *SysPostUpdateOne {
 // AddDelFlag adds i to the "del_flag" field.
 func (spuo *SysPostUpdateOne) AddDelFlag(i int8) *SysPostUpdateOne {
 	spuo.mutation.AddDelFlag(i)
-	return spuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (spuo *SysPostUpdateOne) ClearDelFlag() *SysPostUpdateOne {
-	spuo.mutation.ClearDelFlag()
 	return spuo
 }
 
@@ -805,13 +887,6 @@ func (spuo *SysPostUpdateOne) defaults() error {
 		v := syspost.UpdateDefaultUpdatedAt()
 		spuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := spuo.mutation.DeleteAt(); !ok && !spuo.mutation.DeleteAtCleared() {
-		if syspost.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := syspost.UpdateDefaultDeleteAt()
-		spuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -840,6 +915,9 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := spuo.mutation.CreatedAt(); ok {
+		_spec.SetField(syspost.FieldCreatedAt, field.TypeTime, value)
 	}
 	if spuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(syspost.FieldCreatedAt, field.TypeTime)
@@ -889,8 +967,11 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 	if spuo.mutation.RemarkCleared() {
 		_spec.ClearField(syspost.FieldRemark, field.TypeString)
 	}
-	if spuo.mutation.StatusCleared() {
-		_spec.ClearField(syspost.FieldStatus, field.TypeInt8)
+	if value, ok := spuo.mutation.Status(); ok {
+		_spec.SetField(syspost.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := spuo.mutation.AddedStatus(); ok {
+		_spec.AddField(syspost.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := spuo.mutation.Sort(); ok {
 		_spec.SetField(syspost.FieldSort, field.TypeInt, value)
@@ -906,9 +987,6 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 	}
 	if value, ok := spuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(syspost.FieldDelFlag, field.TypeInt8, value)
-	}
-	if spuo.mutation.DelFlagCleared() {
-		_spec.ClearField(syspost.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := spuo.mutation.PostCode(); ok {
 		_spec.SetField(syspost.FieldPostCode, field.TypeString, value)

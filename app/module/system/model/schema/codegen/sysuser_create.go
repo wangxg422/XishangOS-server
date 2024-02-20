@@ -465,12 +465,9 @@ func (suc *SysUserCreate) defaults() error {
 		v := sysuser.DefaultUpdatedAt()
 		suc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := suc.mutation.DeleteAt(); !ok {
-		if sysuser.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysuser.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysuser.DefaultDeleteAt()
-		suc.mutation.SetDeleteAt(v)
+	if _, ok := suc.mutation.DelFlag(); !ok {
+		v := sysuser.DefaultDelFlag
+		suc.mutation.SetDelFlag(v)
 	}
 	if _, ok := suc.mutation.ID(); !ok {
 		if sysuser.DefaultID == nil {
@@ -484,6 +481,9 @@ func (suc *SysUserCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (suc *SysUserCreate) check() error {
+	if _, ok := suc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysUser.del_flag"`)}
+	}
 	if _, ok := suc.mutation.UserName(); !ok {
 		return &ValidationError{Name: "user_name", err: errors.New(`codegen: missing required field "SysUser.user_name"`)}
 	}

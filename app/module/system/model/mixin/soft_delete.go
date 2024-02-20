@@ -21,8 +21,7 @@ type SoftDeleteMixin struct {
 // Fields of the SoftDeleteMixin.
 func (SoftDeleteMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8(enmu.DelFlagNormal.Name()).
-			Optional().Default(enmu.DelFlagNormal.Value()),
+		field.Int8(enmu.DelFlagNormal.Name()).Default(enmu.DelFlagNormal.Value()),
 	}
 }
 

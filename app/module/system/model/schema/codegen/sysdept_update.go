@@ -30,6 +30,26 @@ func (sdu *SysDeptUpdate) Where(ps ...predicate.SysDept) *SysDeptUpdate {
 	return sdu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sdu *SysDeptUpdate) SetCreatedAt(t time.Time) *SysDeptUpdate {
+	sdu.mutation.SetCreatedAt(t)
+	return sdu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sdu *SysDeptUpdate) SetNillableCreatedAt(t *time.Time) *SysDeptUpdate {
+	if t != nil {
+		sdu.SetCreatedAt(*t)
+	}
+	return sdu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sdu *SysDeptUpdate) ClearCreatedAt() *SysDeptUpdate {
+	sdu.mutation.ClearCreatedAt()
+	return sdu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sdu *SysDeptUpdate) SetUpdatedAt(t time.Time) *SysDeptUpdate {
 	sdu.mutation.SetUpdatedAt(t)
@@ -45,6 +65,14 @@ func (sdu *SysDeptUpdate) ClearUpdatedAt() *SysDeptUpdate {
 // SetDeleteAt sets the "delete_at" field.
 func (sdu *SysDeptUpdate) SetDeleteAt(t time.Time) *SysDeptUpdate {
 	sdu.mutation.SetDeleteAt(t)
+	return sdu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sdu *SysDeptUpdate) SetNillableDeleteAt(t *time.Time) *SysDeptUpdate {
+	if t != nil {
+		sdu.SetDeleteAt(*t)
+	}
 	return sdu
 }
 
@@ -155,6 +183,27 @@ func (sdu *SysDeptUpdate) ClearRemark() *SysDeptUpdate {
 	return sdu
 }
 
+// SetStatus sets the "status" field.
+func (sdu *SysDeptUpdate) SetStatus(i int8) *SysDeptUpdate {
+	sdu.mutation.ResetStatus()
+	sdu.mutation.SetStatus(i)
+	return sdu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sdu *SysDeptUpdate) SetNillableStatus(i *int8) *SysDeptUpdate {
+	if i != nil {
+		sdu.SetStatus(*i)
+	}
+	return sdu
+}
+
+// AddStatus adds i to the "status" field.
+func (sdu *SysDeptUpdate) AddStatus(i int8) *SysDeptUpdate {
+	sdu.mutation.AddStatus(i)
+	return sdu
+}
+
 // SetSort sets the "sort" field.
 func (sdu *SysDeptUpdate) SetSort(i int) *SysDeptUpdate {
 	sdu.mutation.ResetSort()
@@ -200,12 +249,6 @@ func (sdu *SysDeptUpdate) SetNillableDelFlag(i *int8) *SysDeptUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (sdu *SysDeptUpdate) AddDelFlag(i int8) *SysDeptUpdate {
 	sdu.mutation.AddDelFlag(i)
-	return sdu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sdu *SysDeptUpdate) ClearDelFlag() *SysDeptUpdate {
-	sdu.mutation.ClearDelFlag()
 	return sdu
 }
 
@@ -486,13 +529,6 @@ func (sdu *SysDeptUpdate) defaults() error {
 		v := sysdept.UpdateDefaultUpdatedAt()
 		sdu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sdu.mutation.DeleteAt(); !ok && !sdu.mutation.DeleteAtCleared() {
-		if sysdept.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdept.UpdateDefaultDeleteAt()
-		sdu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -504,6 +540,9 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sdu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdept.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sdu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdept.FieldCreatedAt, field.TypeTime)
@@ -553,8 +592,11 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sdu.mutation.RemarkCleared() {
 		_spec.ClearField(sysdept.FieldRemark, field.TypeString)
 	}
-	if sdu.mutation.StatusCleared() {
-		_spec.ClearField(sysdept.FieldStatus, field.TypeInt8)
+	if value, ok := sdu.mutation.Status(); ok {
+		_spec.SetField(sysdept.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sdu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdept.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sdu.mutation.Sort(); ok {
 		_spec.SetField(sysdept.FieldSort, field.TypeInt, value)
@@ -570,9 +612,6 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := sdu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdept.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sdu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdept.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdu.mutation.ParentID(); ok {
 		_spec.SetField(sysdept.FieldParentID, field.TypeInt64, value)
@@ -732,6 +771,26 @@ type SysDeptUpdateOne struct {
 	mutation *SysDeptMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (sduo *SysDeptUpdateOne) SetCreatedAt(t time.Time) *SysDeptUpdateOne {
+	sduo.mutation.SetCreatedAt(t)
+	return sduo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (sduo *SysDeptUpdateOne) SetNillableCreatedAt(t *time.Time) *SysDeptUpdateOne {
+	if t != nil {
+		sduo.SetCreatedAt(*t)
+	}
+	return sduo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (sduo *SysDeptUpdateOne) ClearCreatedAt() *SysDeptUpdateOne {
+	sduo.mutation.ClearCreatedAt()
+	return sduo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (sduo *SysDeptUpdateOne) SetUpdatedAt(t time.Time) *SysDeptUpdateOne {
 	sduo.mutation.SetUpdatedAt(t)
@@ -747,6 +806,14 @@ func (sduo *SysDeptUpdateOne) ClearUpdatedAt() *SysDeptUpdateOne {
 // SetDeleteAt sets the "delete_at" field.
 func (sduo *SysDeptUpdateOne) SetDeleteAt(t time.Time) *SysDeptUpdateOne {
 	sduo.mutation.SetDeleteAt(t)
+	return sduo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (sduo *SysDeptUpdateOne) SetNillableDeleteAt(t *time.Time) *SysDeptUpdateOne {
+	if t != nil {
+		sduo.SetDeleteAt(*t)
+	}
 	return sduo
 }
 
@@ -857,6 +924,27 @@ func (sduo *SysDeptUpdateOne) ClearRemark() *SysDeptUpdateOne {
 	return sduo
 }
 
+// SetStatus sets the "status" field.
+func (sduo *SysDeptUpdateOne) SetStatus(i int8) *SysDeptUpdateOne {
+	sduo.mutation.ResetStatus()
+	sduo.mutation.SetStatus(i)
+	return sduo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sduo *SysDeptUpdateOne) SetNillableStatus(i *int8) *SysDeptUpdateOne {
+	if i != nil {
+		sduo.SetStatus(*i)
+	}
+	return sduo
+}
+
+// AddStatus adds i to the "status" field.
+func (sduo *SysDeptUpdateOne) AddStatus(i int8) *SysDeptUpdateOne {
+	sduo.mutation.AddStatus(i)
+	return sduo
+}
+
 // SetSort sets the "sort" field.
 func (sduo *SysDeptUpdateOne) SetSort(i int) *SysDeptUpdateOne {
 	sduo.mutation.ResetSort()
@@ -902,12 +990,6 @@ func (sduo *SysDeptUpdateOne) SetNillableDelFlag(i *int8) *SysDeptUpdateOne {
 // AddDelFlag adds i to the "del_flag" field.
 func (sduo *SysDeptUpdateOne) AddDelFlag(i int8) *SysDeptUpdateOne {
 	sduo.mutation.AddDelFlag(i)
-	return sduo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (sduo *SysDeptUpdateOne) ClearDelFlag() *SysDeptUpdateOne {
-	sduo.mutation.ClearDelFlag()
 	return sduo
 }
 
@@ -1201,13 +1283,6 @@ func (sduo *SysDeptUpdateOne) defaults() error {
 		v := sysdept.UpdateDefaultUpdatedAt()
 		sduo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := sduo.mutation.DeleteAt(); !ok && !sduo.mutation.DeleteAtCleared() {
-		if sysdept.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysdept.UpdateDefaultDeleteAt()
-		sduo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -1236,6 +1311,9 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := sduo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysdept.FieldCreatedAt, field.TypeTime, value)
 	}
 	if sduo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysdept.FieldCreatedAt, field.TypeTime)
@@ -1285,8 +1363,11 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 	if sduo.mutation.RemarkCleared() {
 		_spec.ClearField(sysdept.FieldRemark, field.TypeString)
 	}
-	if sduo.mutation.StatusCleared() {
-		_spec.ClearField(sysdept.FieldStatus, field.TypeInt8)
+	if value, ok := sduo.mutation.Status(); ok {
+		_spec.SetField(sysdept.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := sduo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysdept.FieldStatus, field.TypeInt8, value)
 	}
 	if value, ok := sduo.mutation.Sort(); ok {
 		_spec.SetField(sysdept.FieldSort, field.TypeInt, value)
@@ -1302,9 +1383,6 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 	}
 	if value, ok := sduo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysdept.FieldDelFlag, field.TypeInt8, value)
-	}
-	if sduo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysdept.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sduo.mutation.ParentID(); ok {
 		_spec.SetField(sysdept.FieldParentID, field.TypeInt64, value)

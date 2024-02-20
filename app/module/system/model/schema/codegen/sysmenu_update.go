@@ -29,6 +29,26 @@ func (smu *SysMenuUpdate) Where(ps ...predicate.SysMenu) *SysMenuUpdate {
 	return smu
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (smu *SysMenuUpdate) SetCreatedAt(t time.Time) *SysMenuUpdate {
+	smu.mutation.SetCreatedAt(t)
+	return smu
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableCreatedAt(t *time.Time) *SysMenuUpdate {
+	if t != nil {
+		smu.SetCreatedAt(*t)
+	}
+	return smu
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (smu *SysMenuUpdate) ClearCreatedAt() *SysMenuUpdate {
+	smu.mutation.ClearCreatedAt()
+	return smu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (smu *SysMenuUpdate) SetUpdatedAt(t time.Time) *SysMenuUpdate {
 	smu.mutation.SetUpdatedAt(t)
@@ -47,9 +67,119 @@ func (smu *SysMenuUpdate) SetDeleteAt(t time.Time) *SysMenuUpdate {
 	return smu
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableDeleteAt(t *time.Time) *SysMenuUpdate {
+	if t != nil {
+		smu.SetDeleteAt(*t)
+	}
+	return smu
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (smu *SysMenuUpdate) ClearDeleteAt() *SysMenuUpdate {
 	smu.mutation.ClearDeleteAt()
+	return smu
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (smu *SysMenuUpdate) SetCreatedBy(i int64) *SysMenuUpdate {
+	smu.mutation.ResetCreatedBy()
+	smu.mutation.SetCreatedBy(i)
+	return smu
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableCreatedBy(i *int64) *SysMenuUpdate {
+	if i != nil {
+		smu.SetCreatedBy(*i)
+	}
+	return smu
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (smu *SysMenuUpdate) AddCreatedBy(i int64) *SysMenuUpdate {
+	smu.mutation.AddCreatedBy(i)
+	return smu
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (smu *SysMenuUpdate) ClearCreatedBy() *SysMenuUpdate {
+	smu.mutation.ClearCreatedBy()
+	return smu
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (smu *SysMenuUpdate) SetUpdatedBy(i int64) *SysMenuUpdate {
+	smu.mutation.ResetUpdatedBy()
+	smu.mutation.SetUpdatedBy(i)
+	return smu
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableUpdatedBy(i *int64) *SysMenuUpdate {
+	if i != nil {
+		smu.SetUpdatedBy(*i)
+	}
+	return smu
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (smu *SysMenuUpdate) AddUpdatedBy(i int64) *SysMenuUpdate {
+	smu.mutation.AddUpdatedBy(i)
+	return smu
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (smu *SysMenuUpdate) ClearUpdatedBy() *SysMenuUpdate {
+	smu.mutation.ClearUpdatedBy()
+	return smu
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (smu *SysMenuUpdate) SetDeleteBy(i int64) *SysMenuUpdate {
+	smu.mutation.ResetDeleteBy()
+	smu.mutation.SetDeleteBy(i)
+	return smu
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableDeleteBy(i *int64) *SysMenuUpdate {
+	if i != nil {
+		smu.SetDeleteBy(*i)
+	}
+	return smu
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (smu *SysMenuUpdate) AddDeleteBy(i int64) *SysMenuUpdate {
+	smu.mutation.AddDeleteBy(i)
+	return smu
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (smu *SysMenuUpdate) ClearDeleteBy() *SysMenuUpdate {
+	smu.mutation.ClearDeleteBy()
+	return smu
+}
+
+// SetStatus sets the "status" field.
+func (smu *SysMenuUpdate) SetStatus(i int8) *SysMenuUpdate {
+	smu.mutation.ResetStatus()
+	smu.mutation.SetStatus(i)
+	return smu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableStatus(i *int8) *SysMenuUpdate {
+	if i != nil {
+		smu.SetStatus(*i)
+	}
+	return smu
+}
+
+// AddStatus adds i to the "status" field.
+func (smu *SysMenuUpdate) AddStatus(i int8) *SysMenuUpdate {
+	smu.mutation.AddStatus(i)
 	return smu
 }
 
@@ -73,6 +203,33 @@ func (smu *SysMenuUpdate) ClearRemark() *SysMenuUpdate {
 	return smu
 }
 
+// SetSort sets the "sort" field.
+func (smu *SysMenuUpdate) SetSort(i int) *SysMenuUpdate {
+	smu.mutation.ResetSort()
+	smu.mutation.SetSort(i)
+	return smu
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableSort(i *int) *SysMenuUpdate {
+	if i != nil {
+		smu.SetSort(*i)
+	}
+	return smu
+}
+
+// AddSort adds i to the "sort" field.
+func (smu *SysMenuUpdate) AddSort(i int) *SysMenuUpdate {
+	smu.mutation.AddSort(i)
+	return smu
+}
+
+// ClearSort clears the value of the "sort" field.
+func (smu *SysMenuUpdate) ClearSort() *SysMenuUpdate {
+	smu.mutation.ClearSort()
+	return smu
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (smu *SysMenuUpdate) SetDelFlag(i int8) *SysMenuUpdate {
 	smu.mutation.ResetDelFlag()
@@ -91,12 +248,6 @@ func (smu *SysMenuUpdate) SetNillableDelFlag(i *int8) *SysMenuUpdate {
 // AddDelFlag adds i to the "del_flag" field.
 func (smu *SysMenuUpdate) AddDelFlag(i int8) *SysMenuUpdate {
 	smu.mutation.AddDelFlag(i)
-	return smu
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (smu *SysMenuUpdate) ClearDelFlag() *SysMenuUpdate {
-	smu.mutation.ClearDelFlag()
 	return smu
 }
 
@@ -597,13 +748,6 @@ func (smu *SysMenuUpdate) defaults() error {
 		v := sysmenu.UpdateDefaultUpdatedAt()
 		smu.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := smu.mutation.DeleteAt(); !ok && !smu.mutation.DeleteAtCleared() {
-		if sysmenu.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysmenu.UpdateDefaultDeleteAt()
-		smu.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -615,6 +759,9 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := smu.mutation.CreatedAt(); ok {
+		_spec.SetField(sysmenu.FieldCreatedAt, field.TypeTime, value)
 	}
 	if smu.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysmenu.FieldCreatedAt, field.TypeTime)
@@ -631,20 +778,59 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if smu.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysmenu.FieldDeleteAt, field.TypeTime)
 	}
+	if value, ok := smu.mutation.CreatedBy(); ok {
+		_spec.SetField(sysmenu.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := smu.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(sysmenu.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if smu.mutation.CreatedByCleared() {
+		_spec.ClearField(sysmenu.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := smu.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysmenu.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := smu.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(sysmenu.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if smu.mutation.UpdatedByCleared() {
+		_spec.ClearField(sysmenu.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := smu.mutation.DeleteBy(); ok {
+		_spec.SetField(sysmenu.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := smu.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(sysmenu.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if smu.mutation.DeleteByCleared() {
+		_spec.ClearField(sysmenu.FieldDeleteBy, field.TypeInt64)
+	}
+	if value, ok := smu.mutation.Status(); ok {
+		_spec.SetField(sysmenu.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := smu.mutation.AddedStatus(); ok {
+		_spec.AddField(sysmenu.FieldStatus, field.TypeInt8, value)
+	}
 	if value, ok := smu.mutation.Remark(); ok {
 		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 	}
 	if smu.mutation.RemarkCleared() {
 		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
 	}
+	if value, ok := smu.mutation.Sort(); ok {
+		_spec.SetField(sysmenu.FieldSort, field.TypeInt, value)
+	}
+	if value, ok := smu.mutation.AddedSort(); ok {
+		_spec.AddField(sysmenu.FieldSort, field.TypeInt, value)
+	}
+	if smu.mutation.SortCleared() {
+		_spec.ClearField(sysmenu.FieldSort, field.TypeInt)
+	}
 	if value, ok := smu.mutation.DelFlag(); ok {
 		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := smu.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysmenu.FieldDelFlag, field.TypeInt8, value)
-	}
-	if smu.mutation.DelFlagCleared() {
-		_spec.ClearField(sysmenu.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := smu.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)
@@ -843,6 +1029,26 @@ type SysMenuUpdateOne struct {
 	mutation *SysMenuMutation
 }
 
+// SetCreatedAt sets the "created_at" field.
+func (smuo *SysMenuUpdateOne) SetCreatedAt(t time.Time) *SysMenuUpdateOne {
+	smuo.mutation.SetCreatedAt(t)
+	return smuo
+}
+
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableCreatedAt(t *time.Time) *SysMenuUpdateOne {
+	if t != nil {
+		smuo.SetCreatedAt(*t)
+	}
+	return smuo
+}
+
+// ClearCreatedAt clears the value of the "created_at" field.
+func (smuo *SysMenuUpdateOne) ClearCreatedAt() *SysMenuUpdateOne {
+	smuo.mutation.ClearCreatedAt()
+	return smuo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (smuo *SysMenuUpdateOne) SetUpdatedAt(t time.Time) *SysMenuUpdateOne {
 	smuo.mutation.SetUpdatedAt(t)
@@ -861,9 +1067,119 @@ func (smuo *SysMenuUpdateOne) SetDeleteAt(t time.Time) *SysMenuUpdateOne {
 	return smuo
 }
 
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableDeleteAt(t *time.Time) *SysMenuUpdateOne {
+	if t != nil {
+		smuo.SetDeleteAt(*t)
+	}
+	return smuo
+}
+
 // ClearDeleteAt clears the value of the "delete_at" field.
 func (smuo *SysMenuUpdateOne) ClearDeleteAt() *SysMenuUpdateOne {
 	smuo.mutation.ClearDeleteAt()
+	return smuo
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (smuo *SysMenuUpdateOne) SetCreatedBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.ResetCreatedBy()
+	smuo.mutation.SetCreatedBy(i)
+	return smuo
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableCreatedBy(i *int64) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetCreatedBy(*i)
+	}
+	return smuo
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (smuo *SysMenuUpdateOne) AddCreatedBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.AddCreatedBy(i)
+	return smuo
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (smuo *SysMenuUpdateOne) ClearCreatedBy() *SysMenuUpdateOne {
+	smuo.mutation.ClearCreatedBy()
+	return smuo
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (smuo *SysMenuUpdateOne) SetUpdatedBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.ResetUpdatedBy()
+	smuo.mutation.SetUpdatedBy(i)
+	return smuo
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableUpdatedBy(i *int64) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetUpdatedBy(*i)
+	}
+	return smuo
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (smuo *SysMenuUpdateOne) AddUpdatedBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.AddUpdatedBy(i)
+	return smuo
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (smuo *SysMenuUpdateOne) ClearUpdatedBy() *SysMenuUpdateOne {
+	smuo.mutation.ClearUpdatedBy()
+	return smuo
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (smuo *SysMenuUpdateOne) SetDeleteBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.ResetDeleteBy()
+	smuo.mutation.SetDeleteBy(i)
+	return smuo
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableDeleteBy(i *int64) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetDeleteBy(*i)
+	}
+	return smuo
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (smuo *SysMenuUpdateOne) AddDeleteBy(i int64) *SysMenuUpdateOne {
+	smuo.mutation.AddDeleteBy(i)
+	return smuo
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (smuo *SysMenuUpdateOne) ClearDeleteBy() *SysMenuUpdateOne {
+	smuo.mutation.ClearDeleteBy()
+	return smuo
+}
+
+// SetStatus sets the "status" field.
+func (smuo *SysMenuUpdateOne) SetStatus(i int8) *SysMenuUpdateOne {
+	smuo.mutation.ResetStatus()
+	smuo.mutation.SetStatus(i)
+	return smuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableStatus(i *int8) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetStatus(*i)
+	}
+	return smuo
+}
+
+// AddStatus adds i to the "status" field.
+func (smuo *SysMenuUpdateOne) AddStatus(i int8) *SysMenuUpdateOne {
+	smuo.mutation.AddStatus(i)
 	return smuo
 }
 
@@ -887,6 +1203,33 @@ func (smuo *SysMenuUpdateOne) ClearRemark() *SysMenuUpdateOne {
 	return smuo
 }
 
+// SetSort sets the "sort" field.
+func (smuo *SysMenuUpdateOne) SetSort(i int) *SysMenuUpdateOne {
+	smuo.mutation.ResetSort()
+	smuo.mutation.SetSort(i)
+	return smuo
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableSort(i *int) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetSort(*i)
+	}
+	return smuo
+}
+
+// AddSort adds i to the "sort" field.
+func (smuo *SysMenuUpdateOne) AddSort(i int) *SysMenuUpdateOne {
+	smuo.mutation.AddSort(i)
+	return smuo
+}
+
+// ClearSort clears the value of the "sort" field.
+func (smuo *SysMenuUpdateOne) ClearSort() *SysMenuUpdateOne {
+	smuo.mutation.ClearSort()
+	return smuo
+}
+
 // SetDelFlag sets the "del_flag" field.
 func (smuo *SysMenuUpdateOne) SetDelFlag(i int8) *SysMenuUpdateOne {
 	smuo.mutation.ResetDelFlag()
@@ -905,12 +1248,6 @@ func (smuo *SysMenuUpdateOne) SetNillableDelFlag(i *int8) *SysMenuUpdateOne {
 // AddDelFlag adds i to the "del_flag" field.
 func (smuo *SysMenuUpdateOne) AddDelFlag(i int8) *SysMenuUpdateOne {
 	smuo.mutation.AddDelFlag(i)
-	return smuo
-}
-
-// ClearDelFlag clears the value of the "del_flag" field.
-func (smuo *SysMenuUpdateOne) ClearDelFlag() *SysMenuUpdateOne {
-	smuo.mutation.ClearDelFlag()
 	return smuo
 }
 
@@ -1424,13 +1761,6 @@ func (smuo *SysMenuUpdateOne) defaults() error {
 		v := sysmenu.UpdateDefaultUpdatedAt()
 		smuo.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := smuo.mutation.DeleteAt(); !ok && !smuo.mutation.DeleteAtCleared() {
-		if sysmenu.UpdateDefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysmenu.UpdateDefaultDeleteAt()
-		smuo.mutation.SetDeleteAt(v)
-	}
 	return nil
 }
 
@@ -1460,6 +1790,9 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 			}
 		}
 	}
+	if value, ok := smuo.mutation.CreatedAt(); ok {
+		_spec.SetField(sysmenu.FieldCreatedAt, field.TypeTime, value)
+	}
 	if smuo.mutation.CreatedAtCleared() {
 		_spec.ClearField(sysmenu.FieldCreatedAt, field.TypeTime)
 	}
@@ -1475,20 +1808,59 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	if smuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysmenu.FieldDeleteAt, field.TypeTime)
 	}
+	if value, ok := smuo.mutation.CreatedBy(); ok {
+		_spec.SetField(sysmenu.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := smuo.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(sysmenu.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if smuo.mutation.CreatedByCleared() {
+		_spec.ClearField(sysmenu.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := smuo.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysmenu.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := smuo.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(sysmenu.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if smuo.mutation.UpdatedByCleared() {
+		_spec.ClearField(sysmenu.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := smuo.mutation.DeleteBy(); ok {
+		_spec.SetField(sysmenu.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := smuo.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(sysmenu.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if smuo.mutation.DeleteByCleared() {
+		_spec.ClearField(sysmenu.FieldDeleteBy, field.TypeInt64)
+	}
+	if value, ok := smuo.mutation.Status(); ok {
+		_spec.SetField(sysmenu.FieldStatus, field.TypeInt8, value)
+	}
+	if value, ok := smuo.mutation.AddedStatus(); ok {
+		_spec.AddField(sysmenu.FieldStatus, field.TypeInt8, value)
+	}
 	if value, ok := smuo.mutation.Remark(); ok {
 		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 	}
 	if smuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
 	}
+	if value, ok := smuo.mutation.Sort(); ok {
+		_spec.SetField(sysmenu.FieldSort, field.TypeInt, value)
+	}
+	if value, ok := smuo.mutation.AddedSort(); ok {
+		_spec.AddField(sysmenu.FieldSort, field.TypeInt, value)
+	}
+	if smuo.mutation.SortCleared() {
+		_spec.ClearField(sysmenu.FieldSort, field.TypeInt)
+	}
 	if value, ok := smuo.mutation.DelFlag(); ok {
 		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
 	}
 	if value, ok := smuo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysmenu.FieldDelFlag, field.TypeInt8, value)
-	}
-	if smuo.mutation.DelFlagCleared() {
-		_spec.ClearField(sysmenu.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := smuo.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)

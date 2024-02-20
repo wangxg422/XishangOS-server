@@ -525,16 +525,6 @@ func StatusLTE(v int8) predicate.SysDictType {
 	return predicate.SysDictType(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysDictType {
-	return predicate.SysDictType(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysDictType {
-	return predicate.SysDictType(sql.FieldNotNull(FieldStatus))
-}
-
 // DelFlagEQ applies the EQ predicate on the "del_flag" field.
 func DelFlagEQ(v int8) predicate.SysDictType {
 	return predicate.SysDictType(sql.FieldEQ(FieldDelFlag, v))
@@ -573,16 +563,6 @@ func DelFlagLT(v int8) predicate.SysDictType {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysDictType {
 	return predicate.SysDictType(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysDictType {
-	return predicate.SysDictType(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysDictType {
-	return predicate.SysDictType(sql.FieldNotNull(FieldDelFlag))
 }
 
 // DictNameEQ applies the EQ predicate on the "dict_name" field.

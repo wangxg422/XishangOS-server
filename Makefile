@@ -55,5 +55,6 @@ deploy:
 
 go run -mod=mod entgo.io/ent/cmd/ent generate --feature intercept,schema/snapshot ./app/module/application/model/schema  --target ./app/module/application/model/schema/codegen
 go run -mod=mod entgo.io/ent/cmd/ent generate --feature intercept,schema/snapshot ./app/module/system/model/schema  --target ./app/module/system/model/schema/codegen
+go run -mod=mod entgo.io/ent/cmd/ent generate --feature intercept,schema/snapshot ./app/module/common/model/schema  --target ./app/module/common/model/schema/codegen
 
 go run -mod=mod entgo.io/ent/cmd/ent new SysUser  --target ./app/module/system/model/schema

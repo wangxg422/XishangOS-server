@@ -4,6 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/common/enmu"
 )
 
 type StatusMixin struct {
@@ -13,8 +14,6 @@ type StatusMixin struct {
 func (StatusMixin) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int8("status").
-			Immutable().
-			Default(1).
-			Optional(),
+			Default(enmu.StatusNormal.Value()),
 	}
 }

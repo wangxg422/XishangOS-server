@@ -6,12 +6,13 @@ import (
 	"entgo.io/ent/schema/mixin"
 )
 
-type SortMixin struct {
+type DeleteTimeMixin struct {
 	mixin.Schema
 }
 
-func (SortMixin) Fields() []ent.Field {
+func (DeleteTimeMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("sort").Optional().Default(0),
+		field.Time("delete_at").
+			Optional(),
 	}
 }

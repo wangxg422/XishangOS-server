@@ -4,6 +4,7 @@ package codegen
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -266,16 +267,13 @@ func (scc *SysConfigCreate) defaults() error {
 		v := sysconfig.DefaultUpdatedAt()
 		scc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := scc.mutation.DeleteAt(); !ok {
-		if sysconfig.DefaultDeleteAt == nil {
-			return fmt.Errorf("codegen: uninitialized sysconfig.DefaultDeleteAt (forgotten import codegen/runtime?)")
-		}
-		v := sysconfig.DefaultDeleteAt()
-		scc.mutation.SetDeleteAt(v)
-	}
 	if _, ok := scc.mutation.Status(); !ok {
 		v := sysconfig.DefaultStatus
 		scc.mutation.SetStatus(v)
+	}
+	if _, ok := scc.mutation.DelFlag(); !ok {
+		v := sysconfig.DefaultDelFlag
+		scc.mutation.SetDelFlag(v)
 	}
 	if _, ok := scc.mutation.ID(); !ok {
 		if sysconfig.DefaultID == nil {
@@ -289,6 +287,12 @@ func (scc *SysConfigCreate) defaults() error {
 
 // check runs all checks and user-defined validators on the builder.
 func (scc *SysConfigCreate) check() error {
+	if _, ok := scc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysConfig.status"`)}
+	}
+	if _, ok := scc.mutation.DelFlag(); !ok {
+		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysConfig.del_flag"`)}
+	}
 	return nil
 }
 

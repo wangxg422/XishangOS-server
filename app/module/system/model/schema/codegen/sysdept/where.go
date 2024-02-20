@@ -560,16 +560,6 @@ func StatusLTE(v int8) predicate.SysDept {
 	return predicate.SysDept(sql.FieldLTE(FieldStatus, v))
 }
 
-// StatusIsNil applies the IsNil predicate on the "status" field.
-func StatusIsNil() predicate.SysDept {
-	return predicate.SysDept(sql.FieldIsNull(FieldStatus))
-}
-
-// StatusNotNil applies the NotNil predicate on the "status" field.
-func StatusNotNil() predicate.SysDept {
-	return predicate.SysDept(sql.FieldNotNull(FieldStatus))
-}
-
 // SortEQ applies the EQ predicate on the "sort" field.
 func SortEQ(v int) predicate.SysDept {
 	return predicate.SysDept(sql.FieldEQ(FieldSort, v))
@@ -658,16 +648,6 @@ func DelFlagLT(v int8) predicate.SysDept {
 // DelFlagLTE applies the LTE predicate on the "del_flag" field.
 func DelFlagLTE(v int8) predicate.SysDept {
 	return predicate.SysDept(sql.FieldLTE(FieldDelFlag, v))
-}
-
-// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
-func DelFlagIsNil() predicate.SysDept {
-	return predicate.SysDept(sql.FieldIsNull(FieldDelFlag))
-}
-
-// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
-func DelFlagNotNil() predicate.SysDept {
-	return predicate.SysDept(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.

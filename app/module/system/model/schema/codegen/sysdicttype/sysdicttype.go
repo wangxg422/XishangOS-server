@@ -90,12 +90,10 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() time.Time
-	// UpdateDefaultDeleteAt holds the default value on update for the "delete_at" field.
-	UpdateDefaultDeleteAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int8
+	// DefaultDelFlag holds the default value on creation for the "del_flag" field.
+	DefaultDelFlag int8
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )

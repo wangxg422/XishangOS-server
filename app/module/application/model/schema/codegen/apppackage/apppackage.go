@@ -5,6 +5,7 @@ package apppackage
 import (
 	"time"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 )
@@ -22,6 +23,16 @@ const (
 	FieldDeleteAt = "delete_at"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
+	FieldUpdatedBy = "updated_by"
+	// FieldDeleteBy holds the string denoting the delete_by field in the database.
+	FieldDeleteBy = "delete_by"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
+	// FieldDelFlag holds the string denoting the del_flag field in the database.
+	FieldDelFlag = "del_flag"
 	// FieldPkgName holds the string denoting the pkg_name field in the database.
 	FieldPkgName = "pkg_name"
 	// FieldPkgCode holds the string denoting the pkg_code field in the database.
@@ -36,8 +47,6 @@ const (
 	FieldUploader = "uploader"
 	// FieldDesc holds the string denoting the desc field in the database.
 	FieldDesc = "desc"
-	// FieldRemark holds the string denoting the remark field in the database.
-	FieldRemark = "remark"
 	// EdgeAppInstance holds the string denoting the app_instance edge name in mutations.
 	EdgeAppInstance = "app_instance"
 	// Table holds the table name of the apppackage in the database.
@@ -58,6 +67,11 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldDeleteAt,
 	FieldStatus,
+	FieldCreatedBy,
+	FieldUpdatedBy,
+	FieldDeleteBy,
+	FieldRemark,
+	FieldDelFlag,
 	FieldPkgName,
 	FieldPkgCode,
 	FieldPkgVersion,
@@ -65,7 +79,6 @@ var Columns = []string{
 	FieldPkgKind,
 	FieldUploader,
 	FieldDesc,
-	FieldRemark,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -78,19 +91,24 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+// Note that the variables below are initialized by the runtime
+// package on the initialization of the application. Therefore,
+// it should be imported in the main as follows:
+//
+//	import _ "github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/runtime"
 var (
+	Hooks        [1]ent.Hook
+	Interceptors [1]ent.Interceptor
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() time.Time
-	// UpdateDefaultDeleteAt holds the default value on update for the "delete_at" field.
-	UpdateDefaultDeleteAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int8
+	// DefaultDelFlag holds the default value on creation for the "del_flag" field.
+	DefaultDelFlag int8
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -121,6 +139,31 @@ func ByDeleteAt(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByCreatedBy orders the results by the created_by field.
+func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+}
+
+// ByUpdatedBy orders the results by the updated_by field.
+func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
+}
+
+// ByDeleteBy orders the results by the delete_by field.
+func ByDeleteBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeleteBy, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByDelFlag orders the results by the del_flag field.
+func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDelFlag, opts...).ToFunc()
 }
 
 // ByPkgName orders the results by the pkg_name field.
@@ -156,11 +199,6 @@ func ByUploader(opts ...sql.OrderTermOption) OrderOption {
 // ByDesc orders the results by the desc field.
 func ByDesc(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDesc, opts...).ToFunc()
-}
-
-// ByRemark orders the results by the remark field.
-func ByRemark(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByAppInstanceCount orders the results by app_instance count.
