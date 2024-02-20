@@ -50,6 +50,7 @@ func (m SysConfigService) Update(req *request.SysConfigUpdateReq, c *gin.Context
 	}
 
 	return initial.SysDbClient.SysConfig.Update().
+		Where(sysconfig.ID(req.Id)).
 		SetConfigName(req.ConfigName).
 		SetConfigKey(req.ConfigKey).
 		SetConfigValue(req.ConfigValue).
@@ -81,4 +82,8 @@ func (m SysConfigService) List(req *request.SysConfigListReq, c *gin.Context) (*
 	res.PageNo = req.PageNo
 
 	return res, nil
+}
+
+func (m SysConfigService) Delete(id int64, c *gin.Context) (int, error) {
+	return initial.SysDbClient.SysConfig.Delete().Where(sysconfig.ID(id)).Exec(c)
 }

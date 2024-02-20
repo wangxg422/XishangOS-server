@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/service"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/util/param"
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
@@ -59,5 +60,16 @@ func (m *SysConfigController) Update(c *gin.Context) {
 }
 
 func (m *SysConfigController) Delete(c *gin.Context) {
+	id, err := param.ParamInt64("id", c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
 
+	_, err = service.AppSysConfigService.Delete(id, c)
+	if err != nil {
+		result.FailWithMessage(err.Error(), c)
+		return
+	}
+	result.Ok(c)
 }
