@@ -5,6 +5,7 @@ package syspost
 import (
 	"time"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 )
@@ -32,6 +33,8 @@ const (
 	FieldStatus = "status"
 	// FieldSort holds the string denoting the sort field in the database.
 	FieldSort = "sort"
+	// FieldDelFlag holds the string denoting the del_flag field in the database.
+	FieldDelFlag = "del_flag"
 	// FieldPostCode holds the string denoting the post_code field in the database.
 	FieldPostCode = "post_code"
 	// FieldPostName holds the string denoting the post_name field in the database.
@@ -59,6 +62,7 @@ var Columns = []string{
 	FieldRemark,
 	FieldStatus,
 	FieldSort,
+	FieldDelFlag,
 	FieldPostCode,
 	FieldPostName,
 }
@@ -79,7 +83,14 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+// Note that the variables below are initialized by the runtime
+// package on the initialization of the application. Therefore,
+// it should be imported in the main as follows:
+//
+//	import _ "github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/runtime"
 var (
+	Hooks        [1]ent.Hook
+	Interceptors [1]ent.Interceptor
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -147,6 +158,11 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 // BySort orders the results by the sort field.
 func BySort(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSort, opts...).ToFunc()
+}
+
+// ByDelFlag orders the results by the del_flag field.
+func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDelFlag, opts...).ToFunc()
 }
 
 // ByPostCode orders the results by the post_code field.

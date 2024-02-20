@@ -5,7 +5,8 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	mixin2 "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/mixin"
+	baseMixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
 )
 
 // CommonConfig holds the schema definition for the CommonConfig entity.
@@ -25,11 +26,12 @@ func (CommonConfig) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (CommonConfig) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin2.IdMixin{},
-		mixin2.TimeMixin{},
-		mixin2.StatusMixin{},
-		mixin2.ByMixin{},
-		mixin2.RemarkMixin{},
+		baseMixin.IdMixin{},
+		baseMixin.TimeMixin{},
+		baseMixin.StatusMixin{},
+		baseMixin.ByMixin{},
+		baseMixin.RemarkMixin{},
+		mixin.SoftDeleteMixin{},
 	}
 }
 

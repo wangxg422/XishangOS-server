@@ -35,6 +35,8 @@ type SysPost struct {
 	Status int8 `json:"status,omitempty"`
 	// Sort holds the value of the "sort" field.
 	Sort int `json:"sort,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 岗位编码
 	PostCode string `json:"post_code,omitempty"`
 	// 岗位名称
@@ -68,7 +70,7 @@ func (*SysPost) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case syspost.FieldID, syspost.FieldCreatedBy, syspost.FieldUpdatedBy, syspost.FieldDeleteBy, syspost.FieldStatus, syspost.FieldSort:
+		case syspost.FieldID, syspost.FieldCreatedBy, syspost.FieldUpdatedBy, syspost.FieldDeleteBy, syspost.FieldStatus, syspost.FieldSort, syspost.FieldDelFlag:
 			values[i] = new(sql.NullInt64)
 		case syspost.FieldRemark, syspost.FieldPostCode, syspost.FieldPostName:
 			values[i] = new(sql.NullString)
@@ -149,6 +151,12 @@ func (sp *SysPost) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sp.Sort = int(value.Int64)
 			}
+		case syspost.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sp.DelFlag = int8(value.Int64)
+			}
 		case syspost.FieldPostCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field post_code", values[i])
@@ -228,6 +236,9 @@ func (sp *SysPost) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sp.Sort))
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sp.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("post_code=")
 	builder.WriteString(sp.PostCode)

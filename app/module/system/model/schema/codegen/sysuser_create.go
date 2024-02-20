@@ -65,6 +65,48 @@ func (suc *SysUserCreate) SetNillableDeleteAt(t *time.Time) *SysUserCreate {
 	return suc
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (suc *SysUserCreate) SetCreatedBy(i int64) *SysUserCreate {
+	suc.mutation.SetCreatedBy(i)
+	return suc
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableCreatedBy(i *int64) *SysUserCreate {
+	if i != nil {
+		suc.SetCreatedBy(*i)
+	}
+	return suc
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (suc *SysUserCreate) SetUpdatedBy(i int64) *SysUserCreate {
+	suc.mutation.SetUpdatedBy(i)
+	return suc
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableUpdatedBy(i *int64) *SysUserCreate {
+	if i != nil {
+		suc.SetUpdatedBy(*i)
+	}
+	return suc
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (suc *SysUserCreate) SetDeleteBy(i int64) *SysUserCreate {
+	suc.mutation.SetDeleteBy(i)
+	return suc
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableDeleteBy(i *int64) *SysUserCreate {
+	if i != nil {
+		suc.SetDeleteBy(*i)
+	}
+	return suc
+}
+
 // SetRemark sets the "remark" field.
 func (suc *SysUserCreate) SetRemark(s string) *SysUserCreate {
 	suc.mutation.SetRemark(s)
@@ -75,6 +117,20 @@ func (suc *SysUserCreate) SetRemark(s string) *SysUserCreate {
 func (suc *SysUserCreate) SetNillableRemark(s *string) *SysUserCreate {
 	if s != nil {
 		suc.SetRemark(*s)
+	}
+	return suc
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (suc *SysUserCreate) SetDelFlag(i int8) *SysUserCreate {
+	suc.mutation.SetDelFlag(i)
+	return suc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableDelFlag(i *int8) *SysUserCreate {
+	if i != nil {
+		suc.SetDelFlag(*i)
 	}
 	return suc
 }
@@ -365,7 +421,9 @@ func (suc *SysUserCreate) Mutation() *SysUserMutation {
 
 // Save creates the SysUser in the database.
 func (suc *SysUserCreate) Save(ctx context.Context) (*SysUser, error) {
-	suc.defaults()
+	if err := suc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, suc.sqlSave, suc.mutation, suc.hooks)
 }
 
@@ -392,23 +450,36 @@ func (suc *SysUserCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (suc *SysUserCreate) defaults() {
+func (suc *SysUserCreate) defaults() error {
 	if _, ok := suc.mutation.CreatedAt(); !ok {
+		if sysuser.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.DefaultCreatedAt()
 		suc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := suc.mutation.UpdatedAt(); !ok {
+		if sysuser.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.DefaultUpdatedAt()
 		suc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := suc.mutation.DeleteAt(); !ok {
+		if sysuser.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.DefaultDeleteAt()
 		suc.mutation.SetDeleteAt(v)
 	}
 	if _, ok := suc.mutation.ID(); !ok {
+		if sysuser.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.DefaultID()
 		suc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -460,9 +531,25 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldDeleteAt, field.TypeTime, value)
 		_node.DeleteAt = value
 	}
+	if value, ok := suc.mutation.CreatedBy(); ok {
+		_spec.SetField(sysuser.FieldCreatedBy, field.TypeInt64, value)
+		_node.CreatedBy = value
+	}
+	if value, ok := suc.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysuser.FieldUpdatedBy, field.TypeInt64, value)
+		_node.UpdatedBy = value
+	}
+	if value, ok := suc.mutation.DeleteBy(); ok {
+		_spec.SetField(sysuser.FieldDeleteBy, field.TypeInt64, value)
+		_node.DeleteBy = value
+	}
 	if value, ok := suc.mutation.Remark(); ok {
 		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := suc.mutation.DelFlag(); ok {
+		_spec.SetField(sysuser.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := suc.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)

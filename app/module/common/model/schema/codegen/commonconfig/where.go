@@ -94,6 +94,11 @@ func Remark(v string) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldEQ(FieldRemark, v))
 }
 
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // ConfigName applies equality check predicate on the "config_name" field. It's identical to ConfigNameEQ.
 func ConfigName(v string) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldEQ(FieldConfigName, v))
@@ -537,6 +542,56 @@ func RemarkEqualFold(v string) predicate.CommonConfig {
 // RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
 func RemarkContainsFold(v string) predicate.CommonConfig {
 	return predicate.CommonConfig(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.CommonConfig {
+	return predicate.CommonConfig(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ConfigNameEQ applies the EQ predicate on the "config_name" field.

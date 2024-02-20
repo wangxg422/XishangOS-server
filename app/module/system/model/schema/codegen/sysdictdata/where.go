@@ -100,6 +100,11 @@ func Sort(v int) predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldEQ(FieldSort, v))
 }
 
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // DictLabel applies equality check predicate on the "dict_label" field. It's identical to DictLabelEQ.
 func DictLabel(v string) predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldEQ(FieldDictLabel, v))
@@ -603,6 +608,56 @@ func SortIsNil() predicate.SysDictData {
 // SortNotNil applies the NotNil predicate on the "sort" field.
 func SortNotNil() predicate.SysDictData {
 	return predicate.SysDictData(sql.FieldNotNull(FieldSort))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.SysDictData {
+	return predicate.SysDictData(sql.FieldNotNull(FieldDelFlag))
 }
 
 // DictLabelEQ applies the EQ predicate on the "dict_label" field.

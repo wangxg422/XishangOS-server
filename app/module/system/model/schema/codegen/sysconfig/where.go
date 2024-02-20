@@ -89,6 +89,16 @@ func Remark(v string) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldEQ(FieldRemark, v))
 }
 
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldEQ(FieldStatus, v))
+}
+
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // ConfigName applies equality check predicate on the "config_name" field. It's identical to ConfigNameEQ.
 func ConfigName(v string) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldEQ(FieldConfigName, v))
@@ -482,6 +492,106 @@ func RemarkEqualFold(v string) predicate.SysConfig {
 // RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
 func RemarkContainsFold(v string) predicate.SysConfig {
 	return predicate.SysConfig(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldGT(FieldStatus, v))
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldGTE(FieldStatus, v))
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldLT(FieldStatus, v))
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusIsNil applies the IsNil predicate on the "status" field.
+func StatusIsNil() predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldIsNull(FieldStatus))
+}
+
+// StatusNotNil applies the NotNil predicate on the "status" field.
+func StatusNotNil() predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNotNull(FieldStatus))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.SysConfig {
+	return predicate.SysConfig(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ConfigNameEQ applies the EQ predicate on the "config_name" field.

@@ -148,6 +148,20 @@ func (sdc *SysDeptCreate) SetNillableSort(i *int) *SysDeptCreate {
 	return sdc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sdc *SysDeptCreate) SetDelFlag(i int8) *SysDeptCreate {
+	sdc.mutation.SetDelFlag(i)
+	return sdc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sdc *SysDeptCreate) SetNillableDelFlag(i *int8) *SysDeptCreate {
+	if i != nil {
+		sdc.SetDelFlag(*i)
+	}
+	return sdc
+}
+
 // SetParentID sets the "parent_id" field.
 func (sdc *SysDeptCreate) SetParentID(i int64) *SysDeptCreate {
 	sdc.mutation.SetParentID(i)
@@ -303,7 +317,9 @@ func (sdc *SysDeptCreate) Mutation() *SysDeptMutation {
 
 // Save creates the SysDept in the database.
 func (sdc *SysDeptCreate) Save(ctx context.Context) (*SysDept, error) {
-	sdc.defaults()
+	if err := sdc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sdc.sqlSave, sdc.mutation, sdc.hooks)
 }
 
@@ -330,16 +346,25 @@ func (sdc *SysDeptCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sdc *SysDeptCreate) defaults() {
+func (sdc *SysDeptCreate) defaults() error {
 	if _, ok := sdc.mutation.CreatedAt(); !ok {
+		if sysdept.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.DefaultCreatedAt()
 		sdc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := sdc.mutation.UpdatedAt(); !ok {
+		if sysdept.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.DefaultUpdatedAt()
 		sdc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdc.mutation.DeleteAt(); !ok {
+		if sysdept.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.DefaultDeleteAt()
 		sdc.mutation.SetDeleteAt(v)
 	}
@@ -348,9 +373,13 @@ func (sdc *SysDeptCreate) defaults() {
 		sdc.mutation.SetStatus(v)
 	}
 	if _, ok := sdc.mutation.ID(); !ok {
+		if sysdept.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.DefaultID()
 		sdc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -425,6 +454,10 @@ func (sdc *SysDeptCreate) createSpec() (*SysDept, *sqlgraph.CreateSpec) {
 	if value, ok := sdc.mutation.Sort(); ok {
 		_spec.SetField(sysdept.FieldSort, field.TypeInt, value)
 		_node.Sort = value
+	}
+	if value, ok := sdc.mutation.DelFlag(); ok {
+		_spec.SetField(sysdept.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := sdc.mutation.ParentID(); ok {
 		_spec.SetField(sysdept.FieldParentID, field.TypeInt64, value)

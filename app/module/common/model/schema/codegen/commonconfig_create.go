@@ -131,6 +131,20 @@ func (ccc *CommonConfigCreate) SetNillableRemark(s *string) *CommonConfigCreate 
 	return ccc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (ccc *CommonConfigCreate) SetDelFlag(i int8) *CommonConfigCreate {
+	ccc.mutation.SetDelFlag(i)
+	return ccc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (ccc *CommonConfigCreate) SetNillableDelFlag(i *int8) *CommonConfigCreate {
+	if i != nil {
+		ccc.SetDelFlag(*i)
+	}
+	return ccc
+}
+
 // SetConfigName sets the "config_name" field.
 func (ccc *CommonConfigCreate) SetConfigName(s string) *CommonConfigCreate {
 	ccc.mutation.SetConfigName(s)
@@ -208,7 +222,9 @@ func (ccc *CommonConfigCreate) Mutation() *CommonConfigMutation {
 
 // Save creates the CommonConfig in the database.
 func (ccc *CommonConfigCreate) Save(ctx context.Context) (*CommonConfig, error) {
-	ccc.defaults()
+	if err := ccc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, ccc.sqlSave, ccc.mutation, ccc.hooks)
 }
 
@@ -235,16 +251,25 @@ func (ccc *CommonConfigCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (ccc *CommonConfigCreate) defaults() {
+func (ccc *CommonConfigCreate) defaults() error {
 	if _, ok := ccc.mutation.CreatedAt(); !ok {
+		if commonconfig.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.DefaultCreatedAt()
 		ccc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := ccc.mutation.UpdatedAt(); !ok {
+		if commonconfig.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.DefaultUpdatedAt()
 		ccc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := ccc.mutation.DeleteAt(); !ok {
+		if commonconfig.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.DefaultDeleteAt()
 		ccc.mutation.SetDeleteAt(v)
 	}
@@ -253,9 +278,13 @@ func (ccc *CommonConfigCreate) defaults() {
 		ccc.mutation.SetStatus(v)
 	}
 	if _, ok := ccc.mutation.ID(); !ok {
+		if commonconfig.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.DefaultID()
 		ccc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -323,6 +352,10 @@ func (ccc *CommonConfigCreate) createSpec() (*CommonConfig, *sqlgraph.CreateSpec
 	if value, ok := ccc.mutation.Remark(); ok {
 		_spec.SetField(commonconfig.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := ccc.mutation.DelFlag(); ok {
+		_spec.SetField(commonconfig.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := ccc.mutation.ConfigName(); ok {
 		_spec.SetField(commonconfig.FieldConfigName, field.TypeString, value)

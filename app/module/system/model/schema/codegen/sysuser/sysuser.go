@@ -5,6 +5,7 @@ package sysuser
 import (
 	"time"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 )
@@ -20,8 +21,16 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeleteAt holds the string denoting the delete_at field in the database.
 	FieldDeleteAt = "delete_at"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
+	FieldUpdatedBy = "updated_by"
+	// FieldDeleteBy holds the string denoting the delete_by field in the database.
+	FieldDeleteBy = "delete_by"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
+	// FieldDelFlag holds the string denoting the del_flag field in the database.
+	FieldDelFlag = "del_flag"
 	// FieldUserName holds the string denoting the user_name field in the database.
 	FieldUserName = "user_name"
 	// FieldUserNickname holds the string denoting the user_nickname field in the database.
@@ -87,7 +96,11 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeleteAt,
+	FieldCreatedBy,
+	FieldUpdatedBy,
+	FieldDeleteBy,
 	FieldRemark,
+	FieldDelFlag,
 	FieldUserName,
 	FieldUserNickname,
 	FieldMobile,
@@ -125,7 +138,14 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+// Note that the variables below are initialized by the runtime
+// package on the initialization of the application. Therefore,
+// it should be imported in the main as follows:
+//
+//	import _ "github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/runtime"
 var (
+	Hooks        [1]ent.Hook
+	Interceptors [1]ent.Interceptor
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -163,9 +183,29 @@ func ByDeleteAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeleteAt, opts...).ToFunc()
 }
 
+// ByCreatedBy orders the results by the created_by field.
+func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
+}
+
+// ByUpdatedBy orders the results by the updated_by field.
+func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
+}
+
+// ByDeleteBy orders the results by the delete_by field.
+func ByDeleteBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeleteBy, opts...).ToFunc()
+}
+
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByDelFlag orders the results by the del_flag field.
+func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDelFlag, opts...).ToFunc()
 }
 
 // ByUserName orders the results by the user_name field.

@@ -24,8 +24,16 @@ type SysUser struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
+	// CreatedBy holds the value of the "created_by" field.
+	CreatedBy int64 `json:"created_by,omitempty"`
+	// UpdatedBy holds the value of the "updated_by" field.
+	UpdatedBy int64 `json:"updated_by,omitempty"`
+	// DeleteBy holds the value of the "delete_by" field.
+	DeleteBy int64 `json:"delete_by,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// UserName holds the value of the "user_name" field.
 	UserName string `json:"user_name,omitempty"`
 	// 用户昵称
@@ -113,7 +121,7 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
+		case sysuser.FieldID, sysuser.FieldCreatedBy, sysuser.FieldUpdatedBy, sysuser.FieldDeleteBy, sysuser.FieldDelFlag, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
 			values[i] = new(sql.NullInt64)
 		case sysuser.FieldRemark, sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
 			values[i] = new(sql.NullString)
@@ -158,11 +166,35 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.DeleteAt = value.Time
 			}
+		case sysuser.FieldCreatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+			} else if value.Valid {
+				su.CreatedBy = value.Int64
+			}
+		case sysuser.FieldUpdatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+			} else if value.Valid {
+				su.UpdatedBy = value.Int64
+			}
+		case sysuser.FieldDeleteBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_by", values[i])
+			} else if value.Valid {
+				su.DeleteBy = value.Int64
+			}
 		case sysuser.FieldRemark:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				su.Remark = value.String
+			}
+		case sysuser.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				su.DelFlag = int8(value.Int64)
 			}
 		case sysuser.FieldUserName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -320,8 +352,20 @@ func (su *SysUser) String() string {
 	builder.WriteString("delete_at=")
 	builder.WriteString(su.DeleteAt.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", su.CreatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("updated_by=")
+	builder.WriteString(fmt.Sprintf("%v", su.UpdatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("delete_by=")
+	builder.WriteString(fmt.Sprintf("%v", su.DeleteBy))
+	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(su.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", su.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("user_name=")
 	builder.WriteString(su.UserName)

@@ -181,6 +181,33 @@ func (sddu *SysDictDataUpdate) ClearSort() *SysDictDataUpdate {
 	return sddu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sddu *SysDictDataUpdate) SetDelFlag(i int8) *SysDictDataUpdate {
+	sddu.mutation.ResetDelFlag()
+	sddu.mutation.SetDelFlag(i)
+	return sddu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sddu *SysDictDataUpdate) SetNillableDelFlag(i *int8) *SysDictDataUpdate {
+	if i != nil {
+		sddu.SetDelFlag(*i)
+	}
+	return sddu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (sddu *SysDictDataUpdate) AddDelFlag(i int8) *SysDictDataUpdate {
+	sddu.mutation.AddDelFlag(i)
+	return sddu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (sddu *SysDictDataUpdate) ClearDelFlag() *SysDictDataUpdate {
+	sddu.mutation.ClearDelFlag()
+	return sddu
+}
+
 // SetDictLabel sets the "dict_label" field.
 func (sddu *SysDictDataUpdate) SetDictLabel(s string) *SysDictDataUpdate {
 	sddu.mutation.SetDictLabel(s)
@@ -340,7 +367,9 @@ func (sddu *SysDictDataUpdate) ClearSysDictType() *SysDictDataUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (sddu *SysDictDataUpdate) Save(ctx context.Context) (int, error) {
-	sddu.defaults()
+	if err := sddu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, sddu.sqlSave, sddu.mutation, sddu.hooks)
 }
 
@@ -367,15 +396,22 @@ func (sddu *SysDictDataUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sddu *SysDictDataUpdate) defaults() {
+func (sddu *SysDictDataUpdate) defaults() error {
 	if _, ok := sddu.mutation.UpdatedAt(); !ok && !sddu.mutation.UpdatedAtCleared() {
+		if sysdictdata.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.UpdateDefaultUpdatedAt()
 		sddu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sddu.mutation.DeleteAt(); !ok && !sddu.mutation.DeleteAtCleared() {
+		if sysdictdata.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.UpdateDefaultDeleteAt()
 		sddu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -446,6 +482,15 @@ func (sddu *SysDictDataUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if sddu.mutation.SortCleared() {
 		_spec.ClearField(sysdictdata.FieldSort, field.TypeInt)
+	}
+	if value, ok := sddu.mutation.DelFlag(); ok {
+		_spec.SetField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := sddu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
+	}
+	if sddu.mutation.DelFlagCleared() {
+		_spec.ClearField(sysdictdata.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sddu.mutation.DictLabel(); ok {
 		_spec.SetField(sysdictdata.FieldDictLabel, field.TypeString, value)
@@ -681,6 +726,33 @@ func (sdduo *SysDictDataUpdateOne) ClearSort() *SysDictDataUpdateOne {
 	return sdduo
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sdduo *SysDictDataUpdateOne) SetDelFlag(i int8) *SysDictDataUpdateOne {
+	sdduo.mutation.ResetDelFlag()
+	sdduo.mutation.SetDelFlag(i)
+	return sdduo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sdduo *SysDictDataUpdateOne) SetNillableDelFlag(i *int8) *SysDictDataUpdateOne {
+	if i != nil {
+		sdduo.SetDelFlag(*i)
+	}
+	return sdduo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (sdduo *SysDictDataUpdateOne) AddDelFlag(i int8) *SysDictDataUpdateOne {
+	sdduo.mutation.AddDelFlag(i)
+	return sdduo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (sdduo *SysDictDataUpdateOne) ClearDelFlag() *SysDictDataUpdateOne {
+	sdduo.mutation.ClearDelFlag()
+	return sdduo
+}
+
 // SetDictLabel sets the "dict_label" field.
 func (sdduo *SysDictDataUpdateOne) SetDictLabel(s string) *SysDictDataUpdateOne {
 	sdduo.mutation.SetDictLabel(s)
@@ -853,7 +925,9 @@ func (sdduo *SysDictDataUpdateOne) Select(field string, fields ...string) *SysDi
 
 // Save executes the query and returns the updated SysDictData entity.
 func (sdduo *SysDictDataUpdateOne) Save(ctx context.Context) (*SysDictData, error) {
-	sdduo.defaults()
+	if err := sdduo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sdduo.sqlSave, sdduo.mutation, sdduo.hooks)
 }
 
@@ -880,15 +954,22 @@ func (sdduo *SysDictDataUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sdduo *SysDictDataUpdateOne) defaults() {
+func (sdduo *SysDictDataUpdateOne) defaults() error {
 	if _, ok := sdduo.mutation.UpdatedAt(); !ok && !sdduo.mutation.UpdatedAtCleared() {
+		if sysdictdata.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.UpdateDefaultUpdatedAt()
 		sdduo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdduo.mutation.DeleteAt(); !ok && !sdduo.mutation.DeleteAtCleared() {
+		if sysdictdata.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.UpdateDefaultDeleteAt()
 		sdduo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictData, err error) {
@@ -976,6 +1057,15 @@ func (sdduo *SysDictDataUpdateOne) sqlSave(ctx context.Context) (_node *SysDictD
 	}
 	if sdduo.mutation.SortCleared() {
 		_spec.ClearField(sysdictdata.FieldSort, field.TypeInt)
+	}
+	if value, ok := sdduo.mutation.DelFlag(); ok {
+		_spec.SetField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := sdduo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
+	}
+	if sdduo.mutation.DelFlagCleared() {
+		_spec.ClearField(sysdictdata.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdduo.mutation.DictLabel(); ok {
 		_spec.SetField(sysdictdata.FieldDictLabel, field.TypeString, value)

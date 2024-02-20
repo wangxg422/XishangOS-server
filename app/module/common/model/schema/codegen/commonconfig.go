@@ -33,6 +33,8 @@ type CommonConfig struct {
 	DeleteBy int64 `json:"delete_by,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 配置名称
 	ConfigName string `json:"config_name,omitempty"`
 	// 配置项
@@ -49,7 +51,7 @@ func (*CommonConfig) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case commonconfig.FieldID, commonconfig.FieldStatus, commonconfig.FieldCreatedBy, commonconfig.FieldUpdatedBy, commonconfig.FieldDeleteBy, commonconfig.FieldConfigType:
+		case commonconfig.FieldID, commonconfig.FieldStatus, commonconfig.FieldCreatedBy, commonconfig.FieldUpdatedBy, commonconfig.FieldDeleteBy, commonconfig.FieldDelFlag, commonconfig.FieldConfigType:
 			values[i] = new(sql.NullInt64)
 		case commonconfig.FieldRemark, commonconfig.FieldConfigName, commonconfig.FieldConfigKey, commonconfig.FieldConfigValue:
 			values[i] = new(sql.NullString)
@@ -123,6 +125,12 @@ func (cc *CommonConfig) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				cc.Remark = value.String
+			}
+		case commonconfig.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				cc.DelFlag = int8(value.Int64)
 			}
 		case commonconfig.FieldConfigName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -207,6 +215,9 @@ func (cc *CommonConfig) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(cc.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", cc.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("config_name=")
 	builder.WriteString(cc.ConfigName)

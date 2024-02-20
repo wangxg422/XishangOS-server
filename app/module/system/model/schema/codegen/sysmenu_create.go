@@ -77,6 +77,20 @@ func (smc *SysMenuCreate) SetNillableRemark(s *string) *SysMenuCreate {
 	return smc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (smc *SysMenuCreate) SetDelFlag(i int8) *SysMenuCreate {
+	smc.mutation.SetDelFlag(i)
+	return smc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableDelFlag(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetDelFlag(*i)
+	}
+	return smc
+}
+
 // SetPid sets the "pid" field.
 func (smc *SysMenuCreate) SetPid(i int64) *SysMenuCreate {
 	smc.mutation.SetPid(i)
@@ -357,7 +371,9 @@ func (smc *SysMenuCreate) Mutation() *SysMenuMutation {
 
 // Save creates the SysMenu in the database.
 func (smc *SysMenuCreate) Save(ctx context.Context) (*SysMenu, error) {
-	smc.defaults()
+	if err := smc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, smc.sqlSave, smc.mutation, smc.hooks)
 }
 
@@ -384,23 +400,36 @@ func (smc *SysMenuCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (smc *SysMenuCreate) defaults() {
+func (smc *SysMenuCreate) defaults() error {
 	if _, ok := smc.mutation.CreatedAt(); !ok {
+		if sysmenu.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.DefaultCreatedAt()
 		smc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := smc.mutation.UpdatedAt(); !ok {
+		if sysmenu.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.DefaultUpdatedAt()
 		smc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := smc.mutation.DeleteAt(); !ok {
+		if sysmenu.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.DefaultDeleteAt()
 		smc.mutation.SetDeleteAt(v)
 	}
 	if _, ok := smc.mutation.ID(); !ok {
+		if sysmenu.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.DefaultID()
 		smc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -455,6 +484,10 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if value, ok := smc.mutation.Remark(); ok {
 		_spec.SetField(sysmenu.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := smc.mutation.DelFlag(); ok {
+		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := smc.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)

@@ -64,6 +64,48 @@ func (src *SysRoleCreate) SetNillableDeleteAt(t *time.Time) *SysRoleCreate {
 	return src
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (src *SysRoleCreate) SetCreatedBy(i int64) *SysRoleCreate {
+	src.mutation.SetCreatedBy(i)
+	return src
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableCreatedBy(i *int64) *SysRoleCreate {
+	if i != nil {
+		src.SetCreatedBy(*i)
+	}
+	return src
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (src *SysRoleCreate) SetUpdatedBy(i int64) *SysRoleCreate {
+	src.mutation.SetUpdatedBy(i)
+	return src
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableUpdatedBy(i *int64) *SysRoleCreate {
+	if i != nil {
+		src.SetUpdatedBy(*i)
+	}
+	return src
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (src *SysRoleCreate) SetDeleteBy(i int64) *SysRoleCreate {
+	src.mutation.SetDeleteBy(i)
+	return src
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableDeleteBy(i *int64) *SysRoleCreate {
+	if i != nil {
+		src.SetDeleteBy(*i)
+	}
+	return src
+}
+
 // SetStatus sets the "status" field.
 func (src *SysRoleCreate) SetStatus(i int8) *SysRoleCreate {
 	src.mutation.SetStatus(i)
@@ -88,6 +130,20 @@ func (src *SysRoleCreate) SetRemark(s string) *SysRoleCreate {
 func (src *SysRoleCreate) SetNillableRemark(s *string) *SysRoleCreate {
 	if s != nil {
 		src.SetRemark(*s)
+	}
+	return src
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (src *SysRoleCreate) SetDelFlag(i int8) *SysRoleCreate {
+	src.mutation.SetDelFlag(i)
+	return src
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableDelFlag(i *int8) *SysRoleCreate {
+	if i != nil {
+		src.SetDelFlag(*i)
 	}
 	return src
 }
@@ -200,7 +256,9 @@ func (src *SysRoleCreate) Mutation() *SysRoleMutation {
 
 // Save creates the SysRole in the database.
 func (src *SysRoleCreate) Save(ctx context.Context) (*SysRole, error) {
-	src.defaults()
+	if err := src.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, src.sqlSave, src.mutation, src.hooks)
 }
 
@@ -227,16 +285,25 @@ func (src *SysRoleCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (src *SysRoleCreate) defaults() {
+func (src *SysRoleCreate) defaults() error {
 	if _, ok := src.mutation.CreatedAt(); !ok {
+		if sysrole.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysrole.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysrole.DefaultCreatedAt()
 		src.mutation.SetCreatedAt(v)
 	}
 	if _, ok := src.mutation.UpdatedAt(); !ok {
+		if sysrole.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysrole.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysrole.DefaultUpdatedAt()
 		src.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := src.mutation.DeleteAt(); !ok {
+		if sysrole.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysrole.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysrole.DefaultDeleteAt()
 		src.mutation.SetDeleteAt(v)
 	}
@@ -245,9 +312,13 @@ func (src *SysRoleCreate) defaults() {
 		src.mutation.SetStatus(v)
 	}
 	if _, ok := src.mutation.ID(); !ok {
+		if sysrole.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysrole.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysrole.DefaultID()
 		src.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -296,6 +367,18 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysrole.FieldDeleteAt, field.TypeTime, value)
 		_node.DeleteAt = value
 	}
+	if value, ok := src.mutation.CreatedBy(); ok {
+		_spec.SetField(sysrole.FieldCreatedBy, field.TypeInt64, value)
+		_node.CreatedBy = value
+	}
+	if value, ok := src.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysrole.FieldUpdatedBy, field.TypeInt64, value)
+		_node.UpdatedBy = value
+	}
+	if value, ok := src.mutation.DeleteBy(); ok {
+		_spec.SetField(sysrole.FieldDeleteBy, field.TypeInt64, value)
+		_node.DeleteBy = value
+	}
 	if value, ok := src.mutation.Status(); ok {
 		_spec.SetField(sysrole.FieldStatus, field.TypeInt8, value)
 		_node.Status = value
@@ -303,6 +386,10 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	if value, ok := src.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := src.mutation.DelFlag(); ok {
+		_spec.SetField(sysrole.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := src.mutation.ListOrder(); ok {
 		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)

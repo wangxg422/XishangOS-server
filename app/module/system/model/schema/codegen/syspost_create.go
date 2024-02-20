@@ -146,6 +146,20 @@ func (spc *SysPostCreate) SetNillableSort(i *int) *SysPostCreate {
 	return spc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (spc *SysPostCreate) SetDelFlag(i int8) *SysPostCreate {
+	spc.mutation.SetDelFlag(i)
+	return spc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (spc *SysPostCreate) SetNillableDelFlag(i *int8) *SysPostCreate {
+	if i != nil {
+		spc.SetDelFlag(*i)
+	}
+	return spc
+}
+
 // SetPostCode sets the "post_code" field.
 func (spc *SysPostCreate) SetPostCode(s string) *SysPostCreate {
 	spc.mutation.SetPostCode(s)
@@ -210,7 +224,9 @@ func (spc *SysPostCreate) Mutation() *SysPostMutation {
 
 // Save creates the SysPost in the database.
 func (spc *SysPostCreate) Save(ctx context.Context) (*SysPost, error) {
-	spc.defaults()
+	if err := spc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, spc.sqlSave, spc.mutation, spc.hooks)
 }
 
@@ -237,16 +253,25 @@ func (spc *SysPostCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (spc *SysPostCreate) defaults() {
+func (spc *SysPostCreate) defaults() error {
 	if _, ok := spc.mutation.CreatedAt(); !ok {
+		if syspost.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.DefaultCreatedAt()
 		spc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := spc.mutation.UpdatedAt(); !ok {
+		if syspost.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.DefaultUpdatedAt()
 		spc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := spc.mutation.DeleteAt(); !ok {
+		if syspost.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.DefaultDeleteAt()
 		spc.mutation.SetDeleteAt(v)
 	}
@@ -255,9 +280,13 @@ func (spc *SysPostCreate) defaults() {
 		spc.mutation.SetStatus(v)
 	}
 	if _, ok := spc.mutation.ID(); !ok {
+		if syspost.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := syspost.DefaultID()
 		spc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -329,6 +358,10 @@ func (spc *SysPostCreate) createSpec() (*SysPost, *sqlgraph.CreateSpec) {
 	if value, ok := spc.mutation.Sort(); ok {
 		_spec.SetField(syspost.FieldSort, field.TypeInt, value)
 		_node.Sort = value
+	}
+	if value, ok := spc.mutation.DelFlag(); ok {
+		_spec.SetField(syspost.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := spc.mutation.PostCode(); ok {
 		_spec.SetField(syspost.FieldPostCode, field.TypeString, value)

@@ -153,6 +153,33 @@ func (scu *SysConfigUpdate) ClearRemark() *SysConfigUpdate {
 	return scu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (scu *SysConfigUpdate) SetDelFlag(i int8) *SysConfigUpdate {
+	scu.mutation.ResetDelFlag()
+	scu.mutation.SetDelFlag(i)
+	return scu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (scu *SysConfigUpdate) SetNillableDelFlag(i *int8) *SysConfigUpdate {
+	if i != nil {
+		scu.SetDelFlag(*i)
+	}
+	return scu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (scu *SysConfigUpdate) AddDelFlag(i int8) *SysConfigUpdate {
+	scu.mutation.AddDelFlag(i)
+	return scu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (scu *SysConfigUpdate) ClearDelFlag() *SysConfigUpdate {
+	scu.mutation.ClearDelFlag()
+	return scu
+}
+
 // SetConfigName sets the "config_name" field.
 func (scu *SysConfigUpdate) SetConfigName(s string) *SysConfigUpdate {
 	scu.mutation.SetConfigName(s)
@@ -247,7 +274,9 @@ func (scu *SysConfigUpdate) Mutation() *SysConfigMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (scu *SysConfigUpdate) Save(ctx context.Context) (int, error) {
-	scu.defaults()
+	if err := scu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, scu.sqlSave, scu.mutation, scu.hooks)
 }
 
@@ -274,15 +303,22 @@ func (scu *SysConfigUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (scu *SysConfigUpdate) defaults() {
+func (scu *SysConfigUpdate) defaults() error {
 	if _, ok := scu.mutation.UpdatedAt(); !ok && !scu.mutation.UpdatedAtCleared() {
+		if sysconfig.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.UpdateDefaultUpdatedAt()
 		scu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := scu.mutation.DeleteAt(); !ok && !scu.mutation.DeleteAtCleared() {
+		if sysconfig.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.UpdateDefaultDeleteAt()
 		scu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (scu *SysConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -341,6 +377,18 @@ func (scu *SysConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if scu.mutation.RemarkCleared() {
 		_spec.ClearField(sysconfig.FieldRemark, field.TypeString)
+	}
+	if scu.mutation.StatusCleared() {
+		_spec.ClearField(sysconfig.FieldStatus, field.TypeInt8)
+	}
+	if value, ok := scu.mutation.DelFlag(); ok {
+		_spec.SetField(sysconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := scu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if scu.mutation.DelFlagCleared() {
+		_spec.ClearField(sysconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := scu.mutation.ConfigName(); ok {
 		_spec.SetField(sysconfig.FieldConfigName, field.TypeString, value)
@@ -514,6 +562,33 @@ func (scuo *SysConfigUpdateOne) ClearRemark() *SysConfigUpdateOne {
 	return scuo
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (scuo *SysConfigUpdateOne) SetDelFlag(i int8) *SysConfigUpdateOne {
+	scuo.mutation.ResetDelFlag()
+	scuo.mutation.SetDelFlag(i)
+	return scuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (scuo *SysConfigUpdateOne) SetNillableDelFlag(i *int8) *SysConfigUpdateOne {
+	if i != nil {
+		scuo.SetDelFlag(*i)
+	}
+	return scuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (scuo *SysConfigUpdateOne) AddDelFlag(i int8) *SysConfigUpdateOne {
+	scuo.mutation.AddDelFlag(i)
+	return scuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (scuo *SysConfigUpdateOne) ClearDelFlag() *SysConfigUpdateOne {
+	scuo.mutation.ClearDelFlag()
+	return scuo
+}
+
 // SetConfigName sets the "config_name" field.
 func (scuo *SysConfigUpdateOne) SetConfigName(s string) *SysConfigUpdateOne {
 	scuo.mutation.SetConfigName(s)
@@ -621,7 +696,9 @@ func (scuo *SysConfigUpdateOne) Select(field string, fields ...string) *SysConfi
 
 // Save executes the query and returns the updated SysConfig entity.
 func (scuo *SysConfigUpdateOne) Save(ctx context.Context) (*SysConfig, error) {
-	scuo.defaults()
+	if err := scuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, scuo.sqlSave, scuo.mutation, scuo.hooks)
 }
 
@@ -648,15 +725,22 @@ func (scuo *SysConfigUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (scuo *SysConfigUpdateOne) defaults() {
+func (scuo *SysConfigUpdateOne) defaults() error {
 	if _, ok := scuo.mutation.UpdatedAt(); !ok && !scuo.mutation.UpdatedAtCleared() {
+		if sysconfig.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.UpdateDefaultUpdatedAt()
 		scuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := scuo.mutation.DeleteAt(); !ok && !scuo.mutation.DeleteAtCleared() {
+		if sysconfig.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.UpdateDefaultDeleteAt()
 		scuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (scuo *SysConfigUpdateOne) sqlSave(ctx context.Context) (_node *SysConfig, err error) {
@@ -732,6 +816,18 @@ func (scuo *SysConfigUpdateOne) sqlSave(ctx context.Context) (_node *SysConfig, 
 	}
 	if scuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysconfig.FieldRemark, field.TypeString)
+	}
+	if scuo.mutation.StatusCleared() {
+		_spec.ClearField(sysconfig.FieldStatus, field.TypeInt8)
+	}
+	if value, ok := scuo.mutation.DelFlag(); ok {
+		_spec.SetField(sysconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := scuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if scuo.mutation.DelFlagCleared() {
+		_spec.ClearField(sysconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := scuo.mutation.ConfigName(); ok {
 		_spec.SetField(sysconfig.FieldConfigName, field.TypeString, value)

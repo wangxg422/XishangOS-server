@@ -36,6 +36,8 @@ type SysDictData struct {
 	Status int8 `json:"status,omitempty"`
 	// Sort holds the value of the "sort" field.
 	Sort int `json:"sort,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 字典标签
 	DictLabel string `json:"dict_label,omitempty"`
 	// 字典值
@@ -81,7 +83,7 @@ func (*SysDictData) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdictdata.FieldID, sysdictdata.FieldCreatedBy, sysdictdata.FieldUpdatedBy, sysdictdata.FieldDeleteBy, sysdictdata.FieldStatus, sysdictdata.FieldSort, sysdictdata.FieldDictTypeID, sysdictdata.FieldIsDefault:
+		case sysdictdata.FieldID, sysdictdata.FieldCreatedBy, sysdictdata.FieldUpdatedBy, sysdictdata.FieldDeleteBy, sysdictdata.FieldStatus, sysdictdata.FieldSort, sysdictdata.FieldDelFlag, sysdictdata.FieldDictTypeID, sysdictdata.FieldIsDefault:
 			values[i] = new(sql.NullInt64)
 		case sysdictdata.FieldRemark, sysdictdata.FieldDictLabel, sysdictdata.FieldDictValue, sysdictdata.FieldCSSClass, sysdictdata.FieldListClass:
 			values[i] = new(sql.NullString)
@@ -161,6 +163,12 @@ func (sdd *SysDictData) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
 				sdd.Sort = int(value.Int64)
+			}
+		case sysdictdata.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sdd.DelFlag = int8(value.Int64)
 			}
 		case sysdictdata.FieldDictLabel:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -265,6 +273,9 @@ func (sdd *SysDictData) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sdd.Sort))
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sdd.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("dict_label=")
 	builder.WriteString(sdd.DictLabel)

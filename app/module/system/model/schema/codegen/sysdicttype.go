@@ -33,6 +33,8 @@ type SysDictType struct {
 	Remark string `json:"remark,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 字典类型名称
 	DictName string `json:"dict_name,omitempty"`
 	// 字典类型
@@ -66,7 +68,7 @@ func (*SysDictType) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdicttype.FieldID, sysdicttype.FieldCreatedBy, sysdicttype.FieldUpdatedBy, sysdicttype.FieldDeleteBy, sysdicttype.FieldStatus:
+		case sysdicttype.FieldID, sysdicttype.FieldCreatedBy, sysdicttype.FieldUpdatedBy, sysdicttype.FieldDeleteBy, sysdicttype.FieldStatus, sysdicttype.FieldDelFlag:
 			values[i] = new(sql.NullInt64)
 		case sysdicttype.FieldRemark, sysdicttype.FieldDictName, sysdicttype.FieldDictType:
 			values[i] = new(sql.NullString)
@@ -140,6 +142,12 @@ func (sdt *SysDictType) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				sdt.Status = int8(value.Int64)
+			}
+		case sysdicttype.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sdt.DelFlag = int8(value.Int64)
 			}
 		case sysdicttype.FieldDictName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -217,6 +225,9 @@ func (sdt *SysDictType) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", sdt.Status))
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sdt.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("dict_name=")
 	builder.WriteString(sdt.DictName)

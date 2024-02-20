@@ -117,6 +117,34 @@ func (scc *SysConfigCreate) SetNillableRemark(s *string) *SysConfigCreate {
 	return scc
 }
 
+// SetStatus sets the "status" field.
+func (scc *SysConfigCreate) SetStatus(i int8) *SysConfigCreate {
+	scc.mutation.SetStatus(i)
+	return scc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (scc *SysConfigCreate) SetNillableStatus(i *int8) *SysConfigCreate {
+	if i != nil {
+		scc.SetStatus(*i)
+	}
+	return scc
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (scc *SysConfigCreate) SetDelFlag(i int8) *SysConfigCreate {
+	scc.mutation.SetDelFlag(i)
+	return scc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (scc *SysConfigCreate) SetNillableDelFlag(i *int8) *SysConfigCreate {
+	if i != nil {
+		scc.SetDelFlag(*i)
+	}
+	return scc
+}
+
 // SetConfigName sets the "config_name" field.
 func (scc *SysConfigCreate) SetConfigName(s string) *SysConfigCreate {
 	scc.mutation.SetConfigName(s)
@@ -194,7 +222,9 @@ func (scc *SysConfigCreate) Mutation() *SysConfigMutation {
 
 // Save creates the SysConfig in the database.
 func (scc *SysConfigCreate) Save(ctx context.Context) (*SysConfig, error) {
-	scc.defaults()
+	if err := scc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, scc.sqlSave, scc.mutation, scc.hooks)
 }
 
@@ -221,23 +251,40 @@ func (scc *SysConfigCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (scc *SysConfigCreate) defaults() {
+func (scc *SysConfigCreate) defaults() error {
 	if _, ok := scc.mutation.CreatedAt(); !ok {
+		if sysconfig.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.DefaultCreatedAt()
 		scc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := scc.mutation.UpdatedAt(); !ok {
+		if sysconfig.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.DefaultUpdatedAt()
 		scc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := scc.mutation.DeleteAt(); !ok {
+		if sysconfig.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.DefaultDeleteAt()
 		scc.mutation.SetDeleteAt(v)
 	}
+	if _, ok := scc.mutation.Status(); !ok {
+		v := sysconfig.DefaultStatus
+		scc.mutation.SetStatus(v)
+	}
 	if _, ok := scc.mutation.ID(); !ok {
+		if sysconfig.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysconfig.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysconfig.DefaultID()
 		scc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -301,6 +348,14 @@ func (scc *SysConfigCreate) createSpec() (*SysConfig, *sqlgraph.CreateSpec) {
 	if value, ok := scc.mutation.Remark(); ok {
 		_spec.SetField(sysconfig.FieldRemark, field.TypeString, value)
 		_node.Remark = value
+	}
+	if value, ok := scc.mutation.Status(); ok {
+		_spec.SetField(sysconfig.FieldStatus, field.TypeInt8, value)
+		_node.Status = value
+	}
+	if value, ok := scc.mutation.DelFlag(); ok {
+		_spec.SetField(sysconfig.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := scc.mutation.ConfigName(); ok {
 		_spec.SetField(sysconfig.FieldConfigName, field.TypeString, value)

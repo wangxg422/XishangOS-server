@@ -5,6 +5,7 @@ package commonconfig
 import (
 	"time"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -29,6 +30,8 @@ const (
 	FieldDeleteBy = "delete_by"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
+	// FieldDelFlag holds the string denoting the del_flag field in the database.
+	FieldDelFlag = "del_flag"
 	// FieldConfigName holds the string denoting the config_name field in the database.
 	FieldConfigName = "config_name"
 	// FieldConfigKey holds the string denoting the config_key field in the database.
@@ -52,6 +55,7 @@ var Columns = []string{
 	FieldUpdatedBy,
 	FieldDeleteBy,
 	FieldRemark,
+	FieldDelFlag,
 	FieldConfigName,
 	FieldConfigKey,
 	FieldConfigValue,
@@ -68,7 +72,14 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+// Note that the variables below are initialized by the runtime
+// package on the initialization of the application. Therefore,
+// it should be imported in the main as follows:
+//
+//	import _ "github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/codegen/runtime"
 var (
+	Hooks        [1]ent.Hook
+	Interceptors [1]ent.Interceptor
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -131,6 +142,11 @@ func ByDeleteBy(opts ...sql.OrderTermOption) OrderOption {
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByDelFlag orders the results by the del_flag field.
+func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDelFlag, opts...).ToFunc()
 }
 
 // ByConfigName orders the results by the config_name field.

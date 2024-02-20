@@ -7,9 +7,9 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
 	"fmt"
-	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen"
-	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/hook"
-	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen/intercept"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/codegen/hook"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/codegen/intercept"
 	"github.com/wangxg422/XishangOS-backend/common/enmu"
 )
 

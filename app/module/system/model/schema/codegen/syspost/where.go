@@ -100,6 +100,11 @@ func Sort(v int) predicate.SysPost {
 	return predicate.SysPost(sql.FieldEQ(FieldSort, v))
 }
 
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // PostCode applies equality check predicate on the "post_code" field. It's identical to PostCodeEQ.
 func PostCode(v string) predicate.SysPost {
 	return predicate.SysPost(sql.FieldEQ(FieldPostCode, v))
@@ -583,6 +588,56 @@ func SortIsNil() predicate.SysPost {
 // SortNotNil applies the NotNil predicate on the "sort" field.
 func SortNotNil() predicate.SysPost {
 	return predicate.SysPost(sql.FieldNotNull(FieldSort))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.SysPost {
+	return predicate.SysPost(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.SysPost {
+	return predicate.SysPost(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.SysPost {
+	return predicate.SysPost(sql.FieldNotNull(FieldDelFlag))
 }
 
 // PostCodeEQ applies the EQ predicate on the "post_code" field.

@@ -306,12 +306,14 @@ func (c *CommonConfigClient) GetX(ctx context.Context, id int64) *CommonConfig {
 
 // Hooks returns the client hooks.
 func (c *CommonConfigClient) Hooks() []Hook {
-	return c.hooks.CommonConfig
+	hooks := c.hooks.CommonConfig
+	return append(hooks[:len(hooks):len(hooks)], commonconfig.Hooks[:]...)
 }
 
 // Interceptors returns the client interceptors.
 func (c *CommonConfigClient) Interceptors() []Interceptor {
-	return c.inters.CommonConfig
+	inters := c.inters.CommonConfig
+	return append(inters[:len(inters):len(inters)], commonconfig.Interceptors[:]...)
 }
 
 func (c *CommonConfigClient) mutate(ctx context.Context, m *CommonConfigMutation) (Value, error) {

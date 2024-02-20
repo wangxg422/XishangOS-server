@@ -35,6 +35,8 @@ type SysDept struct {
 	Status int8 `json:"status,omitempty"`
 	// Sort holds the value of the "sort" field.
 	Sort int `json:"sort,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 父级部门id
 	ParentID int64 `json:"parent_id,omitempty"`
 	// 祖先部门列表
@@ -91,7 +93,7 @@ func (*SysDept) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysdept.FieldID, sysdept.FieldCreatedBy, sysdept.FieldUpdatedBy, sysdept.FieldDeleteBy, sysdept.FieldStatus, sysdept.FieldSort, sysdept.FieldParentID:
+		case sysdept.FieldID, sysdept.FieldCreatedBy, sysdept.FieldUpdatedBy, sysdept.FieldDeleteBy, sysdept.FieldStatus, sysdept.FieldSort, sysdept.FieldDelFlag, sysdept.FieldParentID:
 			values[i] = new(sql.NullInt64)
 		case sysdept.FieldRemark, sysdept.FieldAncestors, sysdept.FieldDeptName, sysdept.FieldDeptCode, sysdept.FieldLeader, sysdept.FieldPhone, sysdept.FieldEmail, sysdept.FieldAddress:
 			values[i] = new(sql.NullString)
@@ -171,6 +173,12 @@ func (sd *SysDept) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field sort", values[i])
 			} else if value.Valid {
 				sd.Sort = int(value.Int64)
+			}
+		case sysdept.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sd.DelFlag = int8(value.Int64)
 			}
 		case sysdept.FieldParentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -292,6 +300,9 @@ func (sd *SysDept) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sort=")
 	builder.WriteString(fmt.Sprintf("%v", sd.Sort))
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sd.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("parent_id=")
 	builder.WriteString(fmt.Sprintf("%v", sd.ParentID))

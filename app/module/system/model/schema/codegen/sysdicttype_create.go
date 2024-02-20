@@ -132,6 +132,20 @@ func (sdtc *SysDictTypeCreate) SetNillableStatus(i *int8) *SysDictTypeCreate {
 	return sdtc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sdtc *SysDictTypeCreate) SetDelFlag(i int8) *SysDictTypeCreate {
+	sdtc.mutation.SetDelFlag(i)
+	return sdtc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sdtc *SysDictTypeCreate) SetNillableDelFlag(i *int8) *SysDictTypeCreate {
+	if i != nil {
+		sdtc.SetDelFlag(*i)
+	}
+	return sdtc
+}
+
 // SetDictName sets the "dict_name" field.
 func (sdtc *SysDictTypeCreate) SetDictName(s string) *SysDictTypeCreate {
 	sdtc.mutation.SetDictName(s)
@@ -196,7 +210,9 @@ func (sdtc *SysDictTypeCreate) Mutation() *SysDictTypeMutation {
 
 // Save creates the SysDictType in the database.
 func (sdtc *SysDictTypeCreate) Save(ctx context.Context) (*SysDictType, error) {
-	sdtc.defaults()
+	if err := sdtc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sdtc.sqlSave, sdtc.mutation, sdtc.hooks)
 }
 
@@ -223,16 +239,25 @@ func (sdtc *SysDictTypeCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sdtc *SysDictTypeCreate) defaults() {
+func (sdtc *SysDictTypeCreate) defaults() error {
 	if _, ok := sdtc.mutation.CreatedAt(); !ok {
+		if sysdicttype.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdicttype.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdicttype.DefaultCreatedAt()
 		sdtc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := sdtc.mutation.UpdatedAt(); !ok {
+		if sysdicttype.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdicttype.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdicttype.DefaultUpdatedAt()
 		sdtc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdtc.mutation.DeleteAt(); !ok {
+		if sysdicttype.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdicttype.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdicttype.DefaultDeleteAt()
 		sdtc.mutation.SetDeleteAt(v)
 	}
@@ -241,9 +266,13 @@ func (sdtc *SysDictTypeCreate) defaults() {
 		sdtc.mutation.SetStatus(v)
 	}
 	if _, ok := sdtc.mutation.ID(); !ok {
+		if sysdicttype.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysdicttype.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysdicttype.DefaultID()
 		sdtc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -311,6 +340,10 @@ func (sdtc *SysDictTypeCreate) createSpec() (*SysDictType, *sqlgraph.CreateSpec)
 	if value, ok := sdtc.mutation.Status(); ok {
 		_spec.SetField(sysdicttype.FieldStatus, field.TypeInt8, value)
 		_node.Status = value
+	}
+	if value, ok := sdtc.mutation.DelFlag(); ok {
+		_spec.SetField(sysdicttype.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := sdtc.mutation.DictName(); ok {
 		_spec.SetField(sysdicttype.FieldDictName, field.TypeString, value)

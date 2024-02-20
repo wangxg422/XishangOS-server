@@ -70,6 +70,21 @@ func DeleteAt(v time.Time) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldDeleteAt, v))
 }
 
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// DeleteBy applies equality check predicate on the "delete_by" field. It's identical to DeleteByEQ.
+func DeleteBy(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldDeleteBy, v))
+}
+
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldStatus, v))
@@ -78,6 +93,11 @@ func Status(v int8) predicate.SysRole {
 // Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
 func Remark(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldRemark, v))
+}
+
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldDelFlag, v))
 }
 
 // ListOrder applies equality check predicate on the "list_order" field. It's identical to ListOrderEQ.
@@ -245,6 +265,156 @@ func DeleteAtNotNil() predicate.SysRole {
 	return predicate.SysRole(sql.FieldNotNull(FieldDeleteAt))
 }
 
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldCreatedBy, v))
+}
+
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldCreatedBy, v))
+}
+
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldCreatedBy, vs...))
+}
+
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldCreatedBy, v))
+}
+
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldCreatedBy, v))
+}
+
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldCreatedBy, v))
+}
+
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldCreatedBy, v))
+}
+
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldCreatedBy))
+}
+
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldCreatedBy))
+}
+
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldUpdatedBy, v))
+}
+
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldUpdatedBy, vs...))
+}
+
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldUpdatedBy, v))
+}
+
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldUpdatedBy, v))
+}
+
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldUpdatedBy, v))
+}
+
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldUpdatedBy))
+}
+
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldUpdatedBy))
+}
+
+// DeleteByEQ applies the EQ predicate on the "delete_by" field.
+func DeleteByEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldDeleteBy, v))
+}
+
+// DeleteByNEQ applies the NEQ predicate on the "delete_by" field.
+func DeleteByNEQ(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldDeleteBy, v))
+}
+
+// DeleteByIn applies the In predicate on the "delete_by" field.
+func DeleteByIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByNotIn applies the NotIn predicate on the "delete_by" field.
+func DeleteByNotIn(vs ...int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldDeleteBy, vs...))
+}
+
+// DeleteByGT applies the GT predicate on the "delete_by" field.
+func DeleteByGT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldDeleteBy, v))
+}
+
+// DeleteByGTE applies the GTE predicate on the "delete_by" field.
+func DeleteByGTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldDeleteBy, v))
+}
+
+// DeleteByLT applies the LT predicate on the "delete_by" field.
+func DeleteByLT(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldDeleteBy, v))
+}
+
+// DeleteByLTE applies the LTE predicate on the "delete_by" field.
+func DeleteByLTE(v int64) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldDeleteBy, v))
+}
+
+// DeleteByIsNil applies the IsNil predicate on the "delete_by" field.
+func DeleteByIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldDeleteBy))
+}
+
+// DeleteByNotNil applies the NotNil predicate on the "delete_by" field.
+func DeleteByNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldDeleteBy))
+}
+
 // StatusEQ applies the EQ predicate on the "status" field.
 func StatusEQ(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldStatus, v))
@@ -368,6 +538,56 @@ func RemarkEqualFold(v string) predicate.SysRole {
 // RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
 func RemarkContainsFold(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ListOrderEQ applies the EQ predicate on the "list_order" field.

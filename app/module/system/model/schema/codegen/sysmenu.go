@@ -25,6 +25,8 @@ type SysMenu struct {
 	DeleteAt time.Time `json:"delete_at,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 父ID
 	Pid int64 `json:"pid,omitempty"`
 	// 菜单名称
@@ -90,7 +92,7 @@ func (*SysMenu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldID, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
+		case sysmenu.FieldID, sysmenu.FieldDelFlag, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldWeigh, sysmenu.FieldIsHide, sysmenu.FieldIsLink, sysmenu.FieldModelID, sysmenu.FieldIsIframe, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
 			values[i] = new(sql.NullInt64)
 		case sysmenu.FieldRemark, sysmenu.FieldName, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL:
 			values[i] = new(sql.NullString)
@@ -140,6 +142,12 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				sm.Remark = value.String
+			}
+		case sysmenu.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sm.DelFlag = int8(value.Int64)
 			}
 		case sysmenu.FieldPid:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -301,6 +309,9 @@ func (sm *SysMenu) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(sm.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sm.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("pid=")
 	builder.WriteString(fmt.Sprintf("%v", sm.Pid))

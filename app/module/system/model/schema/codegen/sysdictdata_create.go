@@ -146,6 +146,20 @@ func (sddc *SysDictDataCreate) SetNillableSort(i *int) *SysDictDataCreate {
 	return sddc
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sddc *SysDictDataCreate) SetDelFlag(i int8) *SysDictDataCreate {
+	sddc.mutation.SetDelFlag(i)
+	return sddc
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sddc *SysDictDataCreate) SetNillableDelFlag(i *int8) *SysDictDataCreate {
+	if i != nil {
+		sddc.SetDelFlag(*i)
+	}
+	return sddc
+}
+
 // SetDictLabel sets the "dict_label" field.
 func (sddc *SysDictDataCreate) SetDictLabel(s string) *SysDictDataCreate {
 	sddc.mutation.SetDictLabel(s)
@@ -270,7 +284,9 @@ func (sddc *SysDictDataCreate) Mutation() *SysDictDataMutation {
 
 // Save creates the SysDictData in the database.
 func (sddc *SysDictDataCreate) Save(ctx context.Context) (*SysDictData, error) {
-	sddc.defaults()
+	if err := sddc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sddc.sqlSave, sddc.mutation, sddc.hooks)
 }
 
@@ -297,16 +313,25 @@ func (sddc *SysDictDataCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sddc *SysDictDataCreate) defaults() {
+func (sddc *SysDictDataCreate) defaults() error {
 	if _, ok := sddc.mutation.CreatedAt(); !ok {
+		if sysdictdata.DefaultCreatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.DefaultCreatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.DefaultCreatedAt()
 		sddc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := sddc.mutation.UpdatedAt(); !ok {
+		if sysdictdata.DefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.DefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.DefaultUpdatedAt()
 		sddc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sddc.mutation.DeleteAt(); !ok {
+		if sysdictdata.DefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.DefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.DefaultDeleteAt()
 		sddc.mutation.SetDeleteAt(v)
 	}
@@ -315,9 +340,13 @@ func (sddc *SysDictDataCreate) defaults() {
 		sddc.mutation.SetStatus(v)
 	}
 	if _, ok := sddc.mutation.ID(); !ok {
+		if sysdictdata.DefaultID == nil {
+			return fmt.Errorf("codegen: uninitialized sysdictdata.DefaultID (forgotten import codegen/runtime?)")
+		}
 		v := sysdictdata.DefaultID()
 		sddc.mutation.SetID(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -389,6 +418,10 @@ func (sddc *SysDictDataCreate) createSpec() (*SysDictData, *sqlgraph.CreateSpec)
 	if value, ok := sddc.mutation.Sort(); ok {
 		_spec.SetField(sysdictdata.FieldSort, field.TypeInt, value)
 		_node.Sort = value
+	}
+	if value, ok := sddc.mutation.DelFlag(); ok {
+		_spec.SetField(sysdictdata.FieldDelFlag, field.TypeInt8, value)
+		_node.DelFlag = value
 	}
 	if value, ok := sddc.mutation.DictLabel(); ok {
 		_spec.SetField(sysdictdata.FieldDictLabel, field.TypeString, value)

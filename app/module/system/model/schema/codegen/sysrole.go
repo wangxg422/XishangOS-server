@@ -23,10 +23,18 @@ type SysRole struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"delete_at,omitempty"`
+	// CreatedBy holds the value of the "created_by" field.
+	CreatedBy int64 `json:"created_by,omitempty"`
+	// UpdatedBy holds the value of the "updated_by" field.
+	UpdatedBy int64 `json:"updated_by,omitempty"`
+	// DeleteBy holds the value of the "delete_by" field.
+	DeleteBy int64 `json:"delete_by,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
+	// DelFlag holds the value of the "del_flag" field.
+	DelFlag int8 `json:"del_flag,omitempty"`
 	// 排序
 	ListOrder int64 `json:"list_order,omitempty"`
 	// 角色名称
@@ -84,7 +92,7 @@ func (*SysRole) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrole.FieldID, sysrole.FieldStatus, sysrole.FieldListOrder, sysrole.FieldDataScope:
+		case sysrole.FieldID, sysrole.FieldCreatedBy, sysrole.FieldUpdatedBy, sysrole.FieldDeleteBy, sysrole.FieldStatus, sysrole.FieldDelFlag, sysrole.FieldListOrder, sysrole.FieldDataScope:
 			values[i] = new(sql.NullInt64)
 		case sysrole.FieldRemark, sysrole.FieldName:
 			values[i] = new(sql.NullString)
@@ -129,6 +137,24 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.DeleteAt = value.Time
 			}
+		case sysrole.FieldCreatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+			} else if value.Valid {
+				sr.CreatedBy = value.Int64
+			}
+		case sysrole.FieldUpdatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+			} else if value.Valid {
+				sr.UpdatedBy = value.Int64
+			}
+		case sysrole.FieldDeleteBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_by", values[i])
+			} else if value.Valid {
+				sr.DeleteBy = value.Int64
+			}
 		case sysrole.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
@@ -140,6 +166,12 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				sr.Remark = value.String
+			}
+		case sysrole.FieldDelFlag:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field del_flag", values[i])
+			} else if value.Valid {
+				sr.DelFlag = int8(value.Int64)
 			}
 		case sysrole.FieldListOrder:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -219,11 +251,23 @@ func (sr *SysRole) String() string {
 	builder.WriteString("delete_at=")
 	builder.WriteString(sr.DeleteAt.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", sr.CreatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("updated_by=")
+	builder.WriteString(fmt.Sprintf("%v", sr.UpdatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("delete_by=")
+	builder.WriteString(fmt.Sprintf("%v", sr.DeleteBy))
+	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", sr.Status))
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(sr.Remark)
+	builder.WriteString(", ")
+	builder.WriteString("del_flag=")
+	builder.WriteString(fmt.Sprintf("%v", sr.DelFlag))
 	builder.WriteString(", ")
 	builder.WriteString("list_order=")
 	builder.WriteString(fmt.Sprintf("%v", sr.ListOrder))

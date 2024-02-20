@@ -181,6 +181,33 @@ func (spu *SysPostUpdate) ClearSort() *SysPostUpdate {
 	return spu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (spu *SysPostUpdate) SetDelFlag(i int8) *SysPostUpdate {
+	spu.mutation.ResetDelFlag()
+	spu.mutation.SetDelFlag(i)
+	return spu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (spu *SysPostUpdate) SetNillableDelFlag(i *int8) *SysPostUpdate {
+	if i != nil {
+		spu.SetDelFlag(*i)
+	}
+	return spu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (spu *SysPostUpdate) AddDelFlag(i int8) *SysPostUpdate {
+	spu.mutation.AddDelFlag(i)
+	return spu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (spu *SysPostUpdate) ClearDelFlag() *SysPostUpdate {
+	spu.mutation.ClearDelFlag()
+	return spu
+}
+
 // SetPostCode sets the "post_code" field.
 func (spu *SysPostUpdate) SetPostCode(s string) *SysPostUpdate {
 	spu.mutation.SetPostCode(s)
@@ -264,7 +291,9 @@ func (spu *SysPostUpdate) RemoveSysUsers(s ...*SysUser) *SysPostUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (spu *SysPostUpdate) Save(ctx context.Context) (int, error) {
-	spu.defaults()
+	if err := spu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, spu.sqlSave, spu.mutation, spu.hooks)
 }
 
@@ -291,15 +320,22 @@ func (spu *SysPostUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (spu *SysPostUpdate) defaults() {
+func (spu *SysPostUpdate) defaults() error {
 	if _, ok := spu.mutation.UpdatedAt(); !ok && !spu.mutation.UpdatedAtCleared() {
+		if syspost.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.UpdateDefaultUpdatedAt()
 		spu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := spu.mutation.DeleteAt(); !ok && !spu.mutation.DeleteAtCleared() {
+		if syspost.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.UpdateDefaultDeleteAt()
 		spu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -370,6 +406,15 @@ func (spu *SysPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if spu.mutation.SortCleared() {
 		_spec.ClearField(syspost.FieldSort, field.TypeInt)
+	}
+	if value, ok := spu.mutation.DelFlag(); ok {
+		_spec.SetField(syspost.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := spu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(syspost.FieldDelFlag, field.TypeInt8, value)
+	}
+	if spu.mutation.DelFlagCleared() {
+		_spec.ClearField(syspost.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := spu.mutation.PostCode(); ok {
 		_spec.SetField(syspost.FieldPostCode, field.TypeString, value)
@@ -600,6 +645,33 @@ func (spuo *SysPostUpdateOne) ClearSort() *SysPostUpdateOne {
 	return spuo
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (spuo *SysPostUpdateOne) SetDelFlag(i int8) *SysPostUpdateOne {
+	spuo.mutation.ResetDelFlag()
+	spuo.mutation.SetDelFlag(i)
+	return spuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (spuo *SysPostUpdateOne) SetNillableDelFlag(i *int8) *SysPostUpdateOne {
+	if i != nil {
+		spuo.SetDelFlag(*i)
+	}
+	return spuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (spuo *SysPostUpdateOne) AddDelFlag(i int8) *SysPostUpdateOne {
+	spuo.mutation.AddDelFlag(i)
+	return spuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (spuo *SysPostUpdateOne) ClearDelFlag() *SysPostUpdateOne {
+	spuo.mutation.ClearDelFlag()
+	return spuo
+}
+
 // SetPostCode sets the "post_code" field.
 func (spuo *SysPostUpdateOne) SetPostCode(s string) *SysPostUpdateOne {
 	spuo.mutation.SetPostCode(s)
@@ -696,7 +768,9 @@ func (spuo *SysPostUpdateOne) Select(field string, fields ...string) *SysPostUpd
 
 // Save executes the query and returns the updated SysPost entity.
 func (spuo *SysPostUpdateOne) Save(ctx context.Context) (*SysPost, error) {
-	spuo.defaults()
+	if err := spuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, spuo.sqlSave, spuo.mutation, spuo.hooks)
 }
 
@@ -723,15 +797,22 @@ func (spuo *SysPostUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (spuo *SysPostUpdateOne) defaults() {
+func (spuo *SysPostUpdateOne) defaults() error {
 	if _, ok := spuo.mutation.UpdatedAt(); !ok && !spuo.mutation.UpdatedAtCleared() {
+		if syspost.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.UpdateDefaultUpdatedAt()
 		spuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := spuo.mutation.DeleteAt(); !ok && !spuo.mutation.DeleteAtCleared() {
+		if syspost.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized syspost.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := syspost.UpdateDefaultDeleteAt()
 		spuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err error) {
@@ -819,6 +900,15 @@ func (spuo *SysPostUpdateOne) sqlSave(ctx context.Context) (_node *SysPost, err 
 	}
 	if spuo.mutation.SortCleared() {
 		_spec.ClearField(syspost.FieldSort, field.TypeInt)
+	}
+	if value, ok := spuo.mutation.DelFlag(); ok {
+		_spec.SetField(syspost.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := spuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(syspost.FieldDelFlag, field.TypeInt8, value)
+	}
+	if spuo.mutation.DelFlagCleared() {
+		_spec.ClearField(syspost.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := spuo.mutation.PostCode(); ok {
 		_spec.SetField(syspost.FieldPostCode, field.TypeString, value)

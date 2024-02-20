@@ -73,6 +73,33 @@ func (smu *SysMenuUpdate) ClearRemark() *SysMenuUpdate {
 	return smu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (smu *SysMenuUpdate) SetDelFlag(i int8) *SysMenuUpdate {
+	smu.mutation.ResetDelFlag()
+	smu.mutation.SetDelFlag(i)
+	return smu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableDelFlag(i *int8) *SysMenuUpdate {
+	if i != nil {
+		smu.SetDelFlag(*i)
+	}
+	return smu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (smu *SysMenuUpdate) AddDelFlag(i int8) *SysMenuUpdate {
+	smu.mutation.AddDelFlag(i)
+	return smu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (smu *SysMenuUpdate) ClearDelFlag() *SysMenuUpdate {
+	smu.mutation.ClearDelFlag()
+	return smu
+}
+
 // SetPid sets the "pid" field.
 func (smu *SysMenuUpdate) SetPid(i int64) *SysMenuUpdate {
 	smu.mutation.ResetPid()
@@ -533,7 +560,9 @@ func (smu *SysMenuUpdate) RemoveSysRoles(s ...*SysRole) *SysMenuUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (smu *SysMenuUpdate) Save(ctx context.Context) (int, error) {
-	smu.defaults()
+	if err := smu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, smu.sqlSave, smu.mutation, smu.hooks)
 }
 
@@ -560,15 +589,22 @@ func (smu *SysMenuUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (smu *SysMenuUpdate) defaults() {
+func (smu *SysMenuUpdate) defaults() error {
 	if _, ok := smu.mutation.UpdatedAt(); !ok && !smu.mutation.UpdatedAtCleared() {
+		if sysmenu.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.UpdateDefaultUpdatedAt()
 		smu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := smu.mutation.DeleteAt(); !ok && !smu.mutation.DeleteAtCleared() {
+		if sysmenu.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.UpdateDefaultDeleteAt()
 		smu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -600,6 +636,15 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.RemarkCleared() {
 		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
+	}
+	if value, ok := smu.mutation.DelFlag(); ok {
+		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := smu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysmenu.FieldDelFlag, field.TypeInt8, value)
+	}
+	if smu.mutation.DelFlagCleared() {
+		_spec.ClearField(sysmenu.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := smu.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)
@@ -839,6 +884,33 @@ func (smuo *SysMenuUpdateOne) SetNillableRemark(s *string) *SysMenuUpdateOne {
 // ClearRemark clears the value of the "remark" field.
 func (smuo *SysMenuUpdateOne) ClearRemark() *SysMenuUpdateOne {
 	smuo.mutation.ClearRemark()
+	return smuo
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (smuo *SysMenuUpdateOne) SetDelFlag(i int8) *SysMenuUpdateOne {
+	smuo.mutation.ResetDelFlag()
+	smuo.mutation.SetDelFlag(i)
+	return smuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableDelFlag(i *int8) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetDelFlag(*i)
+	}
+	return smuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (smuo *SysMenuUpdateOne) AddDelFlag(i int8) *SysMenuUpdateOne {
+	smuo.mutation.AddDelFlag(i)
+	return smuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (smuo *SysMenuUpdateOne) ClearDelFlag() *SysMenuUpdateOne {
+	smuo.mutation.ClearDelFlag()
 	return smuo
 }
 
@@ -1315,7 +1387,9 @@ func (smuo *SysMenuUpdateOne) Select(field string, fields ...string) *SysMenuUpd
 
 // Save executes the query and returns the updated SysMenu entity.
 func (smuo *SysMenuUpdateOne) Save(ctx context.Context) (*SysMenu, error) {
-	smuo.defaults()
+	if err := smuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, smuo.sqlSave, smuo.mutation, smuo.hooks)
 }
 
@@ -1342,15 +1416,22 @@ func (smuo *SysMenuUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (smuo *SysMenuUpdateOne) defaults() {
+func (smuo *SysMenuUpdateOne) defaults() error {
 	if _, ok := smuo.mutation.UpdatedAt(); !ok && !smuo.mutation.UpdatedAtCleared() {
+		if sysmenu.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.UpdateDefaultUpdatedAt()
 		smuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := smuo.mutation.DeleteAt(); !ok && !smuo.mutation.DeleteAtCleared() {
+		if sysmenu.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysmenu.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysmenu.UpdateDefaultDeleteAt()
 		smuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err error) {
@@ -1399,6 +1480,15 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysmenu.FieldRemark, field.TypeString)
+	}
+	if value, ok := smuo.mutation.DelFlag(); ok {
+		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := smuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysmenu.FieldDelFlag, field.TypeInt8, value)
+	}
+	if smuo.mutation.DelFlagCleared() {
+		_spec.ClearField(sysmenu.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := smuo.mutation.Pid(); ok {
 		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)

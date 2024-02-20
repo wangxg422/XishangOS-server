@@ -100,6 +100,11 @@ func Sort(v int) predicate.SysDept {
 	return predicate.SysDept(sql.FieldEQ(FieldSort, v))
 }
 
+// DelFlag applies equality check predicate on the "del_flag" field. It's identical to DelFlagEQ.
+func DelFlag(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldEQ(FieldDelFlag, v))
+}
+
 // ParentID applies equality check predicate on the "parent_id" field. It's identical to ParentIDEQ.
 func ParentID(v int64) predicate.SysDept {
 	return predicate.SysDept(sql.FieldEQ(FieldParentID, v))
@@ -613,6 +618,56 @@ func SortIsNil() predicate.SysDept {
 // SortNotNil applies the NotNil predicate on the "sort" field.
 func SortNotNil() predicate.SysDept {
 	return predicate.SysDept(sql.FieldNotNull(FieldSort))
+}
+
+// DelFlagEQ applies the EQ predicate on the "del_flag" field.
+func DelFlagEQ(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldEQ(FieldDelFlag, v))
+}
+
+// DelFlagNEQ applies the NEQ predicate on the "del_flag" field.
+func DelFlagNEQ(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldNEQ(FieldDelFlag, v))
+}
+
+// DelFlagIn applies the In predicate on the "del_flag" field.
+func DelFlagIn(vs ...int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldIn(FieldDelFlag, vs...))
+}
+
+// DelFlagNotIn applies the NotIn predicate on the "del_flag" field.
+func DelFlagNotIn(vs ...int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldNotIn(FieldDelFlag, vs...))
+}
+
+// DelFlagGT applies the GT predicate on the "del_flag" field.
+func DelFlagGT(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldGT(FieldDelFlag, v))
+}
+
+// DelFlagGTE applies the GTE predicate on the "del_flag" field.
+func DelFlagGTE(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldGTE(FieldDelFlag, v))
+}
+
+// DelFlagLT applies the LT predicate on the "del_flag" field.
+func DelFlagLT(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldLT(FieldDelFlag, v))
+}
+
+// DelFlagLTE applies the LTE predicate on the "del_flag" field.
+func DelFlagLTE(v int8) predicate.SysDept {
+	return predicate.SysDept(sql.FieldLTE(FieldDelFlag, v))
+}
+
+// DelFlagIsNil applies the IsNil predicate on the "del_flag" field.
+func DelFlagIsNil() predicate.SysDept {
+	return predicate.SysDept(sql.FieldIsNull(FieldDelFlag))
+}
+
+// DelFlagNotNil applies the NotNil predicate on the "del_flag" field.
+func DelFlagNotNil() predicate.SysDept {
+	return predicate.SysDept(sql.FieldNotNull(FieldDelFlag))
 }
 
 // ParentIDEQ applies the EQ predicate on the "parent_id" field.

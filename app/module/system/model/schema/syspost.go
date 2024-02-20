@@ -6,7 +6,8 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	mixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	baseMixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/mixin"
 )
 
 // SysPost holds the schema definition for the SysPost entity.
@@ -26,12 +27,13 @@ func (SysPost) Annotations() []schema.Annotation {
 // Mixin 嵌入字段
 func (SysPost) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.IdMixin{},
-		mixin.TimeMixin{},
-		mixin.ByMixin{},
-		mixin.RemarkMixin{},
-		mixin.StatusMixin{},
-		mixin.SortMixin{},
+		baseMixin.IdMixin{},
+		baseMixin.TimeMixin{},
+		baseMixin.ByMixin{},
+		baseMixin.RemarkMixin{},
+		baseMixin.StatusMixin{},
+		baseMixin.SortMixin{},
+		mixin.SoftDeleteMixin{},
 	}
 }
 

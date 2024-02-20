@@ -182,6 +182,33 @@ func (sdu *SysDeptUpdate) ClearSort() *SysDeptUpdate {
 	return sdu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sdu *SysDeptUpdate) SetDelFlag(i int8) *SysDeptUpdate {
+	sdu.mutation.ResetDelFlag()
+	sdu.mutation.SetDelFlag(i)
+	return sdu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sdu *SysDeptUpdate) SetNillableDelFlag(i *int8) *SysDeptUpdate {
+	if i != nil {
+		sdu.SetDelFlag(*i)
+	}
+	return sdu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (sdu *SysDeptUpdate) AddDelFlag(i int8) *SysDeptUpdate {
+	sdu.mutation.AddDelFlag(i)
+	return sdu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (sdu *SysDeptUpdate) ClearDelFlag() *SysDeptUpdate {
+	sdu.mutation.ClearDelFlag()
+	return sdu
+}
+
 // SetParentID sets the "parent_id" field.
 func (sdu *SysDeptUpdate) SetParentID(i int64) *SysDeptUpdate {
 	sdu.mutation.ResetParentID()
@@ -422,7 +449,9 @@ func (sdu *SysDeptUpdate) RemoveSysRoles(s ...*SysRole) *SysDeptUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (sdu *SysDeptUpdate) Save(ctx context.Context) (int, error) {
-	sdu.defaults()
+	if err := sdu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, sdu.sqlSave, sdu.mutation, sdu.hooks)
 }
 
@@ -449,15 +478,22 @@ func (sdu *SysDeptUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sdu *SysDeptUpdate) defaults() {
+func (sdu *SysDeptUpdate) defaults() error {
 	if _, ok := sdu.mutation.UpdatedAt(); !ok && !sdu.mutation.UpdatedAtCleared() {
+		if sysdept.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.UpdateDefaultUpdatedAt()
 		sdu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sdu.mutation.DeleteAt(); !ok && !sdu.mutation.DeleteAtCleared() {
+		if sysdept.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.UpdateDefaultDeleteAt()
 		sdu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -528,6 +564,15 @@ func (sdu *SysDeptUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if sdu.mutation.SortCleared() {
 		_spec.ClearField(sysdept.FieldSort, field.TypeInt)
+	}
+	if value, ok := sdu.mutation.DelFlag(); ok {
+		_spec.SetField(sysdept.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := sdu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysdept.FieldDelFlag, field.TypeInt8, value)
+	}
+	if sdu.mutation.DelFlagCleared() {
+		_spec.ClearField(sysdept.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sdu.mutation.ParentID(); ok {
 		_spec.SetField(sysdept.FieldParentID, field.TypeInt64, value)
@@ -839,6 +884,33 @@ func (sduo *SysDeptUpdateOne) ClearSort() *SysDeptUpdateOne {
 	return sduo
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (sduo *SysDeptUpdateOne) SetDelFlag(i int8) *SysDeptUpdateOne {
+	sduo.mutation.ResetDelFlag()
+	sduo.mutation.SetDelFlag(i)
+	return sduo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (sduo *SysDeptUpdateOne) SetNillableDelFlag(i *int8) *SysDeptUpdateOne {
+	if i != nil {
+		sduo.SetDelFlag(*i)
+	}
+	return sduo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (sduo *SysDeptUpdateOne) AddDelFlag(i int8) *SysDeptUpdateOne {
+	sduo.mutation.AddDelFlag(i)
+	return sduo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (sduo *SysDeptUpdateOne) ClearDelFlag() *SysDeptUpdateOne {
+	sduo.mutation.ClearDelFlag()
+	return sduo
+}
+
 // SetParentID sets the "parent_id" field.
 func (sduo *SysDeptUpdateOne) SetParentID(i int64) *SysDeptUpdateOne {
 	sduo.mutation.ResetParentID()
@@ -1092,7 +1164,9 @@ func (sduo *SysDeptUpdateOne) Select(field string, fields ...string) *SysDeptUpd
 
 // Save executes the query and returns the updated SysDept entity.
 func (sduo *SysDeptUpdateOne) Save(ctx context.Context) (*SysDept, error) {
-	sduo.defaults()
+	if err := sduo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sduo.sqlSave, sduo.mutation, sduo.hooks)
 }
 
@@ -1119,15 +1193,22 @@ func (sduo *SysDeptUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sduo *SysDeptUpdateOne) defaults() {
+func (sduo *SysDeptUpdateOne) defaults() error {
 	if _, ok := sduo.mutation.UpdatedAt(); !ok && !sduo.mutation.UpdatedAtCleared() {
+		if sysdept.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.UpdateDefaultUpdatedAt()
 		sduo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := sduo.mutation.DeleteAt(); !ok && !sduo.mutation.DeleteAtCleared() {
+		if sysdept.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysdept.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysdept.UpdateDefaultDeleteAt()
 		sduo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err error) {
@@ -1215,6 +1296,15 @@ func (sduo *SysDeptUpdateOne) sqlSave(ctx context.Context) (_node *SysDept, err 
 	}
 	if sduo.mutation.SortCleared() {
 		_spec.ClearField(sysdept.FieldSort, field.TypeInt)
+	}
+	if value, ok := sduo.mutation.DelFlag(); ok {
+		_spec.SetField(sysdept.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := sduo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysdept.FieldDelFlag, field.TypeInt8, value)
+	}
+	if sduo.mutation.DelFlagCleared() {
+		_spec.ClearField(sysdept.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := sduo.mutation.ParentID(); ok {
 		_spec.SetField(sysdept.FieldParentID, field.TypeInt64, value)

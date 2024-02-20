@@ -55,6 +55,87 @@ func (suu *SysUserUpdate) ClearDeleteAt() *SysUserUpdate {
 	return suu
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (suu *SysUserUpdate) SetCreatedBy(i int64) *SysUserUpdate {
+	suu.mutation.ResetCreatedBy()
+	suu.mutation.SetCreatedBy(i)
+	return suu
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableCreatedBy(i *int64) *SysUserUpdate {
+	if i != nil {
+		suu.SetCreatedBy(*i)
+	}
+	return suu
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (suu *SysUserUpdate) AddCreatedBy(i int64) *SysUserUpdate {
+	suu.mutation.AddCreatedBy(i)
+	return suu
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (suu *SysUserUpdate) ClearCreatedBy() *SysUserUpdate {
+	suu.mutation.ClearCreatedBy()
+	return suu
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (suu *SysUserUpdate) SetUpdatedBy(i int64) *SysUserUpdate {
+	suu.mutation.ResetUpdatedBy()
+	suu.mutation.SetUpdatedBy(i)
+	return suu
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableUpdatedBy(i *int64) *SysUserUpdate {
+	if i != nil {
+		suu.SetUpdatedBy(*i)
+	}
+	return suu
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (suu *SysUserUpdate) AddUpdatedBy(i int64) *SysUserUpdate {
+	suu.mutation.AddUpdatedBy(i)
+	return suu
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (suu *SysUserUpdate) ClearUpdatedBy() *SysUserUpdate {
+	suu.mutation.ClearUpdatedBy()
+	return suu
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (suu *SysUserUpdate) SetDeleteBy(i int64) *SysUserUpdate {
+	suu.mutation.ResetDeleteBy()
+	suu.mutation.SetDeleteBy(i)
+	return suu
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableDeleteBy(i *int64) *SysUserUpdate {
+	if i != nil {
+		suu.SetDeleteBy(*i)
+	}
+	return suu
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (suu *SysUserUpdate) AddDeleteBy(i int64) *SysUserUpdate {
+	suu.mutation.AddDeleteBy(i)
+	return suu
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (suu *SysUserUpdate) ClearDeleteBy() *SysUserUpdate {
+	suu.mutation.ClearDeleteBy()
+	return suu
+}
+
 // SetRemark sets the "remark" field.
 func (suu *SysUserUpdate) SetRemark(s string) *SysUserUpdate {
 	suu.mutation.SetRemark(s)
@@ -72,6 +153,33 @@ func (suu *SysUserUpdate) SetNillableRemark(s *string) *SysUserUpdate {
 // ClearRemark clears the value of the "remark" field.
 func (suu *SysUserUpdate) ClearRemark() *SysUserUpdate {
 	suu.mutation.ClearRemark()
+	return suu
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (suu *SysUserUpdate) SetDelFlag(i int8) *SysUserUpdate {
+	suu.mutation.ResetDelFlag()
+	suu.mutation.SetDelFlag(i)
+	return suu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableDelFlag(i *int8) *SysUserUpdate {
+	if i != nil {
+		suu.SetDelFlag(*i)
+	}
+	return suu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (suu *SysUserUpdate) AddDelFlag(i int8) *SysUserUpdate {
+	suu.mutation.AddDelFlag(i)
+	return suu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (suu *SysUserUpdate) ClearDelFlag() *SysUserUpdate {
+	suu.mutation.ClearDelFlag()
 	return suu
 }
 
@@ -514,7 +622,9 @@ func (suu *SysUserUpdate) RemoveSysRoles(s ...*SysRole) *SysUserUpdate {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (suu *SysUserUpdate) Save(ctx context.Context) (int, error) {
-	suu.defaults()
+	if err := suu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, suu.sqlSave, suu.mutation, suu.hooks)
 }
 
@@ -541,15 +651,22 @@ func (suu *SysUserUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (suu *SysUserUpdate) defaults() {
+func (suu *SysUserUpdate) defaults() error {
 	if _, ok := suu.mutation.UpdatedAt(); !ok && !suu.mutation.UpdatedAtCleared() {
+		if sysuser.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.UpdateDefaultUpdatedAt()
 		suu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := suu.mutation.DeleteAt(); !ok && !suu.mutation.DeleteAtCleared() {
+		if sysuser.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.UpdateDefaultDeleteAt()
 		suu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -576,11 +693,47 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if suu.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysuser.FieldDeleteAt, field.TypeTime)
 	}
+	if value, ok := suu.mutation.CreatedBy(); ok {
+		_spec.SetField(sysuser.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := suu.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(sysuser.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if suu.mutation.CreatedByCleared() {
+		_spec.ClearField(sysuser.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := suu.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysuser.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := suu.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(sysuser.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if suu.mutation.UpdatedByCleared() {
+		_spec.ClearField(sysuser.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := suu.mutation.DeleteBy(); ok {
+		_spec.SetField(sysuser.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := suu.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(sysuser.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if suu.mutation.DeleteByCleared() {
+		_spec.ClearField(sysuser.FieldDeleteBy, field.TypeInt64)
+	}
 	if value, ok := suu.mutation.Remark(); ok {
 		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
 	}
 	if suu.mutation.RemarkCleared() {
 		_spec.ClearField(sysuser.FieldRemark, field.TypeString)
+	}
+	if value, ok := suu.mutation.DelFlag(); ok {
+		_spec.SetField(sysuser.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := suu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysuser.FieldDelFlag, field.TypeInt8, value)
+	}
+	if suu.mutation.DelFlagCleared() {
+		_spec.ClearField(sysuser.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := suu.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
@@ -841,6 +994,87 @@ func (suuo *SysUserUpdateOne) ClearDeleteAt() *SysUserUpdateOne {
 	return suuo
 }
 
+// SetCreatedBy sets the "created_by" field.
+func (suuo *SysUserUpdateOne) SetCreatedBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.ResetCreatedBy()
+	suuo.mutation.SetCreatedBy(i)
+	return suuo
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableCreatedBy(i *int64) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetCreatedBy(*i)
+	}
+	return suuo
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (suuo *SysUserUpdateOne) AddCreatedBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.AddCreatedBy(i)
+	return suuo
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (suuo *SysUserUpdateOne) ClearCreatedBy() *SysUserUpdateOne {
+	suuo.mutation.ClearCreatedBy()
+	return suuo
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (suuo *SysUserUpdateOne) SetUpdatedBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.ResetUpdatedBy()
+	suuo.mutation.SetUpdatedBy(i)
+	return suuo
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableUpdatedBy(i *int64) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetUpdatedBy(*i)
+	}
+	return suuo
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (suuo *SysUserUpdateOne) AddUpdatedBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.AddUpdatedBy(i)
+	return suuo
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (suuo *SysUserUpdateOne) ClearUpdatedBy() *SysUserUpdateOne {
+	suuo.mutation.ClearUpdatedBy()
+	return suuo
+}
+
+// SetDeleteBy sets the "delete_by" field.
+func (suuo *SysUserUpdateOne) SetDeleteBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.ResetDeleteBy()
+	suuo.mutation.SetDeleteBy(i)
+	return suuo
+}
+
+// SetNillableDeleteBy sets the "delete_by" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableDeleteBy(i *int64) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetDeleteBy(*i)
+	}
+	return suuo
+}
+
+// AddDeleteBy adds i to the "delete_by" field.
+func (suuo *SysUserUpdateOne) AddDeleteBy(i int64) *SysUserUpdateOne {
+	suuo.mutation.AddDeleteBy(i)
+	return suuo
+}
+
+// ClearDeleteBy clears the value of the "delete_by" field.
+func (suuo *SysUserUpdateOne) ClearDeleteBy() *SysUserUpdateOne {
+	suuo.mutation.ClearDeleteBy()
+	return suuo
+}
+
 // SetRemark sets the "remark" field.
 func (suuo *SysUserUpdateOne) SetRemark(s string) *SysUserUpdateOne {
 	suuo.mutation.SetRemark(s)
@@ -858,6 +1092,33 @@ func (suuo *SysUserUpdateOne) SetNillableRemark(s *string) *SysUserUpdateOne {
 // ClearRemark clears the value of the "remark" field.
 func (suuo *SysUserUpdateOne) ClearRemark() *SysUserUpdateOne {
 	suuo.mutation.ClearRemark()
+	return suuo
+}
+
+// SetDelFlag sets the "del_flag" field.
+func (suuo *SysUserUpdateOne) SetDelFlag(i int8) *SysUserUpdateOne {
+	suuo.mutation.ResetDelFlag()
+	suuo.mutation.SetDelFlag(i)
+	return suuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableDelFlag(i *int8) *SysUserUpdateOne {
+	if i != nil {
+		suuo.SetDelFlag(*i)
+	}
+	return suuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (suuo *SysUserUpdateOne) AddDelFlag(i int8) *SysUserUpdateOne {
+	suuo.mutation.AddDelFlag(i)
+	return suuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (suuo *SysUserUpdateOne) ClearDelFlag() *SysUserUpdateOne {
+	suuo.mutation.ClearDelFlag()
 	return suuo
 }
 
@@ -1313,7 +1574,9 @@ func (suuo *SysUserUpdateOne) Select(field string, fields ...string) *SysUserUpd
 
 // Save executes the query and returns the updated SysUser entity.
 func (suuo *SysUserUpdateOne) Save(ctx context.Context) (*SysUser, error) {
-	suuo.defaults()
+	if err := suuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, suuo.sqlSave, suuo.mutation, suuo.hooks)
 }
 
@@ -1340,15 +1603,22 @@ func (suuo *SysUserUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (suuo *SysUserUpdateOne) defaults() {
+func (suuo *SysUserUpdateOne) defaults() error {
 	if _, ok := suuo.mutation.UpdatedAt(); !ok && !suuo.mutation.UpdatedAtCleared() {
+		if sysuser.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.UpdateDefaultUpdatedAt()
 		suuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := suuo.mutation.DeleteAt(); !ok && !suuo.mutation.DeleteAtCleared() {
+		if sysuser.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized sysuser.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := sysuser.UpdateDefaultDeleteAt()
 		suuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err error) {
@@ -1392,11 +1662,47 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	if suuo.mutation.DeleteAtCleared() {
 		_spec.ClearField(sysuser.FieldDeleteAt, field.TypeTime)
 	}
+	if value, ok := suuo.mutation.CreatedBy(); ok {
+		_spec.SetField(sysuser.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := suuo.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(sysuser.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if suuo.mutation.CreatedByCleared() {
+		_spec.ClearField(sysuser.FieldCreatedBy, field.TypeInt64)
+	}
+	if value, ok := suuo.mutation.UpdatedBy(); ok {
+		_spec.SetField(sysuser.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := suuo.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(sysuser.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if suuo.mutation.UpdatedByCleared() {
+		_spec.ClearField(sysuser.FieldUpdatedBy, field.TypeInt64)
+	}
+	if value, ok := suuo.mutation.DeleteBy(); ok {
+		_spec.SetField(sysuser.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if value, ok := suuo.mutation.AddedDeleteBy(); ok {
+		_spec.AddField(sysuser.FieldDeleteBy, field.TypeInt64, value)
+	}
+	if suuo.mutation.DeleteByCleared() {
+		_spec.ClearField(sysuser.FieldDeleteBy, field.TypeInt64)
+	}
 	if value, ok := suuo.mutation.Remark(); ok {
 		_spec.SetField(sysuser.FieldRemark, field.TypeString, value)
 	}
 	if suuo.mutation.RemarkCleared() {
 		_spec.ClearField(sysuser.FieldRemark, field.TypeString)
+	}
+	if value, ok := suuo.mutation.DelFlag(); ok {
+		_spec.SetField(sysuser.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := suuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(sysuser.FieldDelFlag, field.TypeInt8, value)
+	}
+	if suuo.mutation.DelFlagCleared() {
+		_spec.ClearField(sysuser.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := suuo.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)

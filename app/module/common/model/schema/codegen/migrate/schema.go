@@ -20,6 +20,7 @@ var (
 		{Name: "updated_by", Type: field.TypeInt64, Nullable: true},
 		{Name: "delete_by", Type: field.TypeInt64, Nullable: true},
 		{Name: "remark", Type: field.TypeString, Nullable: true},
+		{Name: "del_flag", Type: field.TypeInt8, Nullable: true},
 		{Name: "config_name", Type: field.TypeString, Nullable: true, Comment: "配置名称"},
 		{Name: "config_key", Type: field.TypeString, Nullable: true, Comment: "配置项"},
 		{Name: "config_value", Type: field.TypeString, Nullable: true, Comment: "配置值"},

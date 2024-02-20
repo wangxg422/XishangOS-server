@@ -153,6 +153,33 @@ func (ccu *CommonConfigUpdate) ClearRemark() *CommonConfigUpdate {
 	return ccu
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (ccu *CommonConfigUpdate) SetDelFlag(i int8) *CommonConfigUpdate {
+	ccu.mutation.ResetDelFlag()
+	ccu.mutation.SetDelFlag(i)
+	return ccu
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (ccu *CommonConfigUpdate) SetNillableDelFlag(i *int8) *CommonConfigUpdate {
+	if i != nil {
+		ccu.SetDelFlag(*i)
+	}
+	return ccu
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (ccu *CommonConfigUpdate) AddDelFlag(i int8) *CommonConfigUpdate {
+	ccu.mutation.AddDelFlag(i)
+	return ccu
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (ccu *CommonConfigUpdate) ClearDelFlag() *CommonConfigUpdate {
+	ccu.mutation.ClearDelFlag()
+	return ccu
+}
+
 // SetConfigName sets the "config_name" field.
 func (ccu *CommonConfigUpdate) SetConfigName(s string) *CommonConfigUpdate {
 	ccu.mutation.SetConfigName(s)
@@ -247,7 +274,9 @@ func (ccu *CommonConfigUpdate) Mutation() *CommonConfigMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ccu *CommonConfigUpdate) Save(ctx context.Context) (int, error) {
-	ccu.defaults()
+	if err := ccu.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, ccu.sqlSave, ccu.mutation, ccu.hooks)
 }
 
@@ -274,15 +303,22 @@ func (ccu *CommonConfigUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (ccu *CommonConfigUpdate) defaults() {
+func (ccu *CommonConfigUpdate) defaults() error {
 	if _, ok := ccu.mutation.UpdatedAt(); !ok && !ccu.mutation.UpdatedAtCleared() {
+		if commonconfig.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.UpdateDefaultUpdatedAt()
 		ccu.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := ccu.mutation.DeleteAt(); !ok && !ccu.mutation.DeleteAtCleared() {
+		if commonconfig.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.UpdateDefaultDeleteAt()
 		ccu.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (ccu *CommonConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -344,6 +380,15 @@ func (ccu *CommonConfigUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if ccu.mutation.RemarkCleared() {
 		_spec.ClearField(commonconfig.FieldRemark, field.TypeString)
+	}
+	if value, ok := ccu.mutation.DelFlag(); ok {
+		_spec.SetField(commonconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := ccu.mutation.AddedDelFlag(); ok {
+		_spec.AddField(commonconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if ccu.mutation.DelFlagCleared() {
+		_spec.ClearField(commonconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := ccu.mutation.ConfigName(); ok {
 		_spec.SetField(commonconfig.FieldConfigName, field.TypeString, value)
@@ -517,6 +562,33 @@ func (ccuo *CommonConfigUpdateOne) ClearRemark() *CommonConfigUpdateOne {
 	return ccuo
 }
 
+// SetDelFlag sets the "del_flag" field.
+func (ccuo *CommonConfigUpdateOne) SetDelFlag(i int8) *CommonConfigUpdateOne {
+	ccuo.mutation.ResetDelFlag()
+	ccuo.mutation.SetDelFlag(i)
+	return ccuo
+}
+
+// SetNillableDelFlag sets the "del_flag" field if the given value is not nil.
+func (ccuo *CommonConfigUpdateOne) SetNillableDelFlag(i *int8) *CommonConfigUpdateOne {
+	if i != nil {
+		ccuo.SetDelFlag(*i)
+	}
+	return ccuo
+}
+
+// AddDelFlag adds i to the "del_flag" field.
+func (ccuo *CommonConfigUpdateOne) AddDelFlag(i int8) *CommonConfigUpdateOne {
+	ccuo.mutation.AddDelFlag(i)
+	return ccuo
+}
+
+// ClearDelFlag clears the value of the "del_flag" field.
+func (ccuo *CommonConfigUpdateOne) ClearDelFlag() *CommonConfigUpdateOne {
+	ccuo.mutation.ClearDelFlag()
+	return ccuo
+}
+
 // SetConfigName sets the "config_name" field.
 func (ccuo *CommonConfigUpdateOne) SetConfigName(s string) *CommonConfigUpdateOne {
 	ccuo.mutation.SetConfigName(s)
@@ -624,7 +696,9 @@ func (ccuo *CommonConfigUpdateOne) Select(field string, fields ...string) *Commo
 
 // Save executes the query and returns the updated CommonConfig entity.
 func (ccuo *CommonConfigUpdateOne) Save(ctx context.Context) (*CommonConfig, error) {
-	ccuo.defaults()
+	if err := ccuo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, ccuo.sqlSave, ccuo.mutation, ccuo.hooks)
 }
 
@@ -651,15 +725,22 @@ func (ccuo *CommonConfigUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (ccuo *CommonConfigUpdateOne) defaults() {
+func (ccuo *CommonConfigUpdateOne) defaults() error {
 	if _, ok := ccuo.mutation.UpdatedAt(); !ok && !ccuo.mutation.UpdatedAtCleared() {
+		if commonconfig.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultUpdatedAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.UpdateDefaultUpdatedAt()
 		ccuo.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := ccuo.mutation.DeleteAt(); !ok && !ccuo.mutation.DeleteAtCleared() {
+		if commonconfig.UpdateDefaultDeleteAt == nil {
+			return fmt.Errorf("codegen: uninitialized commonconfig.UpdateDefaultDeleteAt (forgotten import codegen/runtime?)")
+		}
 		v := commonconfig.UpdateDefaultDeleteAt()
 		ccuo.mutation.SetDeleteAt(v)
 	}
+	return nil
 }
 
 func (ccuo *CommonConfigUpdateOne) sqlSave(ctx context.Context) (_node *CommonConfig, err error) {
@@ -738,6 +819,15 @@ func (ccuo *CommonConfigUpdateOne) sqlSave(ctx context.Context) (_node *CommonCo
 	}
 	if ccuo.mutation.RemarkCleared() {
 		_spec.ClearField(commonconfig.FieldRemark, field.TypeString)
+	}
+	if value, ok := ccuo.mutation.DelFlag(); ok {
+		_spec.SetField(commonconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if value, ok := ccuo.mutation.AddedDelFlag(); ok {
+		_spec.AddField(commonconfig.FieldDelFlag, field.TypeInt8, value)
+	}
+	if ccuo.mutation.DelFlagCleared() {
+		_spec.ClearField(commonconfig.FieldDelFlag, field.TypeInt8)
 	}
 	if value, ok := ccuo.mutation.ConfigName(); ok {
 		_spec.SetField(commonconfig.FieldConfigName, field.TypeString, value)
