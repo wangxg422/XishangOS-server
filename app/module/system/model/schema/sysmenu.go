@@ -41,7 +41,7 @@ func (SysMenu) Mixin() []ent.Mixin {
 // Fields of the SysMenu.
 func (SysMenu) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("pid").Comment("父菜单ID"),
+		field.Int64("pid").Optional().Comment("父菜单ID"),
 		field.String("menu_name").Optional().Comment("菜单名称"),
 		field.String("menu_title").Optional().Comment("菜单标题"),
 		field.String("menu_icon").Optional().Comment("菜单图标"),
@@ -66,5 +66,10 @@ func (SysMenu) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("sysRoles", SysRole.Type).
 			Ref("sysMenus"),
+		// 添加一对多的（O2M ）自引用，即一个节点有且仅有一个父节点，有多个子节点
+		edge.To("children", SysMenu.Type).
+			From("parent").
+			Unique().
+			Field("pid"),
 	}
 }

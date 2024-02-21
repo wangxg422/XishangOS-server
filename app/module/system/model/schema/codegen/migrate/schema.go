@@ -152,7 +152,6 @@ var (
 		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "sort", Type: field.TypeInt, Nullable: true, Default: 0},
 		{Name: "del_flag", Type: field.TypeInt8, Default: 1},
-		{Name: "pid", Type: field.TypeInt64, Comment: "父菜单ID"},
 		{Name: "menu_name", Type: field.TypeString, Nullable: true, Comment: "菜单名称"},
 		{Name: "menu_title", Type: field.TypeString, Nullable: true, Comment: "菜单标题"},
 		{Name: "menu_icon", Type: field.TypeString, Nullable: true, Comment: "菜单图标"},
@@ -169,6 +168,7 @@ var (
 		{Name: "is_affix", Type: field.TypeInt8, Nullable: true, Comment: "是否固定(1是,0否)"},
 		{Name: "redirect", Type: field.TypeString, Nullable: true, Comment: "路由重定向地址"},
 		{Name: "link_url", Type: field.TypeString, Nullable: true, Comment: "链接地址"},
+		{Name: "pid", Type: field.TypeInt64, Nullable: true, Comment: "父菜单ID"},
 	}
 	// SysMenuTable holds the schema information for the "sys_menu" table.
 	SysMenuTable = &schema.Table{
@@ -176,6 +176,14 @@ var (
 		Comment:    "系统菜单权限表",
 		Columns:    SysMenuColumns,
 		PrimaryKey: []*schema.Column{SysMenuColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "sys_menu_sys_menu_children",
+				Columns:    []*schema.Column{SysMenuColumns[27]},
+				RefColumns: []*schema.Column{SysMenuColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// SysOperLogColumns holds the columns for the "sys_oper_log" table.
 	SysOperLogColumns = []*schema.Column{
@@ -445,6 +453,7 @@ func init() {
 	SysLoginLogTable.Annotation = &entsql.Annotation{
 		Table: "sys_login_log",
 	}
+	SysMenuTable.ForeignKeys[0].RefTable = SysMenuTable
 	SysMenuTable.Annotation = &entsql.Annotation{
 		Table: "sys_menu",
 	}

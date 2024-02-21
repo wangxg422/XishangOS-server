@@ -167,6 +167,14 @@ func (smc *SysMenuCreate) SetPid(i int64) *SysMenuCreate {
 	return smc
 }
 
+// SetNillablePid sets the "pid" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillablePid(i *int64) *SysMenuCreate {
+	if i != nil {
+		smc.SetPid(*i)
+	}
+	return smc
+}
+
 // SetMenuName sets the "menu_name" field.
 func (smc *SysMenuCreate) SetMenuName(s string) *SysMenuCreate {
 	smc.mutation.SetMenuName(s)
@@ -420,6 +428,40 @@ func (smc *SysMenuCreate) AddSysRoles(s ...*SysRole) *SysMenuCreate {
 	return smc.AddSysRoleIDs(ids...)
 }
 
+// SetParentID sets the "parent" edge to the SysMenu entity by ID.
+func (smc *SysMenuCreate) SetParentID(id int64) *SysMenuCreate {
+	smc.mutation.SetParentID(id)
+	return smc
+}
+
+// SetNillableParentID sets the "parent" edge to the SysMenu entity by ID if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableParentID(id *int64) *SysMenuCreate {
+	if id != nil {
+		smc = smc.SetParentID(*id)
+	}
+	return smc
+}
+
+// SetParent sets the "parent" edge to the SysMenu entity.
+func (smc *SysMenuCreate) SetParent(s *SysMenu) *SysMenuCreate {
+	return smc.SetParentID(s.ID)
+}
+
+// AddChildIDs adds the "children" edge to the SysMenu entity by IDs.
+func (smc *SysMenuCreate) AddChildIDs(ids ...int64) *SysMenuCreate {
+	smc.mutation.AddChildIDs(ids...)
+	return smc
+}
+
+// AddChildren adds the "children" edges to the SysMenu entity.
+func (smc *SysMenuCreate) AddChildren(s ...*SysMenu) *SysMenuCreate {
+	ids := make([]int64, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return smc.AddChildIDs(ids...)
+}
+
 // Mutation returns the SysMenuMutation object of the builder.
 func (smc *SysMenuCreate) Mutation() *SysMenuMutation {
 	return smc.mutation
@@ -501,9 +543,6 @@ func (smc *SysMenuCreate) check() error {
 	if _, ok := smc.mutation.DelFlag(); !ok {
 		return &ValidationError{Name: "del_flag", err: errors.New(`codegen: missing required field "SysMenu.del_flag"`)}
 	}
-	if _, ok := smc.mutation.Pid(); !ok {
-		return &ValidationError{Name: "pid", err: errors.New(`codegen: missing required field "SysMenu.pid"`)}
-	}
 	return nil
 }
 
@@ -575,10 +614,6 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if value, ok := smc.mutation.DelFlag(); ok {
 		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
 		_node.DelFlag = value
-	}
-	if value, ok := smc.mutation.Pid(); ok {
-		_spec.SetField(sysmenu.FieldPid, field.TypeInt64, value)
-		_node.Pid = value
 	}
 	if value, ok := smc.mutation.MenuName(); ok {
 		_spec.SetField(sysmenu.FieldMenuName, field.TypeString, value)
@@ -653,6 +688,39 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(sysrole.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := smc.mutation.ParentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   sysmenu.ParentTable,
+			Columns: []string{sysmenu.ParentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.Pid = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := smc.mutation.ChildrenIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   sysmenu.ChildrenTable,
+			Columns: []string{sysmenu.ChildrenColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(sysmenu.FieldID, field.TypeInt64),
 			},
 		}
 		for _, k := range nodes {

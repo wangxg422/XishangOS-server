@@ -7,6 +7,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/enmu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/common/result"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/utils"
 )
@@ -53,6 +54,8 @@ func (l SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]an
 	// TODO 签发jwt token
 	// TODO 记录登录成功日志
 
+	resMap := make(map[string]any)
+
 	// 查询用户菜单及权限
 	var permissions []string
 	var menuList []*codegen.SysMenu
@@ -63,13 +66,17 @@ func (l SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]an
 		if err != nil {
 			return nil, err
 		}
+		menus := SysMenuService.FormatMenu(menuList)
+		if menus == nil || len(menus) == 0 {
+			resMap["menuList"] = result.EmptyList{}
+		} else {
+			resMap["menuList"] = SysMenuService.BuildMenuTree(menus, 0)
+		}
 	}
 
-	resMap := make(map[string]any)
 	resMap["token"] = ""
 	resMap["userInfo"] = ""
 	resMap["permissions"] = permissions
-	resMap["menuList"] = menuList
 
 	return resMap, nil
 }

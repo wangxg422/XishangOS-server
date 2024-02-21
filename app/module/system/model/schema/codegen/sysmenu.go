@@ -81,9 +81,13 @@ type SysMenu struct {
 type SysMenuEdges struct {
 	// SysRoles holds the value of the sysRoles edge.
 	SysRoles []*SysRole `json:"sysRoles,omitempty"`
+	// Parent holds the value of the parent edge.
+	Parent *SysMenu `json:"parent,omitempty"`
+	// Children holds the value of the children edge.
+	Children []*SysMenu `json:"children,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [3]bool
 }
 
 // SysRolesOrErr returns the SysRoles value or an error if the edge
@@ -93,6 +97,28 @@ func (e SysMenuEdges) SysRolesOrErr() ([]*SysRole, error) {
 		return e.SysRoles, nil
 	}
 	return nil, &NotLoadedError{edge: "sysRoles"}
+}
+
+// ParentOrErr returns the Parent value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e SysMenuEdges) ParentOrErr() (*SysMenu, error) {
+	if e.loadedTypes[1] {
+		if e.Parent == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: sysmenu.Label}
+		}
+		return e.Parent, nil
+	}
+	return nil, &NotLoadedError{edge: "parent"}
+}
+
+// ChildrenOrErr returns the Children value or an error if the edge
+// was not loaded in eager-loading.
+func (e SysMenuEdges) ChildrenOrErr() ([]*SysMenu, error) {
+	if e.loadedTypes[2] {
+		return e.Children, nil
+	}
+	return nil, &NotLoadedError{edge: "children"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -305,6 +331,16 @@ func (sm *SysMenu) Value(name string) (ent.Value, error) {
 // QuerySysRoles queries the "sysRoles" edge of the SysMenu entity.
 func (sm *SysMenu) QuerySysRoles() *SysRoleQuery {
 	return NewSysMenuClient(sm.config).QuerySysRoles(sm)
+}
+
+// QueryParent queries the "parent" edge of the SysMenu entity.
+func (sm *SysMenu) QueryParent() *SysMenuQuery {
+	return NewSysMenuClient(sm.config).QueryParent(sm)
+}
+
+// QueryChildren queries the "children" edge of the SysMenu entity.
+func (sm *SysMenu) QueryChildren() *SysMenuQuery {
+	return NewSysMenuClient(sm.config).QueryChildren(sm)
 }
 
 // Update returns a builder for updating this SysMenu.

@@ -715,24 +715,14 @@ func PidNotIn(vs ...int64) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotIn(FieldPid, vs...))
 }
 
-// PidGT applies the GT predicate on the "pid" field.
-func PidGT(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldPid, v))
+// PidIsNil applies the IsNil predicate on the "pid" field.
+func PidIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldPid))
 }
 
-// PidGTE applies the GTE predicate on the "pid" field.
-func PidGTE(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldPid, v))
-}
-
-// PidLT applies the LT predicate on the "pid" field.
-func PidLT(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldPid, v))
-}
-
-// PidLTE applies the LTE predicate on the "pid" field.
-func PidLTE(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldPid, v))
+// PidNotNil applies the NotNil predicate on the "pid" field.
+func PidNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldPid))
 }
 
 // MenuNameEQ applies the EQ predicate on the "menu_name" field.
@@ -1775,6 +1765,52 @@ func HasSysRoles() predicate.SysMenu {
 func HasSysRolesWith(preds ...predicate.SysRole) predicate.SysMenu {
 	return predicate.SysMenu(func(s *sql.Selector) {
 		step := newSysRolesStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasParent applies the HasEdge predicate on the "parent" edge.
+func HasParent() predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ParentTable, ParentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasParentWith applies the HasEdge predicate on the "parent" edge with a given conditions (other predicates).
+func HasParentWith(preds ...predicate.SysMenu) predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := newParentStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasChildren applies the HasEdge predicate on the "children" edge.
+func HasChildren() predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ChildrenTable, ChildrenColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasChildrenWith applies the HasEdge predicate on the "children" edge with a given conditions (other predicates).
+func HasChildrenWith(preds ...predicate.SysMenu) predicate.SysMenu {
+	return predicate.SysMenu(func(s *sql.Selector) {
+		step := newChildrenStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)
