@@ -61,10 +61,6 @@ func FirstLower(s string) string {
 	return strings.ToLower(s[:1]) + s[1:]
 }
 
-func LikeQuery(s string) string {
-	return "%" + s + "%"
-}
-
 func StrToInt64Array(list []string) ([]int64, error) {
 	if len(list) == 0 {
 		return []int64{}, nil

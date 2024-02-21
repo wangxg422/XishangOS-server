@@ -49,7 +49,10 @@ redis:
   db: 0
 
 jwt:
+  token-name: token
   signing-key: c39ed162-65f7-4b49-983f-cdda998e9f2c
   expires-time: 7d
   buffer-time: 1d
-  issuer: xishang
+  issuer: XiShangOS
+  redis-key: "XiShangOS:SYSTEM:TOKEN:" # token存储到redis的前缀
+  black-list-key: "XiShangOS:SYSTEM:TokenBlackList" # token黑名单存储到redis的前缀

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/mojocn/base64Captcha"
 	"github.com/wangxg422/XishangOS-backend/app/module/common/util/captcha"
+	"strings"
 )
 
 type Captcha struct {
@@ -19,6 +19,6 @@ func (m *Captcha) GetCaptchaImgString() (idKeyC string, base64stringC string, er
 // VerifyString 验证验证码是否正确
 func (m *Captcha) VerifyString(id, answer string) bool {
 	c := base64Captcha.NewCaptcha(captcha.CaptchaDriver(), captcha.GetRedisStore())
-	answer = gstr.ToLower(answer)
+	answer = strings.ToLower(answer)
 	return c.Verify(id, answer, true)
 }
