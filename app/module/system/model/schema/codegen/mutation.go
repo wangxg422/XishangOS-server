@@ -7402,30 +7402,28 @@ type SysMenuMutation struct {
 	adddel_flag     *int8
 	pid             *int64
 	addpid          *int64
-	name            *string
-	title           *string
-	icon            *string
+	menu_name       *string
+	menu_title      *string
+	menu_icon       *string
 	condition       *string
 	menu_type       *int8
 	addmenu_type    *int8
-	weigh           *int64
-	addweigh        *int64
-	is_hide         *int8
-	addis_hide      *int8
 	_path           *string
 	component       *string
-	is_link         *int8
-	addis_link      *int8
 	module_type     *string
 	model_id        *int64
 	addmodel_id     *int64
+	is_hide         *int8
+	addis_hide      *int8
 	is_iframe       *int8
 	addis_iframe    *int8
+	is_link         *int8
+	addis_link      *int8
 	is_cached       *int8
 	addis_cached    *int8
-	redirect        *string
 	is_affix        *int8
 	addis_affix     *int8
+	redirect        *string
 	link_url        *string
 	clearedFields   map[string]struct{}
 	sysRoles        map[int64]struct{}
@@ -8184,151 +8182,151 @@ func (m *SysMenuMutation) ResetPid() {
 	m.addpid = nil
 }
 
-// SetName sets the "name" field.
-func (m *SysMenuMutation) SetName(s string) {
-	m.name = &s
+// SetMenuName sets the "menu_name" field.
+func (m *SysMenuMutation) SetMenuName(s string) {
+	m.menu_name = &s
 }
 
-// Name returns the value of the "name" field in the mutation.
-func (m *SysMenuMutation) Name() (r string, exists bool) {
-	v := m.name
+// MenuName returns the value of the "menu_name" field in the mutation.
+func (m *SysMenuMutation) MenuName() (r string, exists bool) {
+	v := m.menu_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old "name" field's value of the SysMenu entity.
+// OldMenuName returns the old "menu_name" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *SysMenuMutation) OldMenuName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
+		return v, errors.New("OldMenuName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
+		return v, errors.New("OldMenuName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
+		return v, fmt.Errorf("querying old value for OldMenuName: %w", err)
 	}
-	return oldValue.Name, nil
+	return oldValue.MenuName, nil
 }
 
-// ClearName clears the value of the "name" field.
-func (m *SysMenuMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[sysmenu.FieldName] = struct{}{}
+// ClearMenuName clears the value of the "menu_name" field.
+func (m *SysMenuMutation) ClearMenuName() {
+	m.menu_name = nil
+	m.clearedFields[sysmenu.FieldMenuName] = struct{}{}
 }
 
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *SysMenuMutation) NameCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldName]
+// MenuNameCleared returns if the "menu_name" field was cleared in this mutation.
+func (m *SysMenuMutation) MenuNameCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldMenuName]
 	return ok
 }
 
-// ResetName resets all changes to the "name" field.
-func (m *SysMenuMutation) ResetName() {
-	m.name = nil
-	delete(m.clearedFields, sysmenu.FieldName)
+// ResetMenuName resets all changes to the "menu_name" field.
+func (m *SysMenuMutation) ResetMenuName() {
+	m.menu_name = nil
+	delete(m.clearedFields, sysmenu.FieldMenuName)
 }
 
-// SetTitle sets the "title" field.
-func (m *SysMenuMutation) SetTitle(s string) {
-	m.title = &s
+// SetMenuTitle sets the "menu_title" field.
+func (m *SysMenuMutation) SetMenuTitle(s string) {
+	m.menu_title = &s
 }
 
-// Title returns the value of the "title" field in the mutation.
-func (m *SysMenuMutation) Title() (r string, exists bool) {
-	v := m.title
+// MenuTitle returns the value of the "menu_title" field in the mutation.
+func (m *SysMenuMutation) MenuTitle() (r string, exists bool) {
+	v := m.menu_title
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTitle returns the old "title" field's value of the SysMenu entity.
+// OldMenuTitle returns the old "menu_title" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldTitle(ctx context.Context) (v string, err error) {
+func (m *SysMenuMutation) OldMenuTitle(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
+		return v, errors.New("OldMenuTitle is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTitle requires an ID field in the mutation")
+		return v, errors.New("OldMenuTitle requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
+		return v, fmt.Errorf("querying old value for OldMenuTitle: %w", err)
 	}
-	return oldValue.Title, nil
+	return oldValue.MenuTitle, nil
 }
 
-// ClearTitle clears the value of the "title" field.
-func (m *SysMenuMutation) ClearTitle() {
-	m.title = nil
-	m.clearedFields[sysmenu.FieldTitle] = struct{}{}
+// ClearMenuTitle clears the value of the "menu_title" field.
+func (m *SysMenuMutation) ClearMenuTitle() {
+	m.menu_title = nil
+	m.clearedFields[sysmenu.FieldMenuTitle] = struct{}{}
 }
 
-// TitleCleared returns if the "title" field was cleared in this mutation.
-func (m *SysMenuMutation) TitleCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldTitle]
+// MenuTitleCleared returns if the "menu_title" field was cleared in this mutation.
+func (m *SysMenuMutation) MenuTitleCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldMenuTitle]
 	return ok
 }
 
-// ResetTitle resets all changes to the "title" field.
-func (m *SysMenuMutation) ResetTitle() {
-	m.title = nil
-	delete(m.clearedFields, sysmenu.FieldTitle)
+// ResetMenuTitle resets all changes to the "menu_title" field.
+func (m *SysMenuMutation) ResetMenuTitle() {
+	m.menu_title = nil
+	delete(m.clearedFields, sysmenu.FieldMenuTitle)
 }
 
-// SetIcon sets the "icon" field.
-func (m *SysMenuMutation) SetIcon(s string) {
-	m.icon = &s
+// SetMenuIcon sets the "menu_icon" field.
+func (m *SysMenuMutation) SetMenuIcon(s string) {
+	m.menu_icon = &s
 }
 
-// Icon returns the value of the "icon" field in the mutation.
-func (m *SysMenuMutation) Icon() (r string, exists bool) {
-	v := m.icon
+// MenuIcon returns the value of the "menu_icon" field in the mutation.
+func (m *SysMenuMutation) MenuIcon() (r string, exists bool) {
+	v := m.menu_icon
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldIcon returns the old "icon" field's value of the SysMenu entity.
+// OldMenuIcon returns the old "menu_icon" field's value of the SysMenu entity.
 // If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldIcon(ctx context.Context) (v string, err error) {
+func (m *SysMenuMutation) OldMenuIcon(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIcon is only allowed on UpdateOne operations")
+		return v, errors.New("OldMenuIcon is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIcon requires an ID field in the mutation")
+		return v, errors.New("OldMenuIcon requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIcon: %w", err)
+		return v, fmt.Errorf("querying old value for OldMenuIcon: %w", err)
 	}
-	return oldValue.Icon, nil
+	return oldValue.MenuIcon, nil
 }
 
-// ClearIcon clears the value of the "icon" field.
-func (m *SysMenuMutation) ClearIcon() {
-	m.icon = nil
-	m.clearedFields[sysmenu.FieldIcon] = struct{}{}
+// ClearMenuIcon clears the value of the "menu_icon" field.
+func (m *SysMenuMutation) ClearMenuIcon() {
+	m.menu_icon = nil
+	m.clearedFields[sysmenu.FieldMenuIcon] = struct{}{}
 }
 
-// IconCleared returns if the "icon" field was cleared in this mutation.
-func (m *SysMenuMutation) IconCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldIcon]
+// MenuIconCleared returns if the "menu_icon" field was cleared in this mutation.
+func (m *SysMenuMutation) MenuIconCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldMenuIcon]
 	return ok
 }
 
-// ResetIcon resets all changes to the "icon" field.
-func (m *SysMenuMutation) ResetIcon() {
-	m.icon = nil
-	delete(m.clearedFields, sysmenu.FieldIcon)
+// ResetMenuIcon resets all changes to the "menu_icon" field.
+func (m *SysMenuMutation) ResetMenuIcon() {
+	m.menu_icon = nil
+	delete(m.clearedFields, sysmenu.FieldMenuIcon)
 }
 
 // SetCondition sets the "condition" field.
@@ -8450,146 +8448,6 @@ func (m *SysMenuMutation) ResetMenuType() {
 	delete(m.clearedFields, sysmenu.FieldMenuType)
 }
 
-// SetWeigh sets the "weigh" field.
-func (m *SysMenuMutation) SetWeigh(i int64) {
-	m.weigh = &i
-	m.addweigh = nil
-}
-
-// Weigh returns the value of the "weigh" field in the mutation.
-func (m *SysMenuMutation) Weigh() (r int64, exists bool) {
-	v := m.weigh
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldWeigh returns the old "weigh" field's value of the SysMenu entity.
-// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldWeigh(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWeigh is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWeigh requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWeigh: %w", err)
-	}
-	return oldValue.Weigh, nil
-}
-
-// AddWeigh adds i to the "weigh" field.
-func (m *SysMenuMutation) AddWeigh(i int64) {
-	if m.addweigh != nil {
-		*m.addweigh += i
-	} else {
-		m.addweigh = &i
-	}
-}
-
-// AddedWeigh returns the value that was added to the "weigh" field in this mutation.
-func (m *SysMenuMutation) AddedWeigh() (r int64, exists bool) {
-	v := m.addweigh
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearWeigh clears the value of the "weigh" field.
-func (m *SysMenuMutation) ClearWeigh() {
-	m.weigh = nil
-	m.addweigh = nil
-	m.clearedFields[sysmenu.FieldWeigh] = struct{}{}
-}
-
-// WeighCleared returns if the "weigh" field was cleared in this mutation.
-func (m *SysMenuMutation) WeighCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldWeigh]
-	return ok
-}
-
-// ResetWeigh resets all changes to the "weigh" field.
-func (m *SysMenuMutation) ResetWeigh() {
-	m.weigh = nil
-	m.addweigh = nil
-	delete(m.clearedFields, sysmenu.FieldWeigh)
-}
-
-// SetIsHide sets the "is_hide" field.
-func (m *SysMenuMutation) SetIsHide(i int8) {
-	m.is_hide = &i
-	m.addis_hide = nil
-}
-
-// IsHide returns the value of the "is_hide" field in the mutation.
-func (m *SysMenuMutation) IsHide() (r int8, exists bool) {
-	v := m.is_hide
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsHide returns the old "is_hide" field's value of the SysMenu entity.
-// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldIsHide(ctx context.Context) (v int8, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsHide is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsHide requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsHide: %w", err)
-	}
-	return oldValue.IsHide, nil
-}
-
-// AddIsHide adds i to the "is_hide" field.
-func (m *SysMenuMutation) AddIsHide(i int8) {
-	if m.addis_hide != nil {
-		*m.addis_hide += i
-	} else {
-		m.addis_hide = &i
-	}
-}
-
-// AddedIsHide returns the value that was added to the "is_hide" field in this mutation.
-func (m *SysMenuMutation) AddedIsHide() (r int8, exists bool) {
-	v := m.addis_hide
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearIsHide clears the value of the "is_hide" field.
-func (m *SysMenuMutation) ClearIsHide() {
-	m.is_hide = nil
-	m.addis_hide = nil
-	m.clearedFields[sysmenu.FieldIsHide] = struct{}{}
-}
-
-// IsHideCleared returns if the "is_hide" field was cleared in this mutation.
-func (m *SysMenuMutation) IsHideCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldIsHide]
-	return ok
-}
-
-// ResetIsHide resets all changes to the "is_hide" field.
-func (m *SysMenuMutation) ResetIsHide() {
-	m.is_hide = nil
-	m.addis_hide = nil
-	delete(m.clearedFields, sysmenu.FieldIsHide)
-}
-
 // SetPath sets the "path" field.
 func (m *SysMenuMutation) SetPath(s string) {
 	m._path = &s
@@ -8686,76 +8544,6 @@ func (m *SysMenuMutation) ComponentCleared() bool {
 func (m *SysMenuMutation) ResetComponent() {
 	m.component = nil
 	delete(m.clearedFields, sysmenu.FieldComponent)
-}
-
-// SetIsLink sets the "is_link" field.
-func (m *SysMenuMutation) SetIsLink(i int8) {
-	m.is_link = &i
-	m.addis_link = nil
-}
-
-// IsLink returns the value of the "is_link" field in the mutation.
-func (m *SysMenuMutation) IsLink() (r int8, exists bool) {
-	v := m.is_link
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsLink returns the old "is_link" field's value of the SysMenu entity.
-// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldIsLink(ctx context.Context) (v int8, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsLink is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsLink requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsLink: %w", err)
-	}
-	return oldValue.IsLink, nil
-}
-
-// AddIsLink adds i to the "is_link" field.
-func (m *SysMenuMutation) AddIsLink(i int8) {
-	if m.addis_link != nil {
-		*m.addis_link += i
-	} else {
-		m.addis_link = &i
-	}
-}
-
-// AddedIsLink returns the value that was added to the "is_link" field in this mutation.
-func (m *SysMenuMutation) AddedIsLink() (r int8, exists bool) {
-	v := m.addis_link
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearIsLink clears the value of the "is_link" field.
-func (m *SysMenuMutation) ClearIsLink() {
-	m.is_link = nil
-	m.addis_link = nil
-	m.clearedFields[sysmenu.FieldIsLink] = struct{}{}
-}
-
-// IsLinkCleared returns if the "is_link" field was cleared in this mutation.
-func (m *SysMenuMutation) IsLinkCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldIsLink]
-	return ok
-}
-
-// ResetIsLink resets all changes to the "is_link" field.
-func (m *SysMenuMutation) ResetIsLink() {
-	m.is_link = nil
-	m.addis_link = nil
-	delete(m.clearedFields, sysmenu.FieldIsLink)
 }
 
 // SetModuleType sets the "module_type" field.
@@ -8877,6 +8665,76 @@ func (m *SysMenuMutation) ResetModelID() {
 	delete(m.clearedFields, sysmenu.FieldModelID)
 }
 
+// SetIsHide sets the "is_hide" field.
+func (m *SysMenuMutation) SetIsHide(i int8) {
+	m.is_hide = &i
+	m.addis_hide = nil
+}
+
+// IsHide returns the value of the "is_hide" field in the mutation.
+func (m *SysMenuMutation) IsHide() (r int8, exists bool) {
+	v := m.is_hide
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsHide returns the old "is_hide" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsHide(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsHide is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsHide requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsHide: %w", err)
+	}
+	return oldValue.IsHide, nil
+}
+
+// AddIsHide adds i to the "is_hide" field.
+func (m *SysMenuMutation) AddIsHide(i int8) {
+	if m.addis_hide != nil {
+		*m.addis_hide += i
+	} else {
+		m.addis_hide = &i
+	}
+}
+
+// AddedIsHide returns the value that was added to the "is_hide" field in this mutation.
+func (m *SysMenuMutation) AddedIsHide() (r int8, exists bool) {
+	v := m.addis_hide
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIsHide clears the value of the "is_hide" field.
+func (m *SysMenuMutation) ClearIsHide() {
+	m.is_hide = nil
+	m.addis_hide = nil
+	m.clearedFields[sysmenu.FieldIsHide] = struct{}{}
+}
+
+// IsHideCleared returns if the "is_hide" field was cleared in this mutation.
+func (m *SysMenuMutation) IsHideCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldIsHide]
+	return ok
+}
+
+// ResetIsHide resets all changes to the "is_hide" field.
+func (m *SysMenuMutation) ResetIsHide() {
+	m.is_hide = nil
+	m.addis_hide = nil
+	delete(m.clearedFields, sysmenu.FieldIsHide)
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (m *SysMenuMutation) SetIsIframe(i int8) {
 	m.is_iframe = &i
@@ -8945,6 +8803,76 @@ func (m *SysMenuMutation) ResetIsIframe() {
 	m.is_iframe = nil
 	m.addis_iframe = nil
 	delete(m.clearedFields, sysmenu.FieldIsIframe)
+}
+
+// SetIsLink sets the "is_link" field.
+func (m *SysMenuMutation) SetIsLink(i int8) {
+	m.is_link = &i
+	m.addis_link = nil
+}
+
+// IsLink returns the value of the "is_link" field in the mutation.
+func (m *SysMenuMutation) IsLink() (r int8, exists bool) {
+	v := m.is_link
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsLink returns the old "is_link" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsLink(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsLink is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsLink requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsLink: %w", err)
+	}
+	return oldValue.IsLink, nil
+}
+
+// AddIsLink adds i to the "is_link" field.
+func (m *SysMenuMutation) AddIsLink(i int8) {
+	if m.addis_link != nil {
+		*m.addis_link += i
+	} else {
+		m.addis_link = &i
+	}
+}
+
+// AddedIsLink returns the value that was added to the "is_link" field in this mutation.
+func (m *SysMenuMutation) AddedIsLink() (r int8, exists bool) {
+	v := m.addis_link
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIsLink clears the value of the "is_link" field.
+func (m *SysMenuMutation) ClearIsLink() {
+	m.is_link = nil
+	m.addis_link = nil
+	m.clearedFields[sysmenu.FieldIsLink] = struct{}{}
+}
+
+// IsLinkCleared returns if the "is_link" field was cleared in this mutation.
+func (m *SysMenuMutation) IsLinkCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldIsLink]
+	return ok
+}
+
+// ResetIsLink resets all changes to the "is_link" field.
+func (m *SysMenuMutation) ResetIsLink() {
+	m.is_link = nil
+	m.addis_link = nil
+	delete(m.clearedFields, sysmenu.FieldIsLink)
 }
 
 // SetIsCached sets the "is_cached" field.
@@ -9017,55 +8945,6 @@ func (m *SysMenuMutation) ResetIsCached() {
 	delete(m.clearedFields, sysmenu.FieldIsCached)
 }
 
-// SetRedirect sets the "redirect" field.
-func (m *SysMenuMutation) SetRedirect(s string) {
-	m.redirect = &s
-}
-
-// Redirect returns the value of the "redirect" field in the mutation.
-func (m *SysMenuMutation) Redirect() (r string, exists bool) {
-	v := m.redirect
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldRedirect returns the old "redirect" field's value of the SysMenu entity.
-// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysMenuMutation) OldRedirect(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRedirect is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRedirect requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRedirect: %w", err)
-	}
-	return oldValue.Redirect, nil
-}
-
-// ClearRedirect clears the value of the "redirect" field.
-func (m *SysMenuMutation) ClearRedirect() {
-	m.redirect = nil
-	m.clearedFields[sysmenu.FieldRedirect] = struct{}{}
-}
-
-// RedirectCleared returns if the "redirect" field was cleared in this mutation.
-func (m *SysMenuMutation) RedirectCleared() bool {
-	_, ok := m.clearedFields[sysmenu.FieldRedirect]
-	return ok
-}
-
-// ResetRedirect resets all changes to the "redirect" field.
-func (m *SysMenuMutation) ResetRedirect() {
-	m.redirect = nil
-	delete(m.clearedFields, sysmenu.FieldRedirect)
-}
-
 // SetIsAffix sets the "is_affix" field.
 func (m *SysMenuMutation) SetIsAffix(i int8) {
 	m.is_affix = &i
@@ -9134,6 +9013,55 @@ func (m *SysMenuMutation) ResetIsAffix() {
 	m.is_affix = nil
 	m.addis_affix = nil
 	delete(m.clearedFields, sysmenu.FieldIsAffix)
+}
+
+// SetRedirect sets the "redirect" field.
+func (m *SysMenuMutation) SetRedirect(s string) {
+	m.redirect = &s
+}
+
+// Redirect returns the value of the "redirect" field in the mutation.
+func (m *SysMenuMutation) Redirect() (r string, exists bool) {
+	v := m.redirect
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRedirect returns the old "redirect" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldRedirect(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRedirect is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRedirect requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRedirect: %w", err)
+	}
+	return oldValue.Redirect, nil
+}
+
+// ClearRedirect clears the value of the "redirect" field.
+func (m *SysMenuMutation) ClearRedirect() {
+	m.redirect = nil
+	m.clearedFields[sysmenu.FieldRedirect] = struct{}{}
+}
+
+// RedirectCleared returns if the "redirect" field was cleared in this mutation.
+func (m *SysMenuMutation) RedirectCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldRedirect]
+	return ok
+}
+
+// ResetRedirect resets all changes to the "redirect" field.
+func (m *SysMenuMutation) ResetRedirect() {
+	m.redirect = nil
+	delete(m.clearedFields, sysmenu.FieldRedirect)
 }
 
 // SetLinkURL sets the "link_url" field.
@@ -9273,7 +9201,7 @@ func (m *SysMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuMutation) Fields() []string {
-	fields := make([]string, 0, 28)
+	fields := make([]string, 0, 27)
 	if m.created_at != nil {
 		fields = append(fields, sysmenu.FieldCreatedAt)
 	}
@@ -9307,14 +9235,14 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.pid != nil {
 		fields = append(fields, sysmenu.FieldPid)
 	}
-	if m.name != nil {
-		fields = append(fields, sysmenu.FieldName)
+	if m.menu_name != nil {
+		fields = append(fields, sysmenu.FieldMenuName)
 	}
-	if m.title != nil {
-		fields = append(fields, sysmenu.FieldTitle)
+	if m.menu_title != nil {
+		fields = append(fields, sysmenu.FieldMenuTitle)
 	}
-	if m.icon != nil {
-		fields = append(fields, sysmenu.FieldIcon)
+	if m.menu_icon != nil {
+		fields = append(fields, sysmenu.FieldMenuIcon)
 	}
 	if m.condition != nil {
 		fields = append(fields, sysmenu.FieldCondition)
@@ -9322,20 +9250,11 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.menu_type != nil {
 		fields = append(fields, sysmenu.FieldMenuType)
 	}
-	if m.weigh != nil {
-		fields = append(fields, sysmenu.FieldWeigh)
-	}
-	if m.is_hide != nil {
-		fields = append(fields, sysmenu.FieldIsHide)
-	}
 	if m._path != nil {
 		fields = append(fields, sysmenu.FieldPath)
 	}
 	if m.component != nil {
 		fields = append(fields, sysmenu.FieldComponent)
-	}
-	if m.is_link != nil {
-		fields = append(fields, sysmenu.FieldIsLink)
 	}
 	if m.module_type != nil {
 		fields = append(fields, sysmenu.FieldModuleType)
@@ -9343,17 +9262,23 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.model_id != nil {
 		fields = append(fields, sysmenu.FieldModelID)
 	}
+	if m.is_hide != nil {
+		fields = append(fields, sysmenu.FieldIsHide)
+	}
 	if m.is_iframe != nil {
 		fields = append(fields, sysmenu.FieldIsIframe)
+	}
+	if m.is_link != nil {
+		fields = append(fields, sysmenu.FieldIsLink)
 	}
 	if m.is_cached != nil {
 		fields = append(fields, sysmenu.FieldIsCached)
 	}
-	if m.redirect != nil {
-		fields = append(fields, sysmenu.FieldRedirect)
-	}
 	if m.is_affix != nil {
 		fields = append(fields, sysmenu.FieldIsAffix)
+	}
+	if m.redirect != nil {
+		fields = append(fields, sysmenu.FieldRedirect)
 	}
 	if m.link_url != nil {
 		fields = append(fields, sysmenu.FieldLinkURL)
@@ -9388,38 +9313,36 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 		return m.DelFlag()
 	case sysmenu.FieldPid:
 		return m.Pid()
-	case sysmenu.FieldName:
-		return m.Name()
-	case sysmenu.FieldTitle:
-		return m.Title()
-	case sysmenu.FieldIcon:
-		return m.Icon()
+	case sysmenu.FieldMenuName:
+		return m.MenuName()
+	case sysmenu.FieldMenuTitle:
+		return m.MenuTitle()
+	case sysmenu.FieldMenuIcon:
+		return m.MenuIcon()
 	case sysmenu.FieldCondition:
 		return m.Condition()
 	case sysmenu.FieldMenuType:
 		return m.MenuType()
-	case sysmenu.FieldWeigh:
-		return m.Weigh()
-	case sysmenu.FieldIsHide:
-		return m.IsHide()
 	case sysmenu.FieldPath:
 		return m.Path()
 	case sysmenu.FieldComponent:
 		return m.Component()
-	case sysmenu.FieldIsLink:
-		return m.IsLink()
 	case sysmenu.FieldModuleType:
 		return m.ModuleType()
 	case sysmenu.FieldModelID:
 		return m.ModelID()
+	case sysmenu.FieldIsHide:
+		return m.IsHide()
 	case sysmenu.FieldIsIframe:
 		return m.IsIframe()
+	case sysmenu.FieldIsLink:
+		return m.IsLink()
 	case sysmenu.FieldIsCached:
 		return m.IsCached()
-	case sysmenu.FieldRedirect:
-		return m.Redirect()
 	case sysmenu.FieldIsAffix:
 		return m.IsAffix()
+	case sysmenu.FieldRedirect:
+		return m.Redirect()
 	case sysmenu.FieldLinkURL:
 		return m.LinkURL()
 	}
@@ -9453,38 +9376,36 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDelFlag(ctx)
 	case sysmenu.FieldPid:
 		return m.OldPid(ctx)
-	case sysmenu.FieldName:
-		return m.OldName(ctx)
-	case sysmenu.FieldTitle:
-		return m.OldTitle(ctx)
-	case sysmenu.FieldIcon:
-		return m.OldIcon(ctx)
+	case sysmenu.FieldMenuName:
+		return m.OldMenuName(ctx)
+	case sysmenu.FieldMenuTitle:
+		return m.OldMenuTitle(ctx)
+	case sysmenu.FieldMenuIcon:
+		return m.OldMenuIcon(ctx)
 	case sysmenu.FieldCondition:
 		return m.OldCondition(ctx)
 	case sysmenu.FieldMenuType:
 		return m.OldMenuType(ctx)
-	case sysmenu.FieldWeigh:
-		return m.OldWeigh(ctx)
-	case sysmenu.FieldIsHide:
-		return m.OldIsHide(ctx)
 	case sysmenu.FieldPath:
 		return m.OldPath(ctx)
 	case sysmenu.FieldComponent:
 		return m.OldComponent(ctx)
-	case sysmenu.FieldIsLink:
-		return m.OldIsLink(ctx)
 	case sysmenu.FieldModuleType:
 		return m.OldModuleType(ctx)
 	case sysmenu.FieldModelID:
 		return m.OldModelID(ctx)
+	case sysmenu.FieldIsHide:
+		return m.OldIsHide(ctx)
 	case sysmenu.FieldIsIframe:
 		return m.OldIsIframe(ctx)
+	case sysmenu.FieldIsLink:
+		return m.OldIsLink(ctx)
 	case sysmenu.FieldIsCached:
 		return m.OldIsCached(ctx)
-	case sysmenu.FieldRedirect:
-		return m.OldRedirect(ctx)
 	case sysmenu.FieldIsAffix:
 		return m.OldIsAffix(ctx)
+	case sysmenu.FieldRedirect:
+		return m.OldRedirect(ctx)
 	case sysmenu.FieldLinkURL:
 		return m.OldLinkURL(ctx)
 	}
@@ -9573,26 +9494,26 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPid(v)
 		return nil
-	case sysmenu.FieldName:
+	case sysmenu.FieldMenuName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetMenuName(v)
 		return nil
-	case sysmenu.FieldTitle:
+	case sysmenu.FieldMenuTitle:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTitle(v)
+		m.SetMenuTitle(v)
 		return nil
-	case sysmenu.FieldIcon:
+	case sysmenu.FieldMenuIcon:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetIcon(v)
+		m.SetMenuIcon(v)
 		return nil
 	case sysmenu.FieldCondition:
 		v, ok := value.(string)
@@ -9608,20 +9529,6 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMenuType(v)
 		return nil
-	case sysmenu.FieldWeigh:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetWeigh(v)
-		return nil
-	case sysmenu.FieldIsHide:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsHide(v)
-		return nil
 	case sysmenu.FieldPath:
 		v, ok := value.(string)
 		if !ok {
@@ -9635,13 +9542,6 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetComponent(v)
-		return nil
-	case sysmenu.FieldIsLink:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsLink(v)
 		return nil
 	case sysmenu.FieldModuleType:
 		v, ok := value.(string)
@@ -9657,12 +9557,26 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetModelID(v)
 		return nil
+	case sysmenu.FieldIsHide:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsHide(v)
+		return nil
 	case sysmenu.FieldIsIframe:
 		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsIframe(v)
+		return nil
+	case sysmenu.FieldIsLink:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsLink(v)
 		return nil
 	case sysmenu.FieldIsCached:
 		v, ok := value.(int8)
@@ -9671,19 +9585,19 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIsCached(v)
 		return nil
-	case sysmenu.FieldRedirect:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetRedirect(v)
-		return nil
 	case sysmenu.FieldIsAffix:
 		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsAffix(v)
+		return nil
+	case sysmenu.FieldRedirect:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRedirect(v)
 		return nil
 	case sysmenu.FieldLinkURL:
 		v, ok := value.(string)
@@ -9724,20 +9638,17 @@ func (m *SysMenuMutation) AddedFields() []string {
 	if m.addmenu_type != nil {
 		fields = append(fields, sysmenu.FieldMenuType)
 	}
-	if m.addweigh != nil {
-		fields = append(fields, sysmenu.FieldWeigh)
+	if m.addmodel_id != nil {
+		fields = append(fields, sysmenu.FieldModelID)
 	}
 	if m.addis_hide != nil {
 		fields = append(fields, sysmenu.FieldIsHide)
 	}
-	if m.addis_link != nil {
-		fields = append(fields, sysmenu.FieldIsLink)
-	}
-	if m.addmodel_id != nil {
-		fields = append(fields, sysmenu.FieldModelID)
-	}
 	if m.addis_iframe != nil {
 		fields = append(fields, sysmenu.FieldIsIframe)
+	}
+	if m.addis_link != nil {
+		fields = append(fields, sysmenu.FieldIsLink)
 	}
 	if m.addis_cached != nil {
 		fields = append(fields, sysmenu.FieldIsCached)
@@ -9769,16 +9680,14 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedPid()
 	case sysmenu.FieldMenuType:
 		return m.AddedMenuType()
-	case sysmenu.FieldWeigh:
-		return m.AddedWeigh()
-	case sysmenu.FieldIsHide:
-		return m.AddedIsHide()
-	case sysmenu.FieldIsLink:
-		return m.AddedIsLink()
 	case sysmenu.FieldModelID:
 		return m.AddedModelID()
+	case sysmenu.FieldIsHide:
+		return m.AddedIsHide()
 	case sysmenu.FieldIsIframe:
 		return m.AddedIsIframe()
+	case sysmenu.FieldIsLink:
+		return m.AddedIsLink()
 	case sysmenu.FieldIsCached:
 		return m.AddedIsCached()
 	case sysmenu.FieldIsAffix:
@@ -9848,12 +9757,12 @@ func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddMenuType(v)
 		return nil
-	case sysmenu.FieldWeigh:
+	case sysmenu.FieldModelID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddWeigh(v)
+		m.AddModelID(v)
 		return nil
 	case sysmenu.FieldIsHide:
 		v, ok := value.(int8)
@@ -9862,26 +9771,19 @@ func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddIsHide(v)
 		return nil
-	case sysmenu.FieldIsLink:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddIsLink(v)
-		return nil
-	case sysmenu.FieldModelID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddModelID(v)
-		return nil
 	case sysmenu.FieldIsIframe:
 		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddIsIframe(v)
+		return nil
+	case sysmenu.FieldIsLink:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIsLink(v)
 		return nil
 	case sysmenu.FieldIsCached:
 		v, ok := value.(int8)
@@ -9929,14 +9831,14 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldSort) {
 		fields = append(fields, sysmenu.FieldSort)
 	}
-	if m.FieldCleared(sysmenu.FieldName) {
-		fields = append(fields, sysmenu.FieldName)
+	if m.FieldCleared(sysmenu.FieldMenuName) {
+		fields = append(fields, sysmenu.FieldMenuName)
 	}
-	if m.FieldCleared(sysmenu.FieldTitle) {
-		fields = append(fields, sysmenu.FieldTitle)
+	if m.FieldCleared(sysmenu.FieldMenuTitle) {
+		fields = append(fields, sysmenu.FieldMenuTitle)
 	}
-	if m.FieldCleared(sysmenu.FieldIcon) {
-		fields = append(fields, sysmenu.FieldIcon)
+	if m.FieldCleared(sysmenu.FieldMenuIcon) {
+		fields = append(fields, sysmenu.FieldMenuIcon)
 	}
 	if m.FieldCleared(sysmenu.FieldCondition) {
 		fields = append(fields, sysmenu.FieldCondition)
@@ -9944,20 +9846,11 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldMenuType) {
 		fields = append(fields, sysmenu.FieldMenuType)
 	}
-	if m.FieldCleared(sysmenu.FieldWeigh) {
-		fields = append(fields, sysmenu.FieldWeigh)
-	}
-	if m.FieldCleared(sysmenu.FieldIsHide) {
-		fields = append(fields, sysmenu.FieldIsHide)
-	}
 	if m.FieldCleared(sysmenu.FieldPath) {
 		fields = append(fields, sysmenu.FieldPath)
 	}
 	if m.FieldCleared(sysmenu.FieldComponent) {
 		fields = append(fields, sysmenu.FieldComponent)
-	}
-	if m.FieldCleared(sysmenu.FieldIsLink) {
-		fields = append(fields, sysmenu.FieldIsLink)
 	}
 	if m.FieldCleared(sysmenu.FieldModuleType) {
 		fields = append(fields, sysmenu.FieldModuleType)
@@ -9965,17 +9858,23 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	if m.FieldCleared(sysmenu.FieldModelID) {
 		fields = append(fields, sysmenu.FieldModelID)
 	}
+	if m.FieldCleared(sysmenu.FieldIsHide) {
+		fields = append(fields, sysmenu.FieldIsHide)
+	}
 	if m.FieldCleared(sysmenu.FieldIsIframe) {
 		fields = append(fields, sysmenu.FieldIsIframe)
+	}
+	if m.FieldCleared(sysmenu.FieldIsLink) {
+		fields = append(fields, sysmenu.FieldIsLink)
 	}
 	if m.FieldCleared(sysmenu.FieldIsCached) {
 		fields = append(fields, sysmenu.FieldIsCached)
 	}
-	if m.FieldCleared(sysmenu.FieldRedirect) {
-		fields = append(fields, sysmenu.FieldRedirect)
-	}
 	if m.FieldCleared(sysmenu.FieldIsAffix) {
 		fields = append(fields, sysmenu.FieldIsAffix)
+	}
+	if m.FieldCleared(sysmenu.FieldRedirect) {
+		fields = append(fields, sysmenu.FieldRedirect)
 	}
 	if m.FieldCleared(sysmenu.FieldLinkURL) {
 		fields = append(fields, sysmenu.FieldLinkURL)
@@ -10018,14 +9917,14 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldSort:
 		m.ClearSort()
 		return nil
-	case sysmenu.FieldName:
-		m.ClearName()
+	case sysmenu.FieldMenuName:
+		m.ClearMenuName()
 		return nil
-	case sysmenu.FieldTitle:
-		m.ClearTitle()
+	case sysmenu.FieldMenuTitle:
+		m.ClearMenuTitle()
 		return nil
-	case sysmenu.FieldIcon:
-		m.ClearIcon()
+	case sysmenu.FieldMenuIcon:
+		m.ClearMenuIcon()
 		return nil
 	case sysmenu.FieldCondition:
 		m.ClearCondition()
@@ -10033,20 +9932,11 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldMenuType:
 		m.ClearMenuType()
 		return nil
-	case sysmenu.FieldWeigh:
-		m.ClearWeigh()
-		return nil
-	case sysmenu.FieldIsHide:
-		m.ClearIsHide()
-		return nil
 	case sysmenu.FieldPath:
 		m.ClearPath()
 		return nil
 	case sysmenu.FieldComponent:
 		m.ClearComponent()
-		return nil
-	case sysmenu.FieldIsLink:
-		m.ClearIsLink()
 		return nil
 	case sysmenu.FieldModuleType:
 		m.ClearModuleType()
@@ -10054,17 +9944,23 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldModelID:
 		m.ClearModelID()
 		return nil
+	case sysmenu.FieldIsHide:
+		m.ClearIsHide()
+		return nil
 	case sysmenu.FieldIsIframe:
 		m.ClearIsIframe()
+		return nil
+	case sysmenu.FieldIsLink:
+		m.ClearIsLink()
 		return nil
 	case sysmenu.FieldIsCached:
 		m.ClearIsCached()
 		return nil
-	case sysmenu.FieldRedirect:
-		m.ClearRedirect()
-		return nil
 	case sysmenu.FieldIsAffix:
 		m.ClearIsAffix()
+		return nil
+	case sysmenu.FieldRedirect:
+		m.ClearRedirect()
 		return nil
 	case sysmenu.FieldLinkURL:
 		m.ClearLinkURL()
@@ -10110,14 +10006,14 @@ func (m *SysMenuMutation) ResetField(name string) error {
 	case sysmenu.FieldPid:
 		m.ResetPid()
 		return nil
-	case sysmenu.FieldName:
-		m.ResetName()
+	case sysmenu.FieldMenuName:
+		m.ResetMenuName()
 		return nil
-	case sysmenu.FieldTitle:
-		m.ResetTitle()
+	case sysmenu.FieldMenuTitle:
+		m.ResetMenuTitle()
 		return nil
-	case sysmenu.FieldIcon:
-		m.ResetIcon()
+	case sysmenu.FieldMenuIcon:
+		m.ResetMenuIcon()
 		return nil
 	case sysmenu.FieldCondition:
 		m.ResetCondition()
@@ -10125,20 +10021,11 @@ func (m *SysMenuMutation) ResetField(name string) error {
 	case sysmenu.FieldMenuType:
 		m.ResetMenuType()
 		return nil
-	case sysmenu.FieldWeigh:
-		m.ResetWeigh()
-		return nil
-	case sysmenu.FieldIsHide:
-		m.ResetIsHide()
-		return nil
 	case sysmenu.FieldPath:
 		m.ResetPath()
 		return nil
 	case sysmenu.FieldComponent:
 		m.ResetComponent()
-		return nil
-	case sysmenu.FieldIsLink:
-		m.ResetIsLink()
 		return nil
 	case sysmenu.FieldModuleType:
 		m.ResetModuleType()
@@ -10146,17 +10033,23 @@ func (m *SysMenuMutation) ResetField(name string) error {
 	case sysmenu.FieldModelID:
 		m.ResetModelID()
 		return nil
+	case sysmenu.FieldIsHide:
+		m.ResetIsHide()
+		return nil
 	case sysmenu.FieldIsIframe:
 		m.ResetIsIframe()
+		return nil
+	case sysmenu.FieldIsLink:
+		m.ResetIsLink()
 		return nil
 	case sysmenu.FieldIsCached:
 		m.ResetIsCached()
 		return nil
-	case sysmenu.FieldRedirect:
-		m.ResetRedirect()
-		return nil
 	case sysmenu.FieldIsAffix:
 		m.ResetIsAffix()
+		return nil
+	case sysmenu.FieldRedirect:
+		m.ResetRedirect()
 		return nil
 	case sysmenu.FieldLinkURL:
 		m.ResetLinkURL()

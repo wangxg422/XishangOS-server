@@ -272,63 +272,63 @@ func (smu *SysMenuUpdate) AddPid(i int64) *SysMenuUpdate {
 	return smu
 }
 
-// SetName sets the "name" field.
-func (smu *SysMenuUpdate) SetName(s string) *SysMenuUpdate {
-	smu.mutation.SetName(s)
+// SetMenuName sets the "menu_name" field.
+func (smu *SysMenuUpdate) SetMenuName(s string) *SysMenuUpdate {
+	smu.mutation.SetMenuName(s)
 	return smu
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableName(s *string) *SysMenuUpdate {
+// SetNillableMenuName sets the "menu_name" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableMenuName(s *string) *SysMenuUpdate {
 	if s != nil {
-		smu.SetName(*s)
+		smu.SetMenuName(*s)
 	}
 	return smu
 }
 
-// ClearName clears the value of the "name" field.
-func (smu *SysMenuUpdate) ClearName() *SysMenuUpdate {
-	smu.mutation.ClearName()
+// ClearMenuName clears the value of the "menu_name" field.
+func (smu *SysMenuUpdate) ClearMenuName() *SysMenuUpdate {
+	smu.mutation.ClearMenuName()
 	return smu
 }
 
-// SetTitle sets the "title" field.
-func (smu *SysMenuUpdate) SetTitle(s string) *SysMenuUpdate {
-	smu.mutation.SetTitle(s)
+// SetMenuTitle sets the "menu_title" field.
+func (smu *SysMenuUpdate) SetMenuTitle(s string) *SysMenuUpdate {
+	smu.mutation.SetMenuTitle(s)
 	return smu
 }
 
-// SetNillableTitle sets the "title" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableTitle(s *string) *SysMenuUpdate {
+// SetNillableMenuTitle sets the "menu_title" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableMenuTitle(s *string) *SysMenuUpdate {
 	if s != nil {
-		smu.SetTitle(*s)
+		smu.SetMenuTitle(*s)
 	}
 	return smu
 }
 
-// ClearTitle clears the value of the "title" field.
-func (smu *SysMenuUpdate) ClearTitle() *SysMenuUpdate {
-	smu.mutation.ClearTitle()
+// ClearMenuTitle clears the value of the "menu_title" field.
+func (smu *SysMenuUpdate) ClearMenuTitle() *SysMenuUpdate {
+	smu.mutation.ClearMenuTitle()
 	return smu
 }
 
-// SetIcon sets the "icon" field.
-func (smu *SysMenuUpdate) SetIcon(s string) *SysMenuUpdate {
-	smu.mutation.SetIcon(s)
+// SetMenuIcon sets the "menu_icon" field.
+func (smu *SysMenuUpdate) SetMenuIcon(s string) *SysMenuUpdate {
+	smu.mutation.SetMenuIcon(s)
 	return smu
 }
 
-// SetNillableIcon sets the "icon" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableIcon(s *string) *SysMenuUpdate {
+// SetNillableMenuIcon sets the "menu_icon" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableMenuIcon(s *string) *SysMenuUpdate {
 	if s != nil {
-		smu.SetIcon(*s)
+		smu.SetMenuIcon(*s)
 	}
 	return smu
 }
 
-// ClearIcon clears the value of the "icon" field.
-func (smu *SysMenuUpdate) ClearIcon() *SysMenuUpdate {
-	smu.mutation.ClearIcon()
+// ClearMenuIcon clears the value of the "menu_icon" field.
+func (smu *SysMenuUpdate) ClearMenuIcon() *SysMenuUpdate {
+	smu.mutation.ClearMenuIcon()
 	return smu
 }
 
@@ -379,60 +379,6 @@ func (smu *SysMenuUpdate) ClearMenuType() *SysMenuUpdate {
 	return smu
 }
 
-// SetWeigh sets the "weigh" field.
-func (smu *SysMenuUpdate) SetWeigh(i int64) *SysMenuUpdate {
-	smu.mutation.ResetWeigh()
-	smu.mutation.SetWeigh(i)
-	return smu
-}
-
-// SetNillableWeigh sets the "weigh" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableWeigh(i *int64) *SysMenuUpdate {
-	if i != nil {
-		smu.SetWeigh(*i)
-	}
-	return smu
-}
-
-// AddWeigh adds i to the "weigh" field.
-func (smu *SysMenuUpdate) AddWeigh(i int64) *SysMenuUpdate {
-	smu.mutation.AddWeigh(i)
-	return smu
-}
-
-// ClearWeigh clears the value of the "weigh" field.
-func (smu *SysMenuUpdate) ClearWeigh() *SysMenuUpdate {
-	smu.mutation.ClearWeigh()
-	return smu
-}
-
-// SetIsHide sets the "is_hide" field.
-func (smu *SysMenuUpdate) SetIsHide(i int8) *SysMenuUpdate {
-	smu.mutation.ResetIsHide()
-	smu.mutation.SetIsHide(i)
-	return smu
-}
-
-// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableIsHide(i *int8) *SysMenuUpdate {
-	if i != nil {
-		smu.SetIsHide(*i)
-	}
-	return smu
-}
-
-// AddIsHide adds i to the "is_hide" field.
-func (smu *SysMenuUpdate) AddIsHide(i int8) *SysMenuUpdate {
-	smu.mutation.AddIsHide(i)
-	return smu
-}
-
-// ClearIsHide clears the value of the "is_hide" field.
-func (smu *SysMenuUpdate) ClearIsHide() *SysMenuUpdate {
-	smu.mutation.ClearIsHide()
-	return smu
-}
-
 // SetPath sets the "path" field.
 func (smu *SysMenuUpdate) SetPath(s string) *SysMenuUpdate {
 	smu.mutation.SetPath(s)
@@ -470,33 +416,6 @@ func (smu *SysMenuUpdate) SetNillableComponent(s *string) *SysMenuUpdate {
 // ClearComponent clears the value of the "component" field.
 func (smu *SysMenuUpdate) ClearComponent() *SysMenuUpdate {
 	smu.mutation.ClearComponent()
-	return smu
-}
-
-// SetIsLink sets the "is_link" field.
-func (smu *SysMenuUpdate) SetIsLink(i int8) *SysMenuUpdate {
-	smu.mutation.ResetIsLink()
-	smu.mutation.SetIsLink(i)
-	return smu
-}
-
-// SetNillableIsLink sets the "is_link" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableIsLink(i *int8) *SysMenuUpdate {
-	if i != nil {
-		smu.SetIsLink(*i)
-	}
-	return smu
-}
-
-// AddIsLink adds i to the "is_link" field.
-func (smu *SysMenuUpdate) AddIsLink(i int8) *SysMenuUpdate {
-	smu.mutation.AddIsLink(i)
-	return smu
-}
-
-// ClearIsLink clears the value of the "is_link" field.
-func (smu *SysMenuUpdate) ClearIsLink() *SysMenuUpdate {
-	smu.mutation.ClearIsLink()
 	return smu
 }
 
@@ -547,6 +466,33 @@ func (smu *SysMenuUpdate) ClearModelID() *SysMenuUpdate {
 	return smu
 }
 
+// SetIsHide sets the "is_hide" field.
+func (smu *SysMenuUpdate) SetIsHide(i int8) *SysMenuUpdate {
+	smu.mutation.ResetIsHide()
+	smu.mutation.SetIsHide(i)
+	return smu
+}
+
+// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableIsHide(i *int8) *SysMenuUpdate {
+	if i != nil {
+		smu.SetIsHide(*i)
+	}
+	return smu
+}
+
+// AddIsHide adds i to the "is_hide" field.
+func (smu *SysMenuUpdate) AddIsHide(i int8) *SysMenuUpdate {
+	smu.mutation.AddIsHide(i)
+	return smu
+}
+
+// ClearIsHide clears the value of the "is_hide" field.
+func (smu *SysMenuUpdate) ClearIsHide() *SysMenuUpdate {
+	smu.mutation.ClearIsHide()
+	return smu
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (smu *SysMenuUpdate) SetIsIframe(i int8) *SysMenuUpdate {
 	smu.mutation.ResetIsIframe()
@@ -571,6 +517,33 @@ func (smu *SysMenuUpdate) AddIsIframe(i int8) *SysMenuUpdate {
 // ClearIsIframe clears the value of the "is_iframe" field.
 func (smu *SysMenuUpdate) ClearIsIframe() *SysMenuUpdate {
 	smu.mutation.ClearIsIframe()
+	return smu
+}
+
+// SetIsLink sets the "is_link" field.
+func (smu *SysMenuUpdate) SetIsLink(i int8) *SysMenuUpdate {
+	smu.mutation.ResetIsLink()
+	smu.mutation.SetIsLink(i)
+	return smu
+}
+
+// SetNillableIsLink sets the "is_link" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableIsLink(i *int8) *SysMenuUpdate {
+	if i != nil {
+		smu.SetIsLink(*i)
+	}
+	return smu
+}
+
+// AddIsLink adds i to the "is_link" field.
+func (smu *SysMenuUpdate) AddIsLink(i int8) *SysMenuUpdate {
+	smu.mutation.AddIsLink(i)
+	return smu
+}
+
+// ClearIsLink clears the value of the "is_link" field.
+func (smu *SysMenuUpdate) ClearIsLink() *SysMenuUpdate {
+	smu.mutation.ClearIsLink()
 	return smu
 }
 
@@ -601,26 +574,6 @@ func (smu *SysMenuUpdate) ClearIsCached() *SysMenuUpdate {
 	return smu
 }
 
-// SetRedirect sets the "redirect" field.
-func (smu *SysMenuUpdate) SetRedirect(s string) *SysMenuUpdate {
-	smu.mutation.SetRedirect(s)
-	return smu
-}
-
-// SetNillableRedirect sets the "redirect" field if the given value is not nil.
-func (smu *SysMenuUpdate) SetNillableRedirect(s *string) *SysMenuUpdate {
-	if s != nil {
-		smu.SetRedirect(*s)
-	}
-	return smu
-}
-
-// ClearRedirect clears the value of the "redirect" field.
-func (smu *SysMenuUpdate) ClearRedirect() *SysMenuUpdate {
-	smu.mutation.ClearRedirect()
-	return smu
-}
-
 // SetIsAffix sets the "is_affix" field.
 func (smu *SysMenuUpdate) SetIsAffix(i int8) *SysMenuUpdate {
 	smu.mutation.ResetIsAffix()
@@ -645,6 +598,26 @@ func (smu *SysMenuUpdate) AddIsAffix(i int8) *SysMenuUpdate {
 // ClearIsAffix clears the value of the "is_affix" field.
 func (smu *SysMenuUpdate) ClearIsAffix() *SysMenuUpdate {
 	smu.mutation.ClearIsAffix()
+	return smu
+}
+
+// SetRedirect sets the "redirect" field.
+func (smu *SysMenuUpdate) SetRedirect(s string) *SysMenuUpdate {
+	smu.mutation.SetRedirect(s)
+	return smu
+}
+
+// SetNillableRedirect sets the "redirect" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableRedirect(s *string) *SysMenuUpdate {
+	if s != nil {
+		smu.SetRedirect(*s)
+	}
+	return smu
+}
+
+// ClearRedirect clears the value of the "redirect" field.
+func (smu *SysMenuUpdate) ClearRedirect() *SysMenuUpdate {
+	smu.mutation.ClearRedirect()
 	return smu
 }
 
@@ -838,23 +811,23 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := smu.mutation.AddedPid(); ok {
 		_spec.AddField(sysmenu.FieldPid, field.TypeInt64, value)
 	}
-	if value, ok := smu.mutation.Name(); ok {
-		_spec.SetField(sysmenu.FieldName, field.TypeString, value)
+	if value, ok := smu.mutation.MenuName(); ok {
+		_spec.SetField(sysmenu.FieldMenuName, field.TypeString, value)
 	}
-	if smu.mutation.NameCleared() {
-		_spec.ClearField(sysmenu.FieldName, field.TypeString)
+	if smu.mutation.MenuNameCleared() {
+		_spec.ClearField(sysmenu.FieldMenuName, field.TypeString)
 	}
-	if value, ok := smu.mutation.Title(); ok {
-		_spec.SetField(sysmenu.FieldTitle, field.TypeString, value)
+	if value, ok := smu.mutation.MenuTitle(); ok {
+		_spec.SetField(sysmenu.FieldMenuTitle, field.TypeString, value)
 	}
-	if smu.mutation.TitleCleared() {
-		_spec.ClearField(sysmenu.FieldTitle, field.TypeString)
+	if smu.mutation.MenuTitleCleared() {
+		_spec.ClearField(sysmenu.FieldMenuTitle, field.TypeString)
 	}
-	if value, ok := smu.mutation.Icon(); ok {
-		_spec.SetField(sysmenu.FieldIcon, field.TypeString, value)
+	if value, ok := smu.mutation.MenuIcon(); ok {
+		_spec.SetField(sysmenu.FieldMenuIcon, field.TypeString, value)
 	}
-	if smu.mutation.IconCleared() {
-		_spec.ClearField(sysmenu.FieldIcon, field.TypeString)
+	if smu.mutation.MenuIconCleared() {
+		_spec.ClearField(sysmenu.FieldMenuIcon, field.TypeString)
 	}
 	if value, ok := smu.mutation.Condition(); ok {
 		_spec.SetField(sysmenu.FieldCondition, field.TypeString, value)
@@ -871,24 +844,6 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if smu.mutation.MenuTypeCleared() {
 		_spec.ClearField(sysmenu.FieldMenuType, field.TypeInt8)
 	}
-	if value, ok := smu.mutation.Weigh(); ok {
-		_spec.SetField(sysmenu.FieldWeigh, field.TypeInt64, value)
-	}
-	if value, ok := smu.mutation.AddedWeigh(); ok {
-		_spec.AddField(sysmenu.FieldWeigh, field.TypeInt64, value)
-	}
-	if smu.mutation.WeighCleared() {
-		_spec.ClearField(sysmenu.FieldWeigh, field.TypeInt64)
-	}
-	if value, ok := smu.mutation.IsHide(); ok {
-		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
-	}
-	if value, ok := smu.mutation.AddedIsHide(); ok {
-		_spec.AddField(sysmenu.FieldIsHide, field.TypeInt8, value)
-	}
-	if smu.mutation.IsHideCleared() {
-		_spec.ClearField(sysmenu.FieldIsHide, field.TypeInt8)
-	}
 	if value, ok := smu.mutation.Path(); ok {
 		_spec.SetField(sysmenu.FieldPath, field.TypeString, value)
 	}
@@ -900,15 +855,6 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.ComponentCleared() {
 		_spec.ClearField(sysmenu.FieldComponent, field.TypeString)
-	}
-	if value, ok := smu.mutation.IsLink(); ok {
-		_spec.SetField(sysmenu.FieldIsLink, field.TypeInt8, value)
-	}
-	if value, ok := smu.mutation.AddedIsLink(); ok {
-		_spec.AddField(sysmenu.FieldIsLink, field.TypeInt8, value)
-	}
-	if smu.mutation.IsLinkCleared() {
-		_spec.ClearField(sysmenu.FieldIsLink, field.TypeInt8)
 	}
 	if value, ok := smu.mutation.ModuleType(); ok {
 		_spec.SetField(sysmenu.FieldModuleType, field.TypeString, value)
@@ -925,6 +871,15 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if smu.mutation.ModelIDCleared() {
 		_spec.ClearField(sysmenu.FieldModelID, field.TypeInt64)
 	}
+	if value, ok := smu.mutation.IsHide(); ok {
+		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
+	}
+	if value, ok := smu.mutation.AddedIsHide(); ok {
+		_spec.AddField(sysmenu.FieldIsHide, field.TypeInt8, value)
+	}
+	if smu.mutation.IsHideCleared() {
+		_spec.ClearField(sysmenu.FieldIsHide, field.TypeInt8)
+	}
 	if value, ok := smu.mutation.IsIframe(); ok {
 		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
 	}
@@ -933,6 +888,15 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.IsIframeCleared() {
 		_spec.ClearField(sysmenu.FieldIsIframe, field.TypeInt8)
+	}
+	if value, ok := smu.mutation.IsLink(); ok {
+		_spec.SetField(sysmenu.FieldIsLink, field.TypeInt8, value)
+	}
+	if value, ok := smu.mutation.AddedIsLink(); ok {
+		_spec.AddField(sysmenu.FieldIsLink, field.TypeInt8, value)
+	}
+	if smu.mutation.IsLinkCleared() {
+		_spec.ClearField(sysmenu.FieldIsLink, field.TypeInt8)
 	}
 	if value, ok := smu.mutation.IsCached(); ok {
 		_spec.SetField(sysmenu.FieldIsCached, field.TypeInt8, value)
@@ -943,12 +907,6 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if smu.mutation.IsCachedCleared() {
 		_spec.ClearField(sysmenu.FieldIsCached, field.TypeInt8)
 	}
-	if value, ok := smu.mutation.Redirect(); ok {
-		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
-	}
-	if smu.mutation.RedirectCleared() {
-		_spec.ClearField(sysmenu.FieldRedirect, field.TypeString)
-	}
 	if value, ok := smu.mutation.IsAffix(); ok {
 		_spec.SetField(sysmenu.FieldIsAffix, field.TypeInt8, value)
 	}
@@ -957,6 +915,12 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.IsAffixCleared() {
 		_spec.ClearField(sysmenu.FieldIsAffix, field.TypeInt8)
+	}
+	if value, ok := smu.mutation.Redirect(); ok {
+		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
+	}
+	if smu.mutation.RedirectCleared() {
+		_spec.ClearField(sysmenu.FieldRedirect, field.TypeString)
 	}
 	if value, ok := smu.mutation.LinkURL(); ok {
 		_spec.SetField(sysmenu.FieldLinkURL, field.TypeString, value)
@@ -1272,63 +1236,63 @@ func (smuo *SysMenuUpdateOne) AddPid(i int64) *SysMenuUpdateOne {
 	return smuo
 }
 
-// SetName sets the "name" field.
-func (smuo *SysMenuUpdateOne) SetName(s string) *SysMenuUpdateOne {
-	smuo.mutation.SetName(s)
+// SetMenuName sets the "menu_name" field.
+func (smuo *SysMenuUpdateOne) SetMenuName(s string) *SysMenuUpdateOne {
+	smuo.mutation.SetMenuName(s)
 	return smuo
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableName(s *string) *SysMenuUpdateOne {
+// SetNillableMenuName sets the "menu_name" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableMenuName(s *string) *SysMenuUpdateOne {
 	if s != nil {
-		smuo.SetName(*s)
+		smuo.SetMenuName(*s)
 	}
 	return smuo
 }
 
-// ClearName clears the value of the "name" field.
-func (smuo *SysMenuUpdateOne) ClearName() *SysMenuUpdateOne {
-	smuo.mutation.ClearName()
+// ClearMenuName clears the value of the "menu_name" field.
+func (smuo *SysMenuUpdateOne) ClearMenuName() *SysMenuUpdateOne {
+	smuo.mutation.ClearMenuName()
 	return smuo
 }
 
-// SetTitle sets the "title" field.
-func (smuo *SysMenuUpdateOne) SetTitle(s string) *SysMenuUpdateOne {
-	smuo.mutation.SetTitle(s)
+// SetMenuTitle sets the "menu_title" field.
+func (smuo *SysMenuUpdateOne) SetMenuTitle(s string) *SysMenuUpdateOne {
+	smuo.mutation.SetMenuTitle(s)
 	return smuo
 }
 
-// SetNillableTitle sets the "title" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableTitle(s *string) *SysMenuUpdateOne {
+// SetNillableMenuTitle sets the "menu_title" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableMenuTitle(s *string) *SysMenuUpdateOne {
 	if s != nil {
-		smuo.SetTitle(*s)
+		smuo.SetMenuTitle(*s)
 	}
 	return smuo
 }
 
-// ClearTitle clears the value of the "title" field.
-func (smuo *SysMenuUpdateOne) ClearTitle() *SysMenuUpdateOne {
-	smuo.mutation.ClearTitle()
+// ClearMenuTitle clears the value of the "menu_title" field.
+func (smuo *SysMenuUpdateOne) ClearMenuTitle() *SysMenuUpdateOne {
+	smuo.mutation.ClearMenuTitle()
 	return smuo
 }
 
-// SetIcon sets the "icon" field.
-func (smuo *SysMenuUpdateOne) SetIcon(s string) *SysMenuUpdateOne {
-	smuo.mutation.SetIcon(s)
+// SetMenuIcon sets the "menu_icon" field.
+func (smuo *SysMenuUpdateOne) SetMenuIcon(s string) *SysMenuUpdateOne {
+	smuo.mutation.SetMenuIcon(s)
 	return smuo
 }
 
-// SetNillableIcon sets the "icon" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableIcon(s *string) *SysMenuUpdateOne {
+// SetNillableMenuIcon sets the "menu_icon" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableMenuIcon(s *string) *SysMenuUpdateOne {
 	if s != nil {
-		smuo.SetIcon(*s)
+		smuo.SetMenuIcon(*s)
 	}
 	return smuo
 }
 
-// ClearIcon clears the value of the "icon" field.
-func (smuo *SysMenuUpdateOne) ClearIcon() *SysMenuUpdateOne {
-	smuo.mutation.ClearIcon()
+// ClearMenuIcon clears the value of the "menu_icon" field.
+func (smuo *SysMenuUpdateOne) ClearMenuIcon() *SysMenuUpdateOne {
+	smuo.mutation.ClearMenuIcon()
 	return smuo
 }
 
@@ -1379,60 +1343,6 @@ func (smuo *SysMenuUpdateOne) ClearMenuType() *SysMenuUpdateOne {
 	return smuo
 }
 
-// SetWeigh sets the "weigh" field.
-func (smuo *SysMenuUpdateOne) SetWeigh(i int64) *SysMenuUpdateOne {
-	smuo.mutation.ResetWeigh()
-	smuo.mutation.SetWeigh(i)
-	return smuo
-}
-
-// SetNillableWeigh sets the "weigh" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableWeigh(i *int64) *SysMenuUpdateOne {
-	if i != nil {
-		smuo.SetWeigh(*i)
-	}
-	return smuo
-}
-
-// AddWeigh adds i to the "weigh" field.
-func (smuo *SysMenuUpdateOne) AddWeigh(i int64) *SysMenuUpdateOne {
-	smuo.mutation.AddWeigh(i)
-	return smuo
-}
-
-// ClearWeigh clears the value of the "weigh" field.
-func (smuo *SysMenuUpdateOne) ClearWeigh() *SysMenuUpdateOne {
-	smuo.mutation.ClearWeigh()
-	return smuo
-}
-
-// SetIsHide sets the "is_hide" field.
-func (smuo *SysMenuUpdateOne) SetIsHide(i int8) *SysMenuUpdateOne {
-	smuo.mutation.ResetIsHide()
-	smuo.mutation.SetIsHide(i)
-	return smuo
-}
-
-// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableIsHide(i *int8) *SysMenuUpdateOne {
-	if i != nil {
-		smuo.SetIsHide(*i)
-	}
-	return smuo
-}
-
-// AddIsHide adds i to the "is_hide" field.
-func (smuo *SysMenuUpdateOne) AddIsHide(i int8) *SysMenuUpdateOne {
-	smuo.mutation.AddIsHide(i)
-	return smuo
-}
-
-// ClearIsHide clears the value of the "is_hide" field.
-func (smuo *SysMenuUpdateOne) ClearIsHide() *SysMenuUpdateOne {
-	smuo.mutation.ClearIsHide()
-	return smuo
-}
-
 // SetPath sets the "path" field.
 func (smuo *SysMenuUpdateOne) SetPath(s string) *SysMenuUpdateOne {
 	smuo.mutation.SetPath(s)
@@ -1470,33 +1380,6 @@ func (smuo *SysMenuUpdateOne) SetNillableComponent(s *string) *SysMenuUpdateOne 
 // ClearComponent clears the value of the "component" field.
 func (smuo *SysMenuUpdateOne) ClearComponent() *SysMenuUpdateOne {
 	smuo.mutation.ClearComponent()
-	return smuo
-}
-
-// SetIsLink sets the "is_link" field.
-func (smuo *SysMenuUpdateOne) SetIsLink(i int8) *SysMenuUpdateOne {
-	smuo.mutation.ResetIsLink()
-	smuo.mutation.SetIsLink(i)
-	return smuo
-}
-
-// SetNillableIsLink sets the "is_link" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableIsLink(i *int8) *SysMenuUpdateOne {
-	if i != nil {
-		smuo.SetIsLink(*i)
-	}
-	return smuo
-}
-
-// AddIsLink adds i to the "is_link" field.
-func (smuo *SysMenuUpdateOne) AddIsLink(i int8) *SysMenuUpdateOne {
-	smuo.mutation.AddIsLink(i)
-	return smuo
-}
-
-// ClearIsLink clears the value of the "is_link" field.
-func (smuo *SysMenuUpdateOne) ClearIsLink() *SysMenuUpdateOne {
-	smuo.mutation.ClearIsLink()
 	return smuo
 }
 
@@ -1547,6 +1430,33 @@ func (smuo *SysMenuUpdateOne) ClearModelID() *SysMenuUpdateOne {
 	return smuo
 }
 
+// SetIsHide sets the "is_hide" field.
+func (smuo *SysMenuUpdateOne) SetIsHide(i int8) *SysMenuUpdateOne {
+	smuo.mutation.ResetIsHide()
+	smuo.mutation.SetIsHide(i)
+	return smuo
+}
+
+// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableIsHide(i *int8) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetIsHide(*i)
+	}
+	return smuo
+}
+
+// AddIsHide adds i to the "is_hide" field.
+func (smuo *SysMenuUpdateOne) AddIsHide(i int8) *SysMenuUpdateOne {
+	smuo.mutation.AddIsHide(i)
+	return smuo
+}
+
+// ClearIsHide clears the value of the "is_hide" field.
+func (smuo *SysMenuUpdateOne) ClearIsHide() *SysMenuUpdateOne {
+	smuo.mutation.ClearIsHide()
+	return smuo
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (smuo *SysMenuUpdateOne) SetIsIframe(i int8) *SysMenuUpdateOne {
 	smuo.mutation.ResetIsIframe()
@@ -1571,6 +1481,33 @@ func (smuo *SysMenuUpdateOne) AddIsIframe(i int8) *SysMenuUpdateOne {
 // ClearIsIframe clears the value of the "is_iframe" field.
 func (smuo *SysMenuUpdateOne) ClearIsIframe() *SysMenuUpdateOne {
 	smuo.mutation.ClearIsIframe()
+	return smuo
+}
+
+// SetIsLink sets the "is_link" field.
+func (smuo *SysMenuUpdateOne) SetIsLink(i int8) *SysMenuUpdateOne {
+	smuo.mutation.ResetIsLink()
+	smuo.mutation.SetIsLink(i)
+	return smuo
+}
+
+// SetNillableIsLink sets the "is_link" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableIsLink(i *int8) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetIsLink(*i)
+	}
+	return smuo
+}
+
+// AddIsLink adds i to the "is_link" field.
+func (smuo *SysMenuUpdateOne) AddIsLink(i int8) *SysMenuUpdateOne {
+	smuo.mutation.AddIsLink(i)
+	return smuo
+}
+
+// ClearIsLink clears the value of the "is_link" field.
+func (smuo *SysMenuUpdateOne) ClearIsLink() *SysMenuUpdateOne {
+	smuo.mutation.ClearIsLink()
 	return smuo
 }
 
@@ -1601,26 +1538,6 @@ func (smuo *SysMenuUpdateOne) ClearIsCached() *SysMenuUpdateOne {
 	return smuo
 }
 
-// SetRedirect sets the "redirect" field.
-func (smuo *SysMenuUpdateOne) SetRedirect(s string) *SysMenuUpdateOne {
-	smuo.mutation.SetRedirect(s)
-	return smuo
-}
-
-// SetNillableRedirect sets the "redirect" field if the given value is not nil.
-func (smuo *SysMenuUpdateOne) SetNillableRedirect(s *string) *SysMenuUpdateOne {
-	if s != nil {
-		smuo.SetRedirect(*s)
-	}
-	return smuo
-}
-
-// ClearRedirect clears the value of the "redirect" field.
-func (smuo *SysMenuUpdateOne) ClearRedirect() *SysMenuUpdateOne {
-	smuo.mutation.ClearRedirect()
-	return smuo
-}
-
 // SetIsAffix sets the "is_affix" field.
 func (smuo *SysMenuUpdateOne) SetIsAffix(i int8) *SysMenuUpdateOne {
 	smuo.mutation.ResetIsAffix()
@@ -1645,6 +1562,26 @@ func (smuo *SysMenuUpdateOne) AddIsAffix(i int8) *SysMenuUpdateOne {
 // ClearIsAffix clears the value of the "is_affix" field.
 func (smuo *SysMenuUpdateOne) ClearIsAffix() *SysMenuUpdateOne {
 	smuo.mutation.ClearIsAffix()
+	return smuo
+}
+
+// SetRedirect sets the "redirect" field.
+func (smuo *SysMenuUpdateOne) SetRedirect(s string) *SysMenuUpdateOne {
+	smuo.mutation.SetRedirect(s)
+	return smuo
+}
+
+// SetNillableRedirect sets the "redirect" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableRedirect(s *string) *SysMenuUpdateOne {
+	if s != nil {
+		smuo.SetRedirect(*s)
+	}
+	return smuo
+}
+
+// ClearRedirect clears the value of the "redirect" field.
+func (smuo *SysMenuUpdateOne) ClearRedirect() *SysMenuUpdateOne {
+	smuo.mutation.ClearRedirect()
 	return smuo
 }
 
@@ -1868,23 +1805,23 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	if value, ok := smuo.mutation.AddedPid(); ok {
 		_spec.AddField(sysmenu.FieldPid, field.TypeInt64, value)
 	}
-	if value, ok := smuo.mutation.Name(); ok {
-		_spec.SetField(sysmenu.FieldName, field.TypeString, value)
+	if value, ok := smuo.mutation.MenuName(); ok {
+		_spec.SetField(sysmenu.FieldMenuName, field.TypeString, value)
 	}
-	if smuo.mutation.NameCleared() {
-		_spec.ClearField(sysmenu.FieldName, field.TypeString)
+	if smuo.mutation.MenuNameCleared() {
+		_spec.ClearField(sysmenu.FieldMenuName, field.TypeString)
 	}
-	if value, ok := smuo.mutation.Title(); ok {
-		_spec.SetField(sysmenu.FieldTitle, field.TypeString, value)
+	if value, ok := smuo.mutation.MenuTitle(); ok {
+		_spec.SetField(sysmenu.FieldMenuTitle, field.TypeString, value)
 	}
-	if smuo.mutation.TitleCleared() {
-		_spec.ClearField(sysmenu.FieldTitle, field.TypeString)
+	if smuo.mutation.MenuTitleCleared() {
+		_spec.ClearField(sysmenu.FieldMenuTitle, field.TypeString)
 	}
-	if value, ok := smuo.mutation.Icon(); ok {
-		_spec.SetField(sysmenu.FieldIcon, field.TypeString, value)
+	if value, ok := smuo.mutation.MenuIcon(); ok {
+		_spec.SetField(sysmenu.FieldMenuIcon, field.TypeString, value)
 	}
-	if smuo.mutation.IconCleared() {
-		_spec.ClearField(sysmenu.FieldIcon, field.TypeString)
+	if smuo.mutation.MenuIconCleared() {
+		_spec.ClearField(sysmenu.FieldMenuIcon, field.TypeString)
 	}
 	if value, ok := smuo.mutation.Condition(); ok {
 		_spec.SetField(sysmenu.FieldCondition, field.TypeString, value)
@@ -1901,24 +1838,6 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	if smuo.mutation.MenuTypeCleared() {
 		_spec.ClearField(sysmenu.FieldMenuType, field.TypeInt8)
 	}
-	if value, ok := smuo.mutation.Weigh(); ok {
-		_spec.SetField(sysmenu.FieldWeigh, field.TypeInt64, value)
-	}
-	if value, ok := smuo.mutation.AddedWeigh(); ok {
-		_spec.AddField(sysmenu.FieldWeigh, field.TypeInt64, value)
-	}
-	if smuo.mutation.WeighCleared() {
-		_spec.ClearField(sysmenu.FieldWeigh, field.TypeInt64)
-	}
-	if value, ok := smuo.mutation.IsHide(); ok {
-		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
-	}
-	if value, ok := smuo.mutation.AddedIsHide(); ok {
-		_spec.AddField(sysmenu.FieldIsHide, field.TypeInt8, value)
-	}
-	if smuo.mutation.IsHideCleared() {
-		_spec.ClearField(sysmenu.FieldIsHide, field.TypeInt8)
-	}
 	if value, ok := smuo.mutation.Path(); ok {
 		_spec.SetField(sysmenu.FieldPath, field.TypeString, value)
 	}
@@ -1930,15 +1849,6 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.ComponentCleared() {
 		_spec.ClearField(sysmenu.FieldComponent, field.TypeString)
-	}
-	if value, ok := smuo.mutation.IsLink(); ok {
-		_spec.SetField(sysmenu.FieldIsLink, field.TypeInt8, value)
-	}
-	if value, ok := smuo.mutation.AddedIsLink(); ok {
-		_spec.AddField(sysmenu.FieldIsLink, field.TypeInt8, value)
-	}
-	if smuo.mutation.IsLinkCleared() {
-		_spec.ClearField(sysmenu.FieldIsLink, field.TypeInt8)
 	}
 	if value, ok := smuo.mutation.ModuleType(); ok {
 		_spec.SetField(sysmenu.FieldModuleType, field.TypeString, value)
@@ -1955,6 +1865,15 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	if smuo.mutation.ModelIDCleared() {
 		_spec.ClearField(sysmenu.FieldModelID, field.TypeInt64)
 	}
+	if value, ok := smuo.mutation.IsHide(); ok {
+		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
+	}
+	if value, ok := smuo.mutation.AddedIsHide(); ok {
+		_spec.AddField(sysmenu.FieldIsHide, field.TypeInt8, value)
+	}
+	if smuo.mutation.IsHideCleared() {
+		_spec.ClearField(sysmenu.FieldIsHide, field.TypeInt8)
+	}
 	if value, ok := smuo.mutation.IsIframe(); ok {
 		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
 	}
@@ -1963,6 +1882,15 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.IsIframeCleared() {
 		_spec.ClearField(sysmenu.FieldIsIframe, field.TypeInt8)
+	}
+	if value, ok := smuo.mutation.IsLink(); ok {
+		_spec.SetField(sysmenu.FieldIsLink, field.TypeInt8, value)
+	}
+	if value, ok := smuo.mutation.AddedIsLink(); ok {
+		_spec.AddField(sysmenu.FieldIsLink, field.TypeInt8, value)
+	}
+	if smuo.mutation.IsLinkCleared() {
+		_spec.ClearField(sysmenu.FieldIsLink, field.TypeInt8)
 	}
 	if value, ok := smuo.mutation.IsCached(); ok {
 		_spec.SetField(sysmenu.FieldIsCached, field.TypeInt8, value)
@@ -1973,12 +1901,6 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	if smuo.mutation.IsCachedCleared() {
 		_spec.ClearField(sysmenu.FieldIsCached, field.TypeInt8)
 	}
-	if value, ok := smuo.mutation.Redirect(); ok {
-		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
-	}
-	if smuo.mutation.RedirectCleared() {
-		_spec.ClearField(sysmenu.FieldRedirect, field.TypeString)
-	}
 	if value, ok := smuo.mutation.IsAffix(); ok {
 		_spec.SetField(sysmenu.FieldIsAffix, field.TypeInt8, value)
 	}
@@ -1987,6 +1909,12 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.IsAffixCleared() {
 		_spec.ClearField(sysmenu.FieldIsAffix, field.TypeInt8)
+	}
+	if value, ok := smuo.mutation.Redirect(); ok {
+		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
+	}
+	if smuo.mutation.RedirectCleared() {
+		_spec.ClearField(sysmenu.FieldRedirect, field.TypeString)
 	}
 	if value, ok := smuo.mutation.LinkURL(); ok {
 		_spec.SetField(sysmenu.FieldLinkURL, field.TypeString, value)

@@ -110,19 +110,19 @@ func Pid(v int64) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldPid, v))
 }
 
-// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
-func Name(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldName, v))
+// MenuName applies equality check predicate on the "menu_name" field. It's identical to MenuNameEQ.
+func MenuName(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuName, v))
 }
 
-// Title applies equality check predicate on the "title" field. It's identical to TitleEQ.
-func Title(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldTitle, v))
+// MenuTitle applies equality check predicate on the "menu_title" field. It's identical to MenuTitleEQ.
+func MenuTitle(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuTitle, v))
 }
 
-// Icon applies equality check predicate on the "icon" field. It's identical to IconEQ.
-func Icon(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIcon, v))
+// MenuIcon applies equality check predicate on the "menu_icon" field. It's identical to MenuIconEQ.
+func MenuIcon(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuIcon, v))
 }
 
 // Condition applies equality check predicate on the "condition" field. It's identical to ConditionEQ.
@@ -135,16 +135,6 @@ func MenuType(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldMenuType, v))
 }
 
-// Weigh applies equality check predicate on the "weigh" field. It's identical to WeighEQ.
-func Weigh(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldWeigh, v))
-}
-
-// IsHide applies equality check predicate on the "is_hide" field. It's identical to IsHideEQ.
-func IsHide(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIsHide, v))
-}
-
 // Path applies equality check predicate on the "path" field. It's identical to PathEQ.
 func Path(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldPath, v))
@@ -153,11 +143,6 @@ func Path(v string) predicate.SysMenu {
 // Component applies equality check predicate on the "component" field. It's identical to ComponentEQ.
 func Component(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldComponent, v))
-}
-
-// IsLink applies equality check predicate on the "is_link" field. It's identical to IsLinkEQ.
-func IsLink(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIsLink, v))
 }
 
 // ModuleType applies equality check predicate on the "module_type" field. It's identical to ModuleTypeEQ.
@@ -170,9 +155,19 @@ func ModelID(v int64) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldModelID, v))
 }
 
+// IsHide applies equality check predicate on the "is_hide" field. It's identical to IsHideEQ.
+func IsHide(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsHide, v))
+}
+
 // IsIframe applies equality check predicate on the "is_iframe" field. It's identical to IsIframeEQ.
 func IsIframe(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsIframe, v))
+}
+
+// IsLink applies equality check predicate on the "is_link" field. It's identical to IsLinkEQ.
+func IsLink(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsLink, v))
 }
 
 // IsCached applies equality check predicate on the "is_cached" field. It's identical to IsCachedEQ.
@@ -180,14 +175,14 @@ func IsCached(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsCached, v))
 }
 
-// Redirect applies equality check predicate on the "redirect" field. It's identical to RedirectEQ.
-func Redirect(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldRedirect, v))
-}
-
 // IsAffix applies equality check predicate on the "is_affix" field. It's identical to IsAffixEQ.
 func IsAffix(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsAffix, v))
+}
+
+// Redirect applies equality check predicate on the "redirect" field. It's identical to RedirectEQ.
+func Redirect(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldRedirect, v))
 }
 
 // LinkURL applies equality check predicate on the "link_url" field. It's identical to LinkURLEQ.
@@ -740,229 +735,229 @@ func PidLTE(v int64) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldLTE(FieldPid, v))
 }
 
-// NameEQ applies the EQ predicate on the "name" field.
-func NameEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldName, v))
+// MenuNameEQ applies the EQ predicate on the "menu_name" field.
+func MenuNameEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuName, v))
 }
 
-// NameNEQ applies the NEQ predicate on the "name" field.
-func NameNEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldName, v))
+// MenuNameNEQ applies the NEQ predicate on the "menu_name" field.
+func MenuNameNEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldMenuName, v))
 }
 
-// NameIn applies the In predicate on the "name" field.
-func NameIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldName, vs...))
+// MenuNameIn applies the In predicate on the "menu_name" field.
+func MenuNameIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldMenuName, vs...))
 }
 
-// NameNotIn applies the NotIn predicate on the "name" field.
-func NameNotIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldName, vs...))
+// MenuNameNotIn applies the NotIn predicate on the "menu_name" field.
+func MenuNameNotIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldMenuName, vs...))
 }
 
-// NameGT applies the GT predicate on the "name" field.
-func NameGT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldName, v))
+// MenuNameGT applies the GT predicate on the "menu_name" field.
+func MenuNameGT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldMenuName, v))
 }
 
-// NameGTE applies the GTE predicate on the "name" field.
-func NameGTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldName, v))
+// MenuNameGTE applies the GTE predicate on the "menu_name" field.
+func MenuNameGTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldMenuName, v))
 }
 
-// NameLT applies the LT predicate on the "name" field.
-func NameLT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldName, v))
+// MenuNameLT applies the LT predicate on the "menu_name" field.
+func MenuNameLT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldMenuName, v))
 }
 
-// NameLTE applies the LTE predicate on the "name" field.
-func NameLTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldName, v))
+// MenuNameLTE applies the LTE predicate on the "menu_name" field.
+func MenuNameLTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldMenuName, v))
 }
 
-// NameContains applies the Contains predicate on the "name" field.
-func NameContains(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContains(FieldName, v))
+// MenuNameContains applies the Contains predicate on the "menu_name" field.
+func MenuNameContains(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContains(FieldMenuName, v))
 }
 
-// NameHasPrefix applies the HasPrefix predicate on the "name" field.
-func NameHasPrefix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasPrefix(FieldName, v))
+// MenuNameHasPrefix applies the HasPrefix predicate on the "menu_name" field.
+func MenuNameHasPrefix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasPrefix(FieldMenuName, v))
 }
 
-// NameHasSuffix applies the HasSuffix predicate on the "name" field.
-func NameHasSuffix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasSuffix(FieldName, v))
+// MenuNameHasSuffix applies the HasSuffix predicate on the "menu_name" field.
+func MenuNameHasSuffix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasSuffix(FieldMenuName, v))
 }
 
-// NameIsNil applies the IsNil predicate on the "name" field.
-func NameIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldName))
+// MenuNameIsNil applies the IsNil predicate on the "menu_name" field.
+func MenuNameIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldMenuName))
 }
 
-// NameNotNil applies the NotNil predicate on the "name" field.
-func NameNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldName))
+// MenuNameNotNil applies the NotNil predicate on the "menu_name" field.
+func MenuNameNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldMenuName))
 }
 
-// NameEqualFold applies the EqualFold predicate on the "name" field.
-func NameEqualFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEqualFold(FieldName, v))
+// MenuNameEqualFold applies the EqualFold predicate on the "menu_name" field.
+func MenuNameEqualFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEqualFold(FieldMenuName, v))
 }
 
-// NameContainsFold applies the ContainsFold predicate on the "name" field.
-func NameContainsFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContainsFold(FieldName, v))
+// MenuNameContainsFold applies the ContainsFold predicate on the "menu_name" field.
+func MenuNameContainsFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContainsFold(FieldMenuName, v))
 }
 
-// TitleEQ applies the EQ predicate on the "title" field.
-func TitleEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldTitle, v))
+// MenuTitleEQ applies the EQ predicate on the "menu_title" field.
+func MenuTitleEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuTitle, v))
 }
 
-// TitleNEQ applies the NEQ predicate on the "title" field.
-func TitleNEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldTitle, v))
+// MenuTitleNEQ applies the NEQ predicate on the "menu_title" field.
+func MenuTitleNEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldMenuTitle, v))
 }
 
-// TitleIn applies the In predicate on the "title" field.
-func TitleIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldTitle, vs...))
+// MenuTitleIn applies the In predicate on the "menu_title" field.
+func MenuTitleIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldMenuTitle, vs...))
 }
 
-// TitleNotIn applies the NotIn predicate on the "title" field.
-func TitleNotIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldTitle, vs...))
+// MenuTitleNotIn applies the NotIn predicate on the "menu_title" field.
+func MenuTitleNotIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldMenuTitle, vs...))
 }
 
-// TitleGT applies the GT predicate on the "title" field.
-func TitleGT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldTitle, v))
+// MenuTitleGT applies the GT predicate on the "menu_title" field.
+func MenuTitleGT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldMenuTitle, v))
 }
 
-// TitleGTE applies the GTE predicate on the "title" field.
-func TitleGTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldTitle, v))
+// MenuTitleGTE applies the GTE predicate on the "menu_title" field.
+func MenuTitleGTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldMenuTitle, v))
 }
 
-// TitleLT applies the LT predicate on the "title" field.
-func TitleLT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldTitle, v))
+// MenuTitleLT applies the LT predicate on the "menu_title" field.
+func MenuTitleLT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldMenuTitle, v))
 }
 
-// TitleLTE applies the LTE predicate on the "title" field.
-func TitleLTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldTitle, v))
+// MenuTitleLTE applies the LTE predicate on the "menu_title" field.
+func MenuTitleLTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldMenuTitle, v))
 }
 
-// TitleContains applies the Contains predicate on the "title" field.
-func TitleContains(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContains(FieldTitle, v))
+// MenuTitleContains applies the Contains predicate on the "menu_title" field.
+func MenuTitleContains(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContains(FieldMenuTitle, v))
 }
 
-// TitleHasPrefix applies the HasPrefix predicate on the "title" field.
-func TitleHasPrefix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasPrefix(FieldTitle, v))
+// MenuTitleHasPrefix applies the HasPrefix predicate on the "menu_title" field.
+func MenuTitleHasPrefix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasPrefix(FieldMenuTitle, v))
 }
 
-// TitleHasSuffix applies the HasSuffix predicate on the "title" field.
-func TitleHasSuffix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasSuffix(FieldTitle, v))
+// MenuTitleHasSuffix applies the HasSuffix predicate on the "menu_title" field.
+func MenuTitleHasSuffix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasSuffix(FieldMenuTitle, v))
 }
 
-// TitleIsNil applies the IsNil predicate on the "title" field.
-func TitleIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldTitle))
+// MenuTitleIsNil applies the IsNil predicate on the "menu_title" field.
+func MenuTitleIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldMenuTitle))
 }
 
-// TitleNotNil applies the NotNil predicate on the "title" field.
-func TitleNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldTitle))
+// MenuTitleNotNil applies the NotNil predicate on the "menu_title" field.
+func MenuTitleNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldMenuTitle))
 }
 
-// TitleEqualFold applies the EqualFold predicate on the "title" field.
-func TitleEqualFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEqualFold(FieldTitle, v))
+// MenuTitleEqualFold applies the EqualFold predicate on the "menu_title" field.
+func MenuTitleEqualFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEqualFold(FieldMenuTitle, v))
 }
 
-// TitleContainsFold applies the ContainsFold predicate on the "title" field.
-func TitleContainsFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContainsFold(FieldTitle, v))
+// MenuTitleContainsFold applies the ContainsFold predicate on the "menu_title" field.
+func MenuTitleContainsFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContainsFold(FieldMenuTitle, v))
 }
 
-// IconEQ applies the EQ predicate on the "icon" field.
-func IconEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIcon, v))
+// MenuIconEQ applies the EQ predicate on the "menu_icon" field.
+func MenuIconEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldMenuIcon, v))
 }
 
-// IconNEQ applies the NEQ predicate on the "icon" field.
-func IconNEQ(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldIcon, v))
+// MenuIconNEQ applies the NEQ predicate on the "menu_icon" field.
+func MenuIconNEQ(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldMenuIcon, v))
 }
 
-// IconIn applies the In predicate on the "icon" field.
-func IconIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldIcon, vs...))
+// MenuIconIn applies the In predicate on the "menu_icon" field.
+func MenuIconIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldMenuIcon, vs...))
 }
 
-// IconNotIn applies the NotIn predicate on the "icon" field.
-func IconNotIn(vs ...string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldIcon, vs...))
+// MenuIconNotIn applies the NotIn predicate on the "menu_icon" field.
+func MenuIconNotIn(vs ...string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldMenuIcon, vs...))
 }
 
-// IconGT applies the GT predicate on the "icon" field.
-func IconGT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldIcon, v))
+// MenuIconGT applies the GT predicate on the "menu_icon" field.
+func MenuIconGT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldMenuIcon, v))
 }
 
-// IconGTE applies the GTE predicate on the "icon" field.
-func IconGTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldIcon, v))
+// MenuIconGTE applies the GTE predicate on the "menu_icon" field.
+func MenuIconGTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldMenuIcon, v))
 }
 
-// IconLT applies the LT predicate on the "icon" field.
-func IconLT(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldIcon, v))
+// MenuIconLT applies the LT predicate on the "menu_icon" field.
+func MenuIconLT(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldMenuIcon, v))
 }
 
-// IconLTE applies the LTE predicate on the "icon" field.
-func IconLTE(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldIcon, v))
+// MenuIconLTE applies the LTE predicate on the "menu_icon" field.
+func MenuIconLTE(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldMenuIcon, v))
 }
 
-// IconContains applies the Contains predicate on the "icon" field.
-func IconContains(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContains(FieldIcon, v))
+// MenuIconContains applies the Contains predicate on the "menu_icon" field.
+func MenuIconContains(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContains(FieldMenuIcon, v))
 }
 
-// IconHasPrefix applies the HasPrefix predicate on the "icon" field.
-func IconHasPrefix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasPrefix(FieldIcon, v))
+// MenuIconHasPrefix applies the HasPrefix predicate on the "menu_icon" field.
+func MenuIconHasPrefix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasPrefix(FieldMenuIcon, v))
 }
 
-// IconHasSuffix applies the HasSuffix predicate on the "icon" field.
-func IconHasSuffix(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldHasSuffix(FieldIcon, v))
+// MenuIconHasSuffix applies the HasSuffix predicate on the "menu_icon" field.
+func MenuIconHasSuffix(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldHasSuffix(FieldMenuIcon, v))
 }
 
-// IconIsNil applies the IsNil predicate on the "icon" field.
-func IconIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldIcon))
+// MenuIconIsNil applies the IsNil predicate on the "menu_icon" field.
+func MenuIconIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldMenuIcon))
 }
 
-// IconNotNil applies the NotNil predicate on the "icon" field.
-func IconNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldIcon))
+// MenuIconNotNil applies the NotNil predicate on the "menu_icon" field.
+func MenuIconNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldMenuIcon))
 }
 
-// IconEqualFold applies the EqualFold predicate on the "icon" field.
-func IconEqualFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEqualFold(FieldIcon, v))
+// MenuIconEqualFold applies the EqualFold predicate on the "menu_icon" field.
+func MenuIconEqualFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEqualFold(FieldMenuIcon, v))
 }
 
-// IconContainsFold applies the ContainsFold predicate on the "icon" field.
-func IconContainsFold(v string) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldContainsFold(FieldIcon, v))
+// MenuIconContainsFold applies the ContainsFold predicate on the "menu_icon" field.
+func MenuIconContainsFold(v string) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldContainsFold(FieldMenuIcon, v))
 }
 
 // ConditionEQ applies the EQ predicate on the "condition" field.
@@ -1088,106 +1083,6 @@ func MenuTypeIsNil() predicate.SysMenu {
 // MenuTypeNotNil applies the NotNil predicate on the "menu_type" field.
 func MenuTypeNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldMenuType))
-}
-
-// WeighEQ applies the EQ predicate on the "weigh" field.
-func WeighEQ(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldWeigh, v))
-}
-
-// WeighNEQ applies the NEQ predicate on the "weigh" field.
-func WeighNEQ(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldWeigh, v))
-}
-
-// WeighIn applies the In predicate on the "weigh" field.
-func WeighIn(vs ...int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldWeigh, vs...))
-}
-
-// WeighNotIn applies the NotIn predicate on the "weigh" field.
-func WeighNotIn(vs ...int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldWeigh, vs...))
-}
-
-// WeighGT applies the GT predicate on the "weigh" field.
-func WeighGT(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldWeigh, v))
-}
-
-// WeighGTE applies the GTE predicate on the "weigh" field.
-func WeighGTE(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldWeigh, v))
-}
-
-// WeighLT applies the LT predicate on the "weigh" field.
-func WeighLT(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldWeigh, v))
-}
-
-// WeighLTE applies the LTE predicate on the "weigh" field.
-func WeighLTE(v int64) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldWeigh, v))
-}
-
-// WeighIsNil applies the IsNil predicate on the "weigh" field.
-func WeighIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldWeigh))
-}
-
-// WeighNotNil applies the NotNil predicate on the "weigh" field.
-func WeighNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldWeigh))
-}
-
-// IsHideEQ applies the EQ predicate on the "is_hide" field.
-func IsHideEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIsHide, v))
-}
-
-// IsHideNEQ applies the NEQ predicate on the "is_hide" field.
-func IsHideNEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldIsHide, v))
-}
-
-// IsHideIn applies the In predicate on the "is_hide" field.
-func IsHideIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldIsHide, vs...))
-}
-
-// IsHideNotIn applies the NotIn predicate on the "is_hide" field.
-func IsHideNotIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldIsHide, vs...))
-}
-
-// IsHideGT applies the GT predicate on the "is_hide" field.
-func IsHideGT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldIsHide, v))
-}
-
-// IsHideGTE applies the GTE predicate on the "is_hide" field.
-func IsHideGTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldIsHide, v))
-}
-
-// IsHideLT applies the LT predicate on the "is_hide" field.
-func IsHideLT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldIsHide, v))
-}
-
-// IsHideLTE applies the LTE predicate on the "is_hide" field.
-func IsHideLTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldIsHide, v))
-}
-
-// IsHideIsNil applies the IsNil predicate on the "is_hide" field.
-func IsHideIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldIsHide))
-}
-
-// IsHideNotNil applies the NotNil predicate on the "is_hide" field.
-func IsHideNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldIsHide))
 }
 
 // PathEQ applies the EQ predicate on the "path" field.
@@ -1340,56 +1235,6 @@ func ComponentContainsFold(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldContainsFold(FieldComponent, v))
 }
 
-// IsLinkEQ applies the EQ predicate on the "is_link" field.
-func IsLinkEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIsLink, v))
-}
-
-// IsLinkNEQ applies the NEQ predicate on the "is_link" field.
-func IsLinkNEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldIsLink, v))
-}
-
-// IsLinkIn applies the In predicate on the "is_link" field.
-func IsLinkIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldIsLink, vs...))
-}
-
-// IsLinkNotIn applies the NotIn predicate on the "is_link" field.
-func IsLinkNotIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldIsLink, vs...))
-}
-
-// IsLinkGT applies the GT predicate on the "is_link" field.
-func IsLinkGT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldIsLink, v))
-}
-
-// IsLinkGTE applies the GTE predicate on the "is_link" field.
-func IsLinkGTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldIsLink, v))
-}
-
-// IsLinkLT applies the LT predicate on the "is_link" field.
-func IsLinkLT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldIsLink, v))
-}
-
-// IsLinkLTE applies the LTE predicate on the "is_link" field.
-func IsLinkLTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldIsLink, v))
-}
-
-// IsLinkIsNil applies the IsNil predicate on the "is_link" field.
-func IsLinkIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldIsLink))
-}
-
-// IsLinkNotNil applies the NotNil predicate on the "is_link" field.
-func IsLinkNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldIsLink))
-}
-
 // ModuleTypeEQ applies the EQ predicate on the "module_type" field.
 func ModuleTypeEQ(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldModuleType, v))
@@ -1515,6 +1360,56 @@ func ModelIDNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldModelID))
 }
 
+// IsHideEQ applies the EQ predicate on the "is_hide" field.
+func IsHideEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsHide, v))
+}
+
+// IsHideNEQ applies the NEQ predicate on the "is_hide" field.
+func IsHideNEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldIsHide, v))
+}
+
+// IsHideIn applies the In predicate on the "is_hide" field.
+func IsHideIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldIsHide, vs...))
+}
+
+// IsHideNotIn applies the NotIn predicate on the "is_hide" field.
+func IsHideNotIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldIsHide, vs...))
+}
+
+// IsHideGT applies the GT predicate on the "is_hide" field.
+func IsHideGT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldIsHide, v))
+}
+
+// IsHideGTE applies the GTE predicate on the "is_hide" field.
+func IsHideGTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldIsHide, v))
+}
+
+// IsHideLT applies the LT predicate on the "is_hide" field.
+func IsHideLT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldIsHide, v))
+}
+
+// IsHideLTE applies the LTE predicate on the "is_hide" field.
+func IsHideLTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldIsHide, v))
+}
+
+// IsHideIsNil applies the IsNil predicate on the "is_hide" field.
+func IsHideIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldIsHide))
+}
+
+// IsHideNotNil applies the NotNil predicate on the "is_hide" field.
+func IsHideNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldIsHide))
+}
+
 // IsIframeEQ applies the EQ predicate on the "is_iframe" field.
 func IsIframeEQ(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsIframe, v))
@@ -1565,6 +1460,56 @@ func IsIframeNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldIsIframe))
 }
 
+// IsLinkEQ applies the EQ predicate on the "is_link" field.
+func IsLinkEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsLink, v))
+}
+
+// IsLinkNEQ applies the NEQ predicate on the "is_link" field.
+func IsLinkNEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldIsLink, v))
+}
+
+// IsLinkIn applies the In predicate on the "is_link" field.
+func IsLinkIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldIsLink, vs...))
+}
+
+// IsLinkNotIn applies the NotIn predicate on the "is_link" field.
+func IsLinkNotIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldIsLink, vs...))
+}
+
+// IsLinkGT applies the GT predicate on the "is_link" field.
+func IsLinkGT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldIsLink, v))
+}
+
+// IsLinkGTE applies the GTE predicate on the "is_link" field.
+func IsLinkGTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldIsLink, v))
+}
+
+// IsLinkLT applies the LT predicate on the "is_link" field.
+func IsLinkLT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldIsLink, v))
+}
+
+// IsLinkLTE applies the LTE predicate on the "is_link" field.
+func IsLinkLTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldIsLink, v))
+}
+
+// IsLinkIsNil applies the IsNil predicate on the "is_link" field.
+func IsLinkIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldIsLink))
+}
+
+// IsLinkNotNil applies the NotNil predicate on the "is_link" field.
+func IsLinkNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldIsLink))
+}
+
 // IsCachedEQ applies the EQ predicate on the "is_cached" field.
 func IsCachedEQ(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsCached, v))
@@ -1613,6 +1558,56 @@ func IsCachedIsNil() predicate.SysMenu {
 // IsCachedNotNil applies the NotNil predicate on the "is_cached" field.
 func IsCachedNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldIsCached))
+}
+
+// IsAffixEQ applies the EQ predicate on the "is_affix" field.
+func IsAffixEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsAffix, v))
+}
+
+// IsAffixNEQ applies the NEQ predicate on the "is_affix" field.
+func IsAffixNEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldIsAffix, v))
+}
+
+// IsAffixIn applies the In predicate on the "is_affix" field.
+func IsAffixIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldIsAffix, vs...))
+}
+
+// IsAffixNotIn applies the NotIn predicate on the "is_affix" field.
+func IsAffixNotIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldIsAffix, vs...))
+}
+
+// IsAffixGT applies the GT predicate on the "is_affix" field.
+func IsAffixGT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldIsAffix, v))
+}
+
+// IsAffixGTE applies the GTE predicate on the "is_affix" field.
+func IsAffixGTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldIsAffix, v))
+}
+
+// IsAffixLT applies the LT predicate on the "is_affix" field.
+func IsAffixLT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldIsAffix, v))
+}
+
+// IsAffixLTE applies the LTE predicate on the "is_affix" field.
+func IsAffixLTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldIsAffix, v))
+}
+
+// IsAffixIsNil applies the IsNil predicate on the "is_affix" field.
+func IsAffixIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldIsAffix))
+}
+
+// IsAffixNotNil applies the NotNil predicate on the "is_affix" field.
+func IsAffixNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldIsAffix))
 }
 
 // RedirectEQ applies the EQ predicate on the "redirect" field.
@@ -1688,56 +1683,6 @@ func RedirectEqualFold(v string) predicate.SysMenu {
 // RedirectContainsFold applies the ContainsFold predicate on the "redirect" field.
 func RedirectContainsFold(v string) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldContainsFold(FieldRedirect, v))
-}
-
-// IsAffixEQ applies the EQ predicate on the "is_affix" field.
-func IsAffixEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldEQ(FieldIsAffix, v))
-}
-
-// IsAffixNEQ applies the NEQ predicate on the "is_affix" field.
-func IsAffixNEQ(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNEQ(FieldIsAffix, v))
-}
-
-// IsAffixIn applies the In predicate on the "is_affix" field.
-func IsAffixIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIn(FieldIsAffix, vs...))
-}
-
-// IsAffixNotIn applies the NotIn predicate on the "is_affix" field.
-func IsAffixNotIn(vs ...int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotIn(FieldIsAffix, vs...))
-}
-
-// IsAffixGT applies the GT predicate on the "is_affix" field.
-func IsAffixGT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGT(FieldIsAffix, v))
-}
-
-// IsAffixGTE applies the GTE predicate on the "is_affix" field.
-func IsAffixGTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldGTE(FieldIsAffix, v))
-}
-
-// IsAffixLT applies the LT predicate on the "is_affix" field.
-func IsAffixLT(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLT(FieldIsAffix, v))
-}
-
-// IsAffixLTE applies the LTE predicate on the "is_affix" field.
-func IsAffixLTE(v int8) predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldLTE(FieldIsAffix, v))
-}
-
-// IsAffixIsNil applies the IsNil predicate on the "is_affix" field.
-func IsAffixIsNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldIsNull(FieldIsAffix))
-}
-
-// IsAffixNotNil applies the NotNil predicate on the "is_affix" field.
-func IsAffixNotNil() predicate.SysMenu {
-	return predicate.SysMenu(sql.FieldNotNull(FieldIsAffix))
 }
 
 // LinkURLEQ applies the EQ predicate on the "link_url" field.
