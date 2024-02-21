@@ -121,6 +121,20 @@ func (src *SysRoleCreate) SetNillableStatus(i *int8) *SysRoleCreate {
 	return src
 }
 
+// SetSort sets the "sort" field.
+func (src *SysRoleCreate) SetSort(i int) *SysRoleCreate {
+	src.mutation.SetSort(i)
+	return src
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableSort(i *int) *SysRoleCreate {
+	if i != nil {
+		src.SetSort(*i)
+	}
+	return src
+}
+
 // SetRemark sets the "remark" field.
 func (src *SysRoleCreate) SetRemark(s string) *SysRoleCreate {
 	src.mutation.SetRemark(s)
@@ -149,30 +163,16 @@ func (src *SysRoleCreate) SetNillableDelFlag(i *int8) *SysRoleCreate {
 	return src
 }
 
-// SetListOrder sets the "list_order" field.
-func (src *SysRoleCreate) SetListOrder(i int64) *SysRoleCreate {
-	src.mutation.SetListOrder(i)
+// SetRoleName sets the "role_name" field.
+func (src *SysRoleCreate) SetRoleName(s string) *SysRoleCreate {
+	src.mutation.SetRoleName(s)
 	return src
 }
 
-// SetNillableListOrder sets the "list_order" field if the given value is not nil.
-func (src *SysRoleCreate) SetNillableListOrder(i *int64) *SysRoleCreate {
-	if i != nil {
-		src.SetListOrder(*i)
-	}
-	return src
-}
-
-// SetName sets the "name" field.
-func (src *SysRoleCreate) SetName(s string) *SysRoleCreate {
-	src.mutation.SetName(s)
-	return src
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (src *SysRoleCreate) SetNillableName(s *string) *SysRoleCreate {
+// SetNillableRoleName sets the "role_name" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableRoleName(s *string) *SysRoleCreate {
 	if s != nil {
-		src.SetName(*s)
+		src.SetRoleName(*s)
 	}
 	return src
 }
@@ -305,6 +305,10 @@ func (src *SysRoleCreate) defaults() error {
 		v := sysrole.DefaultStatus
 		src.mutation.SetStatus(v)
 	}
+	if _, ok := src.mutation.Sort(); !ok {
+		v := sysrole.DefaultSort
+		src.mutation.SetSort(v)
+	}
 	if _, ok := src.mutation.DelFlag(); !ok {
 		v := sysrole.DefaultDelFlag
 		src.mutation.SetDelFlag(v)
@@ -387,6 +391,10 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysrole.FieldStatus, field.TypeInt8, value)
 		_node.Status = value
 	}
+	if value, ok := src.mutation.Sort(); ok {
+		_spec.SetField(sysrole.FieldSort, field.TypeInt, value)
+		_node.Sort = value
+	}
 	if value, ok := src.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 		_node.Remark = value
@@ -395,13 +403,9 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysrole.FieldDelFlag, field.TypeInt8, value)
 		_node.DelFlag = value
 	}
-	if value, ok := src.mutation.ListOrder(); ok {
-		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)
-		_node.ListOrder = value
-	}
-	if value, ok := src.mutation.Name(); ok {
-		_spec.SetField(sysrole.FieldName, field.TypeString, value)
-		_node.Name = value
+	if value, ok := src.mutation.RoleName(); ok {
+		_spec.SetField(sysrole.FieldRoleName, field.TypeString, value)
+		_node.RoleName = value
 	}
 	if value, ok := src.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)

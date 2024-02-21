@@ -294,18 +294,20 @@ func init() {
 	// syspost.DefaultID holds the default value on creation for the id field.
 	syspost.DefaultID = syspostDescID.Default.(func() int64)
 	sysroleMixin := schema.SysRole{}.Mixin()
-	sysroleMixinHooks6 := sysroleMixin[6].Hooks()
-	sysrole.Hooks[0] = sysroleMixinHooks6[0]
-	sysroleMixinInters6 := sysroleMixin[6].Interceptors()
-	sysrole.Interceptors[0] = sysroleMixinInters6[0]
+	sysroleMixinHooks7 := sysroleMixin[7].Hooks()
+	sysrole.Hooks[0] = sysroleMixinHooks7[0]
+	sysroleMixinInters7 := sysroleMixin[7].Interceptors()
+	sysrole.Interceptors[0] = sysroleMixinInters7[0]
 	sysroleMixinFields0 := sysroleMixin[0].Fields()
 	_ = sysroleMixinFields0
 	sysroleMixinFields1 := sysroleMixin[1].Fields()
 	_ = sysroleMixinFields1
 	sysroleMixinFields4 := sysroleMixin[4].Fields()
 	_ = sysroleMixinFields4
-	sysroleMixinFields6 := sysroleMixin[6].Fields()
-	_ = sysroleMixinFields6
+	sysroleMixinFields5 := sysroleMixin[5].Fields()
+	_ = sysroleMixinFields5
+	sysroleMixinFields7 := sysroleMixin[7].Fields()
+	_ = sysroleMixinFields7
 	sysroleFields := schema.SysRole{}.Fields()
 	_ = sysroleFields
 	// sysroleDescCreatedAt is the schema descriptor for created_at field.
@@ -322,8 +324,12 @@ func init() {
 	sysroleDescStatus := sysroleMixinFields4[0].Descriptor()
 	// sysrole.DefaultStatus holds the default value on creation for the status field.
 	sysrole.DefaultStatus = sysroleDescStatus.Default.(int8)
+	// sysroleDescSort is the schema descriptor for sort field.
+	sysroleDescSort := sysroleMixinFields5[0].Descriptor()
+	// sysrole.DefaultSort holds the default value on creation for the sort field.
+	sysrole.DefaultSort = sysroleDescSort.Default.(int)
 	// sysroleDescDelFlag is the schema descriptor for del_flag field.
-	sysroleDescDelFlag := sysroleMixinFields6[0].Descriptor()
+	sysroleDescDelFlag := sysroleMixinFields7[0].Descriptor()
 	// sysrole.DefaultDelFlag holds the default value on creation for the del_flag field.
 	sysrole.DefaultDelFlag = sysroleDescDelFlag.Default.(int8)
 	// sysroleDescID is the schema descriptor for id field.

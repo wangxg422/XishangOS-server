@@ -12984,12 +12984,12 @@ type SysRoleMutation struct {
 	adddelete_by    *int64
 	status          *int8
 	addstatus       *int8
+	sort            *int
+	addsort         *int
 	remark          *string
 	del_flag        *int8
 	adddel_flag     *int8
-	list_order      *int64
-	addlist_order   *int64
-	name            *string
+	role_name       *string
 	data_scope      *int8
 	adddata_scope   *int8
 	clearedFields   map[string]struct{}
@@ -13524,6 +13524,76 @@ func (m *SysRoleMutation) ResetStatus() {
 	m.addstatus = nil
 }
 
+// SetSort sets the "sort" field.
+func (m *SysRoleMutation) SetSort(i int) {
+	m.sort = &i
+	m.addsort = nil
+}
+
+// Sort returns the value of the "sort" field in the mutation.
+func (m *SysRoleMutation) Sort() (r int, exists bool) {
+	v := m.sort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSort returns the old "sort" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldSort(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSort: %w", err)
+	}
+	return oldValue.Sort, nil
+}
+
+// AddSort adds i to the "sort" field.
+func (m *SysRoleMutation) AddSort(i int) {
+	if m.addsort != nil {
+		*m.addsort += i
+	} else {
+		m.addsort = &i
+	}
+}
+
+// AddedSort returns the value that was added to the "sort" field in this mutation.
+func (m *SysRoleMutation) AddedSort() (r int, exists bool) {
+	v := m.addsort
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSort clears the value of the "sort" field.
+func (m *SysRoleMutation) ClearSort() {
+	m.sort = nil
+	m.addsort = nil
+	m.clearedFields[sysrole.FieldSort] = struct{}{}
+}
+
+// SortCleared returns if the "sort" field was cleared in this mutation.
+func (m *SysRoleMutation) SortCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldSort]
+	return ok
+}
+
+// ResetSort resets all changes to the "sort" field.
+func (m *SysRoleMutation) ResetSort() {
+	m.sort = nil
+	m.addsort = nil
+	delete(m.clearedFields, sysrole.FieldSort)
+}
+
 // SetRemark sets the "remark" field.
 func (m *SysRoleMutation) SetRemark(s string) {
 	m.remark = &s
@@ -13629,123 +13699,53 @@ func (m *SysRoleMutation) ResetDelFlag() {
 	m.adddel_flag = nil
 }
 
-// SetListOrder sets the "list_order" field.
-func (m *SysRoleMutation) SetListOrder(i int64) {
-	m.list_order = &i
-	m.addlist_order = nil
+// SetRoleName sets the "role_name" field.
+func (m *SysRoleMutation) SetRoleName(s string) {
+	m.role_name = &s
 }
 
-// ListOrder returns the value of the "list_order" field in the mutation.
-func (m *SysRoleMutation) ListOrder() (r int64, exists bool) {
-	v := m.list_order
+// RoleName returns the value of the "role_name" field in the mutation.
+func (m *SysRoleMutation) RoleName() (r string, exists bool) {
+	v := m.role_name
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldListOrder returns the old "list_order" field's value of the SysRole entity.
+// OldRoleName returns the old "role_name" field's value of the SysRole entity.
 // If the SysRole object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysRoleMutation) OldListOrder(ctx context.Context) (v int64, err error) {
+func (m *SysRoleMutation) OldRoleName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldListOrder is only allowed on UpdateOne operations")
+		return v, errors.New("OldRoleName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldListOrder requires an ID field in the mutation")
+		return v, errors.New("OldRoleName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldListOrder: %w", err)
+		return v, fmt.Errorf("querying old value for OldRoleName: %w", err)
 	}
-	return oldValue.ListOrder, nil
+	return oldValue.RoleName, nil
 }
 
-// AddListOrder adds i to the "list_order" field.
-func (m *SysRoleMutation) AddListOrder(i int64) {
-	if m.addlist_order != nil {
-		*m.addlist_order += i
-	} else {
-		m.addlist_order = &i
-	}
+// ClearRoleName clears the value of the "role_name" field.
+func (m *SysRoleMutation) ClearRoleName() {
+	m.role_name = nil
+	m.clearedFields[sysrole.FieldRoleName] = struct{}{}
 }
 
-// AddedListOrder returns the value that was added to the "list_order" field in this mutation.
-func (m *SysRoleMutation) AddedListOrder() (r int64, exists bool) {
-	v := m.addlist_order
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearListOrder clears the value of the "list_order" field.
-func (m *SysRoleMutation) ClearListOrder() {
-	m.list_order = nil
-	m.addlist_order = nil
-	m.clearedFields[sysrole.FieldListOrder] = struct{}{}
-}
-
-// ListOrderCleared returns if the "list_order" field was cleared in this mutation.
-func (m *SysRoleMutation) ListOrderCleared() bool {
-	_, ok := m.clearedFields[sysrole.FieldListOrder]
+// RoleNameCleared returns if the "role_name" field was cleared in this mutation.
+func (m *SysRoleMutation) RoleNameCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldRoleName]
 	return ok
 }
 
-// ResetListOrder resets all changes to the "list_order" field.
-func (m *SysRoleMutation) ResetListOrder() {
-	m.list_order = nil
-	m.addlist_order = nil
-	delete(m.clearedFields, sysrole.FieldListOrder)
-}
-
-// SetName sets the "name" field.
-func (m *SysRoleMutation) SetName(s string) {
-	m.name = &s
-}
-
-// Name returns the value of the "name" field in the mutation.
-func (m *SysRoleMutation) Name() (r string, exists bool) {
-	v := m.name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldName returns the old "name" field's value of the SysRole entity.
-// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysRoleMutation) OldName(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
-	}
-	return oldValue.Name, nil
-}
-
-// ClearName clears the value of the "name" field.
-func (m *SysRoleMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[sysrole.FieldName] = struct{}{}
-}
-
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *SysRoleMutation) NameCleared() bool {
-	_, ok := m.clearedFields[sysrole.FieldName]
-	return ok
-}
-
-// ResetName resets all changes to the "name" field.
-func (m *SysRoleMutation) ResetName() {
-	m.name = nil
-	delete(m.clearedFields, sysrole.FieldName)
+// ResetRoleName resets all changes to the "role_name" field.
+func (m *SysRoleMutation) ResetRoleName() {
+	m.role_name = nil
+	delete(m.clearedFields, sysrole.FieldRoleName)
 }
 
 // SetDataScope sets the "data_scope" field.
@@ -14036,17 +14036,17 @@ func (m *SysRoleMutation) Fields() []string {
 	if m.status != nil {
 		fields = append(fields, sysrole.FieldStatus)
 	}
+	if m.sort != nil {
+		fields = append(fields, sysrole.FieldSort)
+	}
 	if m.remark != nil {
 		fields = append(fields, sysrole.FieldRemark)
 	}
 	if m.del_flag != nil {
 		fields = append(fields, sysrole.FieldDelFlag)
 	}
-	if m.list_order != nil {
-		fields = append(fields, sysrole.FieldListOrder)
-	}
-	if m.name != nil {
-		fields = append(fields, sysrole.FieldName)
+	if m.role_name != nil {
+		fields = append(fields, sysrole.FieldRoleName)
 	}
 	if m.data_scope != nil {
 		fields = append(fields, sysrole.FieldDataScope)
@@ -14073,14 +14073,14 @@ func (m *SysRoleMutation) Field(name string) (ent.Value, bool) {
 		return m.DeleteBy()
 	case sysrole.FieldStatus:
 		return m.Status()
+	case sysrole.FieldSort:
+		return m.Sort()
 	case sysrole.FieldRemark:
 		return m.Remark()
 	case sysrole.FieldDelFlag:
 		return m.DelFlag()
-	case sysrole.FieldListOrder:
-		return m.ListOrder()
-	case sysrole.FieldName:
-		return m.Name()
+	case sysrole.FieldRoleName:
+		return m.RoleName()
 	case sysrole.FieldDataScope:
 		return m.DataScope()
 	}
@@ -14106,14 +14106,14 @@ func (m *SysRoleMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDeleteBy(ctx)
 	case sysrole.FieldStatus:
 		return m.OldStatus(ctx)
+	case sysrole.FieldSort:
+		return m.OldSort(ctx)
 	case sysrole.FieldRemark:
 		return m.OldRemark(ctx)
 	case sysrole.FieldDelFlag:
 		return m.OldDelFlag(ctx)
-	case sysrole.FieldListOrder:
-		return m.OldListOrder(ctx)
-	case sysrole.FieldName:
-		return m.OldName(ctx)
+	case sysrole.FieldRoleName:
+		return m.OldRoleName(ctx)
 	case sysrole.FieldDataScope:
 		return m.OldDataScope(ctx)
 	}
@@ -14174,6 +14174,13 @@ func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetStatus(v)
 		return nil
+	case sysrole.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSort(v)
+		return nil
 	case sysrole.FieldRemark:
 		v, ok := value.(string)
 		if !ok {
@@ -14188,19 +14195,12 @@ func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDelFlag(v)
 		return nil
-	case sysrole.FieldListOrder:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetListOrder(v)
-		return nil
-	case sysrole.FieldName:
+	case sysrole.FieldRoleName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetRoleName(v)
 		return nil
 	case sysrole.FieldDataScope:
 		v, ok := value.(int8)
@@ -14229,11 +14229,11 @@ func (m *SysRoleMutation) AddedFields() []string {
 	if m.addstatus != nil {
 		fields = append(fields, sysrole.FieldStatus)
 	}
+	if m.addsort != nil {
+		fields = append(fields, sysrole.FieldSort)
+	}
 	if m.adddel_flag != nil {
 		fields = append(fields, sysrole.FieldDelFlag)
-	}
-	if m.addlist_order != nil {
-		fields = append(fields, sysrole.FieldListOrder)
 	}
 	if m.adddata_scope != nil {
 		fields = append(fields, sysrole.FieldDataScope)
@@ -14254,10 +14254,10 @@ func (m *SysRoleMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDeleteBy()
 	case sysrole.FieldStatus:
 		return m.AddedStatus()
+	case sysrole.FieldSort:
+		return m.AddedSort()
 	case sysrole.FieldDelFlag:
 		return m.AddedDelFlag()
-	case sysrole.FieldListOrder:
-		return m.AddedListOrder()
 	case sysrole.FieldDataScope:
 		return m.AddedDataScope()
 	}
@@ -14297,19 +14297,19 @@ func (m *SysRoleMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddStatus(v)
 		return nil
+	case sysrole.FieldSort:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSort(v)
+		return nil
 	case sysrole.FieldDelFlag:
 		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDelFlag(v)
-		return nil
-	case sysrole.FieldListOrder:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddListOrder(v)
 		return nil
 	case sysrole.FieldDataScope:
 		v, ok := value.(int8)
@@ -14344,14 +14344,14 @@ func (m *SysRoleMutation) ClearedFields() []string {
 	if m.FieldCleared(sysrole.FieldDeleteBy) {
 		fields = append(fields, sysrole.FieldDeleteBy)
 	}
+	if m.FieldCleared(sysrole.FieldSort) {
+		fields = append(fields, sysrole.FieldSort)
+	}
 	if m.FieldCleared(sysrole.FieldRemark) {
 		fields = append(fields, sysrole.FieldRemark)
 	}
-	if m.FieldCleared(sysrole.FieldListOrder) {
-		fields = append(fields, sysrole.FieldListOrder)
-	}
-	if m.FieldCleared(sysrole.FieldName) {
-		fields = append(fields, sysrole.FieldName)
+	if m.FieldCleared(sysrole.FieldRoleName) {
+		fields = append(fields, sysrole.FieldRoleName)
 	}
 	if m.FieldCleared(sysrole.FieldDataScope) {
 		fields = append(fields, sysrole.FieldDataScope)
@@ -14388,14 +14388,14 @@ func (m *SysRoleMutation) ClearField(name string) error {
 	case sysrole.FieldDeleteBy:
 		m.ClearDeleteBy()
 		return nil
+	case sysrole.FieldSort:
+		m.ClearSort()
+		return nil
 	case sysrole.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case sysrole.FieldListOrder:
-		m.ClearListOrder()
-		return nil
-	case sysrole.FieldName:
-		m.ClearName()
+	case sysrole.FieldRoleName:
+		m.ClearRoleName()
 		return nil
 	case sysrole.FieldDataScope:
 		m.ClearDataScope()
@@ -14429,17 +14429,17 @@ func (m *SysRoleMutation) ResetField(name string) error {
 	case sysrole.FieldStatus:
 		m.ResetStatus()
 		return nil
+	case sysrole.FieldSort:
+		m.ResetSort()
+		return nil
 	case sysrole.FieldRemark:
 		m.ResetRemark()
 		return nil
 	case sysrole.FieldDelFlag:
 		m.ResetDelFlag()
 		return nil
-	case sysrole.FieldListOrder:
-		m.ResetListOrder()
-		return nil
-	case sysrole.FieldName:
-		m.ResetName()
+	case sysrole.FieldRoleName:
+		m.ResetRoleName()
 		return nil
 	case sysrole.FieldDataScope:
 		m.ResetDataScope()

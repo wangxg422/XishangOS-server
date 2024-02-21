@@ -32,6 +32,7 @@ func (SysRole) Mixin() []ent.Mixin {
 		baseMixin.DeleteTimeMixin{},
 		baseMixin.ByMixin{},
 		baseMixin.StatusMixin{},
+		baseMixin.SortMixin{},
 		baseMixin.RemarkMixin{},
 		mixin.SoftDeleteMixin{},
 	}
@@ -40,8 +41,7 @@ func (SysRole) Mixin() []ent.Mixin {
 // Fields of the SysRole.
 func (SysRole) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("list_order").Optional().Comment("排序"),
-		field.String("name").Optional().Comment("角色名称"),
+		field.String("role_name").Optional().Comment("角色名称"),
 		field.Int8("data_scope").Optional().Comment("数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)"),
 	}
 }

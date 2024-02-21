@@ -31,14 +31,14 @@ type SysRole struct {
 	DeleteBy int64 `json:"delete_by,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
+	// Sort holds the value of the "sort" field.
+	Sort int `json:"sort,omitempty"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"del_flag,omitempty"`
-	// 排序
-	ListOrder int64 `json:"list_order,omitempty"`
 	// 角色名称
-	Name string `json:"name,omitempty"`
+	RoleName string `json:"role_name,omitempty"`
 	// 数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)
 	DataScope int8 `json:"data_scope,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -92,9 +92,9 @@ func (*SysRole) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysrole.FieldID, sysrole.FieldCreatedBy, sysrole.FieldUpdatedBy, sysrole.FieldDeleteBy, sysrole.FieldStatus, sysrole.FieldDelFlag, sysrole.FieldListOrder, sysrole.FieldDataScope:
+		case sysrole.FieldID, sysrole.FieldCreatedBy, sysrole.FieldUpdatedBy, sysrole.FieldDeleteBy, sysrole.FieldStatus, sysrole.FieldSort, sysrole.FieldDelFlag, sysrole.FieldDataScope:
 			values[i] = new(sql.NullInt64)
-		case sysrole.FieldRemark, sysrole.FieldName:
+		case sysrole.FieldRemark, sysrole.FieldRoleName:
 			values[i] = new(sql.NullString)
 		case sysrole.FieldCreatedAt, sysrole.FieldUpdatedAt, sysrole.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -161,6 +161,12 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.Status = int8(value.Int64)
 			}
+		case sysrole.FieldSort:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sort", values[i])
+			} else if value.Valid {
+				sr.Sort = int(value.Int64)
+			}
 		case sysrole.FieldRemark:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
@@ -173,17 +179,11 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.DelFlag = int8(value.Int64)
 			}
-		case sysrole.FieldListOrder:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field list_order", values[i])
-			} else if value.Valid {
-				sr.ListOrder = value.Int64
-			}
-		case sysrole.FieldName:
+		case sysrole.FieldRoleName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
+				return fmt.Errorf("unexpected type %T for field role_name", values[i])
 			} else if value.Valid {
-				sr.Name = value.String
+				sr.RoleName = value.String
 			}
 		case sysrole.FieldDataScope:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -263,17 +263,17 @@ func (sr *SysRole) String() string {
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", sr.Status))
 	builder.WriteString(", ")
+	builder.WriteString("sort=")
+	builder.WriteString(fmt.Sprintf("%v", sr.Sort))
+	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(sr.Remark)
 	builder.WriteString(", ")
 	builder.WriteString("del_flag=")
 	builder.WriteString(fmt.Sprintf("%v", sr.DelFlag))
 	builder.WriteString(", ")
-	builder.WriteString("list_order=")
-	builder.WriteString(fmt.Sprintf("%v", sr.ListOrder))
-	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(sr.Name)
+	builder.WriteString("role_name=")
+	builder.WriteString(sr.RoleName)
 	builder.WriteString(", ")
 	builder.WriteString("data_scope=")
 	builder.WriteString(fmt.Sprintf("%v", sr.DataScope))

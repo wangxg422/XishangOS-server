@@ -29,14 +29,14 @@ const (
 	FieldDeleteBy = "delete_by"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldSort holds the string denoting the sort field in the database.
+	FieldSort = "sort"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
 	// FieldDelFlag holds the string denoting the del_flag field in the database.
 	FieldDelFlag = "del_flag"
-	// FieldListOrder holds the string denoting the list_order field in the database.
-	FieldListOrder = "list_order"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
+	// FieldRoleName holds the string denoting the role_name field in the database.
+	FieldRoleName = "role_name"
 	// FieldDataScope holds the string denoting the data_scope field in the database.
 	FieldDataScope = "data_scope"
 	// EdgeSysDepts holds the string denoting the sysdepts edge name in mutations.
@@ -74,10 +74,10 @@ var Columns = []string{
 	FieldUpdatedBy,
 	FieldDeleteBy,
 	FieldStatus,
+	FieldSort,
 	FieldRemark,
 	FieldDelFlag,
-	FieldListOrder,
-	FieldName,
+	FieldRoleName,
 	FieldDataScope,
 }
 
@@ -119,6 +119,8 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultStatus holds the default value on creation for the "status" field.
 	DefaultStatus int8
+	// DefaultSort holds the default value on creation for the "sort" field.
+	DefaultSort int
 	// DefaultDelFlag holds the default value on creation for the "del_flag" field.
 	DefaultDelFlag int8
 	// DefaultID holds the default value on creation for the "id" field.
@@ -168,6 +170,11 @@ func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
+// BySort orders the results by the sort field.
+func BySort(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSort, opts...).ToFunc()
+}
+
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
@@ -178,14 +185,9 @@ func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDelFlag, opts...).ToFunc()
 }
 
-// ByListOrder orders the results by the list_order field.
-func ByListOrder(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldListOrder, opts...).ToFunc()
-}
-
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
+// ByRoleName orders the results by the role_name field.
+func ByRoleName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRoleName, opts...).ToFunc()
 }
 
 // ByDataScope orders the results by the data_scope field.

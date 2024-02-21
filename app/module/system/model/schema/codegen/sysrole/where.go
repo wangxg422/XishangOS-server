@@ -90,6 +90,11 @@ func Status(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldStatus, v))
 }
 
+// Sort applies equality check predicate on the "sort" field. It's identical to SortEQ.
+func Sort(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldSort, v))
+}
+
 // Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
 func Remark(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldRemark, v))
@@ -100,14 +105,9 @@ func DelFlag(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldDelFlag, v))
 }
 
-// ListOrder applies equality check predicate on the "list_order" field. It's identical to ListOrderEQ.
-func ListOrder(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldEQ(FieldListOrder, v))
-}
-
-// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
-func Name(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldEQ(FieldName, v))
+// RoleName applies equality check predicate on the "role_name" field. It's identical to RoleNameEQ.
+func RoleName(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldRoleName, v))
 }
 
 // DataScope applies equality check predicate on the "data_scope" field. It's identical to DataScopeEQ.
@@ -455,6 +455,56 @@ func StatusLTE(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldLTE(FieldStatus, v))
 }
 
+// SortEQ applies the EQ predicate on the "sort" field.
+func SortEQ(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldSort, v))
+}
+
+// SortNEQ applies the NEQ predicate on the "sort" field.
+func SortNEQ(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldSort, v))
+}
+
+// SortIn applies the In predicate on the "sort" field.
+func SortIn(vs ...int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldSort, vs...))
+}
+
+// SortNotIn applies the NotIn predicate on the "sort" field.
+func SortNotIn(vs ...int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldSort, vs...))
+}
+
+// SortGT applies the GT predicate on the "sort" field.
+func SortGT(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldSort, v))
+}
+
+// SortGTE applies the GTE predicate on the "sort" field.
+func SortGTE(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldSort, v))
+}
+
+// SortLT applies the LT predicate on the "sort" field.
+func SortLT(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldSort, v))
+}
+
+// SortLTE applies the LTE predicate on the "sort" field.
+func SortLTE(v int) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldSort, v))
+}
+
+// SortIsNil applies the IsNil predicate on the "sort" field.
+func SortIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldSort))
+}
+
+// SortNotNil applies the NotNil predicate on the "sort" field.
+func SortNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldSort))
+}
+
 // RemarkEQ applies the EQ predicate on the "remark" field.
 func RemarkEQ(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldRemark, v))
@@ -570,129 +620,79 @@ func DelFlagLTE(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldLTE(FieldDelFlag, v))
 }
 
-// ListOrderEQ applies the EQ predicate on the "list_order" field.
-func ListOrderEQ(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldEQ(FieldListOrder, v))
+// RoleNameEQ applies the EQ predicate on the "role_name" field.
+func RoleNameEQ(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldRoleName, v))
 }
 
-// ListOrderNEQ applies the NEQ predicate on the "list_order" field.
-func ListOrderNEQ(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldNEQ(FieldListOrder, v))
+// RoleNameNEQ applies the NEQ predicate on the "role_name" field.
+func RoleNameNEQ(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldRoleName, v))
 }
 
-// ListOrderIn applies the In predicate on the "list_order" field.
-func ListOrderIn(vs ...int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldIn(FieldListOrder, vs...))
+// RoleNameIn applies the In predicate on the "role_name" field.
+func RoleNameIn(vs ...string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldRoleName, vs...))
 }
 
-// ListOrderNotIn applies the NotIn predicate on the "list_order" field.
-func ListOrderNotIn(vs ...int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotIn(FieldListOrder, vs...))
+// RoleNameNotIn applies the NotIn predicate on the "role_name" field.
+func RoleNameNotIn(vs ...string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldRoleName, vs...))
 }
 
-// ListOrderGT applies the GT predicate on the "list_order" field.
-func ListOrderGT(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldGT(FieldListOrder, v))
+// RoleNameGT applies the GT predicate on the "role_name" field.
+func RoleNameGT(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldRoleName, v))
 }
 
-// ListOrderGTE applies the GTE predicate on the "list_order" field.
-func ListOrderGTE(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldGTE(FieldListOrder, v))
+// RoleNameGTE applies the GTE predicate on the "role_name" field.
+func RoleNameGTE(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldRoleName, v))
 }
 
-// ListOrderLT applies the LT predicate on the "list_order" field.
-func ListOrderLT(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldLT(FieldListOrder, v))
+// RoleNameLT applies the LT predicate on the "role_name" field.
+func RoleNameLT(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldRoleName, v))
 }
 
-// ListOrderLTE applies the LTE predicate on the "list_order" field.
-func ListOrderLTE(v int64) predicate.SysRole {
-	return predicate.SysRole(sql.FieldLTE(FieldListOrder, v))
+// RoleNameLTE applies the LTE predicate on the "role_name" field.
+func RoleNameLTE(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldRoleName, v))
 }
 
-// ListOrderIsNil applies the IsNil predicate on the "list_order" field.
-func ListOrderIsNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldIsNull(FieldListOrder))
+// RoleNameContains applies the Contains predicate on the "role_name" field.
+func RoleNameContains(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldContains(FieldRoleName, v))
 }
 
-// ListOrderNotNil applies the NotNil predicate on the "list_order" field.
-func ListOrderNotNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotNull(FieldListOrder))
+// RoleNameHasPrefix applies the HasPrefix predicate on the "role_name" field.
+func RoleNameHasPrefix(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldHasPrefix(FieldRoleName, v))
 }
 
-// NameEQ applies the EQ predicate on the "name" field.
-func NameEQ(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldEQ(FieldName, v))
+// RoleNameHasSuffix applies the HasSuffix predicate on the "role_name" field.
+func RoleNameHasSuffix(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldHasSuffix(FieldRoleName, v))
 }
 
-// NameNEQ applies the NEQ predicate on the "name" field.
-func NameNEQ(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldNEQ(FieldName, v))
+// RoleNameIsNil applies the IsNil predicate on the "role_name" field.
+func RoleNameIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldRoleName))
 }
 
-// NameIn applies the In predicate on the "name" field.
-func NameIn(vs ...string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldIn(FieldName, vs...))
+// RoleNameNotNil applies the NotNil predicate on the "role_name" field.
+func RoleNameNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldRoleName))
 }
 
-// NameNotIn applies the NotIn predicate on the "name" field.
-func NameNotIn(vs ...string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotIn(FieldName, vs...))
+// RoleNameEqualFold applies the EqualFold predicate on the "role_name" field.
+func RoleNameEqualFold(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEqualFold(FieldRoleName, v))
 }
 
-// NameGT applies the GT predicate on the "name" field.
-func NameGT(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldGT(FieldName, v))
-}
-
-// NameGTE applies the GTE predicate on the "name" field.
-func NameGTE(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldGTE(FieldName, v))
-}
-
-// NameLT applies the LT predicate on the "name" field.
-func NameLT(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldLT(FieldName, v))
-}
-
-// NameLTE applies the LTE predicate on the "name" field.
-func NameLTE(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldLTE(FieldName, v))
-}
-
-// NameContains applies the Contains predicate on the "name" field.
-func NameContains(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldContains(FieldName, v))
-}
-
-// NameHasPrefix applies the HasPrefix predicate on the "name" field.
-func NameHasPrefix(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldHasPrefix(FieldName, v))
-}
-
-// NameHasSuffix applies the HasSuffix predicate on the "name" field.
-func NameHasSuffix(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldHasSuffix(FieldName, v))
-}
-
-// NameIsNil applies the IsNil predicate on the "name" field.
-func NameIsNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldIsNull(FieldName))
-}
-
-// NameNotNil applies the NotNil predicate on the "name" field.
-func NameNotNil() predicate.SysRole {
-	return predicate.SysRole(sql.FieldNotNull(FieldName))
-}
-
-// NameEqualFold applies the EqualFold predicate on the "name" field.
-func NameEqualFold(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldEqualFold(FieldName, v))
-}
-
-// NameContainsFold applies the ContainsFold predicate on the "name" field.
-func NameContainsFold(v string) predicate.SysRole {
-	return predicate.SysRole(sql.FieldContainsFold(FieldName, v))
+// RoleNameContainsFold applies the ContainsFold predicate on the "role_name" field.
+func RoleNameContainsFold(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldContainsFold(FieldRoleName, v))
 }
 
 // DataScopeEQ applies the EQ predicate on the "data_scope" field.

@@ -185,6 +185,33 @@ func (sru *SysRoleUpdate) AddStatus(i int8) *SysRoleUpdate {
 	return sru
 }
 
+// SetSort sets the "sort" field.
+func (sru *SysRoleUpdate) SetSort(i int) *SysRoleUpdate {
+	sru.mutation.ResetSort()
+	sru.mutation.SetSort(i)
+	return sru
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableSort(i *int) *SysRoleUpdate {
+	if i != nil {
+		sru.SetSort(*i)
+	}
+	return sru
+}
+
+// AddSort adds i to the "sort" field.
+func (sru *SysRoleUpdate) AddSort(i int) *SysRoleUpdate {
+	sru.mutation.AddSort(i)
+	return sru
+}
+
+// ClearSort clears the value of the "sort" field.
+func (sru *SysRoleUpdate) ClearSort() *SysRoleUpdate {
+	sru.mutation.ClearSort()
+	return sru
+}
+
 // SetRemark sets the "remark" field.
 func (sru *SysRoleUpdate) SetRemark(s string) *SysRoleUpdate {
 	sru.mutation.SetRemark(s)
@@ -226,50 +253,23 @@ func (sru *SysRoleUpdate) AddDelFlag(i int8) *SysRoleUpdate {
 	return sru
 }
 
-// SetListOrder sets the "list_order" field.
-func (sru *SysRoleUpdate) SetListOrder(i int64) *SysRoleUpdate {
-	sru.mutation.ResetListOrder()
-	sru.mutation.SetListOrder(i)
+// SetRoleName sets the "role_name" field.
+func (sru *SysRoleUpdate) SetRoleName(s string) *SysRoleUpdate {
+	sru.mutation.SetRoleName(s)
 	return sru
 }
 
-// SetNillableListOrder sets the "list_order" field if the given value is not nil.
-func (sru *SysRoleUpdate) SetNillableListOrder(i *int64) *SysRoleUpdate {
-	if i != nil {
-		sru.SetListOrder(*i)
-	}
-	return sru
-}
-
-// AddListOrder adds i to the "list_order" field.
-func (sru *SysRoleUpdate) AddListOrder(i int64) *SysRoleUpdate {
-	sru.mutation.AddListOrder(i)
-	return sru
-}
-
-// ClearListOrder clears the value of the "list_order" field.
-func (sru *SysRoleUpdate) ClearListOrder() *SysRoleUpdate {
-	sru.mutation.ClearListOrder()
-	return sru
-}
-
-// SetName sets the "name" field.
-func (sru *SysRoleUpdate) SetName(s string) *SysRoleUpdate {
-	sru.mutation.SetName(s)
-	return sru
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (sru *SysRoleUpdate) SetNillableName(s *string) *SysRoleUpdate {
+// SetNillableRoleName sets the "role_name" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableRoleName(s *string) *SysRoleUpdate {
 	if s != nil {
-		sru.SetName(*s)
+		sru.SetRoleName(*s)
 	}
 	return sru
 }
 
-// ClearName clears the value of the "name" field.
-func (sru *SysRoleUpdate) ClearName() *SysRoleUpdate {
-	sru.mutation.ClearName()
+// ClearRoleName clears the value of the "role_name" field.
+func (sru *SysRoleUpdate) ClearRoleName() *SysRoleUpdate {
+	sru.mutation.ClearRoleName()
 	return sru
 }
 
@@ -515,6 +515,15 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := sru.mutation.AddedStatus(); ok {
 		_spec.AddField(sysrole.FieldStatus, field.TypeInt8, value)
 	}
+	if value, ok := sru.mutation.Sort(); ok {
+		_spec.SetField(sysrole.FieldSort, field.TypeInt, value)
+	}
+	if value, ok := sru.mutation.AddedSort(); ok {
+		_spec.AddField(sysrole.FieldSort, field.TypeInt, value)
+	}
+	if sru.mutation.SortCleared() {
+		_spec.ClearField(sysrole.FieldSort, field.TypeInt)
+	}
 	if value, ok := sru.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 	}
@@ -527,20 +536,11 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := sru.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysrole.FieldDelFlag, field.TypeInt8, value)
 	}
-	if value, ok := sru.mutation.ListOrder(); ok {
-		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)
+	if value, ok := sru.mutation.RoleName(); ok {
+		_spec.SetField(sysrole.FieldRoleName, field.TypeString, value)
 	}
-	if value, ok := sru.mutation.AddedListOrder(); ok {
-		_spec.AddField(sysrole.FieldListOrder, field.TypeInt64, value)
-	}
-	if sru.mutation.ListOrderCleared() {
-		_spec.ClearField(sysrole.FieldListOrder, field.TypeInt64)
-	}
-	if value, ok := sru.mutation.Name(); ok {
-		_spec.SetField(sysrole.FieldName, field.TypeString, value)
-	}
-	if sru.mutation.NameCleared() {
-		_spec.ClearField(sysrole.FieldName, field.TypeString)
+	if sru.mutation.RoleNameCleared() {
+		_spec.ClearField(sysrole.FieldRoleName, field.TypeString)
 	}
 	if value, ok := sru.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)
@@ -860,6 +860,33 @@ func (sruo *SysRoleUpdateOne) AddStatus(i int8) *SysRoleUpdateOne {
 	return sruo
 }
 
+// SetSort sets the "sort" field.
+func (sruo *SysRoleUpdateOne) SetSort(i int) *SysRoleUpdateOne {
+	sruo.mutation.ResetSort()
+	sruo.mutation.SetSort(i)
+	return sruo
+}
+
+// SetNillableSort sets the "sort" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableSort(i *int) *SysRoleUpdateOne {
+	if i != nil {
+		sruo.SetSort(*i)
+	}
+	return sruo
+}
+
+// AddSort adds i to the "sort" field.
+func (sruo *SysRoleUpdateOne) AddSort(i int) *SysRoleUpdateOne {
+	sruo.mutation.AddSort(i)
+	return sruo
+}
+
+// ClearSort clears the value of the "sort" field.
+func (sruo *SysRoleUpdateOne) ClearSort() *SysRoleUpdateOne {
+	sruo.mutation.ClearSort()
+	return sruo
+}
+
 // SetRemark sets the "remark" field.
 func (sruo *SysRoleUpdateOne) SetRemark(s string) *SysRoleUpdateOne {
 	sruo.mutation.SetRemark(s)
@@ -901,50 +928,23 @@ func (sruo *SysRoleUpdateOne) AddDelFlag(i int8) *SysRoleUpdateOne {
 	return sruo
 }
 
-// SetListOrder sets the "list_order" field.
-func (sruo *SysRoleUpdateOne) SetListOrder(i int64) *SysRoleUpdateOne {
-	sruo.mutation.ResetListOrder()
-	sruo.mutation.SetListOrder(i)
+// SetRoleName sets the "role_name" field.
+func (sruo *SysRoleUpdateOne) SetRoleName(s string) *SysRoleUpdateOne {
+	sruo.mutation.SetRoleName(s)
 	return sruo
 }
 
-// SetNillableListOrder sets the "list_order" field if the given value is not nil.
-func (sruo *SysRoleUpdateOne) SetNillableListOrder(i *int64) *SysRoleUpdateOne {
-	if i != nil {
-		sruo.SetListOrder(*i)
-	}
-	return sruo
-}
-
-// AddListOrder adds i to the "list_order" field.
-func (sruo *SysRoleUpdateOne) AddListOrder(i int64) *SysRoleUpdateOne {
-	sruo.mutation.AddListOrder(i)
-	return sruo
-}
-
-// ClearListOrder clears the value of the "list_order" field.
-func (sruo *SysRoleUpdateOne) ClearListOrder() *SysRoleUpdateOne {
-	sruo.mutation.ClearListOrder()
-	return sruo
-}
-
-// SetName sets the "name" field.
-func (sruo *SysRoleUpdateOne) SetName(s string) *SysRoleUpdateOne {
-	sruo.mutation.SetName(s)
-	return sruo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (sruo *SysRoleUpdateOne) SetNillableName(s *string) *SysRoleUpdateOne {
+// SetNillableRoleName sets the "role_name" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableRoleName(s *string) *SysRoleUpdateOne {
 	if s != nil {
-		sruo.SetName(*s)
+		sruo.SetRoleName(*s)
 	}
 	return sruo
 }
 
-// ClearName clears the value of the "name" field.
-func (sruo *SysRoleUpdateOne) ClearName() *SysRoleUpdateOne {
-	sruo.mutation.ClearName()
+// ClearRoleName clears the value of the "role_name" field.
+func (sruo *SysRoleUpdateOne) ClearRoleName() *SysRoleUpdateOne {
+	sruo.mutation.ClearRoleName()
 	return sruo
 }
 
@@ -1220,6 +1220,15 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	if value, ok := sruo.mutation.AddedStatus(); ok {
 		_spec.AddField(sysrole.FieldStatus, field.TypeInt8, value)
 	}
+	if value, ok := sruo.mutation.Sort(); ok {
+		_spec.SetField(sysrole.FieldSort, field.TypeInt, value)
+	}
+	if value, ok := sruo.mutation.AddedSort(); ok {
+		_spec.AddField(sysrole.FieldSort, field.TypeInt, value)
+	}
+	if sruo.mutation.SortCleared() {
+		_spec.ClearField(sysrole.FieldSort, field.TypeInt)
+	}
 	if value, ok := sruo.mutation.Remark(); ok {
 		_spec.SetField(sysrole.FieldRemark, field.TypeString, value)
 	}
@@ -1232,20 +1241,11 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	if value, ok := sruo.mutation.AddedDelFlag(); ok {
 		_spec.AddField(sysrole.FieldDelFlag, field.TypeInt8, value)
 	}
-	if value, ok := sruo.mutation.ListOrder(); ok {
-		_spec.SetField(sysrole.FieldListOrder, field.TypeInt64, value)
+	if value, ok := sruo.mutation.RoleName(); ok {
+		_spec.SetField(sysrole.FieldRoleName, field.TypeString, value)
 	}
-	if value, ok := sruo.mutation.AddedListOrder(); ok {
-		_spec.AddField(sysrole.FieldListOrder, field.TypeInt64, value)
-	}
-	if sruo.mutation.ListOrderCleared() {
-		_spec.ClearField(sysrole.FieldListOrder, field.TypeInt64)
-	}
-	if value, ok := sruo.mutation.Name(); ok {
-		_spec.SetField(sysrole.FieldName, field.TypeString, value)
-	}
-	if sruo.mutation.NameCleared() {
-		_spec.ClearField(sysrole.FieldName, field.TypeString)
+	if sruo.mutation.RoleNameCleared() {
+		_spec.ClearField(sysrole.FieldRoleName, field.TypeString)
 	}
 	if value, ok := sruo.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)

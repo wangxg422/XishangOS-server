@@ -4,7 +4,7 @@ import "github.com/wangxg422/XishangOS-backend/app/base/model/request"
 
 type SysConfigListReq struct {
 	Keyword    string `json:"keyword" form:"keyword"`
-	ConfigType int8   `json:"configType" form:"status"`
+	ConfigType int8   `json:"configType" form:"configType"`
 	request.Pagination
 }
 

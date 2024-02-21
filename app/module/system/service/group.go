@@ -6,4 +6,5 @@ var (
 	AppSysDeptService   *SysDeptService   = new(SysDeptService)
 	AppSysConfigService *SysConfigService = new(SysConfigService)
 	AppSysPostService   *SysPostService   = new(SysPostService)
+	AppSysRoleService   *SysRoleService   = new(SysRoleService)
 )
