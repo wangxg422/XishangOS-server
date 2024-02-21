@@ -1,12 +1,12 @@
 package service
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/common/enmu"
 )
 
 type SysMenu struct {
@@ -25,21 +25,16 @@ func (m *SysMenu) List(req *request.SysMenuListReq, c *gin.Context) ([]*codegen.
 	return query.All(c)
 }
 
-func (m *SysMenu) GetUserMenuAndPermissions(user *codegen.SysUser) (menuList []*codegen.SysMenu, permissions []string, err error) {
-	// 超级管理员获取全部菜单，并设置顶级权限[*/*/*]
-	if user.IsAdmin == 1 {
-		permissions = []string{"*/*/*"}
-		//menuList, err := m.GetAllMenu()
-		if err != nil {
-			return nil, nil, err
-		}
-	}
-
-	return nil, nil, nil
+// GetAllMenu 获取所有菜单，含目录、菜单、按钮
+func (m *SysMenu) GetAllMenu(c *gin.Context) ([]*codegen.SysMenu, error) {
+	return initial.SysDbClient.SysMenu.Query().All(c)
 }
 
-func (m *SysMenu) GetAllMenu() ([]*codegen.SysMenu, error) {
-	return initial.SysDbClient.SysMenu.Query().All(context.Background())
+// GetAllLayoutMenu GetAllMenu 获取所有菜单，含目录、菜单，不含按钮
+func (m *SysMenu) GetAllLayoutMenu(c *gin.Context) ([]*codegen.SysMenu, error) {
+	return initial.SysDbClient.SysMenu.Query().
+		Where(sysmenu.Or(sysmenu.MenuType(enmu.MenuTypeMenu.Value()), sysmenu.MenuType(enmu.MenuTypeDir.Value()))).
+		All(c)
 }
 
 func (m *SysMenu) Add(req *request.SysMenuCreateReq, c *gin.Context) error {

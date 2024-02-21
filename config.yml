@@ -32,7 +32,7 @@ zap:
   stacktrace-key: stacktrace
 
 captcha:
-  enabled: true
+  enabled: false
   key-long: 4
   img-width: 240
   img-height: 80

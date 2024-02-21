@@ -9,4 +9,5 @@ var (
 	SysRoleService     *SysRole     = new(SysRole)
 	SysDictTypeService *SysDictType = new(SysDictType)
 	SysDictDataService *SysDictData = new(SysDictData)
+	SysLoginService    *SysLogin    = new(SysLogin)
 )

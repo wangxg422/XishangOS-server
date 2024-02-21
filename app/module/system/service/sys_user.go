@@ -64,7 +64,7 @@ func (m *SysUser) GetUserByUsername(username string, c *gin.Context) (*codegen.S
 	if exception.NotNoRecordError(err) {
 		return nil, err
 	}
-	return u, err
+	return u, nil
 }
 
 func (m *SysUser) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateReq) error {
