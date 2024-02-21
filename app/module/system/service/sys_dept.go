@@ -10,10 +10,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
-type SysDeptService struct {
+type SysDept struct {
 }
 
-func (m *SysDeptService) DeptExist(deptCode string, id int64, c *gin.Context) error {
+func (m *SysDept) DeptExist(deptCode string, id int64, c *gin.Context) error {
 	count, err := initial.SysDbClient.SysDept.Query().Where(sysdept.DeptCode(deptCode), sysdept.IDNEQ(id)).Count(c)
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func (m *SysDeptService) DeptExist(deptCode string, id int64, c *gin.Context) er
 	return nil
 }
 
-func (m *SysDeptService) GetDeptByCode(deptCode string, c *gin.Context) (*codegen.SysDept, error) {
+func (m *SysDept) GetDeptByCode(deptCode string, c *gin.Context) (*codegen.SysDept, error) {
 	d, err := initial.SysDbClient.SysDept.Query().Where(sysdept.DeptCode(deptCode)).First(c)
 	if exception.NotNoRecordError(err) {
 		return nil, err
@@ -32,7 +32,7 @@ func (m *SysDeptService) GetDeptByCode(deptCode string, c *gin.Context) (*codege
 	return d, nil
 }
 
-func (m *SysDeptService) Add(req *request.SysDeptCreateReq, c *gin.Context) error {
+func (m *SysDept) Add(req *request.SysDeptCreateReq, c *gin.Context) error {
 	// 校验dept_code唯一
 	err := m.DeptExist(req.DeptCode, 0, c)
 	if err != nil {
@@ -50,7 +50,7 @@ func (m *SysDeptService) Add(req *request.SysDeptCreateReq, c *gin.Context) erro
 		SetLeader(req.Leader).Exec(c)
 }
 
-func (m *SysDeptService) Update(req *request.SysDeptUpdateReq, c *gin.Context) error {
+func (m *SysDept) Update(req *request.SysDeptUpdateReq, c *gin.Context) error {
 	err := m.DeptExist(req.DeptCode, req.Id, c)
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (m *SysDeptService) Update(req *request.SysDeptUpdateReq, c *gin.Context) e
 		SetLeader(req.Leader).Exec(c)
 }
 
-func (m *SysDeptService) List(req *request.SysDeptListReq, c *gin.Context) ([]*codegen.SysDept, error) {
+func (m *SysDept) List(req *request.SysDeptListReq, c *gin.Context) ([]*codegen.SysDept, error) {
 	query := initial.SysDbClient.SysDept.Query()
 
 	if req.Status != 0 {
@@ -79,6 +79,6 @@ func (m *SysDeptService) List(req *request.SysDeptListReq, c *gin.Context) ([]*c
 	return query.Order(codegen.Asc(sysdept.FieldParentID, sysdept.FieldID, sysdept.FieldCreatedAt)).All(c)
 }
 
-func (m *SysDeptService) Delete(id int64, c *gin.Context) (int, error) {
+func (m *SysDept) Delete(id int64, c *gin.Context) (int, error) {
 	return initial.SysDbClient.SysDept.Delete().Where(sysdept.ID(id)).Exec(c)
 }

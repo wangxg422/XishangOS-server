@@ -9,11 +9,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysMenuController struct {
+type SysMenu struct {
 	controller.BaseController
 }
 
-func (m *SysMenuController) List(c *gin.Context) {
+func (m *SysMenu) List(c *gin.Context) {
 	req := new(request.SysMenuListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -21,7 +21,7 @@ func (m *SysMenuController) List(c *gin.Context) {
 		return
 	}
 
-	res, err := service.AppSysMenuService.List(req, c)
+	res, err := service.SysMenuService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -29,7 +29,7 @@ func (m *SysMenuController) List(c *gin.Context) {
 	result.OkWithData(res, c)
 }
 
-func (m *SysMenuController) Add(c *gin.Context) {
+func (m *SysMenu) Add(c *gin.Context) {
 	req := new(request.SysMenuCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -37,7 +37,7 @@ func (m *SysMenuController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysMenuService.Add(req, c)
+	err = service.SysMenuService.Add(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -45,7 +45,7 @@ func (m *SysMenuController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysMenuController) Update(c *gin.Context) {
+func (m *SysMenu) Update(c *gin.Context) {
 	req := new(request.SysMenuUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -53,7 +53,7 @@ func (m *SysMenuController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysMenuService.Update(req, c)
+	err = service.SysMenuService.Update(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -61,14 +61,14 @@ func (m *SysMenuController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysMenuController) Delete(c *gin.Context) {
+func (m *SysMenu) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysMenuService.Delete(id, c)
+	_, err = service.SysMenuService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

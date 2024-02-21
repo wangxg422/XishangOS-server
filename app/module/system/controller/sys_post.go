@@ -9,11 +9,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysPostController struct {
+type SysPost struct {
 	controller.BaseController
 }
 
-func (m *SysPostController) List(c *gin.Context) {
+func (m *SysPost) List(c *gin.Context) {
 	req := new(request.SysPostListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -21,7 +21,7 @@ func (m *SysPostController) List(c *gin.Context) {
 		return
 	}
 
-	res, err := service.AppSysPostService.List(req, c)
+	res, err := service.SysPostService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -29,7 +29,7 @@ func (m *SysPostController) List(c *gin.Context) {
 	result.OkWithData(res, c)
 }
 
-func (m *SysPostController) Add(c *gin.Context) {
+func (m *SysPost) Add(c *gin.Context) {
 	req := new(request.SysPostCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -37,7 +37,7 @@ func (m *SysPostController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysPostService.Add(req, c)
+	err = service.SysPostService.Add(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -45,7 +45,7 @@ func (m *SysPostController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysPostController) Update(c *gin.Context) {
+func (m *SysPost) Update(c *gin.Context) {
 	req := new(request.SysPostUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -53,7 +53,7 @@ func (m *SysPostController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysPostService.Update(req, c)
+	err = service.SysPostService.Update(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -61,14 +61,14 @@ func (m *SysPostController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysPostController) Delete(c *gin.Context) {
+func (m *SysPost) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysPostService.Delete(id, c)
+	_, err = service.SysPostService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

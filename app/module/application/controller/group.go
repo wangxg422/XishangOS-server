@@ -1,5 +1,5 @@
 package controller
 
 var (
-	AppAppInstanceController *AppInstanceController = new(AppInstanceController)
+	AppInstanceController *AppInstance = new(AppInstance)
 )

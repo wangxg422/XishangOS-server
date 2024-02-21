@@ -11,11 +11,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysconfig"
 )
 
-type SysConfigService struct {
+type SysConfig struct {
 	BaseService
 }
 
-func (m SysConfigService) Add(req *request.SysConfigCreateReq, c *gin.Context) error {
+func (m SysConfig) Add(req *request.SysConfigCreateReq, c *gin.Context) error {
 	// 保证config_key唯一
 	err := m.SysConfigKeyExist(req.ConfigKey, 0, c)
 	if err != nil {
@@ -31,7 +31,7 @@ func (m SysConfigService) Add(req *request.SysConfigCreateReq, c *gin.Context) e
 		Exec(c)
 }
 
-func (m SysConfigService) SysConfigKeyExist(key string, id int64, c *gin.Context) error {
+func (m SysConfig) SysConfigKeyExist(key string, id int64, c *gin.Context) error {
 	count, err := initial.SysDbClient.SysConfig.Query().Where(sysconfig.ConfigKey(key), sysconfig.IDNEQ(id)).Count(c)
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (m SysConfigService) SysConfigKeyExist(key string, id int64, c *gin.Context
 	return nil
 }
 
-func (m SysConfigService) Update(req *request.SysConfigUpdateReq, c *gin.Context) error {
+func (m SysConfig) Update(req *request.SysConfigUpdateReq, c *gin.Context) error {
 	// 保证config_key唯一
 	err := m.SysConfigKeyExist(req.ConfigKey, req.Id, c)
 	if err != nil {
@@ -59,7 +59,7 @@ func (m SysConfigService) Update(req *request.SysConfigUpdateReq, c *gin.Context
 		Exec(c)
 }
 
-func (m SysConfigService) List(req *request.SysConfigListReq, c *gin.Context) (*response.PaginationRes, error) {
+func (m SysConfig) List(req *request.SysConfigListReq, c *gin.Context) (*response.PaginationRes, error) {
 	query := initial.SysDbClient.SysConfig.Query()
 	if req.ConfigType != 0 {
 		query.Where(sysconfig.ConfigType(req.ConfigType))
@@ -84,6 +84,6 @@ func (m SysConfigService) List(req *request.SysConfigListReq, c *gin.Context) (*
 	return res, nil
 }
 
-func (m SysConfigService) Delete(id int64, c *gin.Context) (int, error) {
+func (m SysConfig) Delete(id int64, c *gin.Context) (int, error) {
 	return initial.SysDbClient.SysConfig.Delete().Where(sysconfig.ID(id)).Exec(c)
 }

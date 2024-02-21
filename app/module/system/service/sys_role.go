@@ -10,10 +10,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 )
 
-type SysRoleService struct {
+type SysRole struct {
 }
 
-func (m *SysRoleService) List(req *request.SysRoleListReq, c *gin.Context) (*response.PaginationRes, error) {
+func (m *SysRole) List(req *request.SysRoleListReq, c *gin.Context) (*response.PaginationRes, error) {
 	query := initial.SysDbClient.SysRole.Query()
 
 	if req.Status != 0 {
@@ -44,7 +44,7 @@ func (m *SysRoleService) List(req *request.SysRoleListReq, c *gin.Context) (*res
 	return res, nil
 }
 
-func (m *SysRoleService) Add(req *request.SysRoleCreateReq, c *gin.Context) error {
+func (m *SysRole) Add(req *request.SysRoleCreateReq, c *gin.Context) error {
 	return initial.SysDbClient.SysRole.Create().
 		SetRoleName(req.RoleName).
 		SetDataScope(req.DataScope).
@@ -53,7 +53,7 @@ func (m *SysRoleService) Add(req *request.SysRoleCreateReq, c *gin.Context) erro
 		SetSort(req.Sort).Exec(c)
 }
 
-func (m *SysRoleService) Update(req *request.SysRoleUpdateReq, c *gin.Context) error {
+func (m *SysRole) Update(req *request.SysRoleUpdateReq, c *gin.Context) error {
 	return initial.SysDbClient.SysRole.Update().
 		Where(sysrole.ID(req.Id)).
 		SetRoleName(req.RoleName).
@@ -63,14 +63,14 @@ func (m *SysRoleService) Update(req *request.SysRoleUpdateReq, c *gin.Context) e
 		SetSort(req.Sort).Exec(c)
 }
 
-func (m *SysRoleService) Delete(id int64, c *gin.Context) (int, error) {
+func (m *SysRole) Delete(id int64, c *gin.Context) (int, error) {
 	// 校验是否能够删除
 	// 删除关联关系
 
 	return initial.SysDbClient.SysRole.Delete().Where(sysrole.ID(id)).Exec(c)
 }
 
-//func (m *SysRoleService) SysRoleExist(postCode string, id int64, c *gin.Context) error {
+//func (m *SysRole) SysRoleExist(postCode string, id int64, c *gin.Context) error {
 //	_, err := initial.SysDbClient.SysRole.Query().Where(sysrole.PostCode(postCode), sysrole.IDNEQ(id)).First(c)
 //	if exception.NotNoRecordError(err) {
 //		return err

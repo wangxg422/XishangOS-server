@@ -12,11 +12,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
-type SysUserService struct {
+type SysUser struct {
 	BaseService
 }
 
-func (m *SysUserService) List(req *request.SysUserListReq, c *gin.Context) (*response.PaginationRes, error) {
+func (m *SysUser) List(req *request.SysUserListReq, c *gin.Context) (*response.PaginationRes, error) {
 	query := initial.SysDbClient.SysUser.Query()
 	if req.Keyword != "" {
 		query.Where(sysuser.Or(sysuser.UserNameContains(req.Keyword), sysuser.UserNicknameContains(req.Keyword)))
@@ -59,7 +59,7 @@ func (m *SysUserService) List(req *request.SysUserListReq, c *gin.Context) (*res
 	return res, nil
 }
 
-func (m *SysUserService) GetUserByUsername(username string, c *gin.Context) (*codegen.SysUser, error) {
+func (m *SysUser) GetUserByUsername(username string, c *gin.Context) (*codegen.SysUser, error) {
 	u, err := initial.SysDbClient.SysUser.Query().Where(sysuser.UserNameEQ(username)).First(c)
 	if exception.NotNoRecordError(err) {
 		return nil, err
@@ -67,7 +67,7 @@ func (m *SysUserService) GetUserByUsername(username string, c *gin.Context) (*co
 	return u, err
 }
 
-func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateReq) error {
+func (m *SysUser) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCreateReq) error {
 	// 检查用户名、手机号是否已经存在,保证用户名唯一、手机号唯一
 	if err := m.UserNameOrMobileExist(c, req.UserName, req.Mobile, 0); err != nil {
 		return err
@@ -96,19 +96,19 @@ func (m *SysUserService) addUser(tx *codegen.Tx, c *gin.Context, req *request.Sy
 	//	_, err = enforcer.AddGroupingPolicy(fmt.Sprintf("%s%d", "u_", user.ID), gconv.String(v))
 	//}
 }
-func (m *SysUserService) Add(c *gin.Context, req *request.SysUserCreateReq) error {
+func (m *SysUser) Add(c *gin.Context, req *request.SysUserCreateReq) error {
 	return m.WithTx(c, initial.SysDbClient, func(tx *codegen.Tx) error {
 		return m.addUser(tx, c, req)
 	})
 }
 
-func (m *SysUserService) Update(c *gin.Context, req *request.SysUserUpdateReq) error {
+func (m *SysUser) Update(c *gin.Context, req *request.SysUserUpdateReq) error {
 	return m.WithTx(c, initial.SysDbClient, func(tx *codegen.Tx) error {
 		return m.updateUser(tx, c, req)
 	})
 }
 
-func (m *SysUserService) updateUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserUpdateReq) error {
+func (m *SysUser) updateUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserUpdateReq) error {
 	// 检查用户名、手机号是否已经存在,保证用户名唯一、手机号唯一
 	if err := m.UserNameOrMobileExist(c, req.UserName, req.Mobile, req.Id); err != nil {
 		return err
@@ -139,7 +139,7 @@ func (m *SysUserService) updateUser(tx *codegen.Tx, c *gin.Context, req *request
 }
 
 // GetUserInfo 获取用户的详细信息，包含用户的角色，部门，职位
-func (m *SysUserService) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser, error) {
+func (m *SysUser) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser, error) {
 	u, err := initial.SysDbClient.SysUser.Query().
 		Where(sysuser.IDEQ(id)).
 		WithSysPosts().WithSysRoles().WithSysDept().
@@ -151,7 +151,7 @@ func (m *SysUserService) GetUserInfo(c *gin.Context, id int64) (*codegen.SysUser
 }
 
 // UserNameOrMobileExist 按照username和手机号查询用户是否已经存在
-func (m *SysUserService) UserNameOrMobileExist(c *gin.Context, username string, mobile string, id int64) error {
+func (m *SysUser) UserNameOrMobileExist(c *gin.Context, username string, mobile string, id int64) error {
 	user, err := initial.SysDbClient.SysUser.Query().
 		Where(sysuser.Or(sysuser.UserNameEQ(username), sysuser.Mobile(mobile))).
 		Where(sysuser.IDNEQ(id)).
@@ -170,6 +170,6 @@ func (m *SysUserService) UserNameOrMobileExist(c *gin.Context, username string, 
 	return nil
 }
 
-func (m *SysUserService) Delete(id int64, c *gin.Context) (interface{}, error) {
+func (m *SysUser) Delete(id int64, c *gin.Context) (interface{}, error) {
 	return initial.SysDbClient.SysUser.Delete().Where(sysuser.ID(id)).Exec(c)
 }

@@ -8,10 +8,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysConfigController struct {
+type SysConfig struct {
 }
 
-func (m *SysConfigController) List(c *gin.Context) {
+func (m *SysConfig) List(c *gin.Context) {
 	req := new(request.SysConfigListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -19,7 +19,7 @@ func (m *SysConfigController) List(c *gin.Context) {
 		return
 	}
 
-	res, err := service.AppSysConfigService.List(req, c)
+	res, err := service.SysConfigService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -27,7 +27,7 @@ func (m *SysConfigController) List(c *gin.Context) {
 	result.OkWithData(res, c)
 }
 
-func (m *SysConfigController) Add(c *gin.Context) {
+func (m *SysConfig) Add(c *gin.Context) {
 	req := new(request.SysConfigCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (m *SysConfigController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysConfigService.Add(req, c)
+	err = service.SysConfigService.Add(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -43,7 +43,7 @@ func (m *SysConfigController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysConfigController) Update(c *gin.Context) {
+func (m *SysConfig) Update(c *gin.Context) {
 	req := new(request.SysConfigUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -51,7 +51,7 @@ func (m *SysConfigController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysConfigService.Update(req, c)
+	err = service.SysConfigService.Update(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -59,14 +59,14 @@ func (m *SysConfigController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysConfigController) Delete(c *gin.Context) {
+func (m *SysConfig) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysConfigService.Delete(id, c)
+	_, err = service.SysConfigService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

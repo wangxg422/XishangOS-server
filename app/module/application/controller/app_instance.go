@@ -6,11 +6,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type AppInstanceController struct {
+type AppInstance struct {
 }
 
-func (m *AppInstanceController) List(c *gin.Context) {
-	res, err := service.AppAppInstanceService.List(c)
+func (m *AppInstance) List(c *gin.Context) {
+	res, err := service.AppInstanceService.List(c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

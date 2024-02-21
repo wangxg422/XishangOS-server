@@ -8,10 +8,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysUserController struct {
+type SysUser struct {
 }
 
-func (m *SysUserController) List(c *gin.Context) {
+func (m *SysUser) List(c *gin.Context) {
 	req := new(request.SysUserListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -19,7 +19,7 @@ func (m *SysUserController) List(c *gin.Context) {
 		return
 	}
 
-	res, err := service.AppSysUserService.List(req, c)
+	res, err := service.SysUserService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -27,7 +27,7 @@ func (m *SysUserController) List(c *gin.Context) {
 	result.OkWithData(res, c)
 }
 
-func (m *SysUserController) Add(c *gin.Context) {
+func (m *SysUser) Add(c *gin.Context) {
 	req := new(request.SysUserCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (m *SysUserController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysUserService.Add(c, req)
+	err = service.SysUserService.Add(c, req)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -43,7 +43,7 @@ func (m *SysUserController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysUserController) Update(c *gin.Context) {
+func (m *SysUser) Update(c *gin.Context) {
 	req := new(request.SysUserUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -51,7 +51,7 @@ func (m *SysUserController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysUserService.Update(c, req)
+	err = service.SysUserService.Update(c, req)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -59,14 +59,14 @@ func (m *SysUserController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysUserController) Delete(c *gin.Context) {
+func (m *SysUser) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysUserService.Delete(id, c)
+	_, err = service.SysUserService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -74,14 +74,14 @@ func (m *SysUserController) Delete(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysUserController) GetUserInfo(c *gin.Context) {
+func (m *SysUser) GetUserInfo(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	user, err := service.AppSysUserService.GetUserInfo(c, id)
+	user, err := service.SysUserService.GetUserInfo(c, id)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

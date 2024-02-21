@@ -12,10 +12,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
 )
 
-type SysPostService struct {
+type SysPost struct {
 }
 
-func (m *SysPostService) List(req *request.SysPostListReq, c *gin.Context) (*response.PaginationRes, error) {
+func (m *SysPost) List(req *request.SysPostListReq, c *gin.Context) (*response.PaginationRes, error) {
 	query := initial.SysDbClient.SysPost.Query()
 
 	if req.Status != 0 {
@@ -46,7 +46,7 @@ func (m *SysPostService) List(req *request.SysPostListReq, c *gin.Context) (*res
 	return res, nil
 }
 
-func (m *SysPostService) Add(req *request.SysPostCreateReq, c *gin.Context) error {
+func (m *SysPost) Add(req *request.SysPostCreateReq, c *gin.Context) error {
 	// 保证岗位编码唯一
 	err := m.SysPostExist(req.PostCode, 0, c)
 	if err != nil {
@@ -61,7 +61,7 @@ func (m *SysPostService) Add(req *request.SysPostCreateReq, c *gin.Context) erro
 		SetSort(req.Sort).Exec(c)
 }
 
-func (m *SysPostService) Update(req *request.SysPostUpdateReq, c *gin.Context) error {
+func (m *SysPost) Update(req *request.SysPostUpdateReq, c *gin.Context) error {
 	// 保证岗位编码唯一
 	err := m.SysPostExist(req.PostCode, 0, c)
 	if err != nil {
@@ -77,14 +77,14 @@ func (m *SysPostService) Update(req *request.SysPostUpdateReq, c *gin.Context) e
 		SetSort(req.Sort).Exec(c)
 }
 
-func (m *SysPostService) Delete(id int64, c *gin.Context) (int, error) {
+func (m *SysPost) Delete(id int64, c *gin.Context) (int, error) {
 	// 校验是否能够删除
 	// 删除关联关系
 
 	return initial.SysDbClient.SysPost.Delete().Where(syspost.ID(id)).Exec(c)
 }
 
-func (m *SysPostService) SysPostExist(postCode string, id int64, c *gin.Context) error {
+func (m *SysPost) SysPostExist(postCode string, id int64, c *gin.Context) error {
 	_, err := initial.SysDbClient.SysPost.Query().Where(syspost.PostCode(postCode), syspost.IDNEQ(id)).First(c)
 	if exception.NotNoRecordError(err) {
 		return err

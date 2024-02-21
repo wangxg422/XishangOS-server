@@ -8,10 +8,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysRoleController struct {
+type SysRole struct {
 }
 
-func (m *SysRoleController) List(c *gin.Context) {
+func (m *SysRole) List(c *gin.Context) {
 	req := new(request.SysRoleListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -19,7 +19,7 @@ func (m *SysRoleController) List(c *gin.Context) {
 		return
 	}
 
-	res, err := service.AppSysRoleService.List(req, c)
+	res, err := service.SysRoleService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -27,7 +27,7 @@ func (m *SysRoleController) List(c *gin.Context) {
 	result.OkWithData(res, c)
 }
 
-func (m *SysRoleController) Add(c *gin.Context) {
+func (m *SysRole) Add(c *gin.Context) {
 	req := new(request.SysRoleCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (m *SysRoleController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysRoleService.Add(req, c)
+	err = service.SysRoleService.Add(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -43,7 +43,7 @@ func (m *SysRoleController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysRoleController) Update(c *gin.Context) {
+func (m *SysRole) Update(c *gin.Context) {
 	req := new(request.SysRoleUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -51,7 +51,7 @@ func (m *SysRoleController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysRoleService.Update(req, c)
+	err = service.SysRoleService.Update(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -59,14 +59,14 @@ func (m *SysRoleController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysRoleController) Delete(c *gin.Context) {
+func (m *SysRole) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysRoleService.Delete(id, c)
+	_, err = service.SysRoleService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

@@ -8,10 +8,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/common/result"
 )
 
-type SysDeptController struct {
+type SysDept struct {
 }
 
-func (m *SysDeptController) List(c *gin.Context) {
+func (m *SysDept) List(c *gin.Context) {
 	req := new(request.SysDeptListReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -19,7 +19,7 @@ func (m *SysDeptController) List(c *gin.Context) {
 		return
 	}
 
-	list, err := service.AppSysDeptService.List(req, c)
+	list, err := service.SysDeptService.List(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -27,7 +27,7 @@ func (m *SysDeptController) List(c *gin.Context) {
 	result.OkWithData(list, c)
 }
 
-func (m *SysDeptController) Add(c *gin.Context) {
+func (m *SysDept) Add(c *gin.Context) {
 	req := new(request.SysDeptCreateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -35,7 +35,7 @@ func (m *SysDeptController) Add(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysDeptService.Add(req, c)
+	err = service.SysDeptService.Add(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -43,7 +43,7 @@ func (m *SysDeptController) Add(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysDeptController) Update(c *gin.Context) {
+func (m *SysDept) Update(c *gin.Context) {
 	req := new(request.SysDeptUpdateReq)
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -51,7 +51,7 @@ func (m *SysDeptController) Update(c *gin.Context) {
 		return
 	}
 
-	err = service.AppSysDeptService.Update(req, c)
+	err = service.SysDeptService.Update(req, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -59,14 +59,14 @@ func (m *SysDeptController) Update(c *gin.Context) {
 	result.Ok(c)
 }
 
-func (m *SysDeptController) Delete(c *gin.Context) {
+func (m *SysDept) Delete(c *gin.Context) {
 	id, err := param.ParamInt64("id", c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
 	}
 
-	_, err = service.AppSysDeptService.Delete(id, c)
+	_, err = service.SysDeptService.Delete(id, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

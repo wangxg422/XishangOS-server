@@ -6,9 +6,9 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/codegen"
 )
 
-type AppInstanceService struct {
+type AppInstance struct {
 }
 
-func (m *AppInstanceService) List(c *gin.Context) ([]*codegen.AppInstance, error) {
+func (m *AppInstance) List(c *gin.Context) ([]*codegen.AppInstance, error) {
 	return initial.AppDbClient.AppInstance.Query().All(c)
 }

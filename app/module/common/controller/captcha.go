@@ -7,16 +7,16 @@ import (
 	"github.com/wangxg422/XishangOS-backend/global"
 )
 
-type CaptchaController struct {
+type Captcha struct {
 }
 
-func (m *CaptchaController) GetCaptchaImgString(c *gin.Context) {
+func (m *Captcha) GetCaptchaImgString(c *gin.Context) {
 	// 检查验证码功能是否启用
 	if !global.AppConfig.Captcha.Enabled {
 		result.FailWithMessage("验证码功能未启用", c)
 		return
 	}
-	idKeyC, base64stringC, err := service.AppCaptchaService.GetCaptchaImgString()
+	idKeyC, base64stringC, err := service.CaptchaService.GetCaptchaImgString()
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return

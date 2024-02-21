@@ -1,7 +1,7 @@
 package controller
 
-var AppSysUserController *SysUserController = new(SysUserController)
-var AppSysLoginController *SysLoginController = new(SysLoginController)
-var AppSysDeptController *SysDeptController = new(SysDeptController)
-var AppSysConfigController *SysConfigController = new(SysConfigController)
-var AppSysPostController *SysPostController = new(SysPostController)
+var SysUserController *SysUser = new(SysUser)
+var SysLoginController *SysLogin = new(SysLogin)
+var SysDeptController *SysDept = new(SysDept)
+var SysConfigController *SysConfig = new(SysConfig)
+var SysPostController *SysPost = new(SysPost)

@@ -8,7 +8,7 @@ import (
 func AddCommonPublicRouter(group *gin.RouterGroup) {
 	router := group.Group("api/pub/v1")
 	{
-		router.GET("/captcha/get", controller.AppCaptchaController.GetCaptchaImgString)
+		router.GET("/captcha/get", controller.CaptchaController.GetCaptchaImgString)
 	}
 
 	group.GET("/health", func(context *gin.Context) {

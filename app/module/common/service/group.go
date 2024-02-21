@@ -1,3 +1,3 @@
 package service
 
-var AppCaptchaService *CaptchaService = new(CaptchaService)
+var CaptchaService *Captcha = new(Captcha)

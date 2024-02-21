@@ -1,5 +1,5 @@
 package service
 
 var (
-	AppAppInstanceService *AppInstanceService = new(AppInstanceService)
+	AppInstanceService *AppInstance = new(AppInstance)
 )

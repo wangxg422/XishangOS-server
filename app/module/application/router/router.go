@@ -8,6 +8,6 @@ import (
 func AddAppRouter(group *gin.RouterGroup) {
 	router := group.Group("/app/v1")
 	{
-		router.GET("/instance/list", controller.AppAppInstanceController.List)
+		router.GET("/instance/list", controller.AppInstanceController.List)
 	}
 }

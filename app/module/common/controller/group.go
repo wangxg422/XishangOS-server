@@ -1,3 +1,3 @@
 package controller
 
-var AppCaptchaController *CaptchaController = new(CaptchaController)
+var CaptchaController *Captcha = new(Captcha)

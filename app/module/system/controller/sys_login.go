@@ -11,10 +11,10 @@ import (
 	"github.com/wangxg422/XishangOS-backend/utils"
 )
 
-type SysLoginController struct {
+type SysLogin struct {
 }
 
-func (m *SysLoginController) Login(c *gin.Context) {
+func (m *SysLogin) Login(c *gin.Context) {
 	req := &request.SysLoginReq{}
 	err := c.ShouldBind(req)
 	if err != nil {
@@ -24,14 +24,14 @@ func (m *SysLoginController) Login(c *gin.Context) {
 
 	// 如果开启了验证码，校验验证码是否正确
 	if global.AppConfig.Captcha.Enabled {
-		if service.AppCaptchaService.VerifyString(req.VerifyKey, req.VerifyCode) {
+		if service.CaptchaService.VerifyString(req.VerifyKey, req.VerifyCode) {
 			result.FailWithMessage("验证码输入错误", c)
 			return
 		}
 	}
 
 	// 按用户名查询用户
-	user, err := userService.AppSysUserService.GetUserByUsername(req.Username, c)
+	user, err := userService.SysUserService.GetUserByUsername(req.Username, c)
 	if err != nil {
 		result.FailWithMessage(err.Error(), c)
 		return
@@ -54,5 +54,5 @@ func (m *SysLoginController) Login(c *gin.Context) {
 	// TODO 签发jwt token
 
 	// 查询用户菜单及权限
-	userService.AppSysMenuService.GetUserMenuAndPermissions(user)
+	userService.SysMenuService.GetUserMenuAndPermissions(user)
 }
