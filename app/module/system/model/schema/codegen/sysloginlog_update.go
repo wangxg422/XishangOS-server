@@ -28,27 +28,6 @@ func (sllu *SysLoginLogUpdate) Where(ps ...predicate.SysLoginLog) *SysLoginLogUp
 	return sllu
 }
 
-// SetStatus sets the "status" field.
-func (sllu *SysLoginLogUpdate) SetStatus(i int8) *SysLoginLogUpdate {
-	sllu.mutation.ResetStatus()
-	sllu.mutation.SetStatus(i)
-	return sllu
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (sllu *SysLoginLogUpdate) SetNillableStatus(i *int8) *SysLoginLogUpdate {
-	if i != nil {
-		sllu.SetStatus(*i)
-	}
-	return sllu
-}
-
-// AddStatus adds i to the "status" field.
-func (sllu *SysLoginLogUpdate) AddStatus(i int8) *SysLoginLogUpdate {
-	sllu.mutation.AddStatus(i)
-	return sllu
-}
-
 // SetLoginName sets the "login_name" field.
 func (sllu *SysLoginLogUpdate) SetLoginName(s string) *SysLoginLogUpdate {
 	sllu.mutation.SetLoginName(s)
@@ -189,6 +168,33 @@ func (sllu *SysLoginLogUpdate) ClearLoginTime() *SysLoginLogUpdate {
 	return sllu
 }
 
+// SetLoginSuccess sets the "login_success" field.
+func (sllu *SysLoginLogUpdate) SetLoginSuccess(i int8) *SysLoginLogUpdate {
+	sllu.mutation.ResetLoginSuccess()
+	sllu.mutation.SetLoginSuccess(i)
+	return sllu
+}
+
+// SetNillableLoginSuccess sets the "login_success" field if the given value is not nil.
+func (sllu *SysLoginLogUpdate) SetNillableLoginSuccess(i *int8) *SysLoginLogUpdate {
+	if i != nil {
+		sllu.SetLoginSuccess(*i)
+	}
+	return sllu
+}
+
+// AddLoginSuccess adds i to the "login_success" field.
+func (sllu *SysLoginLogUpdate) AddLoginSuccess(i int8) *SysLoginLogUpdate {
+	sllu.mutation.AddLoginSuccess(i)
+	return sllu
+}
+
+// ClearLoginSuccess clears the value of the "login_success" field.
+func (sllu *SysLoginLogUpdate) ClearLoginSuccess() *SysLoginLogUpdate {
+	sllu.mutation.ClearLoginSuccess()
+	return sllu
+}
+
 // SetModule sets the "module" field.
 func (sllu *SysLoginLogUpdate) SetModule(s string) *SysLoginLogUpdate {
 	sllu.mutation.SetModule(s)
@@ -250,12 +256,6 @@ func (sllu *SysLoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := sllu.mutation.Status(); ok {
-		_spec.SetField(sysloginlog.FieldStatus, field.TypeInt8, value)
-	}
-	if value, ok := sllu.mutation.AddedStatus(); ok {
-		_spec.AddField(sysloginlog.FieldStatus, field.TypeInt8, value)
-	}
 	if value, ok := sllu.mutation.LoginName(); ok {
 		_spec.SetField(sysloginlog.FieldLoginName, field.TypeString, value)
 	}
@@ -298,6 +298,15 @@ func (sllu *SysLoginLogUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if sllu.mutation.LoginTimeCleared() {
 		_spec.ClearField(sysloginlog.FieldLoginTime, field.TypeTime)
 	}
+	if value, ok := sllu.mutation.LoginSuccess(); ok {
+		_spec.SetField(sysloginlog.FieldLoginSuccess, field.TypeInt8, value)
+	}
+	if value, ok := sllu.mutation.AddedLoginSuccess(); ok {
+		_spec.AddField(sysloginlog.FieldLoginSuccess, field.TypeInt8, value)
+	}
+	if sllu.mutation.LoginSuccessCleared() {
+		_spec.ClearField(sysloginlog.FieldLoginSuccess, field.TypeInt8)
+	}
 	if value, ok := sllu.mutation.Module(); ok {
 		_spec.SetField(sysloginlog.FieldModule, field.TypeString, value)
 	}
@@ -322,27 +331,6 @@ type SysLoginLogUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *SysLoginLogMutation
-}
-
-// SetStatus sets the "status" field.
-func (slluo *SysLoginLogUpdateOne) SetStatus(i int8) *SysLoginLogUpdateOne {
-	slluo.mutation.ResetStatus()
-	slluo.mutation.SetStatus(i)
-	return slluo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (slluo *SysLoginLogUpdateOne) SetNillableStatus(i *int8) *SysLoginLogUpdateOne {
-	if i != nil {
-		slluo.SetStatus(*i)
-	}
-	return slluo
-}
-
-// AddStatus adds i to the "status" field.
-func (slluo *SysLoginLogUpdateOne) AddStatus(i int8) *SysLoginLogUpdateOne {
-	slluo.mutation.AddStatus(i)
-	return slluo
 }
 
 // SetLoginName sets the "login_name" field.
@@ -485,6 +473,33 @@ func (slluo *SysLoginLogUpdateOne) ClearLoginTime() *SysLoginLogUpdateOne {
 	return slluo
 }
 
+// SetLoginSuccess sets the "login_success" field.
+func (slluo *SysLoginLogUpdateOne) SetLoginSuccess(i int8) *SysLoginLogUpdateOne {
+	slluo.mutation.ResetLoginSuccess()
+	slluo.mutation.SetLoginSuccess(i)
+	return slluo
+}
+
+// SetNillableLoginSuccess sets the "login_success" field if the given value is not nil.
+func (slluo *SysLoginLogUpdateOne) SetNillableLoginSuccess(i *int8) *SysLoginLogUpdateOne {
+	if i != nil {
+		slluo.SetLoginSuccess(*i)
+	}
+	return slluo
+}
+
+// AddLoginSuccess adds i to the "login_success" field.
+func (slluo *SysLoginLogUpdateOne) AddLoginSuccess(i int8) *SysLoginLogUpdateOne {
+	slluo.mutation.AddLoginSuccess(i)
+	return slluo
+}
+
+// ClearLoginSuccess clears the value of the "login_success" field.
+func (slluo *SysLoginLogUpdateOne) ClearLoginSuccess() *SysLoginLogUpdateOne {
+	slluo.mutation.ClearLoginSuccess()
+	return slluo
+}
+
 // SetModule sets the "module" field.
 func (slluo *SysLoginLogUpdateOne) SetModule(s string) *SysLoginLogUpdateOne {
 	slluo.mutation.SetModule(s)
@@ -576,12 +591,6 @@ func (slluo *SysLoginLogUpdateOne) sqlSave(ctx context.Context) (_node *SysLogin
 			}
 		}
 	}
-	if value, ok := slluo.mutation.Status(); ok {
-		_spec.SetField(sysloginlog.FieldStatus, field.TypeInt8, value)
-	}
-	if value, ok := slluo.mutation.AddedStatus(); ok {
-		_spec.AddField(sysloginlog.FieldStatus, field.TypeInt8, value)
-	}
 	if value, ok := slluo.mutation.LoginName(); ok {
 		_spec.SetField(sysloginlog.FieldLoginName, field.TypeString, value)
 	}
@@ -623,6 +632,15 @@ func (slluo *SysLoginLogUpdateOne) sqlSave(ctx context.Context) (_node *SysLogin
 	}
 	if slluo.mutation.LoginTimeCleared() {
 		_spec.ClearField(sysloginlog.FieldLoginTime, field.TypeTime)
+	}
+	if value, ok := slluo.mutation.LoginSuccess(); ok {
+		_spec.SetField(sysloginlog.FieldLoginSuccess, field.TypeInt8, value)
+	}
+	if value, ok := slluo.mutation.AddedLoginSuccess(); ok {
+		_spec.AddField(sysloginlog.FieldLoginSuccess, field.TypeInt8, value)
+	}
+	if slluo.mutation.LoginSuccessCleared() {
+		_spec.ClearField(sysloginlog.FieldLoginSuccess, field.TypeInt8)
 	}
 	if value, ok := slluo.mutation.Module(); ok {
 		_spec.SetField(sysloginlog.FieldModule, field.TypeString, value)

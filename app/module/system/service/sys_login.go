@@ -10,6 +10,7 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/utils"
+	"time"
 )
 
 type SysLogin struct {
@@ -30,7 +31,19 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 		return nil, err
 	}
 
+	loginLog := &request.SysLoginLogCreateReq{
+		LoginName: req.Username,
+		IpAddr:    utils.GetClientIp(c),
+		Browser:   c.GetHeader("User-Agent"),
+		Msg:       err.Error(),
+		LoginTime: time.Now(),
+		Module:    "system",
+	}
+
 	if user == nil {
+		loginLog.LoginSuccess = 2
+		loginLog.Msg = "用户名密码错误"
+		_ = SysLoginLogService.Add(loginLog, c)
 		return nil, errors.New("用户名或密码错误")
 	}
 
@@ -40,19 +53,28 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 		return nil, err
 	}
 	if enPassword != user.UserPassword {
-		// TODO 记录用户登录失败日志
+		loginLog.LoginSuccess = 2
+		loginLog.Msg = "用户名密码错误"
+		_ = SysLoginLogService.Add(loginLog, c)
 		return nil, errors.New("用户名或密码错误")
 	}
 
 	// 检查用户状态是否正常
 	if enmu.UserStatusDisabled.Equals(user.UserStatus) {
+		loginLog.LoginSuccess = 2
+		loginLog.Msg = "用户已被禁止登录"
+		_ = SysLoginLogService.Add(loginLog, c)
 		return nil, errors.New("用户已禁用,禁止登录")
 	}
 
 	user.UserPassword = ""
 	// 登录成功，签发token
 	// TODO 签发jwt token
-	// TODO 记录登录成功日志
+
+	// 记录登录成功日志
+	loginLog.Msg = "登录成功"
+	loginLog.LoginSuccess = 1
+	_ = SysLoginLogService.Add(loginLog, c)
 
 	resMap := make(map[string]any)
 

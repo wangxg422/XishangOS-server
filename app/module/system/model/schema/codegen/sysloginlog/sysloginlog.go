@@ -11,8 +11,6 @@ const (
 	Label = "sys_login_log"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
 	// FieldLoginName holds the string denoting the login_name field in the database.
 	FieldLoginName = "login_name"
 	// FieldIPAddr holds the string denoting the ip_addr field in the database.
@@ -27,6 +25,8 @@ const (
 	FieldMsg = "msg"
 	// FieldLoginTime holds the string denoting the login_time field in the database.
 	FieldLoginTime = "login_time"
+	// FieldLoginSuccess holds the string denoting the login_success field in the database.
+	FieldLoginSuccess = "login_success"
 	// FieldModule holds the string denoting the module field in the database.
 	FieldModule = "module"
 	// Table holds the table name of the sysloginlog in the database.
@@ -36,7 +36,6 @@ const (
 // Columns holds all SQL columns for sysloginlog fields.
 var Columns = []string{
 	FieldID,
-	FieldStatus,
 	FieldLoginName,
 	FieldIPAddr,
 	FieldLoginLocation,
@@ -44,6 +43,7 @@ var Columns = []string{
 	FieldOs,
 	FieldMsg,
 	FieldLoginTime,
+	FieldLoginSuccess,
 	FieldModule,
 }
 
@@ -58,8 +58,6 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int8
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -70,11 +68,6 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
-}
-
-// ByStatus orders the results by the status field.
-func ByStatus(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
 // ByLoginName orders the results by the login_name field.
@@ -110,6 +103,11 @@ func ByMsg(opts ...sql.OrderTermOption) OrderOption {
 // ByLoginTime orders the results by the login_time field.
 func ByLoginTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldLoginTime, opts...).ToFunc()
+}
+
+// ByLoginSuccess orders the results by the login_success field.
+func ByLoginSuccess(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLoginSuccess, opts...).ToFunc()
 }
 
 // ByModule orders the results by the module field.

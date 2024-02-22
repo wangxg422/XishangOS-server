@@ -261,12 +261,12 @@ func (sllq *SysLoginLogQuery) Clone() *SysLoginLogQuery {
 // Example:
 //
 //	var v []struct {
-//		Status int8 `json:"status,omitempty"`
+//		LoginName string `json:"login_name,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.SysLoginLog.Query().
-//		GroupBy(sysloginlog.FieldStatus).
+//		GroupBy(sysloginlog.FieldLoginName).
 //		Aggregate(codegen.Count()).
 //		Scan(ctx, &v)
 func (sllq *SysLoginLogQuery) GroupBy(field string, fields ...string) *SysLoginLogGroupBy {
@@ -284,11 +284,11 @@ func (sllq *SysLoginLogQuery) GroupBy(field string, fields ...string) *SysLoginL
 // Example:
 //
 //	var v []struct {
-//		Status int8 `json:"status,omitempty"`
+//		LoginName string `json:"login_name,omitempty"`
 //	}
 //
 //	client.SysLoginLog.Query().
-//		Select(sysloginlog.FieldStatus).
+//		Select(sysloginlog.FieldLoginName).
 //		Scan(ctx, &v)
 func (sllq *SysLoginLogQuery) Select(fields ...string) *SysLoginLogSelect {
 	sllq.ctx.Fields = append(sllq.ctx.Fields, fields...)

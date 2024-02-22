@@ -17,8 +17,6 @@ type SysLoginLog struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int64 `json:"id,omitempty"`
-	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
 	// 登录账号
 	LoginName string `json:"login_name,omitempty"`
 	// 登录IP地址
@@ -33,6 +31,8 @@ type SysLoginLog struct {
 	Msg string `json:"msg,omitempty"`
 	// 登录时间
 	LoginTime time.Time `json:"login_time,omitempty"`
+	// 登录是否成功
+	LoginSuccess int8 `json:"login_success,omitempty"`
 	// 登录模块
 	Module       string `json:"module,omitempty"`
 	selectValues sql.SelectValues
@@ -43,7 +43,7 @@ func (*SysLoginLog) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysloginlog.FieldID, sysloginlog.FieldStatus:
+		case sysloginlog.FieldID, sysloginlog.FieldLoginSuccess:
 			values[i] = new(sql.NullInt64)
 		case sysloginlog.FieldLoginName, sysloginlog.FieldIPAddr, sysloginlog.FieldLoginLocation, sysloginlog.FieldBrowser, sysloginlog.FieldOs, sysloginlog.FieldMsg, sysloginlog.FieldModule:
 			values[i] = new(sql.NullString)
@@ -70,12 +70,6 @@ func (sll *SysLoginLog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			sll.ID = int64(value.Int64)
-		case sysloginlog.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
-			} else if value.Valid {
-				sll.Status = int8(value.Int64)
-			}
 		case sysloginlog.FieldLoginName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field login_name", values[i])
@@ -117,6 +111,12 @@ func (sll *SysLoginLog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field login_time", values[i])
 			} else if value.Valid {
 				sll.LoginTime = value.Time
+			}
+		case sysloginlog.FieldLoginSuccess:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field login_success", values[i])
+			} else if value.Valid {
+				sll.LoginSuccess = int8(value.Int64)
 			}
 		case sysloginlog.FieldModule:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -160,9 +160,6 @@ func (sll *SysLoginLog) String() string {
 	var builder strings.Builder
 	builder.WriteString("SysLoginLog(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", sll.ID))
-	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", sll.Status))
-	builder.WriteString(", ")
 	builder.WriteString("login_name=")
 	builder.WriteString(sll.LoginName)
 	builder.WriteString(", ")
@@ -183,6 +180,9 @@ func (sll *SysLoginLog) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("login_time=")
 	builder.WriteString(sll.LoginTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("login_success=")
+	builder.WriteString(fmt.Sprintf("%v", sll.LoginSuccess))
 	builder.WriteString(", ")
 	builder.WriteString("module=")
 	builder.WriteString(sll.Module)

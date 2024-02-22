@@ -122,7 +122,6 @@ var (
 	// SysLoginLogColumns holds the columns for the "sys_login_log" table.
 	SysLoginLogColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "status", Type: field.TypeInt8, Default: 1},
 		{Name: "login_name", Type: field.TypeString, Nullable: true, Comment: "登录账号"},
 		{Name: "ip_addr", Type: field.TypeString, Nullable: true, Comment: "登录IP地址"},
 		{Name: "login_location", Type: field.TypeString, Nullable: true, Comment: "登录地点"},
@@ -130,6 +129,7 @@ var (
 		{Name: "os", Type: field.TypeString, Nullable: true, Comment: "登录操作系统"},
 		{Name: "msg", Type: field.TypeString, Nullable: true, Comment: "提示消息"},
 		{Name: "login_time", Type: field.TypeTime, Nullable: true, Comment: "登录时间"},
+		{Name: "login_success", Type: field.TypeInt8, Nullable: true, Comment: "登录是否成功"},
 		{Name: "module", Type: field.TypeString, Nullable: true, Comment: "登录模块"},
 	}
 	// SysLoginLogTable holds the schema information for the "sys_login_log" table.

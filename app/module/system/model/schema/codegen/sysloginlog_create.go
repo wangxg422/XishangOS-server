@@ -4,7 +4,6 @@ package codegen
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
@@ -18,20 +17,6 @@ type SysLoginLogCreate struct {
 	config
 	mutation *SysLoginLogMutation
 	hooks    []Hook
-}
-
-// SetStatus sets the "status" field.
-func (sllc *SysLoginLogCreate) SetStatus(i int8) *SysLoginLogCreate {
-	sllc.mutation.SetStatus(i)
-	return sllc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (sllc *SysLoginLogCreate) SetNillableStatus(i *int8) *SysLoginLogCreate {
-	if i != nil {
-		sllc.SetStatus(*i)
-	}
-	return sllc
 }
 
 // SetLoginName sets the "login_name" field.
@@ -132,6 +117,20 @@ func (sllc *SysLoginLogCreate) SetNillableLoginTime(t *time.Time) *SysLoginLogCr
 	return sllc
 }
 
+// SetLoginSuccess sets the "login_success" field.
+func (sllc *SysLoginLogCreate) SetLoginSuccess(i int8) *SysLoginLogCreate {
+	sllc.mutation.SetLoginSuccess(i)
+	return sllc
+}
+
+// SetNillableLoginSuccess sets the "login_success" field if the given value is not nil.
+func (sllc *SysLoginLogCreate) SetNillableLoginSuccess(i *int8) *SysLoginLogCreate {
+	if i != nil {
+		sllc.SetLoginSuccess(*i)
+	}
+	return sllc
+}
+
 // SetModule sets the "module" field.
 func (sllc *SysLoginLogCreate) SetModule(s string) *SysLoginLogCreate {
 	sllc.mutation.SetModule(s)
@@ -195,10 +194,6 @@ func (sllc *SysLoginLogCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (sllc *SysLoginLogCreate) defaults() {
-	if _, ok := sllc.mutation.Status(); !ok {
-		v := sysloginlog.DefaultStatus
-		sllc.mutation.SetStatus(v)
-	}
 	if _, ok := sllc.mutation.ID(); !ok {
 		v := sysloginlog.DefaultID()
 		sllc.mutation.SetID(v)
@@ -207,9 +202,6 @@ func (sllc *SysLoginLogCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (sllc *SysLoginLogCreate) check() error {
-	if _, ok := sllc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`codegen: missing required field "SysLoginLog.status"`)}
-	}
 	return nil
 }
 
@@ -242,10 +234,6 @@ func (sllc *SysLoginLogCreate) createSpec() (*SysLoginLog, *sqlgraph.CreateSpec)
 		_node.ID = id
 		_spec.ID.Value = id
 	}
-	if value, ok := sllc.mutation.Status(); ok {
-		_spec.SetField(sysloginlog.FieldStatus, field.TypeInt8, value)
-		_node.Status = value
-	}
 	if value, ok := sllc.mutation.LoginName(); ok {
 		_spec.SetField(sysloginlog.FieldLoginName, field.TypeString, value)
 		_node.LoginName = value
@@ -273,6 +261,10 @@ func (sllc *SysLoginLogCreate) createSpec() (*SysLoginLog, *sqlgraph.CreateSpec)
 	if value, ok := sllc.mutation.LoginTime(); ok {
 		_spec.SetField(sysloginlog.FieldLoginTime, field.TypeTime, value)
 		_node.LoginTime = value
+	}
+	if value, ok := sllc.mutation.LoginSuccess(); ok {
+		_spec.SetField(sysloginlog.FieldLoginSuccess, field.TypeInt8, value)
+		_node.LoginSuccess = value
 	}
 	if value, ok := sllc.mutation.Module(); ok {
 		_spec.SetField(sysloginlog.FieldModule, field.TypeString, value)

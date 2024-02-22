@@ -6426,23 +6426,23 @@ func (m *SysDictTypeMutation) ResetEdge(name string) error {
 // SysLoginLogMutation represents an operation that mutates the SysLoginLog nodes in the graph.
 type SysLoginLogMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int64
-	status         *int8
-	addstatus      *int8
-	login_name     *string
-	ip_addr        *string
-	login_location *string
-	browser        *string
-	os             *string
-	msg            *string
-	login_time     *time.Time
-	module         *string
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*SysLoginLog, error)
-	predicates     []predicate.SysLoginLog
+	op               Op
+	typ              string
+	id               *int64
+	login_name       *string
+	ip_addr          *string
+	login_location   *string
+	browser          *string
+	os               *string
+	msg              *string
+	login_time       *time.Time
+	login_success    *int8
+	addlogin_success *int8
+	module           *string
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*SysLoginLog, error)
+	predicates       []predicate.SysLoginLog
 }
 
 var _ ent.Mutation = (*SysLoginLogMutation)(nil)
@@ -6547,62 +6547,6 @@ func (m *SysLoginLogMutation) IDs(ctx context.Context) ([]int64, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
-}
-
-// SetStatus sets the "status" field.
-func (m *SysLoginLogMutation) SetStatus(i int8) {
-	m.status = &i
-	m.addstatus = nil
-}
-
-// Status returns the value of the "status" field in the mutation.
-func (m *SysLoginLogMutation) Status() (r int8, exists bool) {
-	v := m.status
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStatus returns the old "status" field's value of the SysLoginLog entity.
-// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysLoginLogMutation) OldStatus(ctx context.Context) (v int8, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
-	}
-	return oldValue.Status, nil
-}
-
-// AddStatus adds i to the "status" field.
-func (m *SysLoginLogMutation) AddStatus(i int8) {
-	if m.addstatus != nil {
-		*m.addstatus += i
-	} else {
-		m.addstatus = &i
-	}
-}
-
-// AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *SysLoginLogMutation) AddedStatus() (r int8, exists bool) {
-	v := m.addstatus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetStatus resets all changes to the "status" field.
-func (m *SysLoginLogMutation) ResetStatus() {
-	m.status = nil
-	m.addstatus = nil
 }
 
 // SetLoginName sets the "login_name" field.
@@ -6948,6 +6892,76 @@ func (m *SysLoginLogMutation) ResetLoginTime() {
 	delete(m.clearedFields, sysloginlog.FieldLoginTime)
 }
 
+// SetLoginSuccess sets the "login_success" field.
+func (m *SysLoginLogMutation) SetLoginSuccess(i int8) {
+	m.login_success = &i
+	m.addlogin_success = nil
+}
+
+// LoginSuccess returns the value of the "login_success" field in the mutation.
+func (m *SysLoginLogMutation) LoginSuccess() (r int8, exists bool) {
+	v := m.login_success
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLoginSuccess returns the old "login_success" field's value of the SysLoginLog entity.
+// If the SysLoginLog object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysLoginLogMutation) OldLoginSuccess(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLoginSuccess is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLoginSuccess requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLoginSuccess: %w", err)
+	}
+	return oldValue.LoginSuccess, nil
+}
+
+// AddLoginSuccess adds i to the "login_success" field.
+func (m *SysLoginLogMutation) AddLoginSuccess(i int8) {
+	if m.addlogin_success != nil {
+		*m.addlogin_success += i
+	} else {
+		m.addlogin_success = &i
+	}
+}
+
+// AddedLoginSuccess returns the value that was added to the "login_success" field in this mutation.
+func (m *SysLoginLogMutation) AddedLoginSuccess() (r int8, exists bool) {
+	v := m.addlogin_success
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearLoginSuccess clears the value of the "login_success" field.
+func (m *SysLoginLogMutation) ClearLoginSuccess() {
+	m.login_success = nil
+	m.addlogin_success = nil
+	m.clearedFields[sysloginlog.FieldLoginSuccess] = struct{}{}
+}
+
+// LoginSuccessCleared returns if the "login_success" field was cleared in this mutation.
+func (m *SysLoginLogMutation) LoginSuccessCleared() bool {
+	_, ok := m.clearedFields[sysloginlog.FieldLoginSuccess]
+	return ok
+}
+
+// ResetLoginSuccess resets all changes to the "login_success" field.
+func (m *SysLoginLogMutation) ResetLoginSuccess() {
+	m.login_success = nil
+	m.addlogin_success = nil
+	delete(m.clearedFields, sysloginlog.FieldLoginSuccess)
+}
+
 // SetModule sets the "module" field.
 func (m *SysLoginLogMutation) SetModule(s string) {
 	m.module = &s
@@ -7032,9 +7046,6 @@ func (m *SysLoginLogMutation) Type() string {
 // AddedFields().
 func (m *SysLoginLogMutation) Fields() []string {
 	fields := make([]string, 0, 9)
-	if m.status != nil {
-		fields = append(fields, sysloginlog.FieldStatus)
-	}
 	if m.login_name != nil {
 		fields = append(fields, sysloginlog.FieldLoginName)
 	}
@@ -7056,6 +7067,9 @@ func (m *SysLoginLogMutation) Fields() []string {
 	if m.login_time != nil {
 		fields = append(fields, sysloginlog.FieldLoginTime)
 	}
+	if m.login_success != nil {
+		fields = append(fields, sysloginlog.FieldLoginSuccess)
+	}
 	if m.module != nil {
 		fields = append(fields, sysloginlog.FieldModule)
 	}
@@ -7067,8 +7081,6 @@ func (m *SysLoginLogMutation) Fields() []string {
 // schema.
 func (m *SysLoginLogMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case sysloginlog.FieldStatus:
-		return m.Status()
 	case sysloginlog.FieldLoginName:
 		return m.LoginName()
 	case sysloginlog.FieldIPAddr:
@@ -7083,6 +7095,8 @@ func (m *SysLoginLogMutation) Field(name string) (ent.Value, bool) {
 		return m.Msg()
 	case sysloginlog.FieldLoginTime:
 		return m.LoginTime()
+	case sysloginlog.FieldLoginSuccess:
+		return m.LoginSuccess()
 	case sysloginlog.FieldModule:
 		return m.Module()
 	}
@@ -7094,8 +7108,6 @@ func (m *SysLoginLogMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *SysLoginLogMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case sysloginlog.FieldStatus:
-		return m.OldStatus(ctx)
 	case sysloginlog.FieldLoginName:
 		return m.OldLoginName(ctx)
 	case sysloginlog.FieldIPAddr:
@@ -7110,6 +7122,8 @@ func (m *SysLoginLogMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldMsg(ctx)
 	case sysloginlog.FieldLoginTime:
 		return m.OldLoginTime(ctx)
+	case sysloginlog.FieldLoginSuccess:
+		return m.OldLoginSuccess(ctx)
 	case sysloginlog.FieldModule:
 		return m.OldModule(ctx)
 	}
@@ -7121,13 +7135,6 @@ func (m *SysLoginLogMutation) OldField(ctx context.Context, name string) (ent.Va
 // type.
 func (m *SysLoginLogMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case sysloginlog.FieldStatus:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStatus(v)
-		return nil
 	case sysloginlog.FieldLoginName:
 		v, ok := value.(string)
 		if !ok {
@@ -7177,6 +7184,13 @@ func (m *SysLoginLogMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetLoginTime(v)
 		return nil
+	case sysloginlog.FieldLoginSuccess:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLoginSuccess(v)
+		return nil
 	case sysloginlog.FieldModule:
 		v, ok := value.(string)
 		if !ok {
@@ -7192,8 +7206,8 @@ func (m *SysLoginLogMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *SysLoginLogMutation) AddedFields() []string {
 	var fields []string
-	if m.addstatus != nil {
-		fields = append(fields, sysloginlog.FieldStatus)
+	if m.addlogin_success != nil {
+		fields = append(fields, sysloginlog.FieldLoginSuccess)
 	}
 	return fields
 }
@@ -7203,8 +7217,8 @@ func (m *SysLoginLogMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *SysLoginLogMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case sysloginlog.FieldStatus:
-		return m.AddedStatus()
+	case sysloginlog.FieldLoginSuccess:
+		return m.AddedLoginSuccess()
 	}
 	return nil, false
 }
@@ -7214,12 +7228,12 @@ func (m *SysLoginLogMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *SysLoginLogMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case sysloginlog.FieldStatus:
+	case sysloginlog.FieldLoginSuccess:
 		v, ok := value.(int8)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddStatus(v)
+		m.AddLoginSuccess(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SysLoginLog numeric field %s", name)
@@ -7249,6 +7263,9 @@ func (m *SysLoginLogMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(sysloginlog.FieldLoginTime) {
 		fields = append(fields, sysloginlog.FieldLoginTime)
+	}
+	if m.FieldCleared(sysloginlog.FieldLoginSuccess) {
+		fields = append(fields, sysloginlog.FieldLoginSuccess)
 	}
 	if m.FieldCleared(sysloginlog.FieldModule) {
 		fields = append(fields, sysloginlog.FieldModule)
@@ -7288,6 +7305,9 @@ func (m *SysLoginLogMutation) ClearField(name string) error {
 	case sysloginlog.FieldLoginTime:
 		m.ClearLoginTime()
 		return nil
+	case sysloginlog.FieldLoginSuccess:
+		m.ClearLoginSuccess()
+		return nil
 	case sysloginlog.FieldModule:
 		m.ClearModule()
 		return nil
@@ -7299,9 +7319,6 @@ func (m *SysLoginLogMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *SysLoginLogMutation) ResetField(name string) error {
 	switch name {
-	case sysloginlog.FieldStatus:
-		m.ResetStatus()
-		return nil
 	case sysloginlog.FieldLoginName:
 		m.ResetLoginName()
 		return nil
@@ -7322,6 +7339,9 @@ func (m *SysLoginLogMutation) ResetField(name string) error {
 		return nil
 	case sysloginlog.FieldLoginTime:
 		m.ResetLoginTime()
+		return nil
+	case sysloginlog.FieldLoginSuccess:
+		m.ResetLoginSuccess()
 		return nil
 	case sysloginlog.FieldModule:
 		m.ResetModule()

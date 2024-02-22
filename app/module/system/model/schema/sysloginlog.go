@@ -26,7 +26,6 @@ func (SysLoginLog) Annotations() []schema.Annotation {
 func (SysLoginLog) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		baseMixin.IdMixin{},
-		baseMixin.StatusMixin{},
 	}
 }
 
@@ -40,6 +39,7 @@ func (SysLoginLog) Fields() []ent.Field {
 		field.String("os").Optional().Comment("登录操作系统"),
 		field.String("msg").Optional().Comment("提示消息"),
 		field.Time("login_time").Optional().Comment("登录时间"),
+		field.Int8("login_success").Optional().Comment("登录是否成功"),
 		field.String("module").Optional().Comment("登录模块"),
 	}
 }

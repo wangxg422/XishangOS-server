@@ -19,5 +19,6 @@ type SysLoginLogCreateReq struct {
 	Os            string    `json:"os"`
 	Msg           string    `json:"msg"`
 	LoginTime     time.Time `json:"loginTime"`
+	LoginSuccess  int8      `json:"loginSuccess"`
 	Module        string    `json:"module"`
 }

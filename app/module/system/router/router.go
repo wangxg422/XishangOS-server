@@ -16,10 +16,12 @@ func AddSystemRouter(group *gin.RouterGroup) {
 		}
 	}
 
+	noAuthRouter := router.Group("")
+	noAuthRouter.POST("/login", controller.SysLoginController.Login)
+
 	//router.Use(casbin.CasbinHandler())
 	//router.Use(jwt.JwtAuthHandler())
 	{
-		router.POST("/login", controller.SysLoginController.Login)
 		router.GET("/user/list", controller.SysUserController.List)
 		router.POST("/user/add", controller.SysUserController.Add)
 		router.PUT("/user/update", controller.SysUserController.Update)

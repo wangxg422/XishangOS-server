@@ -186,14 +186,8 @@ func init() {
 	sysloginlogMixin := schema.SysLoginLog{}.Mixin()
 	sysloginlogMixinFields0 := sysloginlogMixin[0].Fields()
 	_ = sysloginlogMixinFields0
-	sysloginlogMixinFields1 := sysloginlogMixin[1].Fields()
-	_ = sysloginlogMixinFields1
 	sysloginlogFields := schema.SysLoginLog{}.Fields()
 	_ = sysloginlogFields
-	// sysloginlogDescStatus is the schema descriptor for status field.
-	sysloginlogDescStatus := sysloginlogMixinFields1[0].Descriptor()
-	// sysloginlog.DefaultStatus holds the default value on creation for the status field.
-	sysloginlog.DefaultStatus = sysloginlogDescStatus.Default.(int8)
 	// sysloginlogDescID is the schema descriptor for id field.
 	sysloginlogDescID := sysloginlogMixinFields0[0].Descriptor()
 	// sysloginlog.DefaultID holds the default value on creation for the id field.

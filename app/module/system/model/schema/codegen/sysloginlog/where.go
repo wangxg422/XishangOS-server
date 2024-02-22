@@ -54,11 +54,6 @@ func IDLTE(id int64) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldLTE(FieldID, id))
 }
 
-// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldEQ(FieldStatus, v))
-}
-
 // LoginName applies equality check predicate on the "login_name" field. It's identical to LoginNameEQ.
 func LoginName(v string) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldEQ(FieldLoginName, v))
@@ -94,49 +89,14 @@ func LoginTime(v time.Time) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldEQ(FieldLoginTime, v))
 }
 
+// LoginSuccess applies equality check predicate on the "login_success" field. It's identical to LoginSuccessEQ.
+func LoginSuccess(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldEQ(FieldLoginSuccess, v))
+}
+
 // Module applies equality check predicate on the "module" field. It's identical to ModuleEQ.
 func Module(v string) predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldEQ(FieldModule, v))
-}
-
-// StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldEQ(FieldStatus, v))
-}
-
-// StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldNEQ(FieldStatus, v))
-}
-
-// StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldIn(FieldStatus, vs...))
-}
-
-// StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldNotIn(FieldStatus, vs...))
-}
-
-// StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldGT(FieldStatus, v))
-}
-
-// StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldGTE(FieldStatus, v))
-}
-
-// StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldLT(FieldStatus, v))
-}
-
-// StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int8) predicate.SysLoginLog {
-	return predicate.SysLoginLog(sql.FieldLTE(FieldStatus, v))
 }
 
 // LoginNameEQ applies the EQ predicate on the "login_name" field.
@@ -637,6 +597,56 @@ func LoginTimeIsNil() predicate.SysLoginLog {
 // LoginTimeNotNil applies the NotNil predicate on the "login_time" field.
 func LoginTimeNotNil() predicate.SysLoginLog {
 	return predicate.SysLoginLog(sql.FieldNotNull(FieldLoginTime))
+}
+
+// LoginSuccessEQ applies the EQ predicate on the "login_success" field.
+func LoginSuccessEQ(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldEQ(FieldLoginSuccess, v))
+}
+
+// LoginSuccessNEQ applies the NEQ predicate on the "login_success" field.
+func LoginSuccessNEQ(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldNEQ(FieldLoginSuccess, v))
+}
+
+// LoginSuccessIn applies the In predicate on the "login_success" field.
+func LoginSuccessIn(vs ...int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldIn(FieldLoginSuccess, vs...))
+}
+
+// LoginSuccessNotIn applies the NotIn predicate on the "login_success" field.
+func LoginSuccessNotIn(vs ...int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldNotIn(FieldLoginSuccess, vs...))
+}
+
+// LoginSuccessGT applies the GT predicate on the "login_success" field.
+func LoginSuccessGT(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldGT(FieldLoginSuccess, v))
+}
+
+// LoginSuccessGTE applies the GTE predicate on the "login_success" field.
+func LoginSuccessGTE(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldGTE(FieldLoginSuccess, v))
+}
+
+// LoginSuccessLT applies the LT predicate on the "login_success" field.
+func LoginSuccessLT(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldLT(FieldLoginSuccess, v))
+}
+
+// LoginSuccessLTE applies the LTE predicate on the "login_success" field.
+func LoginSuccessLTE(v int8) predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldLTE(FieldLoginSuccess, v))
+}
+
+// LoginSuccessIsNil applies the IsNil predicate on the "login_success" field.
+func LoginSuccessIsNil() predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldIsNull(FieldLoginSuccess))
+}
+
+// LoginSuccessNotNil applies the NotNil predicate on the "login_success" field.
+func LoginSuccessNotNil() predicate.SysLoginLog {
+	return predicate.SysLoginLog(sql.FieldNotNull(FieldLoginSuccess))
 }
 
 // ModuleEQ applies the EQ predicate on the "module" field.
