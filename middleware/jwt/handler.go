@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func JwtAuth() gin.HandlerFunc {
+func JwtAuthHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := GetToken(c)
 		if token == "" {

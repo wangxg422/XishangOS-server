@@ -5,6 +5,20 @@ app:
   mode: debug  # debug or release
   use-multipoint: false
 
+module:
+  public:
+    api-version-enabled: true
+    api-version: v1
+  system:
+    api-version-enabled: true
+    api-version: v1
+  common:
+    api-version-enabled: true
+    api-version: v1
+  application:
+    api-version-enabled: true
+    api-version: v1
+
 database:
   type: mysql
   enable-foreign-key: false # 是否启用数据库外键
