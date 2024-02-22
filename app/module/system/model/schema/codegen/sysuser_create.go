@@ -253,20 +253,6 @@ func (suc *SysUserCreate) SetNillableAvatar(s *string) *SysUserCreate {
 	return suc
 }
 
-// SetIsAdmin sets the "is_admin" field.
-func (suc *SysUserCreate) SetIsAdmin(i int8) *SysUserCreate {
-	suc.mutation.SetIsAdmin(i)
-	return suc
-}
-
-// SetNillableIsAdmin sets the "is_admin" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableIsAdmin(i *int8) *SysUserCreate {
-	if i != nil {
-		suc.SetIsAdmin(*i)
-	}
-	return suc
-}
-
 // SetUserStatus sets the "user_status" field.
 func (suc *SysUserCreate) SetUserStatus(i int8) *SysUserCreate {
 	suc.mutation.SetUserStatus(i)
@@ -586,10 +572,6 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 	if value, ok := suc.mutation.Avatar(); ok {
 		_spec.SetField(sysuser.FieldAvatar, field.TypeString, value)
 		_node.Avatar = value
-	}
-	if value, ok := suc.mutation.IsAdmin(); ok {
-		_spec.SetField(sysuser.FieldIsAdmin, field.TypeInt8, value)
-		_node.IsAdmin = value
 	}
 	if value, ok := suc.mutation.UserStatus(); ok {
 		_spec.SetField(sysuser.FieldUserStatus, field.TypeInt8, value)

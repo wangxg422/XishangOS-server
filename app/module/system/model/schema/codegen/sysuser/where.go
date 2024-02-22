@@ -140,11 +140,6 @@ func Avatar(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldAvatar, v))
 }
 
-// IsAdmin applies equality check predicate on the "is_admin" field. It's identical to IsAdminEQ.
-func IsAdmin(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldIsAdmin, v))
-}
-
 // UserStatus applies equality check predicate on the "user_status" field. It's identical to UserStatusEQ.
 func UserStatus(v int8) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldUserStatus, v))
@@ -1228,56 +1223,6 @@ func AvatarEqualFold(v string) predicate.SysUser {
 // AvatarContainsFold applies the ContainsFold predicate on the "avatar" field.
 func AvatarContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldAvatar, v))
-}
-
-// IsAdminEQ applies the EQ predicate on the "is_admin" field.
-func IsAdminEQ(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldIsAdmin, v))
-}
-
-// IsAdminNEQ applies the NEQ predicate on the "is_admin" field.
-func IsAdminNEQ(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldIsAdmin, v))
-}
-
-// IsAdminIn applies the In predicate on the "is_admin" field.
-func IsAdminIn(vs ...int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldIsAdmin, vs...))
-}
-
-// IsAdminNotIn applies the NotIn predicate on the "is_admin" field.
-func IsAdminNotIn(vs ...int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldIsAdmin, vs...))
-}
-
-// IsAdminGT applies the GT predicate on the "is_admin" field.
-func IsAdminGT(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldIsAdmin, v))
-}
-
-// IsAdminGTE applies the GTE predicate on the "is_admin" field.
-func IsAdminGTE(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldIsAdmin, v))
-}
-
-// IsAdminLT applies the LT predicate on the "is_admin" field.
-func IsAdminLT(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldIsAdmin, v))
-}
-
-// IsAdminLTE applies the LTE predicate on the "is_admin" field.
-func IsAdminLTE(v int8) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldIsAdmin, v))
-}
-
-// IsAdminIsNil applies the IsNil predicate on the "is_admin" field.
-func IsAdminIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldIsAdmin))
-}
-
-// IsAdminNotNil applies the NotNil predicate on the "is_admin" field.
-func IsAdminNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldIsAdmin))
 }
 
 // UserStatusEQ applies the EQ predicate on the "user_status" field.

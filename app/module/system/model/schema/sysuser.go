@@ -48,7 +48,6 @@ func (SysUser) Fields() []ent.Field {
 		field.String("user_email").Optional(),
 		field.Int8("sex").Optional(),
 		field.String("avatar").Optional().Comment("用户头像地址"),
-		field.Int8("is_admin").Optional(),
 		field.Int8("user_status").Optional().Comment("用户状态(0禁用,1正常,2未知)"),
 		field.Int64("dept_id").Optional().Comment("用户所属部门"),
 		field.String("address").Optional().Comment("用户联系地址"),

@@ -49,8 +49,6 @@ const (
 	FieldSex = "sex"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
-	// FieldIsAdmin holds the string denoting the is_admin field in the database.
-	FieldIsAdmin = "is_admin"
 	// FieldUserStatus holds the string denoting the user_status field in the database.
 	FieldUserStatus = "user_status"
 	// FieldDeptID holds the string denoting the dept_id field in the database.
@@ -110,7 +108,6 @@ var Columns = []string{
 	FieldUserEmail,
 	FieldSex,
 	FieldAvatar,
-	FieldIsAdmin,
 	FieldUserStatus,
 	FieldDeptID,
 	FieldAddress,
@@ -249,11 +246,6 @@ func BySex(opts ...sql.OrderTermOption) OrderOption {
 // ByAvatar orders the results by the avatar field.
 func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
-}
-
-// ByIsAdmin orders the results by the is_admin field.
-func ByIsAdmin(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsAdmin, opts...).ToFunc()
 }
 
 // ByUserStatus orders the results by the user_status field.

@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/controller"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/jwt"
 )
 
 func AddSystemRouter(group *gin.RouterGroup) {
@@ -18,7 +17,7 @@ func AddSystemRouter(group *gin.RouterGroup) {
 	}
 
 	//router.Use(casbin.CasbinHandler())
-	router.Use(jwt.JwtAuthHandler())
+	//router.Use(jwt.JwtAuthHandler())
 	{
 		router.POST("/login", controller.SysLoginController.Login)
 		router.GET("/user/list", controller.SysUserController.List)

@@ -275,7 +275,6 @@ var (
 		{Name: "user_email", Type: field.TypeString, Nullable: true},
 		{Name: "sex", Type: field.TypeInt8, Nullable: true},
 		{Name: "avatar", Type: field.TypeString, Nullable: true, Comment: "用户头像地址"},
-		{Name: "is_admin", Type: field.TypeInt8, Nullable: true},
 		{Name: "user_status", Type: field.TypeInt8, Nullable: true, Comment: "用户状态(0禁用,1正常,2未知)"},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "用户联系地址"},
 		{Name: "describe", Type: field.TypeString, Nullable: true},
@@ -292,7 +291,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_user_sys_dept_sysUsers",
-				Columns:    []*schema.Column{SysUserColumns[24]},
+				Columns:    []*schema.Column{SysUserColumns[23]},
 				RefColumns: []*schema.Column{SysDeptColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

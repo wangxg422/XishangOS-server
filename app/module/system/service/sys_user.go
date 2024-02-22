@@ -8,8 +8,11 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/initial"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysmenu"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysrole"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/sysuser"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/util/exception"
+	"github.com/wangxg422/XishangOS-backend/common/enmu"
 )
 
 type SysUser struct {
@@ -172,4 +175,25 @@ func (m *SysUser) UserNameOrMobileExist(c *gin.Context, username string, mobile 
 
 func (m *SysUser) Delete(id int64, c *gin.Context) (interface{}, error) {
 	return initial.SysDbClient.SysUser.Delete().Where(sysuser.ID(id)).Exec(c)
+}
+
+// GetUserRoleAndMenu 查询用户拥有的角色,角色关联的菜单
+func (m *SysUser) GetUserRoleAndMenu(id int64, c *gin.Context) (*codegen.SysUser, error) {
+	user, err := initial.SysDbClient.SysUser.Query().Where(sysuser.ID(id)).WithSysRoles(
+		func(roleQuery *codegen.SysRoleQuery) {
+			roleQuery.
+				Where(sysrole.Status(enmu.StatusNormal.Value())).
+				WithSysMenus(func(menuQuery *codegen.SysMenuQuery) {
+					menuQuery.Where(sysmenu.Status(enmu.StatusNormal.Value()))
+				})
+		}).First(c)
+
+	if err != nil {
+		if exception.NotNoRecordError(err) {
+			return nil, err
+		}
+		return nil, errors.New("userId不存在")
+	}
+
+	return user, nil
 }

@@ -386,33 +386,6 @@ func (suu *SysUserUpdate) ClearAvatar() *SysUserUpdate {
 	return suu
 }
 
-// SetIsAdmin sets the "is_admin" field.
-func (suu *SysUserUpdate) SetIsAdmin(i int8) *SysUserUpdate {
-	suu.mutation.ResetIsAdmin()
-	suu.mutation.SetIsAdmin(i)
-	return suu
-}
-
-// SetNillableIsAdmin sets the "is_admin" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableIsAdmin(i *int8) *SysUserUpdate {
-	if i != nil {
-		suu.SetIsAdmin(*i)
-	}
-	return suu
-}
-
-// AddIsAdmin adds i to the "is_admin" field.
-func (suu *SysUserUpdate) AddIsAdmin(i int8) *SysUserUpdate {
-	suu.mutation.AddIsAdmin(i)
-	return suu
-}
-
-// ClearIsAdmin clears the value of the "is_admin" field.
-func (suu *SysUserUpdate) ClearIsAdmin() *SysUserUpdate {
-	suu.mutation.ClearIsAdmin()
-	return suu
-}
-
 // SetUserStatus sets the "user_status" field.
 func (suu *SysUserUpdate) SetUserStatus(i int8) *SysUserUpdate {
 	suu.mutation.ResetUserStatus()
@@ -803,15 +776,6 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if suu.mutation.AvatarCleared() {
 		_spec.ClearField(sysuser.FieldAvatar, field.TypeString)
-	}
-	if value, ok := suu.mutation.IsAdmin(); ok {
-		_spec.SetField(sysuser.FieldIsAdmin, field.TypeInt8, value)
-	}
-	if value, ok := suu.mutation.AddedIsAdmin(); ok {
-		_spec.AddField(sysuser.FieldIsAdmin, field.TypeInt8, value)
-	}
-	if suu.mutation.IsAdminCleared() {
-		_spec.ClearField(sysuser.FieldIsAdmin, field.TypeInt8)
 	}
 	if value, ok := suu.mutation.UserStatus(); ok {
 		_spec.SetField(sysuser.FieldUserStatus, field.TypeInt8, value)
@@ -1340,33 +1304,6 @@ func (suuo *SysUserUpdateOne) ClearAvatar() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetIsAdmin sets the "is_admin" field.
-func (suuo *SysUserUpdateOne) SetIsAdmin(i int8) *SysUserUpdateOne {
-	suuo.mutation.ResetIsAdmin()
-	suuo.mutation.SetIsAdmin(i)
-	return suuo
-}
-
-// SetNillableIsAdmin sets the "is_admin" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableIsAdmin(i *int8) *SysUserUpdateOne {
-	if i != nil {
-		suuo.SetIsAdmin(*i)
-	}
-	return suuo
-}
-
-// AddIsAdmin adds i to the "is_admin" field.
-func (suuo *SysUserUpdateOne) AddIsAdmin(i int8) *SysUserUpdateOne {
-	suuo.mutation.AddIsAdmin(i)
-	return suuo
-}
-
-// ClearIsAdmin clears the value of the "is_admin" field.
-func (suuo *SysUserUpdateOne) ClearIsAdmin() *SysUserUpdateOne {
-	suuo.mutation.ClearIsAdmin()
-	return suuo
-}
-
 // SetUserStatus sets the "user_status" field.
 func (suuo *SysUserUpdateOne) SetUserStatus(i int8) *SysUserUpdateOne {
 	suuo.mutation.ResetUserStatus()
@@ -1787,15 +1724,6 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	}
 	if suuo.mutation.AvatarCleared() {
 		_spec.ClearField(sysuser.FieldAvatar, field.TypeString)
-	}
-	if value, ok := suuo.mutation.IsAdmin(); ok {
-		_spec.SetField(sysuser.FieldIsAdmin, field.TypeInt8, value)
-	}
-	if value, ok := suuo.mutation.AddedIsAdmin(); ok {
-		_spec.AddField(sysuser.FieldIsAdmin, field.TypeInt8, value)
-	}
-	if suuo.mutation.IsAdminCleared() {
-		_spec.ClearField(sysuser.FieldIsAdmin, field.TypeInt8)
 	}
 	if value, ok := suuo.mutation.UserStatus(); ok {
 		_spec.SetField(sysuser.FieldUserStatus, field.TypeInt8, value)

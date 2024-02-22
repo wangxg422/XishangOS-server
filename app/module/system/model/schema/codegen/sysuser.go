@@ -52,8 +52,6 @@ type SysUser struct {
 	Sex int8 `json:"sex,omitempty"`
 	// 用户头像地址
 	Avatar string `json:"avatar,omitempty"`
-	// IsAdmin holds the value of the "is_admin" field.
-	IsAdmin int8 `json:"is_admin,omitempty"`
 	// 用户状态(0禁用,1正常,2未知)
 	UserStatus int8 `json:"user_status,omitempty"`
 	// 用户所属部门
@@ -121,7 +119,7 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysuser.FieldID, sysuser.FieldCreatedBy, sysuser.FieldUpdatedBy, sysuser.FieldDeleteBy, sysuser.FieldDelFlag, sysuser.FieldSex, sysuser.FieldIsAdmin, sysuser.FieldUserStatus, sysuser.FieldDeptID:
+		case sysuser.FieldID, sysuser.FieldCreatedBy, sysuser.FieldUpdatedBy, sysuser.FieldDeleteBy, sysuser.FieldDelFlag, sysuser.FieldSex, sysuser.FieldUserStatus, sysuser.FieldDeptID:
 			values[i] = new(sql.NullInt64)
 		case sysuser.FieldRemark, sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
 			values[i] = new(sql.NullString)
@@ -249,12 +247,6 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field avatar", values[i])
 			} else if value.Valid {
 				su.Avatar = value.String
-			}
-		case sysuser.FieldIsAdmin:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field is_admin", values[i])
-			} else if value.Valid {
-				su.IsAdmin = int8(value.Int64)
 			}
 		case sysuser.FieldUserStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -393,9 +385,6 @@ func (su *SysUser) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("avatar=")
 	builder.WriteString(su.Avatar)
-	builder.WriteString(", ")
-	builder.WriteString("is_admin=")
-	builder.WriteString(fmt.Sprintf("%v", su.IsAdmin))
 	builder.WriteString(", ")
 	builder.WriteString("user_status=")
 	builder.WriteString(fmt.Sprintf("%v", su.UserStatus))

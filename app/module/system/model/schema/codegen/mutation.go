@@ -14633,8 +14633,6 @@ type SysUserMutation struct {
 	sex             *int8
 	addsex          *int8
 	avatar          *string
-	is_admin        *int8
-	addis_admin     *int8
 	user_status     *int8
 	adduser_status  *int8
 	address         *string
@@ -15670,76 +15668,6 @@ func (m *SysUserMutation) ResetAvatar() {
 	delete(m.clearedFields, sysuser.FieldAvatar)
 }
 
-// SetIsAdmin sets the "is_admin" field.
-func (m *SysUserMutation) SetIsAdmin(i int8) {
-	m.is_admin = &i
-	m.addis_admin = nil
-}
-
-// IsAdmin returns the value of the "is_admin" field in the mutation.
-func (m *SysUserMutation) IsAdmin() (r int8, exists bool) {
-	v := m.is_admin
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsAdmin returns the old "is_admin" field's value of the SysUser entity.
-// If the SysUser object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldIsAdmin(ctx context.Context) (v int8, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsAdmin is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsAdmin requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsAdmin: %w", err)
-	}
-	return oldValue.IsAdmin, nil
-}
-
-// AddIsAdmin adds i to the "is_admin" field.
-func (m *SysUserMutation) AddIsAdmin(i int8) {
-	if m.addis_admin != nil {
-		*m.addis_admin += i
-	} else {
-		m.addis_admin = &i
-	}
-}
-
-// AddedIsAdmin returns the value that was added to the "is_admin" field in this mutation.
-func (m *SysUserMutation) AddedIsAdmin() (r int8, exists bool) {
-	v := m.addis_admin
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ClearIsAdmin clears the value of the "is_admin" field.
-func (m *SysUserMutation) ClearIsAdmin() {
-	m.is_admin = nil
-	m.addis_admin = nil
-	m.clearedFields[sysuser.FieldIsAdmin] = struct{}{}
-}
-
-// IsAdminCleared returns if the "is_admin" field was cleared in this mutation.
-func (m *SysUserMutation) IsAdminCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldIsAdmin]
-	return ok
-}
-
-// ResetIsAdmin resets all changes to the "is_admin" field.
-func (m *SysUserMutation) ResetIsAdmin() {
-	m.is_admin = nil
-	m.addis_admin = nil
-	delete(m.clearedFields, sysuser.FieldIsAdmin)
-}
-
 // SetUserStatus sets the "user_status" field.
 func (m *SysUserMutation) SetUserStatus(i int8) {
 	m.user_status = &i
@@ -16237,7 +16165,7 @@ func (m *SysUserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysUserMutation) Fields() []string {
-	fields := make([]string, 0, 24)
+	fields := make([]string, 0, 23)
 	if m.created_at != nil {
 		fields = append(fields, sysuser.FieldCreatedAt)
 	}
@@ -16288,9 +16216,6 @@ func (m *SysUserMutation) Fields() []string {
 	}
 	if m.avatar != nil {
 		fields = append(fields, sysuser.FieldAvatar)
-	}
-	if m.is_admin != nil {
-		fields = append(fields, sysuser.FieldIsAdmin)
 	}
 	if m.user_status != nil {
 		fields = append(fields, sysuser.FieldUserStatus)
@@ -16352,8 +16277,6 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.Sex()
 	case sysuser.FieldAvatar:
 		return m.Avatar()
-	case sysuser.FieldIsAdmin:
-		return m.IsAdmin()
 	case sysuser.FieldUserStatus:
 		return m.UserStatus()
 	case sysuser.FieldDeptID:
@@ -16409,8 +16332,6 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldSex(ctx)
 	case sysuser.FieldAvatar:
 		return m.OldAvatar(ctx)
-	case sysuser.FieldIsAdmin:
-		return m.OldIsAdmin(ctx)
 	case sysuser.FieldUserStatus:
 		return m.OldUserStatus(ctx)
 	case sysuser.FieldDeptID:
@@ -16551,13 +16472,6 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAvatar(v)
 		return nil
-	case sysuser.FieldIsAdmin:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsAdmin(v)
-		return nil
 	case sysuser.FieldUserStatus:
 		v, ok := value.(int8)
 		if !ok {
@@ -16623,9 +16537,6 @@ func (m *SysUserMutation) AddedFields() []string {
 	if m.addsex != nil {
 		fields = append(fields, sysuser.FieldSex)
 	}
-	if m.addis_admin != nil {
-		fields = append(fields, sysuser.FieldIsAdmin)
-	}
 	if m.adduser_status != nil {
 		fields = append(fields, sysuser.FieldUserStatus)
 	}
@@ -16647,8 +16558,6 @@ func (m *SysUserMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDelFlag()
 	case sysuser.FieldSex:
 		return m.AddedSex()
-	case sysuser.FieldIsAdmin:
-		return m.AddedIsAdmin()
 	case sysuser.FieldUserStatus:
 		return m.AddedUserStatus()
 	}
@@ -16694,13 +16603,6 @@ func (m *SysUserMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSex(v)
-		return nil
-	case sysuser.FieldIsAdmin:
-		v, ok := value.(int8)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddIsAdmin(v)
 		return nil
 	case sysuser.FieldUserStatus:
 		v, ok := value.(int8)
@@ -16761,9 +16663,6 @@ func (m *SysUserMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(sysuser.FieldAvatar) {
 		fields = append(fields, sysuser.FieldAvatar)
-	}
-	if m.FieldCleared(sysuser.FieldIsAdmin) {
-		fields = append(fields, sysuser.FieldIsAdmin)
 	}
 	if m.FieldCleared(sysuser.FieldUserStatus) {
 		fields = append(fields, sysuser.FieldUserStatus)
@@ -16842,9 +16741,6 @@ func (m *SysUserMutation) ClearField(name string) error {
 	case sysuser.FieldAvatar:
 		m.ClearAvatar()
 		return nil
-	case sysuser.FieldIsAdmin:
-		m.ClearIsAdmin()
-		return nil
 	case sysuser.FieldUserStatus:
 		m.ClearUserStatus()
 		return nil
@@ -16921,9 +16817,6 @@ func (m *SysUserMutation) ResetField(name string) error {
 		return nil
 	case sysuser.FieldAvatar:
 		m.ResetAvatar()
-		return nil
-	case sysuser.FieldIsAdmin:
-		m.ResetIsAdmin()
 		return nil
 	case sysuser.FieldUserStatus:
 		m.ResetUserStatus()

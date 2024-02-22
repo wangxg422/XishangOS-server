@@ -6,8 +6,8 @@ import (
 	commonService "github.com/wangxg422/XishangOS-backend/app/module/common/service"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/enmu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
+	"github.com/wangxg422/XishangOS-backend/app/module/system/model/response"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
-	"github.com/wangxg422/XishangOS-backend/common/result"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/utils"
 )
@@ -16,7 +16,7 @@ type SysLogin struct {
 	BaseService
 }
 
-func (l SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]any, error) {
+func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]any, error) {
 	// 如果开启了验证码，校验验证码是否正确
 	if global.AppConfig.Captcha.Enabled {
 		if commonService.CaptchaService.VerifyString(req.VerifyKey, req.VerifyCode) {
@@ -56,23 +56,41 @@ func (l SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]an
 
 	resMap := make(map[string]any)
 
-	// 查询用户菜单及权限
+	// 查询用户角色，角色关联的菜单、权限
 	var permissions []string
-	var menuList []*codegen.SysMenu
-	// 如果是超级管理员，拥有所有权限及菜单
-	if user.IsAdmin == 1 {
+	var menuList []*response.UserMenu
+
+	userInfo, err := SysUserService.GetUserRoleAndMenu(user.ID, c)
+	if err != nil {
+		return nil, err
+	}
+
+	isSuperAdmin := false
+	roles := userInfo.Edges.SysRoles
+	menus := make([]*codegen.SysMenu, 0)
+	for _, r := range roles {
+		// 检查是否是超级管理员 TODO 更改判定条件
+		if r.ID == 11 {
+			isSuperAdmin = true
+			break
+		}
+		if len(r.Edges.SysMenus) > 0 {
+			menus = append(menus, r.Edges.SysMenus...)
+		}
+	}
+
+	if isSuperAdmin {
+		// 如果是超级管理员，拥有所有权限及菜单
 		permissions = []string{"*/*/*"}
-		menuList, err = SysMenuService.GetAllLayoutMenu(c)
+		menus, err = SysMenuService.GetAllLayoutMenu(c)
 		if err != nil {
 			return nil, err
 		}
-		menus := SysMenuService.FormatMenu(menuList)
-		if menus == nil || len(menus) == 0 {
-			resMap["menuList"] = result.EmptyList{}
-		} else {
-			resMap["menuList"] = SysMenuService.BuildMenuTree(menus, 0)
-		}
 	}
+
+	// 格式化菜单数据为前端需要的格式并构建菜单树
+	menuList = SysMenuService.FormatMenu(menus)
+	resMap["menuList"] = SysMenuService.BuildMenuTree(menuList, 0)
 
 	resMap["token"] = ""
 	resMap["userInfo"] = ""
