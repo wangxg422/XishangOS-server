@@ -3,7 +3,7 @@ package captcha
 import (
 	"github.com/mojocn/base64Captcha"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 	"time"
 

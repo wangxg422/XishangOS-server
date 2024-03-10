@@ -5,7 +5,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/wangxg422/XishangOS-backend/common/result"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 	"strconv"
 	"time"

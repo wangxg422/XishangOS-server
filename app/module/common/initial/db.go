@@ -8,7 +8,7 @@ import (
 	_ "github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/codegen/runtime"
 	"github.com/wangxg422/XishangOS-backend/common/constant"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 )
 

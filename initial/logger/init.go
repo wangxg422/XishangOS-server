@@ -1,4 +1,4 @@
-package initial
+package logger
 
 import (
 	"fmt"
@@ -14,6 +14,12 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+var zapLog *zap.Logger
+
+func GetLogger() *zap.Logger {
+	return zapLog
+}
+
 func InitLog() {
 	// 如果不存在日志目录，则新建
 	if ok, _ := utils.PathExists(global.AppConfig.Zap.Path); !ok {
@@ -22,7 +28,7 @@ func InitLog() {
 	}
 
 	cores := GetZapCores()
-	global.Log = zap.New(zapcore.NewTee(cores...), zap.AddCaller())
+	zapLog = zap.New(zapcore.NewTee(cores...), zap.AddCaller(), zap.AddCallerSkip(1))
 }
 
 func GetZapCores() []zapcore.Core {

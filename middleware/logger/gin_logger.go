@@ -1,7 +1,11 @@
 package logger
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/wangxg422/XishangOS-backend/common/constant"
+	logUtil "github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 	"net"
 	"net/http"
@@ -16,20 +20,27 @@ import (
 func GinLogger(logger *zap.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
+
 		path := c.Request.URL.Path
 		query := c.Request.URL.RawQuery
+		uuidStr := strings.ReplaceAll(uuid.New().String(), "-", "")
+		userId := c.GetInt64("userId")
+
+		c.Set(constant.TraceCtx, &logUtil.Trace{TraceId: uuidStr, Caller: path, UserId: userId})
 		c.Next()
 
 		cost := time.Since(start)
 		logger.Info(path,
-			zap.Int("status", c.Writer.Status()),
-			zap.String("method", c.Request.Method),
-			zap.String("path", path),
-			zap.String("query", query),
-			zap.String("ip", c.ClientIP()),
-			zap.String("user-agent", c.Request.UserAgent()),
-			zap.String("errors", c.Errors.ByType(gin.ErrorTypePrivate).String()),
-			zap.Duration("cost", cost),
+			zap.Int("Status", c.Writer.Status()),
+			zap.String("Method", c.Request.Method),
+			zap.String("Path", path),
+			zap.String("Query", query),
+			zap.String("IP", c.ClientIP()),
+			zap.String("UserAgent", c.Request.UserAgent()),
+			zap.String("Error", c.Errors.ByType(gin.ErrorTypePrivate).String()),
+			zap.Duration("Cost", cost),
+			zap.String("TraceId", uuidStr),
+			zap.Int64("UserId", userId),
 		)
 	}
 }
@@ -43,7 +54,8 @@ func GinRecovery(logger *zap.Logger, stack bool) gin.HandlerFunc {
 				// condition that warrants a panic stack trace.
 				var brokenPipe bool
 				if ne, ok := err.(*net.OpError); ok {
-					if se, ok := ne.Err.(*os.SyscallError); ok {
+					var se *os.SyscallError
+					if errors.As(ne.Err, &se) {
 						if strings.Contains(strings.ToLower(se.Error()), "broken pipe") || strings.Contains(strings.ToLower(se.Error()), "connection reset by peer") {
 							brokenPipe = true
 						}

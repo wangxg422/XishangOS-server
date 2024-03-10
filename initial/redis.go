@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/go-redis/redis/v8"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 )
 

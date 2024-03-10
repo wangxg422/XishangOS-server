@@ -10,7 +10,7 @@ import (
 	sysDbClient "github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	sysMigrate "github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen/migrate"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"go.uber.org/zap"
 	"time"
 )

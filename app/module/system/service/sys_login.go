@@ -9,7 +9,9 @@ import (
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/response"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
 	"github.com/wangxg422/XishangOS-backend/global"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"github.com/wangxg422/XishangOS-backend/utils"
+	"go.uber.org/zap"
 	"time"
 )
 
@@ -18,6 +20,8 @@ type SysLogin struct {
 }
 
 func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]any, error) {
+	logger.WarnF(c, "log", zap.String("test", "666"))
+
 	// 如果开启了验证码，校验验证码是否正确
 	if global.AppConfig.Captcha.Enabled {
 		if commonService.CaptchaService.VerifyString(req.VerifyKey, req.VerifyCode) {
@@ -25,19 +29,20 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 		}
 	}
 
-	// 按用户名查询用户
-	user, err := SysUserService.GetUserByUsername(req.Username, c)
-	if err != nil {
-		return nil, err
-	}
-
 	loginLog := &request.SysLoginLogCreateReq{
 		LoginName: req.Username,
 		IpAddr:    utils.GetClientIp(c),
 		Browser:   c.GetHeader("User-Agent"),
-		Msg:       err.Error(),
 		LoginTime: time.Now(),
 		Module:    "system",
+	}
+
+	// 按用户名查询用户
+	user, err := SysUserService.GetUserByUsername(req.Username, c)
+	if err != nil {
+		loginLog.Msg = err.Error()
+		_ = SysLoginLogService.Add(loginLog, c)
+		return nil, err
 	}
 
 	if user == nil {
@@ -115,7 +120,7 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 	resMap["menuList"] = SysMenuService.BuildMenuTree(menuList, 0)
 
 	resMap["token"] = ""
-	resMap["userInfo"] = ""
+	resMap["userInfo"] = userInfo
 	resMap["permissions"] = permissions
 
 	return resMap, nil

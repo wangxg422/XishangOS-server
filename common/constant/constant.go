@@ -27,6 +27,9 @@ const (
 
 	// DefaultPageLimit 默认查询分页每页大小
 	DefaultPageLimit = 10
+
+	TraceCtx = "TraceCtx"
+	TraceKey = "TraceKey"
 )
 
 var UpdateOmit = []string{"create_time", "create_by"}

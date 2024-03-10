@@ -3,7 +3,7 @@ package jwt
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/wangxg422/XishangOS-backend/global"
-	"github.com/wangxg422/XishangOS-backend/middleware/logger"
+	"github.com/wangxg422/XishangOS-backend/initial/logger"
 	"net"
 	"strconv"
 	"strings"
