@@ -110,6 +110,11 @@ func RoleName(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldRoleName, v))
 }
 
+// RoleCode applies equality check predicate on the "role_code" field. It's identical to RoleCodeEQ.
+func RoleCode(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldRoleCode, v))
+}
+
 // DataScope applies equality check predicate on the "data_scope" field. It's identical to DataScopeEQ.
 func DataScope(v int8) predicate.SysRole {
 	return predicate.SysRole(sql.FieldEQ(FieldDataScope, v))
@@ -693,6 +698,81 @@ func RoleNameEqualFold(v string) predicate.SysRole {
 // RoleNameContainsFold applies the ContainsFold predicate on the "role_name" field.
 func RoleNameContainsFold(v string) predicate.SysRole {
 	return predicate.SysRole(sql.FieldContainsFold(FieldRoleName, v))
+}
+
+// RoleCodeEQ applies the EQ predicate on the "role_code" field.
+func RoleCodeEQ(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEQ(FieldRoleCode, v))
+}
+
+// RoleCodeNEQ applies the NEQ predicate on the "role_code" field.
+func RoleCodeNEQ(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNEQ(FieldRoleCode, v))
+}
+
+// RoleCodeIn applies the In predicate on the "role_code" field.
+func RoleCodeIn(vs ...string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldIn(FieldRoleCode, vs...))
+}
+
+// RoleCodeNotIn applies the NotIn predicate on the "role_code" field.
+func RoleCodeNotIn(vs ...string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotIn(FieldRoleCode, vs...))
+}
+
+// RoleCodeGT applies the GT predicate on the "role_code" field.
+func RoleCodeGT(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGT(FieldRoleCode, v))
+}
+
+// RoleCodeGTE applies the GTE predicate on the "role_code" field.
+func RoleCodeGTE(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldGTE(FieldRoleCode, v))
+}
+
+// RoleCodeLT applies the LT predicate on the "role_code" field.
+func RoleCodeLT(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLT(FieldRoleCode, v))
+}
+
+// RoleCodeLTE applies the LTE predicate on the "role_code" field.
+func RoleCodeLTE(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldLTE(FieldRoleCode, v))
+}
+
+// RoleCodeContains applies the Contains predicate on the "role_code" field.
+func RoleCodeContains(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldContains(FieldRoleCode, v))
+}
+
+// RoleCodeHasPrefix applies the HasPrefix predicate on the "role_code" field.
+func RoleCodeHasPrefix(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldHasPrefix(FieldRoleCode, v))
+}
+
+// RoleCodeHasSuffix applies the HasSuffix predicate on the "role_code" field.
+func RoleCodeHasSuffix(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldHasSuffix(FieldRoleCode, v))
+}
+
+// RoleCodeIsNil applies the IsNil predicate on the "role_code" field.
+func RoleCodeIsNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldIsNull(FieldRoleCode))
+}
+
+// RoleCodeNotNil applies the NotNil predicate on the "role_code" field.
+func RoleCodeNotNil() predicate.SysRole {
+	return predicate.SysRole(sql.FieldNotNull(FieldRoleCode))
+}
+
+// RoleCodeEqualFold applies the EqualFold predicate on the "role_code" field.
+func RoleCodeEqualFold(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldEqualFold(FieldRoleCode, v))
+}
+
+// RoleCodeContainsFold applies the ContainsFold predicate on the "role_code" field.
+func RoleCodeContainsFold(v string) predicate.SysRole {
+	return predicate.SysRole(sql.FieldContainsFold(FieldRoleCode, v))
 }
 
 // DataScopeEQ applies the EQ predicate on the "data_scope" field.

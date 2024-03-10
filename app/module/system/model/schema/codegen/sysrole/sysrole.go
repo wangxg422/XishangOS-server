@@ -37,6 +37,8 @@ const (
 	FieldDelFlag = "del_flag"
 	// FieldRoleName holds the string denoting the role_name field in the database.
 	FieldRoleName = "role_name"
+	// FieldRoleCode holds the string denoting the role_code field in the database.
+	FieldRoleCode = "role_code"
 	// FieldDataScope holds the string denoting the data_scope field in the database.
 	FieldDataScope = "data_scope"
 	// EdgeSysDepts holds the string denoting the sysdepts edge name in mutations.
@@ -78,6 +80,7 @@ var Columns = []string{
 	FieldRemark,
 	FieldDelFlag,
 	FieldRoleName,
+	FieldRoleCode,
 	FieldDataScope,
 }
 
@@ -188,6 +191,11 @@ func ByDelFlag(opts ...sql.OrderTermOption) OrderOption {
 // ByRoleName orders the results by the role_name field.
 func ByRoleName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRoleName, opts...).ToFunc()
+}
+
+// ByRoleCode orders the results by the role_code field.
+func ByRoleCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRoleCode, opts...).ToFunc()
 }
 
 // ByDataScope orders the results by the data_scope field.

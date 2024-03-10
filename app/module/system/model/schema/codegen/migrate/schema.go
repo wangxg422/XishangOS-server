@@ -246,6 +246,7 @@ var (
 		{Name: "remark", Type: field.TypeString, Nullable: true},
 		{Name: "del_flag", Type: field.TypeInt8, Default: 1},
 		{Name: "role_name", Type: field.TypeString, Nullable: true, Comment: "角色名称"},
+		{Name: "role_code", Type: field.TypeString, Nullable: true, Comment: "角色编码"},
 		{Name: "data_scope", Type: field.TypeInt8, Nullable: true, Comment: "数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)"},
 	}
 	// SysRoleTable holds the schema information for the "sys_role" table.

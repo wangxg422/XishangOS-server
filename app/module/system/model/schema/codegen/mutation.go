@@ -13031,6 +13031,7 @@ type SysRoleMutation struct {
 	del_flag        *int8
 	adddel_flag     *int8
 	role_name       *string
+	role_code       *string
 	data_scope      *int8
 	adddata_scope   *int8
 	clearedFields   map[string]struct{}
@@ -13789,6 +13790,55 @@ func (m *SysRoleMutation) ResetRoleName() {
 	delete(m.clearedFields, sysrole.FieldRoleName)
 }
 
+// SetRoleCode sets the "role_code" field.
+func (m *SysRoleMutation) SetRoleCode(s string) {
+	m.role_code = &s
+}
+
+// RoleCode returns the value of the "role_code" field in the mutation.
+func (m *SysRoleMutation) RoleCode() (r string, exists bool) {
+	v := m.role_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRoleCode returns the old "role_code" field's value of the SysRole entity.
+// If the SysRole object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysRoleMutation) OldRoleCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRoleCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRoleCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRoleCode: %w", err)
+	}
+	return oldValue.RoleCode, nil
+}
+
+// ClearRoleCode clears the value of the "role_code" field.
+func (m *SysRoleMutation) ClearRoleCode() {
+	m.role_code = nil
+	m.clearedFields[sysrole.FieldRoleCode] = struct{}{}
+}
+
+// RoleCodeCleared returns if the "role_code" field was cleared in this mutation.
+func (m *SysRoleMutation) RoleCodeCleared() bool {
+	_, ok := m.clearedFields[sysrole.FieldRoleCode]
+	return ok
+}
+
+// ResetRoleCode resets all changes to the "role_code" field.
+func (m *SysRoleMutation) ResetRoleCode() {
+	m.role_code = nil
+	delete(m.clearedFields, sysrole.FieldRoleCode)
+}
+
 // SetDataScope sets the "data_scope" field.
 func (m *SysRoleMutation) SetDataScope(i int8) {
 	m.data_scope = &i
@@ -14055,7 +14105,7 @@ func (m *SysRoleMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysRoleMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.created_at != nil {
 		fields = append(fields, sysrole.FieldCreatedAt)
 	}
@@ -14088,6 +14138,9 @@ func (m *SysRoleMutation) Fields() []string {
 	}
 	if m.role_name != nil {
 		fields = append(fields, sysrole.FieldRoleName)
+	}
+	if m.role_code != nil {
+		fields = append(fields, sysrole.FieldRoleCode)
 	}
 	if m.data_scope != nil {
 		fields = append(fields, sysrole.FieldDataScope)
@@ -14122,6 +14175,8 @@ func (m *SysRoleMutation) Field(name string) (ent.Value, bool) {
 		return m.DelFlag()
 	case sysrole.FieldRoleName:
 		return m.RoleName()
+	case sysrole.FieldRoleCode:
+		return m.RoleCode()
 	case sysrole.FieldDataScope:
 		return m.DataScope()
 	}
@@ -14155,6 +14210,8 @@ func (m *SysRoleMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDelFlag(ctx)
 	case sysrole.FieldRoleName:
 		return m.OldRoleName(ctx)
+	case sysrole.FieldRoleCode:
+		return m.OldRoleCode(ctx)
 	case sysrole.FieldDataScope:
 		return m.OldDataScope(ctx)
 	}
@@ -14242,6 +14299,13 @@ func (m *SysRoleMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRoleName(v)
+		return nil
+	case sysrole.FieldRoleCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRoleCode(v)
 		return nil
 	case sysrole.FieldDataScope:
 		v, ok := value.(int8)
@@ -14394,6 +14458,9 @@ func (m *SysRoleMutation) ClearedFields() []string {
 	if m.FieldCleared(sysrole.FieldRoleName) {
 		fields = append(fields, sysrole.FieldRoleName)
 	}
+	if m.FieldCleared(sysrole.FieldRoleCode) {
+		fields = append(fields, sysrole.FieldRoleCode)
+	}
 	if m.FieldCleared(sysrole.FieldDataScope) {
 		fields = append(fields, sysrole.FieldDataScope)
 	}
@@ -14438,6 +14505,9 @@ func (m *SysRoleMutation) ClearField(name string) error {
 	case sysrole.FieldRoleName:
 		m.ClearRoleName()
 		return nil
+	case sysrole.FieldRoleCode:
+		m.ClearRoleCode()
+		return nil
 	case sysrole.FieldDataScope:
 		m.ClearDataScope()
 		return nil
@@ -14481,6 +14551,9 @@ func (m *SysRoleMutation) ResetField(name string) error {
 		return nil
 	case sysrole.FieldRoleName:
 		m.ResetRoleName()
+		return nil
+	case sysrole.FieldRoleCode:
+		m.ResetRoleCode()
 		return nil
 	case sysrole.FieldDataScope:
 		m.ResetDataScope()

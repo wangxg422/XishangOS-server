@@ -3,13 +3,16 @@ package service
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	commonService "github.com/wangxg422/XishangOS-backend/app/module/common/service"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/enmu"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/request"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/response"
 	"github.com/wangxg422/XishangOS-backend/app/module/system/model/schema/codegen"
+	"github.com/wangxg422/XishangOS-backend/common/constant"
 	"github.com/wangxg422/XishangOS-backend/global"
 	"github.com/wangxg422/XishangOS-backend/initial/logger"
+	"github.com/wangxg422/XishangOS-backend/middleware/jwt"
 	"github.com/wangxg422/XishangOS-backend/utils"
 	"go.uber.org/zap"
 	"time"
@@ -19,9 +22,7 @@ type SysLogin struct {
 	BaseService
 }
 
-func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]any, error) {
-	logger.WarnF(c, "log", zap.String("test", "666"))
-
+func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (*response.LoginRes, error) {
 	// 如果开启了验证码，校验验证码是否正确
 	if global.AppConfig.Captcha.Enabled {
 		if commonService.CaptchaService.VerifyString(req.VerifyKey, req.VerifyCode) {
@@ -72,16 +73,13 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 		return nil, errors.New("用户已禁用,禁止登录")
 	}
 
+	// 登录成功
 	user.UserPassword = ""
-	// 登录成功，签发token
-	// TODO 签发jwt token
 
 	// 记录登录成功日志
 	loginLog.Msg = "登录成功"
 	loginLog.LoginSuccess = 1
 	_ = SysLoginLogService.Add(loginLog, c)
-
-	resMap := make(map[string]any)
 
 	// 查询用户角色，角色关联的菜单、权限
 	var permissions []string
@@ -96,12 +94,13 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 	roles := userInfo.Edges.SysRoles
 	menus := make([]*codegen.SysMenu, 0)
 	for _, r := range roles {
-		// 检查是否是超级管理员 TODO 更改判定条件
-		if r.ID == 11 {
+		// 检查是否是超级管理员
+		if r.RoleCode == constant.SuperAdminRoleCode {
 			isSuperAdmin = true
 			break
 		}
 		if len(r.Edges.SysMenus) > 0 {
+			// TODO 需要将菜单去重
 			menus = append(menus, r.Edges.SysMenus...)
 		}
 	}
@@ -116,12 +115,60 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (map[string]a
 	}
 
 	// 格式化菜单数据为前端需要的格式并构建菜单树
-	menuList = SysMenuService.FormatMenu(menus)
-	resMap["menuList"] = SysMenuService.BuildMenuTree(menuList, 0)
+	menuList = SysMenuService.BuildMenuTree(SysMenuService.FormatMenu(menus), 0)
 
-	resMap["token"] = ""
-	resMap["userInfo"] = userInfo
-	resMap["permissions"] = permissions
+	token, err := m.GenToken(user)
+	if err != nil {
+		loginLog.LoginSuccess = 2
+		loginLog.Msg = "token签发失败"
+		_ = SysLoginLogService.Add(loginLog, c)
+		logger.Error("token签发失败", zap.Error(err))
+		return nil, errors.New("token签发失败")
+	}
 
-	return resMap, nil
+	res := &response.LoginRes{
+		Token: token,
+		UserInfo: &response.UserInfo{
+			Username:    req.Username,
+			UserId:      user.ID,
+			DeptId:      user.DeptID,
+			MenuList:    menuList,
+			Permissions: permissions,
+		},
+	}
+
+	return res, nil
+}
+
+// GenToken 签发jwt
+func (m *SysLogin) GenToken(user *codegen.SysUser) (string, error) {
+	j := &jwt.JWT{SigningKey: []byte(global.AppConfig.Jwt.SigningKey)}
+	claims := j.CreateClaims(jwt.BaseClaims{
+		UserId:   user.ID,
+		NickName: user.UserNickname,
+		Username: user.UserName,
+	})
+	token, err := j.CreateToken(claims)
+	if err != nil {
+		return "", errors.New("token签发失败")
+	}
+	if !global.AppConfig.App.UseMultipoint {
+		return token, nil
+	}
+
+	if jwtStr, err := jwt.GetRedisJWT(user.UserName); errors.Is(err, redis.Nil) {
+		if err := jwt.SetRedisJWT(token, user.UserName); err != nil {
+			return "", errors.New("设置登录状态失败")
+		}
+	} else if err != nil {
+		return "", errors.New("设置登录状态失败")
+	} else {
+		if _, err := jwt.InBlackList(jwtStr); err != nil {
+			return "", errors.New("jwt作废失败")
+		}
+		if err := jwt.SetRedisJWT(token, user.UserName); err != nil {
+			return "", errors.New("设置登录状态失败")
+		}
+	}
+	return token, nil
 }

@@ -273,6 +273,26 @@ func (sru *SysRoleUpdate) ClearRoleName() *SysRoleUpdate {
 	return sru
 }
 
+// SetRoleCode sets the "role_code" field.
+func (sru *SysRoleUpdate) SetRoleCode(s string) *SysRoleUpdate {
+	sru.mutation.SetRoleCode(s)
+	return sru
+}
+
+// SetNillableRoleCode sets the "role_code" field if the given value is not nil.
+func (sru *SysRoleUpdate) SetNillableRoleCode(s *string) *SysRoleUpdate {
+	if s != nil {
+		sru.SetRoleCode(*s)
+	}
+	return sru
+}
+
+// ClearRoleCode clears the value of the "role_code" field.
+func (sru *SysRoleUpdate) ClearRoleCode() *SysRoleUpdate {
+	sru.mutation.ClearRoleCode()
+	return sru
+}
+
 // SetDataScope sets the "data_scope" field.
 func (sru *SysRoleUpdate) SetDataScope(i int8) *SysRoleUpdate {
 	sru.mutation.ResetDataScope()
@@ -541,6 +561,12 @@ func (sru *SysRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if sru.mutation.RoleNameCleared() {
 		_spec.ClearField(sysrole.FieldRoleName, field.TypeString)
+	}
+	if value, ok := sru.mutation.RoleCode(); ok {
+		_spec.SetField(sysrole.FieldRoleCode, field.TypeString, value)
+	}
+	if sru.mutation.RoleCodeCleared() {
+		_spec.ClearField(sysrole.FieldRoleCode, field.TypeString)
 	}
 	if value, ok := sru.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)
@@ -948,6 +974,26 @@ func (sruo *SysRoleUpdateOne) ClearRoleName() *SysRoleUpdateOne {
 	return sruo
 }
 
+// SetRoleCode sets the "role_code" field.
+func (sruo *SysRoleUpdateOne) SetRoleCode(s string) *SysRoleUpdateOne {
+	sruo.mutation.SetRoleCode(s)
+	return sruo
+}
+
+// SetNillableRoleCode sets the "role_code" field if the given value is not nil.
+func (sruo *SysRoleUpdateOne) SetNillableRoleCode(s *string) *SysRoleUpdateOne {
+	if s != nil {
+		sruo.SetRoleCode(*s)
+	}
+	return sruo
+}
+
+// ClearRoleCode clears the value of the "role_code" field.
+func (sruo *SysRoleUpdateOne) ClearRoleCode() *SysRoleUpdateOne {
+	sruo.mutation.ClearRoleCode()
+	return sruo
+}
+
 // SetDataScope sets the "data_scope" field.
 func (sruo *SysRoleUpdateOne) SetDataScope(i int8) *SysRoleUpdateOne {
 	sruo.mutation.ResetDataScope()
@@ -1246,6 +1292,12 @@ func (sruo *SysRoleUpdateOne) sqlSave(ctx context.Context) (_node *SysRole, err 
 	}
 	if sruo.mutation.RoleNameCleared() {
 		_spec.ClearField(sysrole.FieldRoleName, field.TypeString)
+	}
+	if value, ok := sruo.mutation.RoleCode(); ok {
+		_spec.SetField(sysrole.FieldRoleCode, field.TypeString, value)
+	}
+	if sruo.mutation.RoleCodeCleared() {
+		_spec.ClearField(sysrole.FieldRoleCode, field.TypeString)
 	}
 	if value, ok := sruo.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)

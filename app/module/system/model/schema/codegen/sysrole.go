@@ -39,6 +39,8 @@ type SysRole struct {
 	DelFlag int8 `json:"del_flag,omitempty"`
 	// 角色名称
 	RoleName string `json:"role_name,omitempty"`
+	// 角色编码
+	RoleCode string `json:"role_code,omitempty"`
 	// 数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)
 	DataScope int8 `json:"data_scope,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -94,7 +96,7 @@ func (*SysRole) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case sysrole.FieldID, sysrole.FieldCreatedBy, sysrole.FieldUpdatedBy, sysrole.FieldDeleteBy, sysrole.FieldStatus, sysrole.FieldSort, sysrole.FieldDelFlag, sysrole.FieldDataScope:
 			values[i] = new(sql.NullInt64)
-		case sysrole.FieldRemark, sysrole.FieldRoleName:
+		case sysrole.FieldRemark, sysrole.FieldRoleName, sysrole.FieldRoleCode:
 			values[i] = new(sql.NullString)
 		case sysrole.FieldCreatedAt, sysrole.FieldUpdatedAt, sysrole.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -185,6 +187,12 @@ func (sr *SysRole) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sr.RoleName = value.String
 			}
+		case sysrole.FieldRoleCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field role_code", values[i])
+			} else if value.Valid {
+				sr.RoleCode = value.String
+			}
 		case sysrole.FieldDataScope:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field data_scope", values[i])
@@ -274,6 +282,9 @@ func (sr *SysRole) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("role_name=")
 	builder.WriteString(sr.RoleName)
+	builder.WriteString(", ")
+	builder.WriteString("role_code=")
+	builder.WriteString(sr.RoleCode)
 	builder.WriteString(", ")
 	builder.WriteString("data_scope=")
 	builder.WriteString(fmt.Sprintf("%v", sr.DataScope))

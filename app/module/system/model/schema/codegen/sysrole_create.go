@@ -177,6 +177,20 @@ func (src *SysRoleCreate) SetNillableRoleName(s *string) *SysRoleCreate {
 	return src
 }
 
+// SetRoleCode sets the "role_code" field.
+func (src *SysRoleCreate) SetRoleCode(s string) *SysRoleCreate {
+	src.mutation.SetRoleCode(s)
+	return src
+}
+
+// SetNillableRoleCode sets the "role_code" field if the given value is not nil.
+func (src *SysRoleCreate) SetNillableRoleCode(s *string) *SysRoleCreate {
+	if s != nil {
+		src.SetRoleCode(*s)
+	}
+	return src
+}
+
 // SetDataScope sets the "data_scope" field.
 func (src *SysRoleCreate) SetDataScope(i int8) *SysRoleCreate {
 	src.mutation.SetDataScope(i)
@@ -406,6 +420,10 @@ func (src *SysRoleCreate) createSpec() (*SysRole, *sqlgraph.CreateSpec) {
 	if value, ok := src.mutation.RoleName(); ok {
 		_spec.SetField(sysrole.FieldRoleName, field.TypeString, value)
 		_node.RoleName = value
+	}
+	if value, ok := src.mutation.RoleCode(); ok {
+		_spec.SetField(sysrole.FieldRoleCode, field.TypeString, value)
+		_node.RoleCode = value
 	}
 	if value, ok := src.mutation.DataScope(); ok {
 		_spec.SetField(sysrole.FieldDataScope, field.TypeInt8, value)

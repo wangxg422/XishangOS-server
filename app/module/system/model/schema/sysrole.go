@@ -42,6 +42,7 @@ func (SysRole) Mixin() []ent.Mixin {
 func (SysRole) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("role_name").Optional().Comment("角色名称"),
+		field.String("role_code").Optional().Comment("角色编码"),
 		field.Int8("data_scope").Optional().Comment("数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)"),
 	}
 }
