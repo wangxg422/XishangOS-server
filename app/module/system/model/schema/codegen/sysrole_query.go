@@ -370,7 +370,7 @@ func (srq *SysRoleQuery) WithSysMenus(opts ...func(*SysMenuQuery)) *SysRoleQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -393,7 +393,7 @@ func (srq *SysRoleQuery) GroupBy(field string, fields ...string) *SysRoleGroupBy
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.SysRole.Query().

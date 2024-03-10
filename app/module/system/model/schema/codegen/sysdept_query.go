@@ -334,7 +334,7 @@ func (sdq *SysDeptQuery) WithSysRoles(opts ...func(*SysRoleQuery)) *SysDeptQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -357,7 +357,7 @@ func (sdq *SysDeptQuery) GroupBy(field string, fields ...string) *SysDeptGroupBy
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.SysDept.Query().

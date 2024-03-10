@@ -16,7 +16,7 @@ import (
 type SysOperLog struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// 模块标题
 	Title string `json:"title,omitempty"`
 	// 业务类型(0其他,1新增,2修改,3删除)

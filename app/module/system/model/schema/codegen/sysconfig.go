@@ -16,13 +16,13 @@ import (
 type SysConfig struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"createAt"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"UpdateAt"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt time.Time `json:"delete_at,omitempty"`
+	DeleteAt time.Time `json:"deleteAt"`
 	// CreatedBy holds the value of the "created_by" field.
 	CreatedBy int64 `json:"created_by,omitempty"`
 	// UpdatedBy holds the value of the "updated_by" field.
@@ -34,7 +34,7 @@ type SysConfig struct {
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
-	DelFlag int8 `json:"del_flag,omitempty"`
+	DelFlag int8 `json:"-"`
 	// 配置名称
 	ConfigName string `json:"config_name,omitempty"`
 	// 配置项

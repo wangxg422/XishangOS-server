@@ -16,13 +16,13 @@ import (
 type SysMenu struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"createAt"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"UpdateAt"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt time.Time `json:"delete_at,omitempty"`
+	DeleteAt time.Time `json:"deleteAt"`
 	// CreatedBy holds the value of the "created_by" field.
 	CreatedBy int64 `json:"created_by,omitempty"`
 	// UpdatedBy holds the value of the "updated_by" field.
@@ -36,7 +36,7 @@ type SysMenu struct {
 	// Sort holds the value of the "sort" field.
 	Sort int `json:"sort,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
-	DelFlag int8 `json:"del_flag,omitempty"`
+	DelFlag int8 `json:"-"`
 	// 父菜单ID
 	Pid int64 `json:"pid,omitempty"`
 	// 菜单名称

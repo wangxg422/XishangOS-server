@@ -17,13 +17,13 @@ import (
 type AppInstance struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"createAt"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"UpdateAt"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt time.Time `json:"delete_at,omitempty"`
+	DeleteAt time.Time `json:"deleteAt"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// Remark holds the value of the "remark" field.
@@ -35,19 +35,19 @@ type AppInstance struct {
 	// DeleteBy holds the value of the "delete_by" field.
 	DeleteBy int64 `json:"delete_by,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
-	DelFlag int8 `json:"del_flag,omitempty"`
+	DelFlag int8 `json:"-"`
 	// InstanceName holds the value of the "instance_name" field.
-	InstanceName string `json:"instance_name,omitempty"`
+	InstanceName string `json:"instanceName"`
 	// InstanceCode holds the value of the "instance_code" field.
-	InstanceCode string `json:"instance_code,omitempty"`
+	InstanceCode string `json:"instanceCode"`
 	// InstancePackage holds the value of the "instance_package" field.
-	InstancePackage int64 `json:"instance_package,omitempty"`
+	InstancePackage int64 `json:"instancePackage"`
 	// 应用图标
-	InstanceIcon string `json:"instance_icon,omitempty"`
+	InstanceIcon string `json:"instanceIcon"`
 	// 应用访问地址
-	InstanceAddress string `json:"instance_address,omitempty"`
+	InstanceAddress string `json:"instanceAddress"`
 	// InstanceType holds the value of the "instance_type" field.
-	InstanceType int8 `json:"instance_type,omitempty"`
+	InstanceType int8 `json:"instanceType"`
 	// 安装应用的用户
 	Installer int64 `json:"installer,omitempty"`
 	// Desc holds the value of the "desc" field.

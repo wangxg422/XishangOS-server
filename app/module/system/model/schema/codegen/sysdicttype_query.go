@@ -298,7 +298,7 @@ func (sdtq *SysDictTypeQuery) WithSysDictDatas(opts ...func(*SysDictDataQuery)) 
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -321,7 +321,7 @@ func (sdtq *SysDictTypeQuery) GroupBy(field string, fields ...string) *SysDictTy
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.SysDictType.Query().

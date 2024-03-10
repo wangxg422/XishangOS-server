@@ -12,6 +12,6 @@ type DeleteTimeMixin struct {
 
 func (DeleteTimeMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("delete_at").Optional(),
+		field.Time("delete_at").StructTag(`json:"deleteAt"`).Optional(),
 	}
 }

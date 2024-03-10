@@ -16,7 +16,7 @@ import (
 type SysLoginLog struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// 登录账号
 	LoginName string `json:"login_name,omitempty"`
 	// 登录IP地址

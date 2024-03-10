@@ -5,8 +5,8 @@ import (
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
-	"github.com/wangxg422/XishangOS-backend/app/module/application/model/schema/mixin"
 	baseMixin "github.com/wangxg422/XishangOS-backend/app/module/base/schema/mixin"
+	"github.com/wangxg422/XishangOS-backend/app/module/common/model/schema/mixin"
 )
 
 // CommonConfig holds the schema definition for the CommonConfig entity.

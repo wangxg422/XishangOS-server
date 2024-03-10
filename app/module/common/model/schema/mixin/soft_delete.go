@@ -22,7 +22,7 @@ type SoftDeleteMixin struct {
 // Fields of the SoftDeleteMixin.
 func (SoftDeleteMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8(constant.DelFlagField).Default(enmu.DelFlagNormal.Value()),
+		field.Int8(constant.DelFlagField).StructTag(`json:"-"`).Default(enmu.DelFlagNormal.Value()),
 	}
 }
 

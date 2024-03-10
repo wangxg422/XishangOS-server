@@ -370,7 +370,7 @@ func (suq *SysUserQuery) WithSysRoles(opts ...func(*SysRoleQuery)) *SysUserQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -393,7 +393,7 @@ func (suq *SysUserQuery) GroupBy(field string, fields ...string) *SysUserGroupBy
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.SysUser.Query().

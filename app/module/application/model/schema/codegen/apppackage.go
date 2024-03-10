@@ -16,13 +16,13 @@ import (
 type AppPackage struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"createAt"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	UpdatedAt time.Time `json:"UpdateAt"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt time.Time `json:"delete_at,omitempty"`
+	DeleteAt time.Time `json:"deleteAt"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// CreatedBy holds the value of the "created_by" field.
@@ -34,7 +34,7 @@ type AppPackage struct {
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.
-	DelFlag int8 `json:"del_flag,omitempty"`
+	DelFlag int8 `json:"-"`
 	// PkgName holds the value of the "pkg_name" field.
 	PkgName string `json:"pkg_name,omitempty"`
 	// PkgCode holds the value of the "pkg_code" field.

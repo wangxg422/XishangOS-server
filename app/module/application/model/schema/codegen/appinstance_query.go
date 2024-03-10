@@ -298,7 +298,7 @@ func (aiq *AppInstanceQuery) WithInstallFrom(opts ...func(*AppPackageQuery)) *Ap
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -321,7 +321,7 @@ func (aiq *AppInstanceQuery) GroupBy(field string, fields ...string) *AppInstanc
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.AppInstance.Query().

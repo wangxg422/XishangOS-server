@@ -7,7 +7,7 @@ import (
 )
 
 func AddAppRouter(group *gin.RouterGroup) {
-	appRouter := group.Group("/app/v1")
+	appRouter := group.Group("/app")
 
 	router := appRouter
 	if global.AppConfig.Module.Application.ApiVersionEnabled {

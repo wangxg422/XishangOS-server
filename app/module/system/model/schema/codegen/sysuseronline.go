@@ -15,7 +15,7 @@ import (
 type SysUserOnline struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int64 `json:"id,omitempty"`
+	ID int64 `json:"id,string"`
 	// 用户标识
 	UUID int64 `json:"uuid,omitempty"`
 	// 用户token

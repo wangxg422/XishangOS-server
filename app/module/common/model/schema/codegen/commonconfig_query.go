@@ -261,7 +261,7 @@ func (ccq *CommonConfigQuery) Clone() *CommonConfigQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (ccq *CommonConfigQuery) GroupBy(field string, fields ...string) *CommonCon
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.CommonConfig.Query().

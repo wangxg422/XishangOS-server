@@ -40,12 +40,12 @@ func (AppInstance) Mixin() []ent.Mixin {
 // Fields of the AppInstance.
 func (AppInstance) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("instance_name"),
-		field.String("instance_code"),
-		field.Int64("instance_package"),
-		field.String("instance_icon").Optional().Comment("应用图标"),
-		field.String("instance_address").Optional().Comment("应用访问地址"),
-		field.Int8("instance_type").Optional(),
+		field.String("instance_name").StructTag(`json:"instanceName"`),
+		field.String("instance_code").StructTag(`json:"instanceCode"`),
+		field.Int64("instance_package").StructTag(`json:"instancePackage"`),
+		field.String("instance_icon").StructTag(`json:"instanceIcon"`).Optional().Comment("应用图标"),
+		field.String("instance_address").StructTag(`json:"instanceAddress"`).Optional().Comment("应用访问地址"),
+		field.Int8("instance_type").StructTag(`json:"instanceType"`).Optional(),
 		field.Int64("installer").Optional().Comment("安装应用的用户"),
 		field.String("desc").Optional(),
 	}

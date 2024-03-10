@@ -13,10 +13,10 @@ type TimeMixin struct {
 
 func (TimeMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("created_at").
+		field.Time("created_at").StructTag(`json:"createAt"`).
 			Default(time.Now).
 			Optional(),
-		field.Time("updated_at").
+		field.Time("updated_at").StructTag(`json:"UpdateAt"`).
 			Default(time.Now).
 			UpdateDefault(time.Now).
 			Optional(),

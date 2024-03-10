@@ -298,7 +298,7 @@ func (spq *SysPostQuery) WithSysUsers(opts ...func(*SysUserQuery)) *SysPostQuery
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -321,7 +321,7 @@ func (spq *SysPostQuery) GroupBy(field string, fields ...string) *SysPostGroupBy
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		CreatedAt time.Time `json:"createAt"`
 //	}
 //
 //	client.SysPost.Query().

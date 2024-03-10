@@ -13,7 +13,7 @@ type IdMixin struct {
 
 func (IdMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("id").
+		field.Int64("id").StructTag(`json:"id,string"`).
 			DefaultFunc(sql.IdFunc()),
 	}
 }
