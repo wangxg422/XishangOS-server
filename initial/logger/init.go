@@ -53,8 +53,11 @@ func getEncoderCore(l zapcore.Level, level zap.LevelEnablerFunc) zapcore.Core {
 func getEncoder() zapcore.Encoder {
 	if global.AppConfig.Zap.Format == "json" {
 		return zapcore.NewJSONEncoder(getEncoderConfig())
+	} else if global.AppConfig.Zap.Format == "console" {
+		return zapcore.NewConsoleEncoder(getEncoderConfig())
+	} else {
+		return zapcore.NewJSONEncoder(getEncoderConfig())
 	}
-	return zapcore.NewConsoleEncoder(getEncoderConfig())
 }
 
 func getEncoderConfig() zapcore.EncoderConfig {
