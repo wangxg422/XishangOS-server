@@ -23,12 +23,12 @@ database:
   type: mysql
   enable-foreign-key: false # 是否启用数据库外键
   mysql:
-    address: 82.156.146.136
-    port: 13307
+    address: localhost
+    port: 3306
     conn-config: charset=utf8mb4&parseTime=True&loc=Local
     db-name: xishang_os
     username: xishang
-    password: Xishang@dev66
+    password: xishang
     max-idle-conn: 10
     max-open-conn: 100
 
@@ -57,9 +57,9 @@ captcha:
   show-line-options: 20 # 干扰线数量
 
 redis:
-  address: 82.156.146.136
-  port: 16377
-  password: Xishang@dev66
+  address: localhost
+  port: 6379
+  password: xishang
   db: 0
 
 jwt:
