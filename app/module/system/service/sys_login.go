@@ -100,14 +100,13 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (*response.Lo
 			break
 		}
 		if len(r.Edges.SysMenus) > 0 {
-			// TODO 需要将菜单去重
-			menus = append(menus, r.Edges.SysMenus...)
+			menus = m.addMenu(menus, r.Edges.SysMenus)
 		}
 	}
 
 	if isSuperAdmin {
 		// 如果是超级管理员，拥有所有权限及菜单
-		permissions = []string{"*/*/*"}
+		permissions = []string{"*|*|*"}
 		menus, err = SysMenuService.GetAllLayoutMenu(c)
 		if err != nil {
 			return nil, err
@@ -171,4 +170,32 @@ func (m *SysLogin) GenToken(user *codegen.SysUser) (string, error) {
 		}
 	}
 	return token, nil
+}
+
+func (m *SysLogin) addMenu(menus []*codegen.SysMenu, roleMenus []*codegen.SysMenu) []*codegen.SysMenu {
+	if len(roleMenus) == 0 {
+		return menus
+	}
+
+	for _, menu := range roleMenus {
+		if !m.exist(menus, menu) {
+			menus = append(menus, menu)
+		}
+	}
+	return menus
+}
+
+func (m *SysLogin) exist(menus []*codegen.SysMenu, menu *codegen.SysMenu) bool {
+	if len(menus) == 0 {
+		return false
+	}
+
+	exist := false
+	for _, me := range menus {
+		if me.ID == menu.ID {
+			exist = true
+			break
+		}
+	}
+	return exist
 }
