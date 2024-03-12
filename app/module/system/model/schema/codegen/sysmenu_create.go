@@ -175,76 +175,6 @@ func (smc *SysMenuCreate) SetNillablePid(i *int64) *SysMenuCreate {
 	return smc
 }
 
-// SetMenuName sets the "menu_name" field.
-func (smc *SysMenuCreate) SetMenuName(s string) *SysMenuCreate {
-	smc.mutation.SetMenuName(s)
-	return smc
-}
-
-// SetNillableMenuName sets the "menu_name" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableMenuName(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetMenuName(*s)
-	}
-	return smc
-}
-
-// SetMenuTitle sets the "menu_title" field.
-func (smc *SysMenuCreate) SetMenuTitle(s string) *SysMenuCreate {
-	smc.mutation.SetMenuTitle(s)
-	return smc
-}
-
-// SetNillableMenuTitle sets the "menu_title" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableMenuTitle(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetMenuTitle(*s)
-	}
-	return smc
-}
-
-// SetMenuIcon sets the "menu_icon" field.
-func (smc *SysMenuCreate) SetMenuIcon(s string) *SysMenuCreate {
-	smc.mutation.SetMenuIcon(s)
-	return smc
-}
-
-// SetNillableMenuIcon sets the "menu_icon" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableMenuIcon(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetMenuIcon(*s)
-	}
-	return smc
-}
-
-// SetCondition sets the "condition" field.
-func (smc *SysMenuCreate) SetCondition(s string) *SysMenuCreate {
-	smc.mutation.SetCondition(s)
-	return smc
-}
-
-// SetNillableCondition sets the "condition" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableCondition(s *string) *SysMenuCreate {
-	if s != nil {
-		smc.SetCondition(*s)
-	}
-	return smc
-}
-
-// SetMenuType sets the "menu_type" field.
-func (smc *SysMenuCreate) SetMenuType(i int8) *SysMenuCreate {
-	smc.mutation.SetMenuType(i)
-	return smc
-}
-
-// SetNillableMenuType sets the "menu_type" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableMenuType(i *int8) *SysMenuCreate {
-	if i != nil {
-		smc.SetMenuType(*i)
-	}
-	return smc
-}
-
 // SetPath sets the "path" field.
 func (smc *SysMenuCreate) SetPath(s string) *SysMenuCreate {
 	smc.mutation.SetPath(s)
@@ -255,6 +185,20 @@ func (smc *SysMenuCreate) SetPath(s string) *SysMenuCreate {
 func (smc *SysMenuCreate) SetNillablePath(s *string) *SysMenuCreate {
 	if s != nil {
 		smc.SetPath(*s)
+	}
+	return smc
+}
+
+// SetName sets the "name" field.
+func (smc *SysMenuCreate) SetName(s string) *SysMenuCreate {
+	smc.mutation.SetName(s)
+	return smc
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableName(s *string) *SysMenuCreate {
+	if s != nil {
+		smc.SetName(*s)
 	}
 	return smc
 }
@@ -273,58 +217,44 @@ func (smc *SysMenuCreate) SetNillableComponent(s *string) *SysMenuCreate {
 	return smc
 }
 
-// SetModuleType sets the "module_type" field.
-func (smc *SysMenuCreate) SetModuleType(s string) *SysMenuCreate {
-	smc.mutation.SetModuleType(s)
+// SetRedirect sets the "redirect" field.
+func (smc *SysMenuCreate) SetRedirect(s string) *SysMenuCreate {
+	smc.mutation.SetRedirect(s)
 	return smc
 }
 
-// SetNillableModuleType sets the "module_type" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableModuleType(s *string) *SysMenuCreate {
+// SetNillableRedirect sets the "redirect" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableRedirect(s *string) *SysMenuCreate {
 	if s != nil {
-		smc.SetModuleType(*s)
+		smc.SetRedirect(*s)
 	}
 	return smc
 }
 
-// SetModelID sets the "model_id" field.
-func (smc *SysMenuCreate) SetModelID(i int64) *SysMenuCreate {
-	smc.mutation.SetModelID(i)
+// SetTitle sets the "title" field.
+func (smc *SysMenuCreate) SetTitle(s string) *SysMenuCreate {
+	smc.mutation.SetTitle(s)
 	return smc
 }
 
-// SetNillableModelID sets the "model_id" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableModelID(i *int64) *SysMenuCreate {
-	if i != nil {
-		smc.SetModelID(*i)
+// SetNillableTitle sets the "title" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableTitle(s *string) *SysMenuCreate {
+	if s != nil {
+		smc.SetTitle(*s)
 	}
 	return smc
 }
 
-// SetIsHide sets the "is_hide" field.
-func (smc *SysMenuCreate) SetIsHide(i int8) *SysMenuCreate {
-	smc.mutation.SetIsHide(i)
+// SetIcon sets the "icon" field.
+func (smc *SysMenuCreate) SetIcon(s string) *SysMenuCreate {
+	smc.mutation.SetIcon(s)
 	return smc
 }
 
-// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableIsHide(i *int8) *SysMenuCreate {
-	if i != nil {
-		smc.SetIsHide(*i)
-	}
-	return smc
-}
-
-// SetIsIframe sets the "is_iframe" field.
-func (smc *SysMenuCreate) SetIsIframe(i int8) *SysMenuCreate {
-	smc.mutation.SetIsIframe(i)
-	return smc
-}
-
-// SetNillableIsIframe sets the "is_iframe" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableIsIframe(i *int8) *SysMenuCreate {
-	if i != nil {
-		smc.SetIsIframe(*i)
+// SetNillableIcon sets the "icon" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIcon(s *string) *SysMenuCreate {
+	if s != nil {
+		smc.SetIcon(*s)
 	}
 	return smc
 }
@@ -343,16 +273,16 @@ func (smc *SysMenuCreate) SetNillableIsLink(i *int8) *SysMenuCreate {
 	return smc
 }
 
-// SetIsCached sets the "is_cached" field.
-func (smc *SysMenuCreate) SetIsCached(i int8) *SysMenuCreate {
-	smc.mutation.SetIsCached(i)
+// SetIsHide sets the "is_hide" field.
+func (smc *SysMenuCreate) SetIsHide(i int8) *SysMenuCreate {
+	smc.mutation.SetIsHide(i)
 	return smc
 }
 
-// SetNillableIsCached sets the "is_cached" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableIsCached(i *int8) *SysMenuCreate {
+// SetNillableIsHide sets the "is_hide" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIsHide(i *int8) *SysMenuCreate {
 	if i != nil {
-		smc.SetIsCached(*i)
+		smc.SetIsHide(*i)
 	}
 	return smc
 }
@@ -371,16 +301,58 @@ func (smc *SysMenuCreate) SetNillableIsAffix(i *int8) *SysMenuCreate {
 	return smc
 }
 
-// SetRedirect sets the "redirect" field.
-func (smc *SysMenuCreate) SetRedirect(s string) *SysMenuCreate {
-	smc.mutation.SetRedirect(s)
+// SetIsKeepAlive sets the "is_keep_alive" field.
+func (smc *SysMenuCreate) SetIsKeepAlive(i int8) *SysMenuCreate {
+	smc.mutation.SetIsKeepAlive(i)
 	return smc
 }
 
-// SetNillableRedirect sets the "redirect" field if the given value is not nil.
-func (smc *SysMenuCreate) SetNillableRedirect(s *string) *SysMenuCreate {
+// SetNillableIsKeepAlive sets the "is_keep_alive" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIsKeepAlive(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetIsKeepAlive(*i)
+	}
+	return smc
+}
+
+// SetIsIframe sets the "is_iframe" field.
+func (smc *SysMenuCreate) SetIsIframe(i int8) *SysMenuCreate {
+	smc.mutation.SetIsIframe(i)
+	return smc
+}
+
+// SetNillableIsIframe sets the "is_iframe" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIsIframe(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetIsIframe(*i)
+	}
+	return smc
+}
+
+// SetType sets the "type" field.
+func (smc *SysMenuCreate) SetType(i int8) *SysMenuCreate {
+	smc.mutation.SetType(i)
+	return smc
+}
+
+// SetNillableType sets the "type" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableType(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetType(*i)
+	}
+	return smc
+}
+
+// SetModuleType sets the "module_type" field.
+func (smc *SysMenuCreate) SetModuleType(s string) *SysMenuCreate {
+	smc.mutation.SetModuleType(s)
+	return smc
+}
+
+// SetNillableModuleType sets the "module_type" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableModuleType(s *string) *SysMenuCreate {
 	if s != nil {
-		smc.SetRedirect(*s)
+		smc.SetModuleType(*s)
 	}
 	return smc
 }
@@ -615,65 +587,57 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysmenu.FieldDelFlag, field.TypeInt8, value)
 		_node.DelFlag = value
 	}
-	if value, ok := smc.mutation.MenuName(); ok {
-		_spec.SetField(sysmenu.FieldMenuName, field.TypeString, value)
-		_node.MenuName = value
-	}
-	if value, ok := smc.mutation.MenuTitle(); ok {
-		_spec.SetField(sysmenu.FieldMenuTitle, field.TypeString, value)
-		_node.MenuTitle = value
-	}
-	if value, ok := smc.mutation.MenuIcon(); ok {
-		_spec.SetField(sysmenu.FieldMenuIcon, field.TypeString, value)
-		_node.MenuIcon = value
-	}
-	if value, ok := smc.mutation.Condition(); ok {
-		_spec.SetField(sysmenu.FieldCondition, field.TypeString, value)
-		_node.Condition = value
-	}
-	if value, ok := smc.mutation.MenuType(); ok {
-		_spec.SetField(sysmenu.FieldMenuType, field.TypeInt8, value)
-		_node.MenuType = value
-	}
 	if value, ok := smc.mutation.Path(); ok {
 		_spec.SetField(sysmenu.FieldPath, field.TypeString, value)
 		_node.Path = value
+	}
+	if value, ok := smc.mutation.Name(); ok {
+		_spec.SetField(sysmenu.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
 	if value, ok := smc.mutation.Component(); ok {
 		_spec.SetField(sysmenu.FieldComponent, field.TypeString, value)
 		_node.Component = value
 	}
-	if value, ok := smc.mutation.ModuleType(); ok {
-		_spec.SetField(sysmenu.FieldModuleType, field.TypeString, value)
-		_node.ModuleType = value
+	if value, ok := smc.mutation.Redirect(); ok {
+		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
+		_node.Redirect = value
 	}
-	if value, ok := smc.mutation.ModelID(); ok {
-		_spec.SetField(sysmenu.FieldModelID, field.TypeInt64, value)
-		_node.ModelID = value
+	if value, ok := smc.mutation.Title(); ok {
+		_spec.SetField(sysmenu.FieldTitle, field.TypeString, value)
+		_node.Title = value
 	}
-	if value, ok := smc.mutation.IsHide(); ok {
-		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
-		_node.IsHide = value
-	}
-	if value, ok := smc.mutation.IsIframe(); ok {
-		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
-		_node.IsIframe = value
+	if value, ok := smc.mutation.Icon(); ok {
+		_spec.SetField(sysmenu.FieldIcon, field.TypeString, value)
+		_node.Icon = value
 	}
 	if value, ok := smc.mutation.IsLink(); ok {
 		_spec.SetField(sysmenu.FieldIsLink, field.TypeInt8, value)
 		_node.IsLink = value
 	}
-	if value, ok := smc.mutation.IsCached(); ok {
-		_spec.SetField(sysmenu.FieldIsCached, field.TypeInt8, value)
-		_node.IsCached = value
+	if value, ok := smc.mutation.IsHide(); ok {
+		_spec.SetField(sysmenu.FieldIsHide, field.TypeInt8, value)
+		_node.IsHide = value
 	}
 	if value, ok := smc.mutation.IsAffix(); ok {
 		_spec.SetField(sysmenu.FieldIsAffix, field.TypeInt8, value)
 		_node.IsAffix = value
 	}
-	if value, ok := smc.mutation.Redirect(); ok {
-		_spec.SetField(sysmenu.FieldRedirect, field.TypeString, value)
-		_node.Redirect = value
+	if value, ok := smc.mutation.IsKeepAlive(); ok {
+		_spec.SetField(sysmenu.FieldIsKeepAlive, field.TypeInt8, value)
+		_node.IsKeepAlive = value
+	}
+	if value, ok := smc.mutation.IsIframe(); ok {
+		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
+		_node.IsIframe = value
+	}
+	if value, ok := smc.mutation.GetType(); ok {
+		_spec.SetField(sysmenu.FieldType, field.TypeInt8, value)
+		_node.Type = value
+	}
+	if value, ok := smc.mutation.ModuleType(); ok {
+		_spec.SetField(sysmenu.FieldModuleType, field.TypeString, value)
+		_node.ModuleType = value
 	}
 	if value, ok := smc.mutation.LinkURL(); ok {
 		_spec.SetField(sysmenu.FieldLinkURL, field.TypeString, value)

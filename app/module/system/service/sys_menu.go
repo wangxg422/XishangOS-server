@@ -19,7 +19,7 @@ func (m *SysMenu) List(req *request.SysMenuListReq, c *gin.Context) ([]*codegen.
 		query.Where(sysmenu.Status(req.Status))
 	}
 	if req.Keyword != "" {
-		query.Where(sysmenu.Or(sysmenu.MenuNameContains(req.Keyword), sysmenu.MenuTitle(req.Keyword),
+		query.Where(sysmenu.Or(sysmenu.NameContains(req.Keyword), sysmenu.Title(req.Keyword),
 			sysmenu.PathContains(req.Keyword), sysmenu.ComponentContains(req.Keyword)))
 	}
 	query.Order(codegen.Asc(sysmenu.FieldPid, sysmenu.FieldSort, sysmenu.FieldCreatedAt))
@@ -36,7 +36,7 @@ func (m *SysMenu) GetAllMenu(c *gin.Context) ([]*codegen.SysMenu, error) {
 // GetAllLayoutMenu GetAllMenu 获取所有状态正常的菜单，含目录、菜单，不含按钮
 func (m *SysMenu) GetAllLayoutMenu(c *gin.Context) ([]*codegen.SysMenu, error) {
 	return initial.SysDbClient.SysMenu.Query().
-		Where(sysmenu.Or(sysmenu.MenuType(enmu.MenuTypeMenu.Value()), sysmenu.MenuType(enmu.MenuTypeDir.Value()))).
+		Where(sysmenu.Or(sysmenu.Type(enmu.MenuTypeMenu.Value()), sysmenu.Type(enmu.MenuTypeDir.Value()))).
 		Where(sysmenu.Status(enmu.StatusNormal.Value())).
 		Order(codegen.Asc(sysmenu.FieldPid, sysmenu.FieldSort, sysmenu.FieldCreatedAt)).
 		All(c)
@@ -45,20 +45,20 @@ func (m *SysMenu) GetAllLayoutMenu(c *gin.Context) ([]*codegen.SysMenu, error) {
 func (m *SysMenu) Add(req *request.SysMenuCreateReq, c *gin.Context) error {
 	// 先不检查唯一性
 	return initial.SysDbClient.SysMenu.Create().
-		SetPid(req.Pid).SetMenuName(req.MenuName).SetMenuTitle(req.MenuTitle).
-		SetMenuIcon(req.MenuIcon).SetMenuType(req.MenuType).SetCondition(req.Condition).SetPath(req.Path).
-		SetComponent(req.Component).SetModuleType(req.ModuleType).SetModelID(req.ModuleId).SetIsHide(req.IsHide).
-		SetIsIframe(req.IsIframe).SetIsCached(req.IsCached).SetIsAffix(req.IsAffix).SetIsLink(req.IsLink).
+		SetPid(req.Pid).SetName(req.MenuName).SetTitle(req.MenuTitle).
+		SetIcon(req.MenuIcon).SetType(req.MenuType).SetPath(req.Path).
+		SetComponent(req.Component).SetModuleType(req.ModuleType).SetIsHide(req.IsHide).
+		SetIsIframe(req.IsIframe).SetIsKeepAlive(req.IsCached).SetIsAffix(req.IsAffix).SetIsLink(req.IsLink).
 		SetLinkURL(req.LinkUrl).SetRedirect(req.Redirect).SetSort(req.Sort).SetStatus(req.Status).SetRemark(req.Remark).
 		Exec(c)
 }
 
 func (m *SysMenu) Update(req *request.SysMenuUpdateReq, c *gin.Context) error {
 	return initial.SysDbClient.SysMenu.Update().Where(sysmenu.ID(req.Id)).
-		SetPid(req.Pid).SetMenuName(req.MenuName).SetMenuTitle(req.MenuTitle).
-		SetMenuIcon(req.MenuIcon).SetMenuType(req.MenuType).SetCondition(req.Condition).SetPath(req.Path).
-		SetComponent(req.Component).SetModuleType(req.ModuleType).SetModelID(req.ModuleId).SetIsHide(req.IsHide).
-		SetIsIframe(req.IsIframe).SetIsCached(req.IsCached).SetIsAffix(req.IsAffix).SetIsLink(req.IsLink).
+		SetPid(req.Pid).SetName(req.MenuName).SetTitle(req.MenuTitle).
+		SetIcon(req.MenuIcon).SetType(req.MenuType).SetPath(req.Path).
+		SetComponent(req.Component).SetModuleType(req.ModuleType).SetIsHide(req.IsHide).
+		SetIsIframe(req.IsIframe).SetIsKeepAlive(req.IsCached).SetIsAffix(req.IsAffix).SetIsLink(req.IsLink).
 		SetLinkURL(req.LinkUrl).SetRedirect(req.Redirect).SetSort(req.Sort).SetStatus(req.Status).SetRemark(req.Remark).
 		Exec(c)
 }
@@ -84,15 +84,15 @@ func (m *SysMenu) SetMenuData(menu *codegen.SysMenu) *response.UserMenu {
 	newMenu := &response.UserMenu{
 		Id:        menu.ID,
 		Pid:       menu.Pid,
-		Name:      menu.MenuName,
+		Name:      menu.Name,
 		Component: menu.Component,
 		Path:      menu.Path,
 		MenuMeta: &response.MenuMeta{
-			Icon:        menu.MenuIcon,
-			Title:       menu.MenuTitle,
+			Icon:        menu.Icon,
+			Title:       menu.Title,
 			IsLink:      "",
 			IsHide:      menu.IsHide == 1,
-			IsKeepAlive: menu.IsCached == 1,
+			IsKeepAlive: menu.IsKeepAlive == 1,
 			IsAffix:     menu.IsAffix == 1,
 			IsIframe:    menu.IsIframe == 1,
 		},

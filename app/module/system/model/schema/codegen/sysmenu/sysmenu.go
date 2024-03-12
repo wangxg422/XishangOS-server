@@ -37,36 +37,32 @@ const (
 	FieldDelFlag = "del_flag"
 	// FieldPid holds the string denoting the pid field in the database.
 	FieldPid = "pid"
-	// FieldMenuName holds the string denoting the menu_name field in the database.
-	FieldMenuName = "menu_name"
-	// FieldMenuTitle holds the string denoting the menu_title field in the database.
-	FieldMenuTitle = "menu_title"
-	// FieldMenuIcon holds the string denoting the menu_icon field in the database.
-	FieldMenuIcon = "menu_icon"
-	// FieldCondition holds the string denoting the condition field in the database.
-	FieldCondition = "condition"
-	// FieldMenuType holds the string denoting the menu_type field in the database.
-	FieldMenuType = "menu_type"
 	// FieldPath holds the string denoting the path field in the database.
 	FieldPath = "path"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldComponent holds the string denoting the component field in the database.
 	FieldComponent = "component"
-	// FieldModuleType holds the string denoting the module_type field in the database.
-	FieldModuleType = "module_type"
-	// FieldModelID holds the string denoting the model_id field in the database.
-	FieldModelID = "model_id"
-	// FieldIsHide holds the string denoting the is_hide field in the database.
-	FieldIsHide = "is_hide"
-	// FieldIsIframe holds the string denoting the is_iframe field in the database.
-	FieldIsIframe = "is_iframe"
-	// FieldIsLink holds the string denoting the is_link field in the database.
-	FieldIsLink = "is_link"
-	// FieldIsCached holds the string denoting the is_cached field in the database.
-	FieldIsCached = "is_cached"
-	// FieldIsAffix holds the string denoting the is_affix field in the database.
-	FieldIsAffix = "is_affix"
 	// FieldRedirect holds the string denoting the redirect field in the database.
 	FieldRedirect = "redirect"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
+	// FieldIcon holds the string denoting the icon field in the database.
+	FieldIcon = "icon"
+	// FieldIsLink holds the string denoting the is_link field in the database.
+	FieldIsLink = "is_link"
+	// FieldIsHide holds the string denoting the is_hide field in the database.
+	FieldIsHide = "is_hide"
+	// FieldIsAffix holds the string denoting the is_affix field in the database.
+	FieldIsAffix = "is_affix"
+	// FieldIsKeepAlive holds the string denoting the is_keep_alive field in the database.
+	FieldIsKeepAlive = "is_keep_alive"
+	// FieldIsIframe holds the string denoting the is_iframe field in the database.
+	FieldIsIframe = "is_iframe"
+	// FieldType holds the string denoting the type field in the database.
+	FieldType = "type"
+	// FieldModuleType holds the string denoting the module_type field in the database.
+	FieldModuleType = "module_type"
 	// FieldLinkURL holds the string denoting the link_url field in the database.
 	FieldLinkURL = "link_url"
 	// EdgeSysRoles holds the string denoting the sysroles edge name in mutations.
@@ -106,21 +102,19 @@ var Columns = []string{
 	FieldSort,
 	FieldDelFlag,
 	FieldPid,
-	FieldMenuName,
-	FieldMenuTitle,
-	FieldMenuIcon,
-	FieldCondition,
-	FieldMenuType,
 	FieldPath,
+	FieldName,
 	FieldComponent,
-	FieldModuleType,
-	FieldModelID,
-	FieldIsHide,
-	FieldIsIframe,
-	FieldIsLink,
-	FieldIsCached,
-	FieldIsAffix,
 	FieldRedirect,
+	FieldTitle,
+	FieldIcon,
+	FieldIsLink,
+	FieldIsHide,
+	FieldIsAffix,
+	FieldIsKeepAlive,
+	FieldIsIframe,
+	FieldType,
+	FieldModuleType,
 	FieldLinkURL,
 }
 
@@ -227,34 +221,14 @@ func ByPid(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPid, opts...).ToFunc()
 }
 
-// ByMenuName orders the results by the menu_name field.
-func ByMenuName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMenuName, opts...).ToFunc()
-}
-
-// ByMenuTitle orders the results by the menu_title field.
-func ByMenuTitle(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMenuTitle, opts...).ToFunc()
-}
-
-// ByMenuIcon orders the results by the menu_icon field.
-func ByMenuIcon(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMenuIcon, opts...).ToFunc()
-}
-
-// ByCondition orders the results by the condition field.
-func ByCondition(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCondition, opts...).ToFunc()
-}
-
-// ByMenuType orders the results by the menu_type field.
-func ByMenuType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMenuType, opts...).ToFunc()
-}
-
 // ByPath orders the results by the path field.
 func ByPath(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPath, opts...).ToFunc()
+}
+
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
 // ByComponent orders the results by the component field.
@@ -262,24 +236,19 @@ func ByComponent(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldComponent, opts...).ToFunc()
 }
 
-// ByModuleType orders the results by the module_type field.
-func ByModuleType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldModuleType, opts...).ToFunc()
+// ByRedirect orders the results by the redirect field.
+func ByRedirect(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRedirect, opts...).ToFunc()
 }
 
-// ByModelID orders the results by the model_id field.
-func ByModelID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldModelID, opts...).ToFunc()
+// ByTitle orders the results by the title field.
+func ByTitle(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTitle, opts...).ToFunc()
 }
 
-// ByIsHide orders the results by the is_hide field.
-func ByIsHide(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsHide, opts...).ToFunc()
-}
-
-// ByIsIframe orders the results by the is_iframe field.
-func ByIsIframe(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsIframe, opts...).ToFunc()
+// ByIcon orders the results by the icon field.
+func ByIcon(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIcon, opts...).ToFunc()
 }
 
 // ByIsLink orders the results by the is_link field.
@@ -287,9 +256,9 @@ func ByIsLink(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsLink, opts...).ToFunc()
 }
 
-// ByIsCached orders the results by the is_cached field.
-func ByIsCached(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsCached, opts...).ToFunc()
+// ByIsHide orders the results by the is_hide field.
+func ByIsHide(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsHide, opts...).ToFunc()
 }
 
 // ByIsAffix orders the results by the is_affix field.
@@ -297,9 +266,24 @@ func ByIsAffix(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsAffix, opts...).ToFunc()
 }
 
-// ByRedirect orders the results by the redirect field.
-func ByRedirect(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRedirect, opts...).ToFunc()
+// ByIsKeepAlive orders the results by the is_keep_alive field.
+func ByIsKeepAlive(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsKeepAlive, opts...).ToFunc()
+}
+
+// ByIsIframe orders the results by the is_iframe field.
+func ByIsIframe(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsIframe, opts...).ToFunc()
+}
+
+// ByType orders the results by the type field.
+func ByType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldType, opts...).ToFunc()
+}
+
+// ByModuleType orders the results by the module_type field.
+func ByModuleType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldModuleType, opts...).ToFunc()
 }
 
 // ByLinkURL orders the results by the link_url field.

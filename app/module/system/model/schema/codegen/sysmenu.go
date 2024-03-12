@@ -39,36 +39,32 @@ type SysMenu struct {
 	DelFlag int8 `json:"-"`
 	// 父菜单ID
 	Pid int64 `json:"pId,string"`
-	// 菜单名称
-	MenuName string `json:"menuName"`
-	// 菜单标题
-	MenuTitle string `json:"menuTitle"`
-	// 菜单图标
-	MenuIcon string `json:"menuIcon"`
-	// 条件
-	Condition string `json:"condition"`
-	// 菜单类型(0目录,1菜单,2按钮)
-	MenuType int8 `json:"type"`
 	// 路由地址
 	Path string `json:"path"`
+	// 菜单名称
+	Name string `json:"name"`
 	// 组件路径
 	Component string `json:"component"`
-	// 所属模块
-	ModuleType string `json:"moduleType"`
-	// 模型id
-	ModelID int64 `json:"modelId"`
-	// 显示状态
-	IsHide int8 `json:"isHide"`
-	// 是否是内嵌iframe(1是,0否)
-	IsIframe int8 `json:"isIframe"`
-	// 是否是外部链接(1是,0否)
-	IsLink int8 `json:"isLink"`
-	// 是否缓存(1是,0否)
-	IsCached int8 `json:"isCached"`
-	// 是否固定(1是,0否)
-	IsAffix int8 `json:"isAffix"`
 	// 路由重定向地址
 	Redirect string `json:"redirect"`
+	// 菜单标题
+	Title string `json:"title"`
+	// 菜单图标
+	Icon string `json:"icon"`
+	// 是否是外部链接(1是,2否)
+	IsLink int8 `json:"isLink"`
+	// 显示状态
+	IsHide int8 `json:"isHide"`
+	// 是否固定(1是,2否)
+	IsAffix int8 `json:"isAffix"`
+	// 是否缓存(1是,2否)
+	IsKeepAlive int8 `json:"isKeepAlive"`
+	// 是否是内嵌iframe(1是,0否)
+	IsIframe int8 `json:"isIframe"`
+	// 菜单类型(1目录,2菜单,3按钮)
+	Type int8 `json:"type"`
+	// 所属模块
+	ModuleType string `json:"moduleType"`
 	// 链接地址
 	LinkURL string `json:"linkUrl"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -126,9 +122,9 @@ func (*SysMenu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldID, sysmenu.FieldCreatedBy, sysmenu.FieldUpdatedBy, sysmenu.FieldDeleteBy, sysmenu.FieldStatus, sysmenu.FieldSort, sysmenu.FieldDelFlag, sysmenu.FieldPid, sysmenu.FieldMenuType, sysmenu.FieldModelID, sysmenu.FieldIsHide, sysmenu.FieldIsIframe, sysmenu.FieldIsLink, sysmenu.FieldIsCached, sysmenu.FieldIsAffix:
+		case sysmenu.FieldID, sysmenu.FieldCreatedBy, sysmenu.FieldUpdatedBy, sysmenu.FieldDeleteBy, sysmenu.FieldStatus, sysmenu.FieldSort, sysmenu.FieldDelFlag, sysmenu.FieldPid, sysmenu.FieldIsLink, sysmenu.FieldIsHide, sysmenu.FieldIsAffix, sysmenu.FieldIsKeepAlive, sysmenu.FieldIsIframe, sysmenu.FieldType:
 			values[i] = new(sql.NullInt64)
-		case sysmenu.FieldRemark, sysmenu.FieldMenuName, sysmenu.FieldMenuTitle, sysmenu.FieldMenuIcon, sysmenu.FieldCondition, sysmenu.FieldPath, sysmenu.FieldComponent, sysmenu.FieldModuleType, sysmenu.FieldRedirect, sysmenu.FieldLinkURL:
+		case sysmenu.FieldRemark, sysmenu.FieldPath, sysmenu.FieldName, sysmenu.FieldComponent, sysmenu.FieldRedirect, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldModuleType, sysmenu.FieldLinkURL:
 			values[i] = new(sql.NullString)
 		case sysmenu.FieldCreatedAt, sysmenu.FieldUpdatedAt, sysmenu.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -219,41 +215,17 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.Pid = value.Int64
 			}
-		case sysmenu.FieldMenuName:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field menu_name", values[i])
-			} else if value.Valid {
-				sm.MenuName = value.String
-			}
-		case sysmenu.FieldMenuTitle:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field menu_title", values[i])
-			} else if value.Valid {
-				sm.MenuTitle = value.String
-			}
-		case sysmenu.FieldMenuIcon:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field menu_icon", values[i])
-			} else if value.Valid {
-				sm.MenuIcon = value.String
-			}
-		case sysmenu.FieldCondition:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field condition", values[i])
-			} else if value.Valid {
-				sm.Condition = value.String
-			}
-		case sysmenu.FieldMenuType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field menu_type", values[i])
-			} else if value.Valid {
-				sm.MenuType = int8(value.Int64)
-			}
 		case sysmenu.FieldPath:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field path", values[i])
 			} else if value.Valid {
 				sm.Path = value.String
+			}
+		case sysmenu.FieldName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field name", values[i])
+			} else if value.Valid {
+				sm.Name = value.String
 			}
 		case sysmenu.FieldComponent:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -261,29 +233,23 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.Component = value.String
 			}
-		case sysmenu.FieldModuleType:
+		case sysmenu.FieldRedirect:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field module_type", values[i])
+				return fmt.Errorf("unexpected type %T for field redirect", values[i])
 			} else if value.Valid {
-				sm.ModuleType = value.String
+				sm.Redirect = value.String
 			}
-		case sysmenu.FieldModelID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field model_id", values[i])
+		case sysmenu.FieldTitle:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field title", values[i])
 			} else if value.Valid {
-				sm.ModelID = value.Int64
+				sm.Title = value.String
 			}
-		case sysmenu.FieldIsHide:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field is_hide", values[i])
+		case sysmenu.FieldIcon:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field icon", values[i])
 			} else if value.Valid {
-				sm.IsHide = int8(value.Int64)
-			}
-		case sysmenu.FieldIsIframe:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field is_iframe", values[i])
-			} else if value.Valid {
-				sm.IsIframe = int8(value.Int64)
+				sm.Icon = value.String
 			}
 		case sysmenu.FieldIsLink:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -291,11 +257,11 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.IsLink = int8(value.Int64)
 			}
-		case sysmenu.FieldIsCached:
+		case sysmenu.FieldIsHide:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field is_cached", values[i])
+				return fmt.Errorf("unexpected type %T for field is_hide", values[i])
 			} else if value.Valid {
-				sm.IsCached = int8(value.Int64)
+				sm.IsHide = int8(value.Int64)
 			}
 		case sysmenu.FieldIsAffix:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -303,11 +269,29 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.IsAffix = int8(value.Int64)
 			}
-		case sysmenu.FieldRedirect:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field redirect", values[i])
+		case sysmenu.FieldIsKeepAlive:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field is_keep_alive", values[i])
 			} else if value.Valid {
-				sm.Redirect = value.String
+				sm.IsKeepAlive = int8(value.Int64)
+			}
+		case sysmenu.FieldIsIframe:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field is_iframe", values[i])
+			} else if value.Valid {
+				sm.IsIframe = int8(value.Int64)
+			}
+		case sysmenu.FieldType:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field type", values[i])
+			} else if value.Valid {
+				sm.Type = int8(value.Int64)
+			}
+		case sysmenu.FieldModuleType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field module_type", values[i])
+			} else if value.Valid {
+				sm.ModuleType = value.String
 			}
 		case sysmenu.FieldLinkURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -399,50 +383,44 @@ func (sm *SysMenu) String() string {
 	builder.WriteString("pid=")
 	builder.WriteString(fmt.Sprintf("%v", sm.Pid))
 	builder.WriteString(", ")
-	builder.WriteString("menu_name=")
-	builder.WriteString(sm.MenuName)
-	builder.WriteString(", ")
-	builder.WriteString("menu_title=")
-	builder.WriteString(sm.MenuTitle)
-	builder.WriteString(", ")
-	builder.WriteString("menu_icon=")
-	builder.WriteString(sm.MenuIcon)
-	builder.WriteString(", ")
-	builder.WriteString("condition=")
-	builder.WriteString(sm.Condition)
-	builder.WriteString(", ")
-	builder.WriteString("menu_type=")
-	builder.WriteString(fmt.Sprintf("%v", sm.MenuType))
-	builder.WriteString(", ")
 	builder.WriteString("path=")
 	builder.WriteString(sm.Path)
+	builder.WriteString(", ")
+	builder.WriteString("name=")
+	builder.WriteString(sm.Name)
 	builder.WriteString(", ")
 	builder.WriteString("component=")
 	builder.WriteString(sm.Component)
 	builder.WriteString(", ")
-	builder.WriteString("module_type=")
-	builder.WriteString(sm.ModuleType)
+	builder.WriteString("redirect=")
+	builder.WriteString(sm.Redirect)
 	builder.WriteString(", ")
-	builder.WriteString("model_id=")
-	builder.WriteString(fmt.Sprintf("%v", sm.ModelID))
+	builder.WriteString("title=")
+	builder.WriteString(sm.Title)
 	builder.WriteString(", ")
-	builder.WriteString("is_hide=")
-	builder.WriteString(fmt.Sprintf("%v", sm.IsHide))
-	builder.WriteString(", ")
-	builder.WriteString("is_iframe=")
-	builder.WriteString(fmt.Sprintf("%v", sm.IsIframe))
+	builder.WriteString("icon=")
+	builder.WriteString(sm.Icon)
 	builder.WriteString(", ")
 	builder.WriteString("is_link=")
 	builder.WriteString(fmt.Sprintf("%v", sm.IsLink))
 	builder.WriteString(", ")
-	builder.WriteString("is_cached=")
-	builder.WriteString(fmt.Sprintf("%v", sm.IsCached))
+	builder.WriteString("is_hide=")
+	builder.WriteString(fmt.Sprintf("%v", sm.IsHide))
 	builder.WriteString(", ")
 	builder.WriteString("is_affix=")
 	builder.WriteString(fmt.Sprintf("%v", sm.IsAffix))
 	builder.WriteString(", ")
-	builder.WriteString("redirect=")
-	builder.WriteString(sm.Redirect)
+	builder.WriteString("is_keep_alive=")
+	builder.WriteString(fmt.Sprintf("%v", sm.IsKeepAlive))
+	builder.WriteString(", ")
+	builder.WriteString("is_iframe=")
+	builder.WriteString(fmt.Sprintf("%v", sm.IsIframe))
+	builder.WriteString(", ")
+	builder.WriteString("type=")
+	builder.WriteString(fmt.Sprintf("%v", sm.Type))
+	builder.WriteString(", ")
+	builder.WriteString("module_type=")
+	builder.WriteString(sm.ModuleType)
 	builder.WriteString(", ")
 	builder.WriteString("link_url=")
 	builder.WriteString(sm.LinkURL)
