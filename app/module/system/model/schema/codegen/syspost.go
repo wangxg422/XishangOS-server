@@ -38,9 +38,9 @@ type SysPost struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 岗位编码
-	PostCode string `json:"post_code,omitempty"`
+	PostCode string `json:"postCode"`
 	// 岗位名称
-	PostName string `json:"post_name,omitempty"`
+	PostName string `json:"postName"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysPostQuery when eager-loading is set.
 	Edges        SysPostEdges `json:"edges"`

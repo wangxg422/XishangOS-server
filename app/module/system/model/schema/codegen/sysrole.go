@@ -38,11 +38,11 @@ type SysRole struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 角色名称
-	RoleName string `json:"role_name,omitempty"`
+	RoleName string `json:"roleName"`
 	// 角色编码
-	RoleCode string `json:"role_code,omitempty"`
+	RoleCode string `json:"roleCode"`
 	// 数据权限范围(1全部数据权限 2自定数据权限 3本部门数据权限 4本部门及以下数据权限)
-	DataScope int8 `json:"data_scope,omitempty"`
+	DataScope int8 `json:"dataScope"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysRoleQuery when eager-loading is set.
 	Edges        SysRoleEdges `json:"edges"`

@@ -261,7 +261,7 @@ func (suoq *SysUserOnlineQuery) Clone() *SysUserOnlineQuery {
 // Example:
 //
 //	var v []struct {
-//		UUID int64 `json:"uuid,omitempty"`
+//		UUID int64 `json:"uuid"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (suoq *SysUserOnlineQuery) GroupBy(field string, fields ...string) *SysUser
 // Example:
 //
 //	var v []struct {
-//		UUID int64 `json:"uuid,omitempty"`
+//		UUID int64 `json:"uuid"`
 //	}
 //
 //	client.SysUserOnline.Query().

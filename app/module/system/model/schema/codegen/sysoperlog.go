@@ -18,31 +18,31 @@ type SysOperLog struct {
 	// ID of the ent.
 	ID int64 `json:"id,string"`
 	// 模块标题
-	Title string `json:"title,omitempty"`
+	Title string `json:"title"`
 	// 业务类型(0其他,1新增,2修改,3删除)
-	BusinessType int `json:"business_type,omitempty"`
+	BusinessType int `json:"businessType"`
 	// 方法名称
-	Method string `json:"method,omitempty"`
+	Method string `json:"method"`
 	// 请求方式
-	RequestMethod string `json:"request_method,omitempty"`
+	RequestMethod string `json:"requestMethod"`
 	// 操作分类(0其他,1后台用户,2手机端用户)
-	OperType int8 `json:"oper_type,omitempty"`
+	OperType int8 `json:"operType"`
 	// 操作用户
-	OperName string `json:"oper_name,omitempty"`
+	OperName string `json:"operName"`
 	// 部门名称
-	DeptName string `json:"dept_name,omitempty"`
+	DeptName string `json:"deptName"`
 	// 请求url
-	OperURL string `json:"oper_url,omitempty"`
+	OperURL string `json:"operUrl"`
 	// 主机地址
-	OperIP string `json:"oper_ip,omitempty"`
+	OperIP string `json:"ip"`
 	// 操作地点
-	OperLocation string `json:"oper_location,omitempty"`
+	OperLocation string `json:"location"`
 	// 请求参数
-	OperParam string `json:"oper_param,omitempty"`
+	OperParam string `json:"operParam"`
 	// 错误消息
-	ErrorMsg string `json:"error_msg,omitempty"`
+	ErrorMsg string `json:"errorMsg"`
 	// 操作时间
-	OperTime     time.Time `json:"oper_time,omitempty"`
+	OperTime     time.Time `json:"operTime"`
 	selectValues sql.SelectValues
 }
 

@@ -32,15 +32,15 @@ func (SysLoginLog) Mixin() []ent.Mixin {
 // Fields of the SysLoginLog.
 func (SysLoginLog) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("login_name").Optional().Comment("登录账号"),
-		field.String("ip_addr").Optional().Comment("登录IP地址"),
-		field.String("login_location").Optional().Comment("登录地点"),
-		field.String("browser").Optional().Comment("登录浏览器类型"),
-		field.String("os").Optional().Comment("登录操作系统"),
-		field.String("msg").Optional().Comment("提示消息"),
-		field.Time("login_time").Optional().Comment("登录时间"),
-		field.Int8("login_success").Optional().Comment("登录是否成功"),
-		field.String("module").Optional().Comment("登录模块"),
+		field.String("login_name").StructTag(`json:"loginName"`).Optional().Comment("登录账号"),
+		field.String("ip_addr").StructTag(`json:"ipAddr"`).Optional().Comment("登录IP地址"),
+		field.String("login_location").StructTag(`json:"loginLocation"`).Optional().Comment("登录地点"),
+		field.String("browser").StructTag(`json:"browser"`).Optional().Comment("登录浏览器类型"),
+		field.String("os").StructTag(`json:"os"`).Optional().Comment("登录操作系统"),
+		field.String("msg").StructTag(`json:"msg"`).Optional().Comment("提示消息"),
+		field.Time("login_time").StructTag(`json:"loginTime"`).Optional().Comment("登录时间"),
+		field.Int8("login_success").StructTag(`json:"loginSuccess"`).Optional().Comment("登录是否成功"),
+		field.String("module").StructTag(`json:"module"`).Optional().Comment("登录模块"),
 	}
 }
 

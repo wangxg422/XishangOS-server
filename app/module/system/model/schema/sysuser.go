@@ -39,21 +39,21 @@ func (SysUser) Mixin() []ent.Mixin {
 // Fields of the SysUser.
 func (SysUser) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("user_name"),
-		field.String("user_nickname").Optional().Comment("用户昵称"),
-		field.String("mobile").Optional(),
-		field.String("birthday").Optional(),
-		field.String("user_password").Optional(),
-		field.String("user_salt").Optional(),
-		field.String("user_email").Optional(),
-		field.Int8("sex").Optional(),
-		field.String("avatar").Optional().Comment("用户头像地址"),
-		field.Int8("user_status").Optional().Comment("用户状态(0禁用,1正常,2未知)"),
-		field.Int64("dept_id").Optional().Comment("用户所属部门"),
-		field.String("address").Optional().Comment("用户联系地址"),
-		field.String("describe").Optional(),
-		field.String("last_login_ip").Optional(),
-		field.String("last_login_time").Optional(),
+		field.String("user_name").StructTag(`json:"userName"`),
+		field.String("nickname").StructTag(`json:"nickName"`).Optional().Comment("用户昵称"),
+		field.String("mobile").StructTag(`json:"mobile"`).Optional(),
+		field.String("birthday").StructTag(`json:"birthday"`).Optional(),
+		field.String("password").StructTag(`json:"password"`).Optional(),
+		field.String("salt").StructTag(`json:"salt"`).Optional(),
+		field.String("email").StructTag(`json:"email"`).Optional(),
+		field.Int8("sex").StructTag(`json:"sex"`).Optional(),
+		field.String("avatar").StructTag(`json:"avatar"`).Optional().Comment("用户头像地址"),
+		field.Int8("user_status").StructTag(`json:"userStatus"`).Optional().Comment("用户状态(0禁用,1正常,2未知)"),
+		field.Int64("dept_id").StructTag(`json:"deptId,string"`).Optional().Comment("用户所属部门"),
+		field.String("address").StructTag(`json:"address"`).Optional().Comment("用户联系地址"),
+		field.String("desc").StructTag(`json:"desc"`).Optional(),
+		field.String("last_login_ip").StructTag(`json:"lastLoginIp"`).Optional(),
+		field.String("last_login_time").StructTag(`json:"lastLoginTime"`).Optional(),
 	}
 }
 

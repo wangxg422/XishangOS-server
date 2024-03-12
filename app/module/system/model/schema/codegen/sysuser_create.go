@@ -141,16 +141,16 @@ func (suc *SysUserCreate) SetUserName(s string) *SysUserCreate {
 	return suc
 }
 
-// SetUserNickname sets the "user_nickname" field.
-func (suc *SysUserCreate) SetUserNickname(s string) *SysUserCreate {
-	suc.mutation.SetUserNickname(s)
+// SetNickname sets the "nickname" field.
+func (suc *SysUserCreate) SetNickname(s string) *SysUserCreate {
+	suc.mutation.SetNickname(s)
 	return suc
 }
 
-// SetNillableUserNickname sets the "user_nickname" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableUserNickname(s *string) *SysUserCreate {
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableNickname(s *string) *SysUserCreate {
 	if s != nil {
-		suc.SetUserNickname(*s)
+		suc.SetNickname(*s)
 	}
 	return suc
 }
@@ -183,44 +183,44 @@ func (suc *SysUserCreate) SetNillableBirthday(s *string) *SysUserCreate {
 	return suc
 }
 
-// SetUserPassword sets the "user_password" field.
-func (suc *SysUserCreate) SetUserPassword(s string) *SysUserCreate {
-	suc.mutation.SetUserPassword(s)
+// SetPassword sets the "password" field.
+func (suc *SysUserCreate) SetPassword(s string) *SysUserCreate {
+	suc.mutation.SetPassword(s)
 	return suc
 }
 
-// SetNillableUserPassword sets the "user_password" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableUserPassword(s *string) *SysUserCreate {
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillablePassword(s *string) *SysUserCreate {
 	if s != nil {
-		suc.SetUserPassword(*s)
+		suc.SetPassword(*s)
 	}
 	return suc
 }
 
-// SetUserSalt sets the "user_salt" field.
-func (suc *SysUserCreate) SetUserSalt(s string) *SysUserCreate {
-	suc.mutation.SetUserSalt(s)
+// SetSalt sets the "salt" field.
+func (suc *SysUserCreate) SetSalt(s string) *SysUserCreate {
+	suc.mutation.SetSalt(s)
 	return suc
 }
 
-// SetNillableUserSalt sets the "user_salt" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableUserSalt(s *string) *SysUserCreate {
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableSalt(s *string) *SysUserCreate {
 	if s != nil {
-		suc.SetUserSalt(*s)
+		suc.SetSalt(*s)
 	}
 	return suc
 }
 
-// SetUserEmail sets the "user_email" field.
-func (suc *SysUserCreate) SetUserEmail(s string) *SysUserCreate {
-	suc.mutation.SetUserEmail(s)
+// SetEmail sets the "email" field.
+func (suc *SysUserCreate) SetEmail(s string) *SysUserCreate {
+	suc.mutation.SetEmail(s)
 	return suc
 }
 
-// SetNillableUserEmail sets the "user_email" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableUserEmail(s *string) *SysUserCreate {
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableEmail(s *string) *SysUserCreate {
 	if s != nil {
-		suc.SetUserEmail(*s)
+		suc.SetEmail(*s)
 	}
 	return suc
 }
@@ -295,16 +295,16 @@ func (suc *SysUserCreate) SetNillableAddress(s *string) *SysUserCreate {
 	return suc
 }
 
-// SetDescribe sets the "describe" field.
-func (suc *SysUserCreate) SetDescribe(s string) *SysUserCreate {
-	suc.mutation.SetDescribe(s)
+// SetDesc sets the "desc" field.
+func (suc *SysUserCreate) SetDesc(s string) *SysUserCreate {
+	suc.mutation.SetDesc(s)
 	return suc
 }
 
-// SetNillableDescribe sets the "describe" field if the given value is not nil.
-func (suc *SysUserCreate) SetNillableDescribe(s *string) *SysUserCreate {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (suc *SysUserCreate) SetNillableDesc(s *string) *SysUserCreate {
 	if s != nil {
-		suc.SetDescribe(*s)
+		suc.SetDesc(*s)
 	}
 	return suc
 }
@@ -541,9 +541,9 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
 		_node.UserName = value
 	}
-	if value, ok := suc.mutation.UserNickname(); ok {
-		_spec.SetField(sysuser.FieldUserNickname, field.TypeString, value)
-		_node.UserNickname = value
+	if value, ok := suc.mutation.Nickname(); ok {
+		_spec.SetField(sysuser.FieldNickname, field.TypeString, value)
+		_node.Nickname = value
 	}
 	if value, ok := suc.mutation.Mobile(); ok {
 		_spec.SetField(sysuser.FieldMobile, field.TypeString, value)
@@ -553,17 +553,17 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldBirthday, field.TypeString, value)
 		_node.Birthday = value
 	}
-	if value, ok := suc.mutation.UserPassword(); ok {
-		_spec.SetField(sysuser.FieldUserPassword, field.TypeString, value)
-		_node.UserPassword = value
+	if value, ok := suc.mutation.Password(); ok {
+		_spec.SetField(sysuser.FieldPassword, field.TypeString, value)
+		_node.Password = value
 	}
-	if value, ok := suc.mutation.UserSalt(); ok {
-		_spec.SetField(sysuser.FieldUserSalt, field.TypeString, value)
-		_node.UserSalt = value
+	if value, ok := suc.mutation.Salt(); ok {
+		_spec.SetField(sysuser.FieldSalt, field.TypeString, value)
+		_node.Salt = value
 	}
-	if value, ok := suc.mutation.UserEmail(); ok {
-		_spec.SetField(sysuser.FieldUserEmail, field.TypeString, value)
-		_node.UserEmail = value
+	if value, ok := suc.mutation.Email(); ok {
+		_spec.SetField(sysuser.FieldEmail, field.TypeString, value)
+		_node.Email = value
 	}
 	if value, ok := suc.mutation.Sex(); ok {
 		_spec.SetField(sysuser.FieldSex, field.TypeInt8, value)
@@ -581,9 +581,9 @@ func (suc *SysUserCreate) createSpec() (*SysUser, *sqlgraph.CreateSpec) {
 		_spec.SetField(sysuser.FieldAddress, field.TypeString, value)
 		_node.Address = value
 	}
-	if value, ok := suc.mutation.Describe(); ok {
-		_spec.SetField(sysuser.FieldDescribe, field.TypeString, value)
-		_node.Describe = value
+	if value, ok := suc.mutation.Desc(); ok {
+		_spec.SetField(sysuser.FieldDesc, field.TypeString, value)
+		_node.Desc = value
 	}
 	if value, ok := suc.mutation.LastLoginIP(); ok {
 		_spec.SetField(sysuser.FieldLastLoginIP, field.TypeString, value)

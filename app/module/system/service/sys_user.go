@@ -22,13 +22,13 @@ type SysUser struct {
 func (m *SysUser) List(req *request.SysUserListReq, c *gin.Context) (*response.PaginationRes, error) {
 	query := initial.SysDbClient.SysUser.Query()
 	if req.Keyword != "" {
-		query.Where(sysuser.Or(sysuser.UserNameContains(req.Keyword), sysuser.UserNicknameContains(req.Keyword)))
+		query.Where(sysuser.Or(sysuser.UserNameContains(req.Keyword), sysuser.NicknameContains(req.Keyword)))
 	}
 	if req.Mobile != "" {
 		query.Where(sysuser.MobileContains(req.Mobile))
 	}
 	if req.Email != "" {
-		query.Where(sysuser.UserEmailContains(req.Email))
+		query.Where(sysuser.EmailContains(req.Email))
 	}
 	if req.Sex != 0 {
 		query.Where(sysuser.Sex(req.Sex))
@@ -79,10 +79,10 @@ func (m *SysUser) addUser(tx *codegen.Tx, c *gin.Context, req *request.SysUserCr
 	// 创建用户
 	return tx.SysUser.Create().
 		SetUserName(req.UserName).
-		SetUserPassword(req.Password).
+		SetPassword(req.Password).
 		SetDeptID(req.DeptId).
-		SetUserEmail(req.Email).
-		SetUserNickname(req.NickName).
+		SetEmail(req.Email).
+		SetNickname(req.NickName).
 		SetMobile(req.Mobile).
 		SetRemark(req.Remark).
 		SetSex(req.Sex).
@@ -126,10 +126,10 @@ func (m *SysUser) updateUser(tx *codegen.Tx, c *gin.Context, req *request.SysUse
 	return tx.SysUser.Update().
 		Where(sysuser.ID(req.Id)).
 		SetUserName(req.UserName).
-		SetUserPassword(req.Password).
+		SetPassword(req.Password).
 		SetDeptID(req.DeptId).
-		SetUserEmail(req.Email).
-		SetUserNickname(req.NickName).
+		SetEmail(req.Email).
+		SetNickname(req.NickName).
 		SetMobile(req.Mobile).
 		SetRemark(req.Remark).
 		SetSex(req.Sex).

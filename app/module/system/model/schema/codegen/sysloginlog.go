@@ -18,23 +18,23 @@ type SysLoginLog struct {
 	// ID of the ent.
 	ID int64 `json:"id,string"`
 	// 登录账号
-	LoginName string `json:"login_name,omitempty"`
+	LoginName string `json:"loginName"`
 	// 登录IP地址
-	IPAddr string `json:"ip_addr,omitempty"`
+	IPAddr string `json:"ipAddr"`
 	// 登录地点
-	LoginLocation string `json:"login_location,omitempty"`
+	LoginLocation string `json:"loginLocation"`
 	// 登录浏览器类型
-	Browser string `json:"browser,omitempty"`
+	Browser string `json:"browser"`
 	// 登录操作系统
-	Os string `json:"os,omitempty"`
+	Os string `json:"os"`
 	// 提示消息
-	Msg string `json:"msg,omitempty"`
+	Msg string `json:"msg"`
 	// 登录时间
-	LoginTime time.Time `json:"login_time,omitempty"`
+	LoginTime time.Time `json:"loginTime"`
 	// 登录是否成功
-	LoginSuccess int8 `json:"login_success,omitempty"`
+	LoginSuccess int8 `json:"loginSuccess"`
 	// 登录模块
-	Module       string `json:"module,omitempty"`
+	Module       string `json:"module"`
 	selectValues sql.SelectValues
 }
 

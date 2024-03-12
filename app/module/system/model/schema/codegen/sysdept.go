@@ -38,21 +38,21 @@ type SysDept struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 父级部门id
-	ParentID int64 `json:"parent_id,omitempty"`
+	ParentID int64 `json:"parentId,string"`
 	// 祖先部门列表
-	Ancestors string `json:"ancestors,omitempty"`
+	Ancestors string `json:"ancestors"`
 	// 部门名称
-	DeptName string `json:"dept_name,omitempty"`
+	DeptName string `json:"deptName"`
 	// 部门编码
-	DeptCode string `json:"dept_code,omitempty"`
+	DeptCode string `json:"deptCode"`
 	// 负责人
-	Leader string `json:"leader,omitempty"`
+	Leader string `json:"leader"`
 	// 部门联系电话
-	Phone string `json:"phone,omitempty"`
+	Phone string `json:"phone"`
 	// 部门电子邮箱
-	Email string `json:"email,omitempty"`
+	Email string `json:"email"`
 	// 部门地址
-	Address string `json:"address,omitempty"`
+	Address string `json:"address"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDeptQuery when eager-loading is set.
 	Edges        SysDeptEdges `json:"edges"`

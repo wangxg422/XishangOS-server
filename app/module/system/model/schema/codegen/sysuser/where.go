@@ -100,9 +100,9 @@ func UserName(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldUserName, v))
 }
 
-// UserNickname applies equality check predicate on the "user_nickname" field. It's identical to UserNicknameEQ.
-func UserNickname(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserNickname, v))
+// Nickname applies equality check predicate on the "nickname" field. It's identical to NicknameEQ.
+func Nickname(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldNickname, v))
 }
 
 // Mobile applies equality check predicate on the "mobile" field. It's identical to MobileEQ.
@@ -115,19 +115,19 @@ func Birthday(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldBirthday, v))
 }
 
-// UserPassword applies equality check predicate on the "user_password" field. It's identical to UserPasswordEQ.
-func UserPassword(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserPassword, v))
+// Password applies equality check predicate on the "password" field. It's identical to PasswordEQ.
+func Password(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldPassword, v))
 }
 
-// UserSalt applies equality check predicate on the "user_salt" field. It's identical to UserSaltEQ.
-func UserSalt(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserSalt, v))
+// Salt applies equality check predicate on the "salt" field. It's identical to SaltEQ.
+func Salt(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldSalt, v))
 }
 
-// UserEmail applies equality check predicate on the "user_email" field. It's identical to UserEmailEQ.
-func UserEmail(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserEmail, v))
+// Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
+func Email(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldEmail, v))
 }
 
 // Sex applies equality check predicate on the "sex" field. It's identical to SexEQ.
@@ -155,9 +155,9 @@ func Address(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldEQ(FieldAddress, v))
 }
 
-// Describe applies equality check predicate on the "describe" field. It's identical to DescribeEQ.
-func Describe(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldDescribe, v))
+// Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
+func Desc(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldDesc, v))
 }
 
 // LastLoginIP applies equality check predicate on the "last_login_ip" field. It's identical to LastLoginIPEQ.
@@ -650,79 +650,79 @@ func UserNameContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldUserName, v))
 }
 
-// UserNicknameEQ applies the EQ predicate on the "user_nickname" field.
-func UserNicknameEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserNickname, v))
+// NicknameEQ applies the EQ predicate on the "nickname" field.
+func NicknameEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldNickname, v))
 }
 
-// UserNicknameNEQ applies the NEQ predicate on the "user_nickname" field.
-func UserNicknameNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldUserNickname, v))
+// NicknameNEQ applies the NEQ predicate on the "nickname" field.
+func NicknameNEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldNickname, v))
 }
 
-// UserNicknameIn applies the In predicate on the "user_nickname" field.
-func UserNicknameIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldUserNickname, vs...))
+// NicknameIn applies the In predicate on the "nickname" field.
+func NicknameIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldNickname, vs...))
 }
 
-// UserNicknameNotIn applies the NotIn predicate on the "user_nickname" field.
-func UserNicknameNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldUserNickname, vs...))
+// NicknameNotIn applies the NotIn predicate on the "nickname" field.
+func NicknameNotIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldNickname, vs...))
 }
 
-// UserNicknameGT applies the GT predicate on the "user_nickname" field.
-func UserNicknameGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldUserNickname, v))
+// NicknameGT applies the GT predicate on the "nickname" field.
+func NicknameGT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldNickname, v))
 }
 
-// UserNicknameGTE applies the GTE predicate on the "user_nickname" field.
-func UserNicknameGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldUserNickname, v))
+// NicknameGTE applies the GTE predicate on the "nickname" field.
+func NicknameGTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldNickname, v))
 }
 
-// UserNicknameLT applies the LT predicate on the "user_nickname" field.
-func UserNicknameLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldUserNickname, v))
+// NicknameLT applies the LT predicate on the "nickname" field.
+func NicknameLT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldNickname, v))
 }
 
-// UserNicknameLTE applies the LTE predicate on the "user_nickname" field.
-func UserNicknameLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldUserNickname, v))
+// NicknameLTE applies the LTE predicate on the "nickname" field.
+func NicknameLTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldNickname, v))
 }
 
-// UserNicknameContains applies the Contains predicate on the "user_nickname" field.
-func UserNicknameContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldUserNickname, v))
+// NicknameContains applies the Contains predicate on the "nickname" field.
+func NicknameContains(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContains(FieldNickname, v))
 }
 
-// UserNicknameHasPrefix applies the HasPrefix predicate on the "user_nickname" field.
-func UserNicknameHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldUserNickname, v))
+// NicknameHasPrefix applies the HasPrefix predicate on the "nickname" field.
+func NicknameHasPrefix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasPrefix(FieldNickname, v))
 }
 
-// UserNicknameHasSuffix applies the HasSuffix predicate on the "user_nickname" field.
-func UserNicknameHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldUserNickname, v))
+// NicknameHasSuffix applies the HasSuffix predicate on the "nickname" field.
+func NicknameHasSuffix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasSuffix(FieldNickname, v))
 }
 
-// UserNicknameIsNil applies the IsNil predicate on the "user_nickname" field.
-func UserNicknameIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldUserNickname))
+// NicknameIsNil applies the IsNil predicate on the "nickname" field.
+func NicknameIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldNickname))
 }
 
-// UserNicknameNotNil applies the NotNil predicate on the "user_nickname" field.
-func UserNicknameNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldUserNickname))
+// NicknameNotNil applies the NotNil predicate on the "nickname" field.
+func NicknameNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldNickname))
 }
 
-// UserNicknameEqualFold applies the EqualFold predicate on the "user_nickname" field.
-func UserNicknameEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldUserNickname, v))
+// NicknameEqualFold applies the EqualFold predicate on the "nickname" field.
+func NicknameEqualFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEqualFold(FieldNickname, v))
 }
 
-// UserNicknameContainsFold applies the ContainsFold predicate on the "user_nickname" field.
-func UserNicknameContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldUserNickname, v))
+// NicknameContainsFold applies the ContainsFold predicate on the "nickname" field.
+func NicknameContainsFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContainsFold(FieldNickname, v))
 }
 
 // MobileEQ applies the EQ predicate on the "mobile" field.
@@ -875,229 +875,229 @@ func BirthdayContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldBirthday, v))
 }
 
-// UserPasswordEQ applies the EQ predicate on the "user_password" field.
-func UserPasswordEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserPassword, v))
+// PasswordEQ applies the EQ predicate on the "password" field.
+func PasswordEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldPassword, v))
 }
 
-// UserPasswordNEQ applies the NEQ predicate on the "user_password" field.
-func UserPasswordNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldUserPassword, v))
+// PasswordNEQ applies the NEQ predicate on the "password" field.
+func PasswordNEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldPassword, v))
 }
 
-// UserPasswordIn applies the In predicate on the "user_password" field.
-func UserPasswordIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldUserPassword, vs...))
+// PasswordIn applies the In predicate on the "password" field.
+func PasswordIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldPassword, vs...))
 }
 
-// UserPasswordNotIn applies the NotIn predicate on the "user_password" field.
-func UserPasswordNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldUserPassword, vs...))
+// PasswordNotIn applies the NotIn predicate on the "password" field.
+func PasswordNotIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldPassword, vs...))
 }
 
-// UserPasswordGT applies the GT predicate on the "user_password" field.
-func UserPasswordGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldUserPassword, v))
+// PasswordGT applies the GT predicate on the "password" field.
+func PasswordGT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldPassword, v))
 }
 
-// UserPasswordGTE applies the GTE predicate on the "user_password" field.
-func UserPasswordGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldUserPassword, v))
+// PasswordGTE applies the GTE predicate on the "password" field.
+func PasswordGTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldPassword, v))
 }
 
-// UserPasswordLT applies the LT predicate on the "user_password" field.
-func UserPasswordLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldUserPassword, v))
+// PasswordLT applies the LT predicate on the "password" field.
+func PasswordLT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldPassword, v))
 }
 
-// UserPasswordLTE applies the LTE predicate on the "user_password" field.
-func UserPasswordLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldUserPassword, v))
+// PasswordLTE applies the LTE predicate on the "password" field.
+func PasswordLTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldPassword, v))
 }
 
-// UserPasswordContains applies the Contains predicate on the "user_password" field.
-func UserPasswordContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldUserPassword, v))
+// PasswordContains applies the Contains predicate on the "password" field.
+func PasswordContains(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContains(FieldPassword, v))
 }
 
-// UserPasswordHasPrefix applies the HasPrefix predicate on the "user_password" field.
-func UserPasswordHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldUserPassword, v))
+// PasswordHasPrefix applies the HasPrefix predicate on the "password" field.
+func PasswordHasPrefix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasPrefix(FieldPassword, v))
 }
 
-// UserPasswordHasSuffix applies the HasSuffix predicate on the "user_password" field.
-func UserPasswordHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldUserPassword, v))
+// PasswordHasSuffix applies the HasSuffix predicate on the "password" field.
+func PasswordHasSuffix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasSuffix(FieldPassword, v))
 }
 
-// UserPasswordIsNil applies the IsNil predicate on the "user_password" field.
-func UserPasswordIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldUserPassword))
+// PasswordIsNil applies the IsNil predicate on the "password" field.
+func PasswordIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldPassword))
 }
 
-// UserPasswordNotNil applies the NotNil predicate on the "user_password" field.
-func UserPasswordNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldUserPassword))
+// PasswordNotNil applies the NotNil predicate on the "password" field.
+func PasswordNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldPassword))
 }
 
-// UserPasswordEqualFold applies the EqualFold predicate on the "user_password" field.
-func UserPasswordEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldUserPassword, v))
+// PasswordEqualFold applies the EqualFold predicate on the "password" field.
+func PasswordEqualFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEqualFold(FieldPassword, v))
 }
 
-// UserPasswordContainsFold applies the ContainsFold predicate on the "user_password" field.
-func UserPasswordContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldUserPassword, v))
+// PasswordContainsFold applies the ContainsFold predicate on the "password" field.
+func PasswordContainsFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContainsFold(FieldPassword, v))
 }
 
-// UserSaltEQ applies the EQ predicate on the "user_salt" field.
-func UserSaltEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserSalt, v))
+// SaltEQ applies the EQ predicate on the "salt" field.
+func SaltEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldSalt, v))
 }
 
-// UserSaltNEQ applies the NEQ predicate on the "user_salt" field.
-func UserSaltNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldUserSalt, v))
+// SaltNEQ applies the NEQ predicate on the "salt" field.
+func SaltNEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldSalt, v))
 }
 
-// UserSaltIn applies the In predicate on the "user_salt" field.
-func UserSaltIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldUserSalt, vs...))
+// SaltIn applies the In predicate on the "salt" field.
+func SaltIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldSalt, vs...))
 }
 
-// UserSaltNotIn applies the NotIn predicate on the "user_salt" field.
-func UserSaltNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldUserSalt, vs...))
+// SaltNotIn applies the NotIn predicate on the "salt" field.
+func SaltNotIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldSalt, vs...))
 }
 
-// UserSaltGT applies the GT predicate on the "user_salt" field.
-func UserSaltGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldUserSalt, v))
+// SaltGT applies the GT predicate on the "salt" field.
+func SaltGT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldSalt, v))
 }
 
-// UserSaltGTE applies the GTE predicate on the "user_salt" field.
-func UserSaltGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldUserSalt, v))
+// SaltGTE applies the GTE predicate on the "salt" field.
+func SaltGTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldSalt, v))
 }
 
-// UserSaltLT applies the LT predicate on the "user_salt" field.
-func UserSaltLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldUserSalt, v))
+// SaltLT applies the LT predicate on the "salt" field.
+func SaltLT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldSalt, v))
 }
 
-// UserSaltLTE applies the LTE predicate on the "user_salt" field.
-func UserSaltLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldUserSalt, v))
+// SaltLTE applies the LTE predicate on the "salt" field.
+func SaltLTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldSalt, v))
 }
 
-// UserSaltContains applies the Contains predicate on the "user_salt" field.
-func UserSaltContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldUserSalt, v))
+// SaltContains applies the Contains predicate on the "salt" field.
+func SaltContains(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContains(FieldSalt, v))
 }
 
-// UserSaltHasPrefix applies the HasPrefix predicate on the "user_salt" field.
-func UserSaltHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldUserSalt, v))
+// SaltHasPrefix applies the HasPrefix predicate on the "salt" field.
+func SaltHasPrefix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasPrefix(FieldSalt, v))
 }
 
-// UserSaltHasSuffix applies the HasSuffix predicate on the "user_salt" field.
-func UserSaltHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldUserSalt, v))
+// SaltHasSuffix applies the HasSuffix predicate on the "salt" field.
+func SaltHasSuffix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasSuffix(FieldSalt, v))
 }
 
-// UserSaltIsNil applies the IsNil predicate on the "user_salt" field.
-func UserSaltIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldUserSalt))
+// SaltIsNil applies the IsNil predicate on the "salt" field.
+func SaltIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldSalt))
 }
 
-// UserSaltNotNil applies the NotNil predicate on the "user_salt" field.
-func UserSaltNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldUserSalt))
+// SaltNotNil applies the NotNil predicate on the "salt" field.
+func SaltNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldSalt))
 }
 
-// UserSaltEqualFold applies the EqualFold predicate on the "user_salt" field.
-func UserSaltEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldUserSalt, v))
+// SaltEqualFold applies the EqualFold predicate on the "salt" field.
+func SaltEqualFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEqualFold(FieldSalt, v))
 }
 
-// UserSaltContainsFold applies the ContainsFold predicate on the "user_salt" field.
-func UserSaltContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldUserSalt, v))
+// SaltContainsFold applies the ContainsFold predicate on the "salt" field.
+func SaltContainsFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContainsFold(FieldSalt, v))
 }
 
-// UserEmailEQ applies the EQ predicate on the "user_email" field.
-func UserEmailEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldUserEmail, v))
+// EmailEQ applies the EQ predicate on the "email" field.
+func EmailEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldEmail, v))
 }
 
-// UserEmailNEQ applies the NEQ predicate on the "user_email" field.
-func UserEmailNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldUserEmail, v))
+// EmailNEQ applies the NEQ predicate on the "email" field.
+func EmailNEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldEmail, v))
 }
 
-// UserEmailIn applies the In predicate on the "user_email" field.
-func UserEmailIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldUserEmail, vs...))
+// EmailIn applies the In predicate on the "email" field.
+func EmailIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldEmail, vs...))
 }
 
-// UserEmailNotIn applies the NotIn predicate on the "user_email" field.
-func UserEmailNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldUserEmail, vs...))
+// EmailNotIn applies the NotIn predicate on the "email" field.
+func EmailNotIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldEmail, vs...))
 }
 
-// UserEmailGT applies the GT predicate on the "user_email" field.
-func UserEmailGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldUserEmail, v))
+// EmailGT applies the GT predicate on the "email" field.
+func EmailGT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldEmail, v))
 }
 
-// UserEmailGTE applies the GTE predicate on the "user_email" field.
-func UserEmailGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldUserEmail, v))
+// EmailGTE applies the GTE predicate on the "email" field.
+func EmailGTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldEmail, v))
 }
 
-// UserEmailLT applies the LT predicate on the "user_email" field.
-func UserEmailLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldUserEmail, v))
+// EmailLT applies the LT predicate on the "email" field.
+func EmailLT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldEmail, v))
 }
 
-// UserEmailLTE applies the LTE predicate on the "user_email" field.
-func UserEmailLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldUserEmail, v))
+// EmailLTE applies the LTE predicate on the "email" field.
+func EmailLTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldEmail, v))
 }
 
-// UserEmailContains applies the Contains predicate on the "user_email" field.
-func UserEmailContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldUserEmail, v))
+// EmailContains applies the Contains predicate on the "email" field.
+func EmailContains(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContains(FieldEmail, v))
 }
 
-// UserEmailHasPrefix applies the HasPrefix predicate on the "user_email" field.
-func UserEmailHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldUserEmail, v))
+// EmailHasPrefix applies the HasPrefix predicate on the "email" field.
+func EmailHasPrefix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasPrefix(FieldEmail, v))
 }
 
-// UserEmailHasSuffix applies the HasSuffix predicate on the "user_email" field.
-func UserEmailHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldUserEmail, v))
+// EmailHasSuffix applies the HasSuffix predicate on the "email" field.
+func EmailHasSuffix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasSuffix(FieldEmail, v))
 }
 
-// UserEmailIsNil applies the IsNil predicate on the "user_email" field.
-func UserEmailIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldUserEmail))
+// EmailIsNil applies the IsNil predicate on the "email" field.
+func EmailIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldEmail))
 }
 
-// UserEmailNotNil applies the NotNil predicate on the "user_email" field.
-func UserEmailNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldUserEmail))
+// EmailNotNil applies the NotNil predicate on the "email" field.
+func EmailNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldEmail))
 }
 
-// UserEmailEqualFold applies the EqualFold predicate on the "user_email" field.
-func UserEmailEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldUserEmail, v))
+// EmailEqualFold applies the EqualFold predicate on the "email" field.
+func EmailEqualFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEqualFold(FieldEmail, v))
 }
 
-// UserEmailContainsFold applies the ContainsFold predicate on the "user_email" field.
-func UserEmailContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldUserEmail, v))
+// EmailContainsFold applies the ContainsFold predicate on the "email" field.
+func EmailContainsFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContainsFold(FieldEmail, v))
 }
 
 // SexEQ applies the EQ predicate on the "sex" field.
@@ -1380,79 +1380,79 @@ func AddressContainsFold(v string) predicate.SysUser {
 	return predicate.SysUser(sql.FieldContainsFold(FieldAddress, v))
 }
 
-// DescribeEQ applies the EQ predicate on the "describe" field.
-func DescribeEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEQ(FieldDescribe, v))
+// DescEQ applies the EQ predicate on the "desc" field.
+func DescEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEQ(FieldDesc, v))
 }
 
-// DescribeNEQ applies the NEQ predicate on the "describe" field.
-func DescribeNEQ(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNEQ(FieldDescribe, v))
+// DescNEQ applies the NEQ predicate on the "desc" field.
+func DescNEQ(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNEQ(FieldDesc, v))
 }
 
-// DescribeIn applies the In predicate on the "describe" field.
-func DescribeIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldIn(FieldDescribe, vs...))
+// DescIn applies the In predicate on the "desc" field.
+func DescIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldIn(FieldDesc, vs...))
 }
 
-// DescribeNotIn applies the NotIn predicate on the "describe" field.
-func DescribeNotIn(vs ...string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotIn(FieldDescribe, vs...))
+// DescNotIn applies the NotIn predicate on the "desc" field.
+func DescNotIn(vs ...string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotIn(FieldDesc, vs...))
 }
 
-// DescribeGT applies the GT predicate on the "describe" field.
-func DescribeGT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGT(FieldDescribe, v))
+// DescGT applies the GT predicate on the "desc" field.
+func DescGT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGT(FieldDesc, v))
 }
 
-// DescribeGTE applies the GTE predicate on the "describe" field.
-func DescribeGTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldGTE(FieldDescribe, v))
+// DescGTE applies the GTE predicate on the "desc" field.
+func DescGTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldGTE(FieldDesc, v))
 }
 
-// DescribeLT applies the LT predicate on the "describe" field.
-func DescribeLT(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLT(FieldDescribe, v))
+// DescLT applies the LT predicate on the "desc" field.
+func DescLT(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLT(FieldDesc, v))
 }
 
-// DescribeLTE applies the LTE predicate on the "describe" field.
-func DescribeLTE(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldLTE(FieldDescribe, v))
+// DescLTE applies the LTE predicate on the "desc" field.
+func DescLTE(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldLTE(FieldDesc, v))
 }
 
-// DescribeContains applies the Contains predicate on the "describe" field.
-func DescribeContains(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContains(FieldDescribe, v))
+// DescContains applies the Contains predicate on the "desc" field.
+func DescContains(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContains(FieldDesc, v))
 }
 
-// DescribeHasPrefix applies the HasPrefix predicate on the "describe" field.
-func DescribeHasPrefix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasPrefix(FieldDescribe, v))
+// DescHasPrefix applies the HasPrefix predicate on the "desc" field.
+func DescHasPrefix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasPrefix(FieldDesc, v))
 }
 
-// DescribeHasSuffix applies the HasSuffix predicate on the "describe" field.
-func DescribeHasSuffix(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldHasSuffix(FieldDescribe, v))
+// DescHasSuffix applies the HasSuffix predicate on the "desc" field.
+func DescHasSuffix(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldHasSuffix(FieldDesc, v))
 }
 
-// DescribeIsNil applies the IsNil predicate on the "describe" field.
-func DescribeIsNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldIsNull(FieldDescribe))
+// DescIsNil applies the IsNil predicate on the "desc" field.
+func DescIsNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldIsNull(FieldDesc))
 }
 
-// DescribeNotNil applies the NotNil predicate on the "describe" field.
-func DescribeNotNil() predicate.SysUser {
-	return predicate.SysUser(sql.FieldNotNull(FieldDescribe))
+// DescNotNil applies the NotNil predicate on the "desc" field.
+func DescNotNil() predicate.SysUser {
+	return predicate.SysUser(sql.FieldNotNull(FieldDesc))
 }
 
-// DescribeEqualFold applies the EqualFold predicate on the "describe" field.
-func DescribeEqualFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldEqualFold(FieldDescribe, v))
+// DescEqualFold applies the EqualFold predicate on the "desc" field.
+func DescEqualFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldEqualFold(FieldDesc, v))
 }
 
-// DescribeContainsFold applies the ContainsFold predicate on the "describe" field.
-func DescribeContainsFold(v string) predicate.SysUser {
-	return predicate.SysUser(sql.FieldContainsFold(FieldDescribe, v))
+// DescContainsFold applies the ContainsFold predicate on the "desc" field.
+func DescContainsFold(v string) predicate.SysUser {
+	return predicate.SysUser(sql.FieldContainsFold(FieldDesc, v))
 }
 
 // LastLoginIPEQ applies the EQ predicate on the "last_login_ip" field.

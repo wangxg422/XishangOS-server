@@ -41,12 +41,12 @@ func (SysDictData) Mixin() []ent.Mixin {
 // Fields of the SysDictData.
 func (SysDictData) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("dict_label").Optional().Comment("字典标签"),
-		field.String("dict_value").Optional().Comment("字典值"),
-		field.Int64("dict_type_id").Optional().Comment("字典类型ID"),
-		field.String("css_class").Optional().Comment("样式属性"),
-		field.String("list_class").Optional().Comment("表格回显样式"),
-		field.Int8("is_default").Optional().Comment("是否默认(1是0否)"),
+		field.String("dict_label").StructTag(`json:"dictLabel"`).Optional().Comment("字典标签"),
+		field.String("dict_value").StructTag(`json:"dictValue"`).Optional().Comment("字典值"),
+		field.Int64("dict_type_id").StructTag(`json:"dictTypeId,string"`).Optional().Comment("字典类型ID"),
+		field.String("css_class").StructTag(`json:"cssClass"`).Optional().Comment("样式属性"),
+		field.String("list_class").StructTag(`json:"listClass"`).Optional().Comment("表格回显样式"),
+		field.Int8("is_default").StructTag(`json:"isDefault"`).Optional().Comment("是否默认(1是0否)"),
 	}
 }
 

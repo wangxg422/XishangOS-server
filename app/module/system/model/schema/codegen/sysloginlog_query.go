@@ -261,7 +261,7 @@ func (sllq *SysLoginLogQuery) Clone() *SysLoginLogQuery {
 // Example:
 //
 //	var v []struct {
-//		LoginName string `json:"login_name,omitempty"`
+//		LoginName string `json:"loginName"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (sllq *SysLoginLogQuery) GroupBy(field string, fields ...string) *SysLoginL
 // Example:
 //
 //	var v []struct {
-//		LoginName string `json:"login_name,omitempty"`
+//		LoginName string `json:"loginName"`
 //	}
 //
 //	client.SysLoginLog.Query().

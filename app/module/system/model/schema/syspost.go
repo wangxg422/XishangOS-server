@@ -41,8 +41,8 @@ func (SysPost) Mixin() []ent.Mixin {
 // Fields of the SysPost.
 func (SysPost) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("post_code").Optional().Comment("岗位编码"),
-		field.String("post_name").Optional().Comment("岗位名称"),
+		field.String("post_code").StructTag(`json:"postCode"`).Optional().Comment("岗位编码"),
+		field.String("post_name").StructTag(`json:"postName"`).Optional().Comment("岗位名称"),
 	}
 }
 

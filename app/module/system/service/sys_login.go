@@ -54,11 +54,11 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (*response.Lo
 	}
 
 	// 校验密码是否正确
-	enPassword, err := utils.EncryptPasswordWithSalt(req.Password, user.UserSalt)
+	enPassword, err := utils.EncryptPasswordWithSalt(req.Password, user.Salt)
 	if err != nil {
 		return nil, err
 	}
-	if enPassword != user.UserPassword {
+	if enPassword != user.Password {
 		loginLog.LoginSuccess = 2
 		loginLog.Msg = "用户名密码错误"
 		_ = SysLoginLogService.Add(loginLog, c)
@@ -74,7 +74,7 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (*response.Lo
 	}
 
 	// 登录成功
-	user.UserPassword = ""
+	user.Password = ""
 
 	// 记录登录成功日志
 	loginLog.Msg = "登录成功"
@@ -144,7 +144,7 @@ func (m *SysLogin) GenToken(user *codegen.SysUser) (string, error) {
 	j := &jwt.JWT{SigningKey: []byte(global.AppConfig.Jwt.SigningKey)}
 	claims := j.CreateClaims(jwt.BaseClaims{
 		UserId:   user.ID,
-		NickName: user.UserNickname,
+		NickName: user.Nickname,
 		Username: user.UserName,
 	})
 	token, err := j.CreateToken(claims)

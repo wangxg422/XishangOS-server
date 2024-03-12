@@ -261,7 +261,7 @@ func (solq *SysOperLogQuery) Clone() *SysOperLogQuery {
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		Title string `json:"title"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (solq *SysOperLogQuery) GroupBy(field string, fields ...string) *SysOperLog
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		Title string `json:"title"`
 //	}
 //
 //	client.SysOperLog.Query().

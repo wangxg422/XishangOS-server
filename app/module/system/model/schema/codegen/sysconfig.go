@@ -36,13 +36,13 @@ type SysConfig struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 配置名称
-	ConfigName string `json:"config_name,omitempty"`
+	ConfigName string `json:"configName"`
 	// 配置项
-	ConfigKey string `json:"config_key,omitempty"`
+	ConfigKey string `json:"configKey"`
 	// 配置值
-	ConfigValue string `json:"config_value,omitempty"`
+	ConfigValue string `json:"configValue"`
 	// 系统内置配置(0是1否)
-	ConfigType   int8 `json:"config_type,omitempty"`
+	ConfigType   int8 `json:"configType"`
 	selectValues sql.SelectValues
 }
 

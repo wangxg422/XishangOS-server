@@ -39,17 +39,17 @@ type SysDictData struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 字典标签
-	DictLabel string `json:"dict_label,omitempty"`
+	DictLabel string `json:"dictLabel"`
 	// 字典值
-	DictValue string `json:"dict_value,omitempty"`
+	DictValue string `json:"dictValue"`
 	// 字典类型ID
-	DictTypeID int64 `json:"dict_type_id,omitempty"`
+	DictTypeID int64 `json:"dictTypeId,string"`
 	// 样式属性
-	CSSClass string `json:"css_class,omitempty"`
+	CSSClass string `json:"cssClass"`
 	// 表格回显样式
-	ListClass string `json:"list_class,omitempty"`
+	ListClass string `json:"listClass"`
 	// 是否默认(1是0否)
-	IsDefault int8 `json:"is_default,omitempty"`
+	IsDefault int8 `json:"isDefault"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDictDataQuery when eager-loading is set.
 	Edges        SysDictDataEdges `json:"edges"`

@@ -36,9 +36,9 @@ type SysDictType struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 字典类型名称
-	DictName string `json:"dict_name,omitempty"`
+	DictName string `json:"dictName"`
 	// 字典类型
-	DictType string `json:"dict_type,omitempty"`
+	DictType string `json:"dictType"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysDictTypeQuery when eager-loading is set.
 	Edges        SysDictTypeEdges `json:"edges"`

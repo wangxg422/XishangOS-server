@@ -14717,19 +14717,19 @@ type SysUserMutation struct {
 	del_flag        *int8
 	adddel_flag     *int8
 	user_name       *string
-	user_nickname   *string
+	nickname        *string
 	mobile          *string
 	birthday        *string
-	user_password   *string
-	user_salt       *string
-	user_email      *string
+	password        *string
+	salt            *string
+	email           *string
 	sex             *int8
 	addsex          *int8
 	avatar          *string
 	user_status     *int8
 	adduser_status  *int8
 	address         *string
-	describe        *string
+	desc            *string
 	last_login_ip   *string
 	last_login_time *string
 	clearedFields   map[string]struct{}
@@ -15348,53 +15348,53 @@ func (m *SysUserMutation) ResetUserName() {
 	m.user_name = nil
 }
 
-// SetUserNickname sets the "user_nickname" field.
-func (m *SysUserMutation) SetUserNickname(s string) {
-	m.user_nickname = &s
+// SetNickname sets the "nickname" field.
+func (m *SysUserMutation) SetNickname(s string) {
+	m.nickname = &s
 }
 
-// UserNickname returns the value of the "user_nickname" field in the mutation.
-func (m *SysUserMutation) UserNickname() (r string, exists bool) {
-	v := m.user_nickname
+// Nickname returns the value of the "nickname" field in the mutation.
+func (m *SysUserMutation) Nickname() (r string, exists bool) {
+	v := m.nickname
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUserNickname returns the old "user_nickname" field's value of the SysUser entity.
+// OldNickname returns the old "nickname" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldUserNickname(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldNickname(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserNickname is only allowed on UpdateOne operations")
+		return v, errors.New("OldNickname is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserNickname requires an ID field in the mutation")
+		return v, errors.New("OldNickname requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserNickname: %w", err)
+		return v, fmt.Errorf("querying old value for OldNickname: %w", err)
 	}
-	return oldValue.UserNickname, nil
+	return oldValue.Nickname, nil
 }
 
-// ClearUserNickname clears the value of the "user_nickname" field.
-func (m *SysUserMutation) ClearUserNickname() {
-	m.user_nickname = nil
-	m.clearedFields[sysuser.FieldUserNickname] = struct{}{}
+// ClearNickname clears the value of the "nickname" field.
+func (m *SysUserMutation) ClearNickname() {
+	m.nickname = nil
+	m.clearedFields[sysuser.FieldNickname] = struct{}{}
 }
 
-// UserNicknameCleared returns if the "user_nickname" field was cleared in this mutation.
-func (m *SysUserMutation) UserNicknameCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldUserNickname]
+// NicknameCleared returns if the "nickname" field was cleared in this mutation.
+func (m *SysUserMutation) NicknameCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldNickname]
 	return ok
 }
 
-// ResetUserNickname resets all changes to the "user_nickname" field.
-func (m *SysUserMutation) ResetUserNickname() {
-	m.user_nickname = nil
-	delete(m.clearedFields, sysuser.FieldUserNickname)
+// ResetNickname resets all changes to the "nickname" field.
+func (m *SysUserMutation) ResetNickname() {
+	m.nickname = nil
+	delete(m.clearedFields, sysuser.FieldNickname)
 }
 
 // SetMobile sets the "mobile" field.
@@ -15495,151 +15495,151 @@ func (m *SysUserMutation) ResetBirthday() {
 	delete(m.clearedFields, sysuser.FieldBirthday)
 }
 
-// SetUserPassword sets the "user_password" field.
-func (m *SysUserMutation) SetUserPassword(s string) {
-	m.user_password = &s
+// SetPassword sets the "password" field.
+func (m *SysUserMutation) SetPassword(s string) {
+	m.password = &s
 }
 
-// UserPassword returns the value of the "user_password" field in the mutation.
-func (m *SysUserMutation) UserPassword() (r string, exists bool) {
-	v := m.user_password
+// Password returns the value of the "password" field in the mutation.
+func (m *SysUserMutation) Password() (r string, exists bool) {
+	v := m.password
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUserPassword returns the old "user_password" field's value of the SysUser entity.
+// OldPassword returns the old "password" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldUserPassword(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldPassword(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserPassword is only allowed on UpdateOne operations")
+		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserPassword requires an ID field in the mutation")
+		return v, errors.New("OldPassword requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserPassword: %w", err)
+		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
 	}
-	return oldValue.UserPassword, nil
+	return oldValue.Password, nil
 }
 
-// ClearUserPassword clears the value of the "user_password" field.
-func (m *SysUserMutation) ClearUserPassword() {
-	m.user_password = nil
-	m.clearedFields[sysuser.FieldUserPassword] = struct{}{}
+// ClearPassword clears the value of the "password" field.
+func (m *SysUserMutation) ClearPassword() {
+	m.password = nil
+	m.clearedFields[sysuser.FieldPassword] = struct{}{}
 }
 
-// UserPasswordCleared returns if the "user_password" field was cleared in this mutation.
-func (m *SysUserMutation) UserPasswordCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldUserPassword]
+// PasswordCleared returns if the "password" field was cleared in this mutation.
+func (m *SysUserMutation) PasswordCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldPassword]
 	return ok
 }
 
-// ResetUserPassword resets all changes to the "user_password" field.
-func (m *SysUserMutation) ResetUserPassword() {
-	m.user_password = nil
-	delete(m.clearedFields, sysuser.FieldUserPassword)
+// ResetPassword resets all changes to the "password" field.
+func (m *SysUserMutation) ResetPassword() {
+	m.password = nil
+	delete(m.clearedFields, sysuser.FieldPassword)
 }
 
-// SetUserSalt sets the "user_salt" field.
-func (m *SysUserMutation) SetUserSalt(s string) {
-	m.user_salt = &s
+// SetSalt sets the "salt" field.
+func (m *SysUserMutation) SetSalt(s string) {
+	m.salt = &s
 }
 
-// UserSalt returns the value of the "user_salt" field in the mutation.
-func (m *SysUserMutation) UserSalt() (r string, exists bool) {
-	v := m.user_salt
+// Salt returns the value of the "salt" field in the mutation.
+func (m *SysUserMutation) Salt() (r string, exists bool) {
+	v := m.salt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUserSalt returns the old "user_salt" field's value of the SysUser entity.
+// OldSalt returns the old "salt" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldUserSalt(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldSalt(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserSalt is only allowed on UpdateOne operations")
+		return v, errors.New("OldSalt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserSalt requires an ID field in the mutation")
+		return v, errors.New("OldSalt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserSalt: %w", err)
+		return v, fmt.Errorf("querying old value for OldSalt: %w", err)
 	}
-	return oldValue.UserSalt, nil
+	return oldValue.Salt, nil
 }
 
-// ClearUserSalt clears the value of the "user_salt" field.
-func (m *SysUserMutation) ClearUserSalt() {
-	m.user_salt = nil
-	m.clearedFields[sysuser.FieldUserSalt] = struct{}{}
+// ClearSalt clears the value of the "salt" field.
+func (m *SysUserMutation) ClearSalt() {
+	m.salt = nil
+	m.clearedFields[sysuser.FieldSalt] = struct{}{}
 }
 
-// UserSaltCleared returns if the "user_salt" field was cleared in this mutation.
-func (m *SysUserMutation) UserSaltCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldUserSalt]
+// SaltCleared returns if the "salt" field was cleared in this mutation.
+func (m *SysUserMutation) SaltCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldSalt]
 	return ok
 }
 
-// ResetUserSalt resets all changes to the "user_salt" field.
-func (m *SysUserMutation) ResetUserSalt() {
-	m.user_salt = nil
-	delete(m.clearedFields, sysuser.FieldUserSalt)
+// ResetSalt resets all changes to the "salt" field.
+func (m *SysUserMutation) ResetSalt() {
+	m.salt = nil
+	delete(m.clearedFields, sysuser.FieldSalt)
 }
 
-// SetUserEmail sets the "user_email" field.
-func (m *SysUserMutation) SetUserEmail(s string) {
-	m.user_email = &s
+// SetEmail sets the "email" field.
+func (m *SysUserMutation) SetEmail(s string) {
+	m.email = &s
 }
 
-// UserEmail returns the value of the "user_email" field in the mutation.
-func (m *SysUserMutation) UserEmail() (r string, exists bool) {
-	v := m.user_email
+// Email returns the value of the "email" field in the mutation.
+func (m *SysUserMutation) Email() (r string, exists bool) {
+	v := m.email
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUserEmail returns the old "user_email" field's value of the SysUser entity.
+// OldEmail returns the old "email" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldUserEmail(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldEmail(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserEmail is only allowed on UpdateOne operations")
+		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserEmail requires an ID field in the mutation")
+		return v, errors.New("OldEmail requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserEmail: %w", err)
+		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
 	}
-	return oldValue.UserEmail, nil
+	return oldValue.Email, nil
 }
 
-// ClearUserEmail clears the value of the "user_email" field.
-func (m *SysUserMutation) ClearUserEmail() {
-	m.user_email = nil
-	m.clearedFields[sysuser.FieldUserEmail] = struct{}{}
+// ClearEmail clears the value of the "email" field.
+func (m *SysUserMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[sysuser.FieldEmail] = struct{}{}
 }
 
-// UserEmailCleared returns if the "user_email" field was cleared in this mutation.
-func (m *SysUserMutation) UserEmailCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldUserEmail]
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *SysUserMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldEmail]
 	return ok
 }
 
-// ResetUserEmail resets all changes to the "user_email" field.
-func (m *SysUserMutation) ResetUserEmail() {
-	m.user_email = nil
-	delete(m.clearedFields, sysuser.FieldUserEmail)
+// ResetEmail resets all changes to the "email" field.
+func (m *SysUserMutation) ResetEmail() {
+	m.email = nil
+	delete(m.clearedFields, sysuser.FieldEmail)
 }
 
 // SetSex sets the "sex" field.
@@ -15929,53 +15929,53 @@ func (m *SysUserMutation) ResetAddress() {
 	delete(m.clearedFields, sysuser.FieldAddress)
 }
 
-// SetDescribe sets the "describe" field.
-func (m *SysUserMutation) SetDescribe(s string) {
-	m.describe = &s
+// SetDesc sets the "desc" field.
+func (m *SysUserMutation) SetDesc(s string) {
+	m.desc = &s
 }
 
-// Describe returns the value of the "describe" field in the mutation.
-func (m *SysUserMutation) Describe() (r string, exists bool) {
-	v := m.describe
+// Desc returns the value of the "desc" field in the mutation.
+func (m *SysUserMutation) Desc() (r string, exists bool) {
+	v := m.desc
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDescribe returns the old "describe" field's value of the SysUser entity.
+// OldDesc returns the old "desc" field's value of the SysUser entity.
 // If the SysUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *SysUserMutation) OldDescribe(ctx context.Context) (v string, err error) {
+func (m *SysUserMutation) OldDesc(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDescribe is only allowed on UpdateOne operations")
+		return v, errors.New("OldDesc is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDescribe requires an ID field in the mutation")
+		return v, errors.New("OldDesc requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescribe: %w", err)
+		return v, fmt.Errorf("querying old value for OldDesc: %w", err)
 	}
-	return oldValue.Describe, nil
+	return oldValue.Desc, nil
 }
 
-// ClearDescribe clears the value of the "describe" field.
-func (m *SysUserMutation) ClearDescribe() {
-	m.describe = nil
-	m.clearedFields[sysuser.FieldDescribe] = struct{}{}
+// ClearDesc clears the value of the "desc" field.
+func (m *SysUserMutation) ClearDesc() {
+	m.desc = nil
+	m.clearedFields[sysuser.FieldDesc] = struct{}{}
 }
 
-// DescribeCleared returns if the "describe" field was cleared in this mutation.
-func (m *SysUserMutation) DescribeCleared() bool {
-	_, ok := m.clearedFields[sysuser.FieldDescribe]
+// DescCleared returns if the "desc" field was cleared in this mutation.
+func (m *SysUserMutation) DescCleared() bool {
+	_, ok := m.clearedFields[sysuser.FieldDesc]
 	return ok
 }
 
-// ResetDescribe resets all changes to the "describe" field.
-func (m *SysUserMutation) ResetDescribe() {
-	m.describe = nil
-	delete(m.clearedFields, sysuser.FieldDescribe)
+// ResetDesc resets all changes to the "desc" field.
+func (m *SysUserMutation) ResetDesc() {
+	m.desc = nil
+	delete(m.clearedFields, sysuser.FieldDesc)
 }
 
 // SetLastLoginIP sets the "last_login_ip" field.
@@ -16286,8 +16286,8 @@ func (m *SysUserMutation) Fields() []string {
 	if m.user_name != nil {
 		fields = append(fields, sysuser.FieldUserName)
 	}
-	if m.user_nickname != nil {
-		fields = append(fields, sysuser.FieldUserNickname)
+	if m.nickname != nil {
+		fields = append(fields, sysuser.FieldNickname)
 	}
 	if m.mobile != nil {
 		fields = append(fields, sysuser.FieldMobile)
@@ -16295,14 +16295,14 @@ func (m *SysUserMutation) Fields() []string {
 	if m.birthday != nil {
 		fields = append(fields, sysuser.FieldBirthday)
 	}
-	if m.user_password != nil {
-		fields = append(fields, sysuser.FieldUserPassword)
+	if m.password != nil {
+		fields = append(fields, sysuser.FieldPassword)
 	}
-	if m.user_salt != nil {
-		fields = append(fields, sysuser.FieldUserSalt)
+	if m.salt != nil {
+		fields = append(fields, sysuser.FieldSalt)
 	}
-	if m.user_email != nil {
-		fields = append(fields, sysuser.FieldUserEmail)
+	if m.email != nil {
+		fields = append(fields, sysuser.FieldEmail)
 	}
 	if m.sex != nil {
 		fields = append(fields, sysuser.FieldSex)
@@ -16319,8 +16319,8 @@ func (m *SysUserMutation) Fields() []string {
 	if m.address != nil {
 		fields = append(fields, sysuser.FieldAddress)
 	}
-	if m.describe != nil {
-		fields = append(fields, sysuser.FieldDescribe)
+	if m.desc != nil {
+		fields = append(fields, sysuser.FieldDesc)
 	}
 	if m.last_login_ip != nil {
 		fields = append(fields, sysuser.FieldLastLoginIP)
@@ -16354,18 +16354,18 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.DelFlag()
 	case sysuser.FieldUserName:
 		return m.UserName()
-	case sysuser.FieldUserNickname:
-		return m.UserNickname()
+	case sysuser.FieldNickname:
+		return m.Nickname()
 	case sysuser.FieldMobile:
 		return m.Mobile()
 	case sysuser.FieldBirthday:
 		return m.Birthday()
-	case sysuser.FieldUserPassword:
-		return m.UserPassword()
-	case sysuser.FieldUserSalt:
-		return m.UserSalt()
-	case sysuser.FieldUserEmail:
-		return m.UserEmail()
+	case sysuser.FieldPassword:
+		return m.Password()
+	case sysuser.FieldSalt:
+		return m.Salt()
+	case sysuser.FieldEmail:
+		return m.Email()
 	case sysuser.FieldSex:
 		return m.Sex()
 	case sysuser.FieldAvatar:
@@ -16376,8 +16376,8 @@ func (m *SysUserMutation) Field(name string) (ent.Value, bool) {
 		return m.DeptID()
 	case sysuser.FieldAddress:
 		return m.Address()
-	case sysuser.FieldDescribe:
-		return m.Describe()
+	case sysuser.FieldDesc:
+		return m.Desc()
 	case sysuser.FieldLastLoginIP:
 		return m.LastLoginIP()
 	case sysuser.FieldLastLoginTime:
@@ -16409,18 +16409,18 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDelFlag(ctx)
 	case sysuser.FieldUserName:
 		return m.OldUserName(ctx)
-	case sysuser.FieldUserNickname:
-		return m.OldUserNickname(ctx)
+	case sysuser.FieldNickname:
+		return m.OldNickname(ctx)
 	case sysuser.FieldMobile:
 		return m.OldMobile(ctx)
 	case sysuser.FieldBirthday:
 		return m.OldBirthday(ctx)
-	case sysuser.FieldUserPassword:
-		return m.OldUserPassword(ctx)
-	case sysuser.FieldUserSalt:
-		return m.OldUserSalt(ctx)
-	case sysuser.FieldUserEmail:
-		return m.OldUserEmail(ctx)
+	case sysuser.FieldPassword:
+		return m.OldPassword(ctx)
+	case sysuser.FieldSalt:
+		return m.OldSalt(ctx)
+	case sysuser.FieldEmail:
+		return m.OldEmail(ctx)
 	case sysuser.FieldSex:
 		return m.OldSex(ctx)
 	case sysuser.FieldAvatar:
@@ -16431,8 +16431,8 @@ func (m *SysUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldDeptID(ctx)
 	case sysuser.FieldAddress:
 		return m.OldAddress(ctx)
-	case sysuser.FieldDescribe:
-		return m.OldDescribe(ctx)
+	case sysuser.FieldDesc:
+		return m.OldDesc(ctx)
 	case sysuser.FieldLastLoginIP:
 		return m.OldLastLoginIP(ctx)
 	case sysuser.FieldLastLoginTime:
@@ -16509,12 +16509,12 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUserName(v)
 		return nil
-	case sysuser.FieldUserNickname:
+	case sysuser.FieldNickname:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUserNickname(v)
+		m.SetNickname(v)
 		return nil
 	case sysuser.FieldMobile:
 		v, ok := value.(string)
@@ -16530,26 +16530,26 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBirthday(v)
 		return nil
-	case sysuser.FieldUserPassword:
+	case sysuser.FieldPassword:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUserPassword(v)
+		m.SetPassword(v)
 		return nil
-	case sysuser.FieldUserSalt:
+	case sysuser.FieldSalt:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUserSalt(v)
+		m.SetSalt(v)
 		return nil
-	case sysuser.FieldUserEmail:
+	case sysuser.FieldEmail:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUserEmail(v)
+		m.SetEmail(v)
 		return nil
 	case sysuser.FieldSex:
 		v, ok := value.(int8)
@@ -16586,12 +16586,12 @@ func (m *SysUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAddress(v)
 		return nil
-	case sysuser.FieldDescribe:
+	case sysuser.FieldDesc:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDescribe(v)
+		m.SetDesc(v)
 		return nil
 	case sysuser.FieldLastLoginIP:
 		v, ok := value.(string)
@@ -16733,8 +16733,8 @@ func (m *SysUserMutation) ClearedFields() []string {
 	if m.FieldCleared(sysuser.FieldRemark) {
 		fields = append(fields, sysuser.FieldRemark)
 	}
-	if m.FieldCleared(sysuser.FieldUserNickname) {
-		fields = append(fields, sysuser.FieldUserNickname)
+	if m.FieldCleared(sysuser.FieldNickname) {
+		fields = append(fields, sysuser.FieldNickname)
 	}
 	if m.FieldCleared(sysuser.FieldMobile) {
 		fields = append(fields, sysuser.FieldMobile)
@@ -16742,14 +16742,14 @@ func (m *SysUserMutation) ClearedFields() []string {
 	if m.FieldCleared(sysuser.FieldBirthday) {
 		fields = append(fields, sysuser.FieldBirthday)
 	}
-	if m.FieldCleared(sysuser.FieldUserPassword) {
-		fields = append(fields, sysuser.FieldUserPassword)
+	if m.FieldCleared(sysuser.FieldPassword) {
+		fields = append(fields, sysuser.FieldPassword)
 	}
-	if m.FieldCleared(sysuser.FieldUserSalt) {
-		fields = append(fields, sysuser.FieldUserSalt)
+	if m.FieldCleared(sysuser.FieldSalt) {
+		fields = append(fields, sysuser.FieldSalt)
 	}
-	if m.FieldCleared(sysuser.FieldUserEmail) {
-		fields = append(fields, sysuser.FieldUserEmail)
+	if m.FieldCleared(sysuser.FieldEmail) {
+		fields = append(fields, sysuser.FieldEmail)
 	}
 	if m.FieldCleared(sysuser.FieldSex) {
 		fields = append(fields, sysuser.FieldSex)
@@ -16766,8 +16766,8 @@ func (m *SysUserMutation) ClearedFields() []string {
 	if m.FieldCleared(sysuser.FieldAddress) {
 		fields = append(fields, sysuser.FieldAddress)
 	}
-	if m.FieldCleared(sysuser.FieldDescribe) {
-		fields = append(fields, sysuser.FieldDescribe)
+	if m.FieldCleared(sysuser.FieldDesc) {
+		fields = append(fields, sysuser.FieldDesc)
 	}
 	if m.FieldCleared(sysuser.FieldLastLoginIP) {
 		fields = append(fields, sysuser.FieldLastLoginIP)
@@ -16810,8 +16810,8 @@ func (m *SysUserMutation) ClearField(name string) error {
 	case sysuser.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case sysuser.FieldUserNickname:
-		m.ClearUserNickname()
+	case sysuser.FieldNickname:
+		m.ClearNickname()
 		return nil
 	case sysuser.FieldMobile:
 		m.ClearMobile()
@@ -16819,14 +16819,14 @@ func (m *SysUserMutation) ClearField(name string) error {
 	case sysuser.FieldBirthday:
 		m.ClearBirthday()
 		return nil
-	case sysuser.FieldUserPassword:
-		m.ClearUserPassword()
+	case sysuser.FieldPassword:
+		m.ClearPassword()
 		return nil
-	case sysuser.FieldUserSalt:
-		m.ClearUserSalt()
+	case sysuser.FieldSalt:
+		m.ClearSalt()
 		return nil
-	case sysuser.FieldUserEmail:
-		m.ClearUserEmail()
+	case sysuser.FieldEmail:
+		m.ClearEmail()
 		return nil
 	case sysuser.FieldSex:
 		m.ClearSex()
@@ -16843,8 +16843,8 @@ func (m *SysUserMutation) ClearField(name string) error {
 	case sysuser.FieldAddress:
 		m.ClearAddress()
 		return nil
-	case sysuser.FieldDescribe:
-		m.ClearDescribe()
+	case sysuser.FieldDesc:
+		m.ClearDesc()
 		return nil
 	case sysuser.FieldLastLoginIP:
 		m.ClearLastLoginIP()
@@ -16887,8 +16887,8 @@ func (m *SysUserMutation) ResetField(name string) error {
 	case sysuser.FieldUserName:
 		m.ResetUserName()
 		return nil
-	case sysuser.FieldUserNickname:
-		m.ResetUserNickname()
+	case sysuser.FieldNickname:
+		m.ResetNickname()
 		return nil
 	case sysuser.FieldMobile:
 		m.ResetMobile()
@@ -16896,14 +16896,14 @@ func (m *SysUserMutation) ResetField(name string) error {
 	case sysuser.FieldBirthday:
 		m.ResetBirthday()
 		return nil
-	case sysuser.FieldUserPassword:
-		m.ResetUserPassword()
+	case sysuser.FieldPassword:
+		m.ResetPassword()
 		return nil
-	case sysuser.FieldUserSalt:
-		m.ResetUserSalt()
+	case sysuser.FieldSalt:
+		m.ResetSalt()
 		return nil
-	case sysuser.FieldUserEmail:
-		m.ResetUserEmail()
+	case sysuser.FieldEmail:
+		m.ResetEmail()
 		return nil
 	case sysuser.FieldSex:
 		m.ResetSex()
@@ -16920,8 +16920,8 @@ func (m *SysUserMutation) ResetField(name string) error {
 	case sysuser.FieldAddress:
 		m.ResetAddress()
 		return nil
-	case sysuser.FieldDescribe:
-		m.ResetDescribe()
+	case sysuser.FieldDesc:
+		m.ResetDesc()
 		return nil
 	case sysuser.FieldLastLoginIP:
 		m.ResetLastLoginIP()

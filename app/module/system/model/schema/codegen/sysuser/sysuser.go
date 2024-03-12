@@ -33,18 +33,18 @@ const (
 	FieldDelFlag = "del_flag"
 	// FieldUserName holds the string denoting the user_name field in the database.
 	FieldUserName = "user_name"
-	// FieldUserNickname holds the string denoting the user_nickname field in the database.
-	FieldUserNickname = "user_nickname"
+	// FieldNickname holds the string denoting the nickname field in the database.
+	FieldNickname = "nickname"
 	// FieldMobile holds the string denoting the mobile field in the database.
 	FieldMobile = "mobile"
 	// FieldBirthday holds the string denoting the birthday field in the database.
 	FieldBirthday = "birthday"
-	// FieldUserPassword holds the string denoting the user_password field in the database.
-	FieldUserPassword = "user_password"
-	// FieldUserSalt holds the string denoting the user_salt field in the database.
-	FieldUserSalt = "user_salt"
-	// FieldUserEmail holds the string denoting the user_email field in the database.
-	FieldUserEmail = "user_email"
+	// FieldPassword holds the string denoting the password field in the database.
+	FieldPassword = "password"
+	// FieldSalt holds the string denoting the salt field in the database.
+	FieldSalt = "salt"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
 	// FieldSex holds the string denoting the sex field in the database.
 	FieldSex = "sex"
 	// FieldAvatar holds the string denoting the avatar field in the database.
@@ -55,8 +55,8 @@ const (
 	FieldDeptID = "dept_id"
 	// FieldAddress holds the string denoting the address field in the database.
 	FieldAddress = "address"
-	// FieldDescribe holds the string denoting the describe field in the database.
-	FieldDescribe = "describe"
+	// FieldDesc holds the string denoting the desc field in the database.
+	FieldDesc = "desc"
 	// FieldLastLoginIP holds the string denoting the last_login_ip field in the database.
 	FieldLastLoginIP = "last_login_ip"
 	// FieldLastLoginTime holds the string denoting the last_login_time field in the database.
@@ -100,18 +100,18 @@ var Columns = []string{
 	FieldRemark,
 	FieldDelFlag,
 	FieldUserName,
-	FieldUserNickname,
+	FieldNickname,
 	FieldMobile,
 	FieldBirthday,
-	FieldUserPassword,
-	FieldUserSalt,
-	FieldUserEmail,
+	FieldPassword,
+	FieldSalt,
+	FieldEmail,
 	FieldSex,
 	FieldAvatar,
 	FieldUserStatus,
 	FieldDeptID,
 	FieldAddress,
-	FieldDescribe,
+	FieldDesc,
 	FieldLastLoginIP,
 	FieldLastLoginTime,
 }
@@ -208,9 +208,9 @@ func ByUserName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUserName, opts...).ToFunc()
 }
 
-// ByUserNickname orders the results by the user_nickname field.
-func ByUserNickname(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserNickname, opts...).ToFunc()
+// ByNickname orders the results by the nickname field.
+func ByNickname(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNickname, opts...).ToFunc()
 }
 
 // ByMobile orders the results by the mobile field.
@@ -223,19 +223,19 @@ func ByBirthday(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBirthday, opts...).ToFunc()
 }
 
-// ByUserPassword orders the results by the user_password field.
-func ByUserPassword(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserPassword, opts...).ToFunc()
+// ByPassword orders the results by the password field.
+func ByPassword(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPassword, opts...).ToFunc()
 }
 
-// ByUserSalt orders the results by the user_salt field.
-func ByUserSalt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserSalt, opts...).ToFunc()
+// BySalt orders the results by the salt field.
+func BySalt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSalt, opts...).ToFunc()
 }
 
-// ByUserEmail orders the results by the user_email field.
-func ByUserEmail(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserEmail, opts...).ToFunc()
+// ByEmail orders the results by the email field.
+func ByEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }
 
 // BySex orders the results by the sex field.
@@ -263,9 +263,9 @@ func ByAddress(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAddress, opts...).ToFunc()
 }
 
-// ByDescribe orders the results by the describe field.
-func ByDescribe(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDescribe, opts...).ToFunc()
+// ByDesc orders the results by the desc field.
+func ByDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDesc, opts...).ToFunc()
 }
 
 // ByLastLoginIP orders the results by the last_login_ip field.

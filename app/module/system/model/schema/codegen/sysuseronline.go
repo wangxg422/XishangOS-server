@@ -17,19 +17,19 @@ type SysUserOnline struct {
 	// ID of the ent.
 	ID int64 `json:"id,string"`
 	// 用户标识
-	UUID int64 `json:"uuid,omitempty"`
+	UUID int64 `json:"uuid"`
 	// 用户token
-	Token int64 `json:"token,omitempty"`
+	Token int64 `json:"token"`
 	// 登录时间
-	CreateTime int64 `json:"create_time,omitempty"`
+	CreateTime int64 `json:"createTime"`
 	// 用户名
-	UserName int64 `json:"user_name,omitempty"`
+	UserName int64 `json:"userName"`
 	// 登录ip
-	IPAddr int64 `json:"ip_addr,omitempty"`
+	IPAddr int64 `json:"ipAddr"`
 	// 浏览器
-	Browser int64 `json:"browser,omitempty"`
+	Browser int64 `json:"browser"`
 	// 操作系统
-	Os           int64 `json:"os,omitempty"`
+	Os           int64 `json:"os"`
 	selectValues sql.SelectValues
 }
 

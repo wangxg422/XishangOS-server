@@ -38,39 +38,39 @@ type SysMenu struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 父菜单ID
-	Pid int64 `json:"pid,omitempty"`
+	Pid int64 `json:"pId,string"`
 	// 菜单名称
-	MenuName string `json:"menu_name,omitempty"`
+	MenuName string `json:"menuName"`
 	// 菜单标题
-	MenuTitle string `json:"menu_title,omitempty"`
+	MenuTitle string `json:"menuTitle"`
 	// 菜单图标
-	MenuIcon string `json:"menu_icon,omitempty"`
+	MenuIcon string `json:"menuIcon"`
 	// 条件
-	Condition string `json:"condition,omitempty"`
+	Condition string `json:"condition"`
 	// 菜单类型(0目录,1菜单,2按钮)
-	MenuType int8 `json:"menu_type,omitempty"`
+	MenuType int8 `json:"type"`
 	// 路由地址
-	Path string `json:"path,omitempty"`
+	Path string `json:"path"`
 	// 组件路径
-	Component string `json:"component,omitempty"`
+	Component string `json:"component"`
 	// 所属模块
-	ModuleType string `json:"module_type,omitempty"`
+	ModuleType string `json:"moduleType"`
 	// 模型id
-	ModelID int64 `json:"model_id,omitempty"`
+	ModelID int64 `json:"modelId"`
 	// 显示状态
-	IsHide int8 `json:"is_hide,omitempty"`
+	IsHide int8 `json:"isHide"`
 	// 是否是内嵌iframe(1是,0否)
-	IsIframe int8 `json:"is_iframe,omitempty"`
+	IsIframe int8 `json:"isIframe"`
 	// 是否是外部链接(1是,0否)
-	IsLink int8 `json:"is_link,omitempty"`
+	IsLink int8 `json:"isLink"`
 	// 是否缓存(1是,0否)
-	IsCached int8 `json:"is_cached,omitempty"`
+	IsCached int8 `json:"isCached"`
 	// 是否固定(1是,0否)
-	IsAffix int8 `json:"is_affix,omitempty"`
+	IsAffix int8 `json:"isAffix"`
 	// 路由重定向地址
-	Redirect string `json:"redirect,omitempty"`
+	Redirect string `json:"redirect"`
 	// 链接地址
-	LinkURL string `json:"link_url,omitempty"`
+	LinkURL string `json:"linkUrl"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysMenuQuery when eager-loading is set.
 	Edges        SysMenuEdges `json:"edges"`

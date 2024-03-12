@@ -40,8 +40,8 @@ func (SysDictType) Mixin() []ent.Mixin {
 // Fields of the SysDictType.
 func (SysDictType) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("dict_name").Optional().Comment("字典类型名称"),
-		field.String("dict_type").Optional().Comment("字典类型").Unique(),
+		field.String("dict_name").StructTag(`json:"dictName"`).Optional().Comment("字典类型名称"),
+		field.String("dict_type").StructTag(`json:"dictType"`).Optional().Comment("字典类型").Unique(),
 	}
 }
 

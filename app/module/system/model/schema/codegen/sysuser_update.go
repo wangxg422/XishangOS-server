@@ -219,23 +219,23 @@ func (suu *SysUserUpdate) SetNillableUserName(s *string) *SysUserUpdate {
 	return suu
 }
 
-// SetUserNickname sets the "user_nickname" field.
-func (suu *SysUserUpdate) SetUserNickname(s string) *SysUserUpdate {
-	suu.mutation.SetUserNickname(s)
+// SetNickname sets the "nickname" field.
+func (suu *SysUserUpdate) SetNickname(s string) *SysUserUpdate {
+	suu.mutation.SetNickname(s)
 	return suu
 }
 
-// SetNillableUserNickname sets the "user_nickname" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableUserNickname(s *string) *SysUserUpdate {
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableNickname(s *string) *SysUserUpdate {
 	if s != nil {
-		suu.SetUserNickname(*s)
+		suu.SetNickname(*s)
 	}
 	return suu
 }
 
-// ClearUserNickname clears the value of the "user_nickname" field.
-func (suu *SysUserUpdate) ClearUserNickname() *SysUserUpdate {
-	suu.mutation.ClearUserNickname()
+// ClearNickname clears the value of the "nickname" field.
+func (suu *SysUserUpdate) ClearNickname() *SysUserUpdate {
+	suu.mutation.ClearNickname()
 	return suu
 }
 
@@ -279,63 +279,63 @@ func (suu *SysUserUpdate) ClearBirthday() *SysUserUpdate {
 	return suu
 }
 
-// SetUserPassword sets the "user_password" field.
-func (suu *SysUserUpdate) SetUserPassword(s string) *SysUserUpdate {
-	suu.mutation.SetUserPassword(s)
+// SetPassword sets the "password" field.
+func (suu *SysUserUpdate) SetPassword(s string) *SysUserUpdate {
+	suu.mutation.SetPassword(s)
 	return suu
 }
 
-// SetNillableUserPassword sets the "user_password" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableUserPassword(s *string) *SysUserUpdate {
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillablePassword(s *string) *SysUserUpdate {
 	if s != nil {
-		suu.SetUserPassword(*s)
+		suu.SetPassword(*s)
 	}
 	return suu
 }
 
-// ClearUserPassword clears the value of the "user_password" field.
-func (suu *SysUserUpdate) ClearUserPassword() *SysUserUpdate {
-	suu.mutation.ClearUserPassword()
+// ClearPassword clears the value of the "password" field.
+func (suu *SysUserUpdate) ClearPassword() *SysUserUpdate {
+	suu.mutation.ClearPassword()
 	return suu
 }
 
-// SetUserSalt sets the "user_salt" field.
-func (suu *SysUserUpdate) SetUserSalt(s string) *SysUserUpdate {
-	suu.mutation.SetUserSalt(s)
+// SetSalt sets the "salt" field.
+func (suu *SysUserUpdate) SetSalt(s string) *SysUserUpdate {
+	suu.mutation.SetSalt(s)
 	return suu
 }
 
-// SetNillableUserSalt sets the "user_salt" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableUserSalt(s *string) *SysUserUpdate {
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableSalt(s *string) *SysUserUpdate {
 	if s != nil {
-		suu.SetUserSalt(*s)
+		suu.SetSalt(*s)
 	}
 	return suu
 }
 
-// ClearUserSalt clears the value of the "user_salt" field.
-func (suu *SysUserUpdate) ClearUserSalt() *SysUserUpdate {
-	suu.mutation.ClearUserSalt()
+// ClearSalt clears the value of the "salt" field.
+func (suu *SysUserUpdate) ClearSalt() *SysUserUpdate {
+	suu.mutation.ClearSalt()
 	return suu
 }
 
-// SetUserEmail sets the "user_email" field.
-func (suu *SysUserUpdate) SetUserEmail(s string) *SysUserUpdate {
-	suu.mutation.SetUserEmail(s)
+// SetEmail sets the "email" field.
+func (suu *SysUserUpdate) SetEmail(s string) *SysUserUpdate {
+	suu.mutation.SetEmail(s)
 	return suu
 }
 
-// SetNillableUserEmail sets the "user_email" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableUserEmail(s *string) *SysUserUpdate {
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableEmail(s *string) *SysUserUpdate {
 	if s != nil {
-		suu.SetUserEmail(*s)
+		suu.SetEmail(*s)
 	}
 	return suu
 }
 
-// ClearUserEmail clears the value of the "user_email" field.
-func (suu *SysUserUpdate) ClearUserEmail() *SysUserUpdate {
-	suu.mutation.ClearUserEmail()
+// ClearEmail clears the value of the "email" field.
+func (suu *SysUserUpdate) ClearEmail() *SysUserUpdate {
+	suu.mutation.ClearEmail()
 	return suu
 }
 
@@ -453,23 +453,23 @@ func (suu *SysUserUpdate) ClearAddress() *SysUserUpdate {
 	return suu
 }
 
-// SetDescribe sets the "describe" field.
-func (suu *SysUserUpdate) SetDescribe(s string) *SysUserUpdate {
-	suu.mutation.SetDescribe(s)
+// SetDesc sets the "desc" field.
+func (suu *SysUserUpdate) SetDesc(s string) *SysUserUpdate {
+	suu.mutation.SetDesc(s)
 	return suu
 }
 
-// SetNillableDescribe sets the "describe" field if the given value is not nil.
-func (suu *SysUserUpdate) SetNillableDescribe(s *string) *SysUserUpdate {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (suu *SysUserUpdate) SetNillableDesc(s *string) *SysUserUpdate {
 	if s != nil {
-		suu.SetDescribe(*s)
+		suu.SetDesc(*s)
 	}
 	return suu
 }
 
-// ClearDescribe clears the value of the "describe" field.
-func (suu *SysUserUpdate) ClearDescribe() *SysUserUpdate {
-	suu.mutation.ClearDescribe()
+// ClearDesc clears the value of the "desc" field.
+func (suu *SysUserUpdate) ClearDesc() *SysUserUpdate {
+	suu.mutation.ClearDesc()
 	return suu
 }
 
@@ -726,11 +726,11 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := suu.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
 	}
-	if value, ok := suu.mutation.UserNickname(); ok {
-		_spec.SetField(sysuser.FieldUserNickname, field.TypeString, value)
+	if value, ok := suu.mutation.Nickname(); ok {
+		_spec.SetField(sysuser.FieldNickname, field.TypeString, value)
 	}
-	if suu.mutation.UserNicknameCleared() {
-		_spec.ClearField(sysuser.FieldUserNickname, field.TypeString)
+	if suu.mutation.NicknameCleared() {
+		_spec.ClearField(sysuser.FieldNickname, field.TypeString)
 	}
 	if value, ok := suu.mutation.Mobile(); ok {
 		_spec.SetField(sysuser.FieldMobile, field.TypeString, value)
@@ -744,23 +744,23 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if suu.mutation.BirthdayCleared() {
 		_spec.ClearField(sysuser.FieldBirthday, field.TypeString)
 	}
-	if value, ok := suu.mutation.UserPassword(); ok {
-		_spec.SetField(sysuser.FieldUserPassword, field.TypeString, value)
+	if value, ok := suu.mutation.Password(); ok {
+		_spec.SetField(sysuser.FieldPassword, field.TypeString, value)
 	}
-	if suu.mutation.UserPasswordCleared() {
-		_spec.ClearField(sysuser.FieldUserPassword, field.TypeString)
+	if suu.mutation.PasswordCleared() {
+		_spec.ClearField(sysuser.FieldPassword, field.TypeString)
 	}
-	if value, ok := suu.mutation.UserSalt(); ok {
-		_spec.SetField(sysuser.FieldUserSalt, field.TypeString, value)
+	if value, ok := suu.mutation.Salt(); ok {
+		_spec.SetField(sysuser.FieldSalt, field.TypeString, value)
 	}
-	if suu.mutation.UserSaltCleared() {
-		_spec.ClearField(sysuser.FieldUserSalt, field.TypeString)
+	if suu.mutation.SaltCleared() {
+		_spec.ClearField(sysuser.FieldSalt, field.TypeString)
 	}
-	if value, ok := suu.mutation.UserEmail(); ok {
-		_spec.SetField(sysuser.FieldUserEmail, field.TypeString, value)
+	if value, ok := suu.mutation.Email(); ok {
+		_spec.SetField(sysuser.FieldEmail, field.TypeString, value)
 	}
-	if suu.mutation.UserEmailCleared() {
-		_spec.ClearField(sysuser.FieldUserEmail, field.TypeString)
+	if suu.mutation.EmailCleared() {
+		_spec.ClearField(sysuser.FieldEmail, field.TypeString)
 	}
 	if value, ok := suu.mutation.Sex(); ok {
 		_spec.SetField(sysuser.FieldSex, field.TypeInt8, value)
@@ -792,11 +792,11 @@ func (suu *SysUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if suu.mutation.AddressCleared() {
 		_spec.ClearField(sysuser.FieldAddress, field.TypeString)
 	}
-	if value, ok := suu.mutation.Describe(); ok {
-		_spec.SetField(sysuser.FieldDescribe, field.TypeString, value)
+	if value, ok := suu.mutation.Desc(); ok {
+		_spec.SetField(sysuser.FieldDesc, field.TypeString, value)
 	}
-	if suu.mutation.DescribeCleared() {
-		_spec.ClearField(sysuser.FieldDescribe, field.TypeString)
+	if suu.mutation.DescCleared() {
+		_spec.ClearField(sysuser.FieldDesc, field.TypeString)
 	}
 	if value, ok := suu.mutation.LastLoginIP(); ok {
 		_spec.SetField(sysuser.FieldLastLoginIP, field.TypeString, value)
@@ -1137,23 +1137,23 @@ func (suuo *SysUserUpdateOne) SetNillableUserName(s *string) *SysUserUpdateOne {
 	return suuo
 }
 
-// SetUserNickname sets the "user_nickname" field.
-func (suuo *SysUserUpdateOne) SetUserNickname(s string) *SysUserUpdateOne {
-	suuo.mutation.SetUserNickname(s)
+// SetNickname sets the "nickname" field.
+func (suuo *SysUserUpdateOne) SetNickname(s string) *SysUserUpdateOne {
+	suuo.mutation.SetNickname(s)
 	return suuo
 }
 
-// SetNillableUserNickname sets the "user_nickname" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableUserNickname(s *string) *SysUserUpdateOne {
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableNickname(s *string) *SysUserUpdateOne {
 	if s != nil {
-		suuo.SetUserNickname(*s)
+		suuo.SetNickname(*s)
 	}
 	return suuo
 }
 
-// ClearUserNickname clears the value of the "user_nickname" field.
-func (suuo *SysUserUpdateOne) ClearUserNickname() *SysUserUpdateOne {
-	suuo.mutation.ClearUserNickname()
+// ClearNickname clears the value of the "nickname" field.
+func (suuo *SysUserUpdateOne) ClearNickname() *SysUserUpdateOne {
+	suuo.mutation.ClearNickname()
 	return suuo
 }
 
@@ -1197,63 +1197,63 @@ func (suuo *SysUserUpdateOne) ClearBirthday() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetUserPassword sets the "user_password" field.
-func (suuo *SysUserUpdateOne) SetUserPassword(s string) *SysUserUpdateOne {
-	suuo.mutation.SetUserPassword(s)
+// SetPassword sets the "password" field.
+func (suuo *SysUserUpdateOne) SetPassword(s string) *SysUserUpdateOne {
+	suuo.mutation.SetPassword(s)
 	return suuo
 }
 
-// SetNillableUserPassword sets the "user_password" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableUserPassword(s *string) *SysUserUpdateOne {
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillablePassword(s *string) *SysUserUpdateOne {
 	if s != nil {
-		suuo.SetUserPassword(*s)
+		suuo.SetPassword(*s)
 	}
 	return suuo
 }
 
-// ClearUserPassword clears the value of the "user_password" field.
-func (suuo *SysUserUpdateOne) ClearUserPassword() *SysUserUpdateOne {
-	suuo.mutation.ClearUserPassword()
+// ClearPassword clears the value of the "password" field.
+func (suuo *SysUserUpdateOne) ClearPassword() *SysUserUpdateOne {
+	suuo.mutation.ClearPassword()
 	return suuo
 }
 
-// SetUserSalt sets the "user_salt" field.
-func (suuo *SysUserUpdateOne) SetUserSalt(s string) *SysUserUpdateOne {
-	suuo.mutation.SetUserSalt(s)
+// SetSalt sets the "salt" field.
+func (suuo *SysUserUpdateOne) SetSalt(s string) *SysUserUpdateOne {
+	suuo.mutation.SetSalt(s)
 	return suuo
 }
 
-// SetNillableUserSalt sets the "user_salt" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableUserSalt(s *string) *SysUserUpdateOne {
+// SetNillableSalt sets the "salt" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableSalt(s *string) *SysUserUpdateOne {
 	if s != nil {
-		suuo.SetUserSalt(*s)
+		suuo.SetSalt(*s)
 	}
 	return suuo
 }
 
-// ClearUserSalt clears the value of the "user_salt" field.
-func (suuo *SysUserUpdateOne) ClearUserSalt() *SysUserUpdateOne {
-	suuo.mutation.ClearUserSalt()
+// ClearSalt clears the value of the "salt" field.
+func (suuo *SysUserUpdateOne) ClearSalt() *SysUserUpdateOne {
+	suuo.mutation.ClearSalt()
 	return suuo
 }
 
-// SetUserEmail sets the "user_email" field.
-func (suuo *SysUserUpdateOne) SetUserEmail(s string) *SysUserUpdateOne {
-	suuo.mutation.SetUserEmail(s)
+// SetEmail sets the "email" field.
+func (suuo *SysUserUpdateOne) SetEmail(s string) *SysUserUpdateOne {
+	suuo.mutation.SetEmail(s)
 	return suuo
 }
 
-// SetNillableUserEmail sets the "user_email" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableUserEmail(s *string) *SysUserUpdateOne {
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableEmail(s *string) *SysUserUpdateOne {
 	if s != nil {
-		suuo.SetUserEmail(*s)
+		suuo.SetEmail(*s)
 	}
 	return suuo
 }
 
-// ClearUserEmail clears the value of the "user_email" field.
-func (suuo *SysUserUpdateOne) ClearUserEmail() *SysUserUpdateOne {
-	suuo.mutation.ClearUserEmail()
+// ClearEmail clears the value of the "email" field.
+func (suuo *SysUserUpdateOne) ClearEmail() *SysUserUpdateOne {
+	suuo.mutation.ClearEmail()
 	return suuo
 }
 
@@ -1371,23 +1371,23 @@ func (suuo *SysUserUpdateOne) ClearAddress() *SysUserUpdateOne {
 	return suuo
 }
 
-// SetDescribe sets the "describe" field.
-func (suuo *SysUserUpdateOne) SetDescribe(s string) *SysUserUpdateOne {
-	suuo.mutation.SetDescribe(s)
+// SetDesc sets the "desc" field.
+func (suuo *SysUserUpdateOne) SetDesc(s string) *SysUserUpdateOne {
+	suuo.mutation.SetDesc(s)
 	return suuo
 }
 
-// SetNillableDescribe sets the "describe" field if the given value is not nil.
-func (suuo *SysUserUpdateOne) SetNillableDescribe(s *string) *SysUserUpdateOne {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (suuo *SysUserUpdateOne) SetNillableDesc(s *string) *SysUserUpdateOne {
 	if s != nil {
-		suuo.SetDescribe(*s)
+		suuo.SetDesc(*s)
 	}
 	return suuo
 }
 
-// ClearDescribe clears the value of the "describe" field.
-func (suuo *SysUserUpdateOne) ClearDescribe() *SysUserUpdateOne {
-	suuo.mutation.ClearDescribe()
+// ClearDesc clears the value of the "desc" field.
+func (suuo *SysUserUpdateOne) ClearDesc() *SysUserUpdateOne {
+	suuo.mutation.ClearDesc()
 	return suuo
 }
 
@@ -1674,11 +1674,11 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	if value, ok := suuo.mutation.UserName(); ok {
 		_spec.SetField(sysuser.FieldUserName, field.TypeString, value)
 	}
-	if value, ok := suuo.mutation.UserNickname(); ok {
-		_spec.SetField(sysuser.FieldUserNickname, field.TypeString, value)
+	if value, ok := suuo.mutation.Nickname(); ok {
+		_spec.SetField(sysuser.FieldNickname, field.TypeString, value)
 	}
-	if suuo.mutation.UserNicknameCleared() {
-		_spec.ClearField(sysuser.FieldUserNickname, field.TypeString)
+	if suuo.mutation.NicknameCleared() {
+		_spec.ClearField(sysuser.FieldNickname, field.TypeString)
 	}
 	if value, ok := suuo.mutation.Mobile(); ok {
 		_spec.SetField(sysuser.FieldMobile, field.TypeString, value)
@@ -1692,23 +1692,23 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	if suuo.mutation.BirthdayCleared() {
 		_spec.ClearField(sysuser.FieldBirthday, field.TypeString)
 	}
-	if value, ok := suuo.mutation.UserPassword(); ok {
-		_spec.SetField(sysuser.FieldUserPassword, field.TypeString, value)
+	if value, ok := suuo.mutation.Password(); ok {
+		_spec.SetField(sysuser.FieldPassword, field.TypeString, value)
 	}
-	if suuo.mutation.UserPasswordCleared() {
-		_spec.ClearField(sysuser.FieldUserPassword, field.TypeString)
+	if suuo.mutation.PasswordCleared() {
+		_spec.ClearField(sysuser.FieldPassword, field.TypeString)
 	}
-	if value, ok := suuo.mutation.UserSalt(); ok {
-		_spec.SetField(sysuser.FieldUserSalt, field.TypeString, value)
+	if value, ok := suuo.mutation.Salt(); ok {
+		_spec.SetField(sysuser.FieldSalt, field.TypeString, value)
 	}
-	if suuo.mutation.UserSaltCleared() {
-		_spec.ClearField(sysuser.FieldUserSalt, field.TypeString)
+	if suuo.mutation.SaltCleared() {
+		_spec.ClearField(sysuser.FieldSalt, field.TypeString)
 	}
-	if value, ok := suuo.mutation.UserEmail(); ok {
-		_spec.SetField(sysuser.FieldUserEmail, field.TypeString, value)
+	if value, ok := suuo.mutation.Email(); ok {
+		_spec.SetField(sysuser.FieldEmail, field.TypeString, value)
 	}
-	if suuo.mutation.UserEmailCleared() {
-		_spec.ClearField(sysuser.FieldUserEmail, field.TypeString)
+	if suuo.mutation.EmailCleared() {
+		_spec.ClearField(sysuser.FieldEmail, field.TypeString)
 	}
 	if value, ok := suuo.mutation.Sex(); ok {
 		_spec.SetField(sysuser.FieldSex, field.TypeInt8, value)
@@ -1740,11 +1740,11 @@ func (suuo *SysUserUpdateOne) sqlSave(ctx context.Context) (_node *SysUser, err 
 	if suuo.mutation.AddressCleared() {
 		_spec.ClearField(sysuser.FieldAddress, field.TypeString)
 	}
-	if value, ok := suuo.mutation.Describe(); ok {
-		_spec.SetField(sysuser.FieldDescribe, field.TypeString, value)
+	if value, ok := suuo.mutation.Desc(); ok {
+		_spec.SetField(sysuser.FieldDesc, field.TypeString, value)
 	}
-	if suuo.mutation.DescribeCleared() {
-		_spec.ClearField(sysuser.FieldDescribe, field.TypeString)
+	if suuo.mutation.DescCleared() {
+		_spec.ClearField(sysuser.FieldDesc, field.TypeString)
 	}
 	if value, ok := suuo.mutation.LastLoginIP(); ok {
 		_spec.SetField(sysuser.FieldLastLoginIP, field.TypeString, value)

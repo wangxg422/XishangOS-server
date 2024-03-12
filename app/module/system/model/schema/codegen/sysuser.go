@@ -35,35 +35,35 @@ type SysUser struct {
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// UserName holds the value of the "user_name" field.
-	UserName string `json:"user_name,omitempty"`
+	UserName string `json:"userName"`
 	// 用户昵称
-	UserNickname string `json:"user_nickname,omitempty"`
+	Nickname string `json:"nickName"`
 	// Mobile holds the value of the "mobile" field.
-	Mobile string `json:"mobile,omitempty"`
+	Mobile string `json:"mobile"`
 	// Birthday holds the value of the "birthday" field.
-	Birthday string `json:"birthday,omitempty"`
-	// UserPassword holds the value of the "user_password" field.
-	UserPassword string `json:"user_password,omitempty"`
-	// UserSalt holds the value of the "user_salt" field.
-	UserSalt string `json:"user_salt,omitempty"`
-	// UserEmail holds the value of the "user_email" field.
-	UserEmail string `json:"user_email,omitempty"`
+	Birthday string `json:"birthday"`
+	// Password holds the value of the "password" field.
+	Password string `json:"password"`
+	// Salt holds the value of the "salt" field.
+	Salt string `json:"salt"`
+	// Email holds the value of the "email" field.
+	Email string `json:"email"`
 	// Sex holds the value of the "sex" field.
-	Sex int8 `json:"sex,omitempty"`
+	Sex int8 `json:"sex"`
 	// 用户头像地址
-	Avatar string `json:"avatar,omitempty"`
+	Avatar string `json:"avatar"`
 	// 用户状态(0禁用,1正常,2未知)
-	UserStatus int8 `json:"user_status,omitempty"`
+	UserStatus int8 `json:"userStatus"`
 	// 用户所属部门
-	DeptID int64 `json:"dept_id,omitempty"`
+	DeptID int64 `json:"deptId,string"`
 	// 用户联系地址
-	Address string `json:"address,omitempty"`
-	// Describe holds the value of the "describe" field.
-	Describe string `json:"describe,omitempty"`
+	Address string `json:"address"`
+	// Desc holds the value of the "desc" field.
+	Desc string `json:"desc"`
 	// LastLoginIP holds the value of the "last_login_ip" field.
-	LastLoginIP string `json:"last_login_ip,omitempty"`
+	LastLoginIP string `json:"lastLoginIp"`
 	// LastLoginTime holds the value of the "last_login_time" field.
-	LastLoginTime string `json:"last_login_time,omitempty"`
+	LastLoginTime string `json:"lastLoginTime"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the SysUserQuery when eager-loading is set.
 	Edges        SysUserEdges `json:"edges"`
@@ -121,7 +121,7 @@ func (*SysUser) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case sysuser.FieldID, sysuser.FieldCreatedBy, sysuser.FieldUpdatedBy, sysuser.FieldDeleteBy, sysuser.FieldDelFlag, sysuser.FieldSex, sysuser.FieldUserStatus, sysuser.FieldDeptID:
 			values[i] = new(sql.NullInt64)
-		case sysuser.FieldRemark, sysuser.FieldUserName, sysuser.FieldUserNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldUserPassword, sysuser.FieldUserSalt, sysuser.FieldUserEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDescribe, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
+		case sysuser.FieldRemark, sysuser.FieldUserName, sysuser.FieldNickname, sysuser.FieldMobile, sysuser.FieldBirthday, sysuser.FieldPassword, sysuser.FieldSalt, sysuser.FieldEmail, sysuser.FieldAvatar, sysuser.FieldAddress, sysuser.FieldDesc, sysuser.FieldLastLoginIP, sysuser.FieldLastLoginTime:
 			values[i] = new(sql.NullString)
 		case sysuser.FieldCreatedAt, sysuser.FieldUpdatedAt, sysuser.FieldDeleteAt:
 			values[i] = new(sql.NullTime)
@@ -200,11 +200,11 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.UserName = value.String
 			}
-		case sysuser.FieldUserNickname:
+		case sysuser.FieldNickname:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_nickname", values[i])
+				return fmt.Errorf("unexpected type %T for field nickname", values[i])
 			} else if value.Valid {
-				su.UserNickname = value.String
+				su.Nickname = value.String
 			}
 		case sysuser.FieldMobile:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -218,23 +218,23 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.Birthday = value.String
 			}
-		case sysuser.FieldUserPassword:
+		case sysuser.FieldPassword:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_password", values[i])
+				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
-				su.UserPassword = value.String
+				su.Password = value.String
 			}
-		case sysuser.FieldUserSalt:
+		case sysuser.FieldSalt:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_salt", values[i])
+				return fmt.Errorf("unexpected type %T for field salt", values[i])
 			} else if value.Valid {
-				su.UserSalt = value.String
+				su.Salt = value.String
 			}
-		case sysuser.FieldUserEmail:
+		case sysuser.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_email", values[i])
+				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
-				su.UserEmail = value.String
+				su.Email = value.String
 			}
 		case sysuser.FieldSex:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -266,11 +266,11 @@ func (su *SysUser) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				su.Address = value.String
 			}
-		case sysuser.FieldDescribe:
+		case sysuser.FieldDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field describe", values[i])
+				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
-				su.Describe = value.String
+				su.Desc = value.String
 			}
 		case sysuser.FieldLastLoginIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -362,8 +362,8 @@ func (su *SysUser) String() string {
 	builder.WriteString("user_name=")
 	builder.WriteString(su.UserName)
 	builder.WriteString(", ")
-	builder.WriteString("user_nickname=")
-	builder.WriteString(su.UserNickname)
+	builder.WriteString("nickname=")
+	builder.WriteString(su.Nickname)
 	builder.WriteString(", ")
 	builder.WriteString("mobile=")
 	builder.WriteString(su.Mobile)
@@ -371,14 +371,14 @@ func (su *SysUser) String() string {
 	builder.WriteString("birthday=")
 	builder.WriteString(su.Birthday)
 	builder.WriteString(", ")
-	builder.WriteString("user_password=")
-	builder.WriteString(su.UserPassword)
+	builder.WriteString("password=")
+	builder.WriteString(su.Password)
 	builder.WriteString(", ")
-	builder.WriteString("user_salt=")
-	builder.WriteString(su.UserSalt)
+	builder.WriteString("salt=")
+	builder.WriteString(su.Salt)
 	builder.WriteString(", ")
-	builder.WriteString("user_email=")
-	builder.WriteString(su.UserEmail)
+	builder.WriteString("email=")
+	builder.WriteString(su.Email)
 	builder.WriteString(", ")
 	builder.WriteString("sex=")
 	builder.WriteString(fmt.Sprintf("%v", su.Sex))
@@ -395,8 +395,8 @@ func (su *SysUser) String() string {
 	builder.WriteString("address=")
 	builder.WriteString(su.Address)
 	builder.WriteString(", ")
-	builder.WriteString("describe=")
-	builder.WriteString(su.Describe)
+	builder.WriteString("desc=")
+	builder.WriteString(su.Desc)
 	builder.WriteString(", ")
 	builder.WriteString("last_login_ip=")
 	builder.WriteString(su.LastLoginIP)
