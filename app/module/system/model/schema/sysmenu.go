@@ -52,6 +52,7 @@ func (SysMenu) Fields() []ent.Field {
 		field.Int8("is_hide").StructTag(`json:"isHide"`).Optional().Comment("显示状态"),
 		field.Int8("is_affix").StructTag(`json:"isAffix"`).Optional().Comment("是否固定(1是,2否)"),
 		field.Int8("is_keep_alive").StructTag(`json:"isKeepAlive"`).Optional().Comment("是否缓存(1是,2否)"),
+		field.Int8("is_full").StructTag(`json:"isFull"`).Optional().Comment("是否是全屏页面(1是,2否)"),
 		field.Int8("is_iframe").StructTag(`json:"isIframe"`).Optional().Comment("是否是内嵌iframe(1是,0否)"),
 		field.Int8("type").StructTag(`json:"type"`).Optional().Comment("菜单类型(1目录,2菜单,3按钮)"),
 		field.String("module_type").StructTag(`json:"moduleType"`).Optional().Comment("所属模块"),

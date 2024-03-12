@@ -87,18 +87,17 @@ func (m *SysMenu) SetMenuData(menu *codegen.SysMenu) *response.UserMenu {
 		Name:      menu.Name,
 		Component: menu.Component,
 		Path:      menu.Path,
+		Redirect:  menu.Redirect,
 		MenuMeta: &response.MenuMeta{
 			Icon:        menu.Icon,
 			Title:       menu.Title,
-			IsLink:      "",
+			IsLink:      menu.LinkURL,
 			IsHide:      menu.IsHide == 1,
 			IsKeepAlive: menu.IsKeepAlive == 1,
 			IsAffix:     menu.IsAffix == 1,
 			IsIframe:    menu.IsIframe == 1,
+			IsFull:      menu.IsFull == 1,
 		},
-	}
-	if newMenu.MenuMeta.IsIframe || menu.IsLink == 1 {
-		newMenu.MenuMeta.IsLink = menu.LinkURL
 	}
 
 	return newMenu

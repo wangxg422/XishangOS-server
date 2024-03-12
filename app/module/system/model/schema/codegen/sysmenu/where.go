@@ -160,6 +160,11 @@ func IsKeepAlive(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsKeepAlive, v))
 }
 
+// IsFull applies equality check predicate on the "is_full" field. It's identical to IsFullEQ.
+func IsFull(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsFull, v))
+}
+
 // IsIframe applies equality check predicate on the "is_iframe" field. It's identical to IsIframeEQ.
 func IsIframe(v int8) predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldEQ(FieldIsIframe, v))
@@ -1363,6 +1368,56 @@ func IsKeepAliveIsNil() predicate.SysMenu {
 // IsKeepAliveNotNil applies the NotNil predicate on the "is_keep_alive" field.
 func IsKeepAliveNotNil() predicate.SysMenu {
 	return predicate.SysMenu(sql.FieldNotNull(FieldIsKeepAlive))
+}
+
+// IsFullEQ applies the EQ predicate on the "is_full" field.
+func IsFullEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldEQ(FieldIsFull, v))
+}
+
+// IsFullNEQ applies the NEQ predicate on the "is_full" field.
+func IsFullNEQ(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNEQ(FieldIsFull, v))
+}
+
+// IsFullIn applies the In predicate on the "is_full" field.
+func IsFullIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIn(FieldIsFull, vs...))
+}
+
+// IsFullNotIn applies the NotIn predicate on the "is_full" field.
+func IsFullNotIn(vs ...int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotIn(FieldIsFull, vs...))
+}
+
+// IsFullGT applies the GT predicate on the "is_full" field.
+func IsFullGT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGT(FieldIsFull, v))
+}
+
+// IsFullGTE applies the GTE predicate on the "is_full" field.
+func IsFullGTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldGTE(FieldIsFull, v))
+}
+
+// IsFullLT applies the LT predicate on the "is_full" field.
+func IsFullLT(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLT(FieldIsFull, v))
+}
+
+// IsFullLTE applies the LTE predicate on the "is_full" field.
+func IsFullLTE(v int8) predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldLTE(FieldIsFull, v))
+}
+
+// IsFullIsNil applies the IsNil predicate on the "is_full" field.
+func IsFullIsNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldIsNull(FieldIsFull))
+}
+
+// IsFullNotNil applies the NotNil predicate on the "is_full" field.
+func IsFullNotNil() predicate.SysMenu {
+	return predicate.SysMenu(sql.FieldNotNull(FieldIsFull))
 }
 
 // IsIframeEQ applies the EQ predicate on the "is_iframe" field.

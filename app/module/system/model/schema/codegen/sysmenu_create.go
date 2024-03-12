@@ -315,6 +315,20 @@ func (smc *SysMenuCreate) SetNillableIsKeepAlive(i *int8) *SysMenuCreate {
 	return smc
 }
 
+// SetIsFull sets the "is_full" field.
+func (smc *SysMenuCreate) SetIsFull(i int8) *SysMenuCreate {
+	smc.mutation.SetIsFull(i)
+	return smc
+}
+
+// SetNillableIsFull sets the "is_full" field if the given value is not nil.
+func (smc *SysMenuCreate) SetNillableIsFull(i *int8) *SysMenuCreate {
+	if i != nil {
+		smc.SetIsFull(*i)
+	}
+	return smc
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (smc *SysMenuCreate) SetIsIframe(i int8) *SysMenuCreate {
 	smc.mutation.SetIsIframe(i)
@@ -626,6 +640,10 @@ func (smc *SysMenuCreate) createSpec() (*SysMenu, *sqlgraph.CreateSpec) {
 	if value, ok := smc.mutation.IsKeepAlive(); ok {
 		_spec.SetField(sysmenu.FieldIsKeepAlive, field.TypeInt8, value)
 		_node.IsKeepAlive = value
+	}
+	if value, ok := smc.mutation.IsFull(); ok {
+		_spec.SetField(sysmenu.FieldIsFull, field.TypeInt8, value)
+		_node.IsFull = value
 	}
 	if value, ok := smc.mutation.IsIframe(); ok {
 		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)

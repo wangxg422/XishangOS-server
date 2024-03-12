@@ -7434,6 +7434,8 @@ type SysMenuMutation struct {
 	addis_affix      *int8
 	is_keep_alive    *int8
 	addis_keep_alive *int8
+	is_full          *int8
+	addis_full       *int8
 	is_iframe        *int8
 	addis_iframe     *int8
 	_type            *int8
@@ -8769,6 +8771,76 @@ func (m *SysMenuMutation) ResetIsKeepAlive() {
 	delete(m.clearedFields, sysmenu.FieldIsKeepAlive)
 }
 
+// SetIsFull sets the "is_full" field.
+func (m *SysMenuMutation) SetIsFull(i int8) {
+	m.is_full = &i
+	m.addis_full = nil
+}
+
+// IsFull returns the value of the "is_full" field in the mutation.
+func (m *SysMenuMutation) IsFull() (r int8, exists bool) {
+	v := m.is_full
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsFull returns the old "is_full" field's value of the SysMenu entity.
+// If the SysMenu object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SysMenuMutation) OldIsFull(ctx context.Context) (v int8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsFull is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsFull requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsFull: %w", err)
+	}
+	return oldValue.IsFull, nil
+}
+
+// AddIsFull adds i to the "is_full" field.
+func (m *SysMenuMutation) AddIsFull(i int8) {
+	if m.addis_full != nil {
+		*m.addis_full += i
+	} else {
+		m.addis_full = &i
+	}
+}
+
+// AddedIsFull returns the value that was added to the "is_full" field in this mutation.
+func (m *SysMenuMutation) AddedIsFull() (r int8, exists bool) {
+	v := m.addis_full
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIsFull clears the value of the "is_full" field.
+func (m *SysMenuMutation) ClearIsFull() {
+	m.is_full = nil
+	m.addis_full = nil
+	m.clearedFields[sysmenu.FieldIsFull] = struct{}{}
+}
+
+// IsFullCleared returns if the "is_full" field was cleared in this mutation.
+func (m *SysMenuMutation) IsFullCleared() bool {
+	_, ok := m.clearedFields[sysmenu.FieldIsFull]
+	return ok
+}
+
+// ResetIsFull resets all changes to the "is_full" field.
+func (m *SysMenuMutation) ResetIsFull() {
+	m.is_full = nil
+	m.addis_full = nil
+	delete(m.clearedFields, sysmenu.FieldIsFull)
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (m *SysMenuMutation) SetIsIframe(i int8) {
 	m.is_iframe = &i
@@ -9189,7 +9261,7 @@ func (m *SysMenuMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SysMenuMutation) Fields() []string {
-	fields := make([]string, 0, 25)
+	fields := make([]string, 0, 26)
 	if m.created_at != nil {
 		fields = append(fields, sysmenu.FieldCreatedAt)
 	}
@@ -9253,6 +9325,9 @@ func (m *SysMenuMutation) Fields() []string {
 	if m.is_keep_alive != nil {
 		fields = append(fields, sysmenu.FieldIsKeepAlive)
 	}
+	if m.is_full != nil {
+		fields = append(fields, sysmenu.FieldIsFull)
+	}
 	if m.is_iframe != nil {
 		fields = append(fields, sysmenu.FieldIsIframe)
 	}
@@ -9315,6 +9390,8 @@ func (m *SysMenuMutation) Field(name string) (ent.Value, bool) {
 		return m.IsAffix()
 	case sysmenu.FieldIsKeepAlive:
 		return m.IsKeepAlive()
+	case sysmenu.FieldIsFull:
+		return m.IsFull()
 	case sysmenu.FieldIsIframe:
 		return m.IsIframe()
 	case sysmenu.FieldType:
@@ -9374,6 +9451,8 @@ func (m *SysMenuMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldIsAffix(ctx)
 	case sysmenu.FieldIsKeepAlive:
 		return m.OldIsKeepAlive(ctx)
+	case sysmenu.FieldIsFull:
+		return m.OldIsFull(ctx)
 	case sysmenu.FieldIsIframe:
 		return m.OldIsIframe(ctx)
 	case sysmenu.FieldType:
@@ -9538,6 +9617,13 @@ func (m *SysMenuMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIsKeepAlive(v)
 		return nil
+	case sysmenu.FieldIsFull:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsFull(v)
+		return nil
 	case sysmenu.FieldIsIframe:
 		v, ok := value.(int8)
 		if !ok {
@@ -9604,6 +9690,9 @@ func (m *SysMenuMutation) AddedFields() []string {
 	if m.addis_keep_alive != nil {
 		fields = append(fields, sysmenu.FieldIsKeepAlive)
 	}
+	if m.addis_full != nil {
+		fields = append(fields, sysmenu.FieldIsFull)
+	}
 	if m.addis_iframe != nil {
 		fields = append(fields, sysmenu.FieldIsIframe)
 	}
@@ -9638,6 +9727,8 @@ func (m *SysMenuMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedIsAffix()
 	case sysmenu.FieldIsKeepAlive:
 		return m.AddedIsKeepAlive()
+	case sysmenu.FieldIsFull:
+		return m.AddedIsFull()
 	case sysmenu.FieldIsIframe:
 		return m.AddedIsIframe()
 	case sysmenu.FieldType:
@@ -9721,6 +9812,13 @@ func (m *SysMenuMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddIsKeepAlive(v)
 		return nil
+	case sysmenu.FieldIsFull:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIsFull(v)
+		return nil
 	case sysmenu.FieldIsIframe:
 		v, ok := value.(int8)
 		if !ok {
@@ -9799,6 +9897,9 @@ func (m *SysMenuMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(sysmenu.FieldIsKeepAlive) {
 		fields = append(fields, sysmenu.FieldIsKeepAlive)
+	}
+	if m.FieldCleared(sysmenu.FieldIsFull) {
+		fields = append(fields, sysmenu.FieldIsFull)
 	}
 	if m.FieldCleared(sysmenu.FieldIsIframe) {
 		fields = append(fields, sysmenu.FieldIsIframe)
@@ -9883,6 +9984,9 @@ func (m *SysMenuMutation) ClearField(name string) error {
 	case sysmenu.FieldIsKeepAlive:
 		m.ClearIsKeepAlive()
 		return nil
+	case sysmenu.FieldIsFull:
+		m.ClearIsFull()
+		return nil
 	case sysmenu.FieldIsIframe:
 		m.ClearIsIframe()
 		return nil
@@ -9965,6 +10069,9 @@ func (m *SysMenuMutation) ResetField(name string) error {
 		return nil
 	case sysmenu.FieldIsKeepAlive:
 		m.ResetIsKeepAlive()
+		return nil
+	case sysmenu.FieldIsFull:
+		m.ResetIsFull()
 		return nil
 	case sysmenu.FieldIsIframe:
 		m.ResetIsIframe()

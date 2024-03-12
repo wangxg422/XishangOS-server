@@ -57,6 +57,8 @@ const (
 	FieldIsAffix = "is_affix"
 	// FieldIsKeepAlive holds the string denoting the is_keep_alive field in the database.
 	FieldIsKeepAlive = "is_keep_alive"
+	// FieldIsFull holds the string denoting the is_full field in the database.
+	FieldIsFull = "is_full"
 	// FieldIsIframe holds the string denoting the is_iframe field in the database.
 	FieldIsIframe = "is_iframe"
 	// FieldType holds the string denoting the type field in the database.
@@ -112,6 +114,7 @@ var Columns = []string{
 	FieldIsHide,
 	FieldIsAffix,
 	FieldIsKeepAlive,
+	FieldIsFull,
 	FieldIsIframe,
 	FieldType,
 	FieldModuleType,
@@ -269,6 +272,11 @@ func ByIsAffix(opts ...sql.OrderTermOption) OrderOption {
 // ByIsKeepAlive orders the results by the is_keep_alive field.
 func ByIsKeepAlive(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIsKeepAlive, opts...).ToFunc()
+}
+
+// ByIsFull orders the results by the is_full field.
+func ByIsFull(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldIsFull, opts...).ToFunc()
 }
 
 // ByIsIframe orders the results by the is_iframe field.

@@ -59,6 +59,8 @@ type SysMenu struct {
 	IsAffix int8 `json:"isAffix"`
 	// 是否缓存(1是,2否)
 	IsKeepAlive int8 `json:"isKeepAlive"`
+	// 是否是全屏页面(1是,2否)
+	IsFull int8 `json:"isFull"`
 	// 是否是内嵌iframe(1是,0否)
 	IsIframe int8 `json:"isIframe"`
 	// 菜单类型(1目录,2菜单,3按钮)
@@ -122,7 +124,7 @@ func (*SysMenu) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case sysmenu.FieldID, sysmenu.FieldCreatedBy, sysmenu.FieldUpdatedBy, sysmenu.FieldDeleteBy, sysmenu.FieldStatus, sysmenu.FieldSort, sysmenu.FieldDelFlag, sysmenu.FieldPid, sysmenu.FieldIsLink, sysmenu.FieldIsHide, sysmenu.FieldIsAffix, sysmenu.FieldIsKeepAlive, sysmenu.FieldIsIframe, sysmenu.FieldType:
+		case sysmenu.FieldID, sysmenu.FieldCreatedBy, sysmenu.FieldUpdatedBy, sysmenu.FieldDeleteBy, sysmenu.FieldStatus, sysmenu.FieldSort, sysmenu.FieldDelFlag, sysmenu.FieldPid, sysmenu.FieldIsLink, sysmenu.FieldIsHide, sysmenu.FieldIsAffix, sysmenu.FieldIsKeepAlive, sysmenu.FieldIsFull, sysmenu.FieldIsIframe, sysmenu.FieldType:
 			values[i] = new(sql.NullInt64)
 		case sysmenu.FieldRemark, sysmenu.FieldPath, sysmenu.FieldName, sysmenu.FieldComponent, sysmenu.FieldRedirect, sysmenu.FieldTitle, sysmenu.FieldIcon, sysmenu.FieldModuleType, sysmenu.FieldLinkURL:
 			values[i] = new(sql.NullString)
@@ -275,6 +277,12 @@ func (sm *SysMenu) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				sm.IsKeepAlive = int8(value.Int64)
 			}
+		case sysmenu.FieldIsFull:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field is_full", values[i])
+			} else if value.Valid {
+				sm.IsFull = int8(value.Int64)
+			}
 		case sysmenu.FieldIsIframe:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field is_iframe", values[i])
@@ -412,6 +420,9 @@ func (sm *SysMenu) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("is_keep_alive=")
 	builder.WriteString(fmt.Sprintf("%v", sm.IsKeepAlive))
+	builder.WriteString(", ")
+	builder.WriteString("is_full=")
+	builder.WriteString(fmt.Sprintf("%v", sm.IsFull))
 	builder.WriteString(", ")
 	builder.WriteString("is_iframe=")
 	builder.WriteString(fmt.Sprintf("%v", sm.IsIframe))

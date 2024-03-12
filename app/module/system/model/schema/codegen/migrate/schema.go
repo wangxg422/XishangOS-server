@@ -162,6 +162,7 @@ var (
 		{Name: "is_hide", Type: field.TypeInt8, Nullable: true, Comment: "显示状态"},
 		{Name: "is_affix", Type: field.TypeInt8, Nullable: true, Comment: "是否固定(1是,2否)"},
 		{Name: "is_keep_alive", Type: field.TypeInt8, Nullable: true, Comment: "是否缓存(1是,2否)"},
+		{Name: "is_full", Type: field.TypeInt8, Nullable: true, Comment: "是否是全屏页面(1是,2否)"},
 		{Name: "is_iframe", Type: field.TypeInt8, Nullable: true, Comment: "是否是内嵌iframe(1是,0否)"},
 		{Name: "type", Type: field.TypeInt8, Nullable: true, Comment: "菜单类型(1目录,2菜单,3按钮)"},
 		{Name: "module_type", Type: field.TypeString, Nullable: true, Comment: "所属模块"},
@@ -177,7 +178,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "sys_menu_sys_menu_children",
-				Columns:    []*schema.Column{SysMenuColumns[25]},
+				Columns:    []*schema.Column{SysMenuColumns[26]},
 				RefColumns: []*schema.Column{SysMenuColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

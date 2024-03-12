@@ -499,6 +499,33 @@ func (smu *SysMenuUpdate) ClearIsKeepAlive() *SysMenuUpdate {
 	return smu
 }
 
+// SetIsFull sets the "is_full" field.
+func (smu *SysMenuUpdate) SetIsFull(i int8) *SysMenuUpdate {
+	smu.mutation.ResetIsFull()
+	smu.mutation.SetIsFull(i)
+	return smu
+}
+
+// SetNillableIsFull sets the "is_full" field if the given value is not nil.
+func (smu *SysMenuUpdate) SetNillableIsFull(i *int8) *SysMenuUpdate {
+	if i != nil {
+		smu.SetIsFull(*i)
+	}
+	return smu
+}
+
+// AddIsFull adds i to the "is_full" field.
+func (smu *SysMenuUpdate) AddIsFull(i int8) *SysMenuUpdate {
+	smu.mutation.AddIsFull(i)
+	return smu
+}
+
+// ClearIsFull clears the value of the "is_full" field.
+func (smu *SysMenuUpdate) ClearIsFull() *SysMenuUpdate {
+	smu.mutation.ClearIsFull()
+	return smu
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (smu *SysMenuUpdate) SetIsIframe(i int8) *SysMenuUpdate {
 	smu.mutation.ResetIsIframe()
@@ -889,6 +916,15 @@ func (smu *SysMenuUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if smu.mutation.IsKeepAliveCleared() {
 		_spec.ClearField(sysmenu.FieldIsKeepAlive, field.TypeInt8)
+	}
+	if value, ok := smu.mutation.IsFull(); ok {
+		_spec.SetField(sysmenu.FieldIsFull, field.TypeInt8, value)
+	}
+	if value, ok := smu.mutation.AddedIsFull(); ok {
+		_spec.AddField(sysmenu.FieldIsFull, field.TypeInt8, value)
+	}
+	if smu.mutation.IsFullCleared() {
+		_spec.ClearField(sysmenu.FieldIsFull, field.TypeInt8)
 	}
 	if value, ok := smu.mutation.IsIframe(); ok {
 		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
@@ -1529,6 +1565,33 @@ func (smuo *SysMenuUpdateOne) ClearIsKeepAlive() *SysMenuUpdateOne {
 	return smuo
 }
 
+// SetIsFull sets the "is_full" field.
+func (smuo *SysMenuUpdateOne) SetIsFull(i int8) *SysMenuUpdateOne {
+	smuo.mutation.ResetIsFull()
+	smuo.mutation.SetIsFull(i)
+	return smuo
+}
+
+// SetNillableIsFull sets the "is_full" field if the given value is not nil.
+func (smuo *SysMenuUpdateOne) SetNillableIsFull(i *int8) *SysMenuUpdateOne {
+	if i != nil {
+		smuo.SetIsFull(*i)
+	}
+	return smuo
+}
+
+// AddIsFull adds i to the "is_full" field.
+func (smuo *SysMenuUpdateOne) AddIsFull(i int8) *SysMenuUpdateOne {
+	smuo.mutation.AddIsFull(i)
+	return smuo
+}
+
+// ClearIsFull clears the value of the "is_full" field.
+func (smuo *SysMenuUpdateOne) ClearIsFull() *SysMenuUpdateOne {
+	smuo.mutation.ClearIsFull()
+	return smuo
+}
+
 // SetIsIframe sets the "is_iframe" field.
 func (smuo *SysMenuUpdateOne) SetIsIframe(i int8) *SysMenuUpdateOne {
 	smuo.mutation.ResetIsIframe()
@@ -1949,6 +2012,15 @@ func (smuo *SysMenuUpdateOne) sqlSave(ctx context.Context) (_node *SysMenu, err 
 	}
 	if smuo.mutation.IsKeepAliveCleared() {
 		_spec.ClearField(sysmenu.FieldIsKeepAlive, field.TypeInt8)
+	}
+	if value, ok := smuo.mutation.IsFull(); ok {
+		_spec.SetField(sysmenu.FieldIsFull, field.TypeInt8, value)
+	}
+	if value, ok := smuo.mutation.AddedIsFull(); ok {
+		_spec.AddField(sysmenu.FieldIsFull, field.TypeInt8, value)
+	}
+	if smuo.mutation.IsFullCleared() {
+		_spec.ClearField(sysmenu.FieldIsFull, field.TypeInt8)
 	}
 	if value, ok := smuo.mutation.IsIframe(); ok {
 		_spec.SetField(sysmenu.FieldIsIframe, field.TypeInt8, value)
