@@ -126,14 +126,12 @@ func (m *SysLogin) Login(req *request.SysLoginReq, c *gin.Context) (*response.Lo
 	}
 
 	res := &response.LoginRes{
-		Token: token,
-		UserInfo: &response.UserInfo{
-			Username:    req.Username,
-			UserId:      user.ID,
-			DeptId:      user.DeptID,
-			MenuList:    menuList,
-			Permissions: permissions,
-		},
+		Username:    req.Username,
+		UserId:      user.ID,
+		DeptId:      user.DeptID,
+		MenuList:    menuList,
+		Permissions: permissions,
+		Token:       token,
 	}
 
 	return res, nil

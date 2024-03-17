@@ -42,10 +42,10 @@ func (AppInstance) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("instance_name").StructTag(`json:"instanceName"`),
 		field.String("instance_code").StructTag(`json:"instanceCode"`),
-		field.Int64("instance_package").StructTag(`json:"instancePackage"`),
+		field.Int64("instance_package").StructTag(`json:"instancePackage,string"`),
 		field.String("instance_icon").StructTag(`json:"instanceIcon"`).Optional().Comment("应用图标"),
 		field.String("instance_address").StructTag(`json:"instanceAddress"`).Optional().Comment("应用访问地址"),
-		field.Int8("instance_type").StructTag(`json:"instanceType"`).Optional(),
+		field.Int8("instance_type").StructTag(`json:"instanceType,string"`).Optional(),
 		field.Int64("installer").Optional().Comment("安装应用的用户"),
 		field.String("desc").Optional(),
 	}

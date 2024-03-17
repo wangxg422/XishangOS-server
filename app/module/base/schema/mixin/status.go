@@ -13,7 +13,7 @@ type StatusMixin struct {
 
 func (StatusMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int8("status").
+		field.Int8("status").StructTag(`json:"status,string"`).
 			Default(enmu.StatusNormal.Value()),
 	}
 }
