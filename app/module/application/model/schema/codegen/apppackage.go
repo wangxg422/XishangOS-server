@@ -24,7 +24,7 @@ type AppPackage struct {
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"deleteAt"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int8 `json:"status,string"`
 	// CreatedBy holds the value of the "created_by" field.
 	CreatedBy int64 `json:"created_by,omitempty"`
 	// UpdatedBy holds the value of the "updated_by" field.

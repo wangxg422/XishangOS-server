@@ -30,7 +30,7 @@ type SysMenu struct {
 	// DeleteBy holds the value of the "delete_by" field.
 	DeleteBy int64 `json:"delete_by,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int8 `json:"status,string"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// Sort holds the value of the "sort" field.

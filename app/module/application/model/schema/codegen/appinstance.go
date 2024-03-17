@@ -25,7 +25,7 @@ type AppInstance struct {
 	// DeleteAt holds the value of the "delete_at" field.
 	DeleteAt time.Time `json:"deleteAt"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int8 `json:"status,string"`
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// CreatedBy holds the value of the "created_by" field.
@@ -41,13 +41,13 @@ type AppInstance struct {
 	// InstanceCode holds the value of the "instance_code" field.
 	InstanceCode string `json:"instanceCode"`
 	// InstancePackage holds the value of the "instance_package" field.
-	InstancePackage int64 `json:"instancePackage"`
+	InstancePackage int64 `json:"instancePackage,string"`
 	// 应用图标
 	InstanceIcon string `json:"instanceIcon"`
 	// 应用访问地址
 	InstanceAddress string `json:"instanceAddress"`
 	// InstanceType holds the value of the "instance_type" field.
-	InstanceType int8 `json:"instanceType"`
+	InstanceType int8 `json:"instanceType,string"`
 	// 安装应用的用户
 	Installer int64 `json:"installer,omitempty"`
 	// Desc holds the value of the "desc" field.

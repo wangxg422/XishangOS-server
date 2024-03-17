@@ -33,7 +33,7 @@ type SysDictData struct {
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int8 `json:"status,string"`
 	// Sort holds the value of the "sort" field.
 	Sort int `json:"sort,omitempty"`
 	// DelFlag holds the value of the "del_flag" field.

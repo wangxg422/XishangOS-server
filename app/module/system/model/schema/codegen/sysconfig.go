@@ -32,7 +32,7 @@ type SysConfig struct {
 	// Remark holds the value of the "remark" field.
 	Remark string `json:"remark,omitempty"`
 	// Status holds the value of the "status" field.
-	Status int8 `json:"status,omitempty"`
+	Status int8 `json:"status,string"`
 	// DelFlag holds the value of the "del_flag" field.
 	DelFlag int8 `json:"-"`
 	// 配置名称
