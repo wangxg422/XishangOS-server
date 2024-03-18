@@ -88,6 +88,7 @@ func (m *SysMenu) SetMenuData(menu *codegen.SysMenu) *response.UserMenu {
 		Component: menu.Component,
 		Path:      menu.Path,
 		Redirect:  menu.Redirect,
+		Type:      menu.Type,
 		MenuMeta: &response.MenuMeta{
 			Icon:        menu.Icon,
 			Title:       menu.Title,

@@ -14,6 +14,7 @@ type UserMenu struct {
 	Name      string `json:"name"`
 	Component string `json:"component"`
 	Redirect  string `json:"redirect"`
+	Type      int8   `json:"type,string"`
 	*MenuMeta `json:"meta"`
 	Children  []*UserMenu `json:"children"`
 }
